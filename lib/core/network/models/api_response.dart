@@ -28,8 +28,8 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
   ) {
     return ApiResponse<T>(
       success: json['success'] as bool,
-      data: fromJsonT(json['data']),
-      meta: MetaModel.fromJson(json['meta'] as Map<String, dynamic>),
-    );
+        data: fromJsonT(json['data']),
+        meta: MetaModel.fromJson(json['meta'] as Map<String, dynamic>),
+      );
   }
 }

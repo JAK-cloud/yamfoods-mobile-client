@@ -10,7 +10,8 @@ sealed class Failure with _$Failure {
   const factory Failure.network({String? message}) = NetworkFailure;
   const factory Failure.backend({required String message, int? statusCode}) =
       BackendFailure;
-  const factory Failure.auth({required String message}) = AuthFailure;
+  const factory Failure.auth({required String message, int? statusCode}) =
+      AuthFailure;
   const factory Failure.validation({required String message}) =
       ValidationFailure;
   const factory Failure.permission({

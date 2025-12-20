@@ -143,12 +143,12 @@ return mapError(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String? message)?  network,TResult Function( String message,  int? statusCode)?  backend,TResult Function( String message)?  auth,TResult Function( String message)?  validation,TResult Function( PermissionType type,  bool permanentlyDenied)?  permission,TResult Function( String message)?  payment,TResult Function( String? message)?  cache,TResult Function( String? message)?  parsing,TResult Function( String? message)?  unexpected,TResult Function( String message)?  mapError,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String? message)?  network,TResult Function( String message,  int? statusCode)?  backend,TResult Function( String message,  int? statusCode)?  auth,TResult Function( String message)?  validation,TResult Function( PermissionType type,  bool permanentlyDenied)?  permission,TResult Function( String message)?  payment,TResult Function( String? message)?  cache,TResult Function( String? message)?  parsing,TResult Function( String? message)?  unexpected,TResult Function( String message)?  mapError,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case NetworkFailure() when network != null:
 return network(_that.message);case BackendFailure() when backend != null:
 return backend(_that.message,_that.statusCode);case AuthFailure() when auth != null:
-return auth(_that.message);case ValidationFailure() when validation != null:
+return auth(_that.message,_that.statusCode);case ValidationFailure() when validation != null:
 return validation(_that.message);case PermissionFailure() when permission != null:
 return permission(_that.type,_that.permanentlyDenied);case PaymentFailure() when payment != null:
 return payment(_that.message);case CacheFailure() when cache != null:
@@ -173,12 +173,12 @@ return mapError(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String? message)  network,required TResult Function( String message,  int? statusCode)  backend,required TResult Function( String message)  auth,required TResult Function( String message)  validation,required TResult Function( PermissionType type,  bool permanentlyDenied)  permission,required TResult Function( String message)  payment,required TResult Function( String? message)  cache,required TResult Function( String? message)  parsing,required TResult Function( String? message)  unexpected,required TResult Function( String message)  mapError,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String? message)  network,required TResult Function( String message,  int? statusCode)  backend,required TResult Function( String message,  int? statusCode)  auth,required TResult Function( String message)  validation,required TResult Function( PermissionType type,  bool permanentlyDenied)  permission,required TResult Function( String message)  payment,required TResult Function( String? message)  cache,required TResult Function( String? message)  parsing,required TResult Function( String? message)  unexpected,required TResult Function( String message)  mapError,}) {final _that = this;
 switch (_that) {
 case NetworkFailure():
 return network(_that.message);case BackendFailure():
 return backend(_that.message,_that.statusCode);case AuthFailure():
-return auth(_that.message);case ValidationFailure():
+return auth(_that.message,_that.statusCode);case ValidationFailure():
 return validation(_that.message);case PermissionFailure():
 return permission(_that.type,_that.permanentlyDenied);case PaymentFailure():
 return payment(_that.message);case CacheFailure():
@@ -199,12 +199,12 @@ return mapError(_that.message);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String? message)?  network,TResult? Function( String message,  int? statusCode)?  backend,TResult? Function( String message)?  auth,TResult? Function( String message)?  validation,TResult? Function( PermissionType type,  bool permanentlyDenied)?  permission,TResult? Function( String message)?  payment,TResult? Function( String? message)?  cache,TResult? Function( String? message)?  parsing,TResult? Function( String? message)?  unexpected,TResult? Function( String message)?  mapError,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String? message)?  network,TResult? Function( String message,  int? statusCode)?  backend,TResult? Function( String message,  int? statusCode)?  auth,TResult? Function( String message)?  validation,TResult? Function( PermissionType type,  bool permanentlyDenied)?  permission,TResult? Function( String message)?  payment,TResult? Function( String? message)?  cache,TResult? Function( String? message)?  parsing,TResult? Function( String? message)?  unexpected,TResult? Function( String message)?  mapError,}) {final _that = this;
 switch (_that) {
 case NetworkFailure() when network != null:
 return network(_that.message);case BackendFailure() when backend != null:
 return backend(_that.message,_that.statusCode);case AuthFailure() when auth != null:
-return auth(_that.message);case ValidationFailure() when validation != null:
+return auth(_that.message,_that.statusCode);case ValidationFailure() when validation != null:
 return validation(_that.message);case PermissionFailure() when permission != null:
 return permission(_that.type,_that.permanentlyDenied);case PaymentFailure() when payment != null:
 return payment(_that.message);case CacheFailure() when cache != null:
@@ -357,10 +357,11 @@ as int?,
 
 
 class AuthFailure implements Failure {
-  const AuthFailure({required this.message});
+  const AuthFailure({required this.message, this.statusCode});
   
 
  final  String message;
+ final  int? statusCode;
 
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
@@ -372,16 +373,16 @@ $AuthFailureCopyWith<AuthFailure> get copyWith => _$AuthFailureCopyWithImpl<Auth
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthFailure&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthFailure&&(identical(other.message, message) || other.message == message)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,message,statusCode);
 
 @override
 String toString() {
-  return 'Failure.auth(message: $message)';
+  return 'Failure.auth(message: $message, statusCode: $statusCode)';
 }
 
 
@@ -392,7 +393,7 @@ abstract mixin class $AuthFailureCopyWith<$Res> implements $FailureCopyWith<$Res
   factory $AuthFailureCopyWith(AuthFailure value, $Res Function(AuthFailure) _then) = _$AuthFailureCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String message, int? statusCode
 });
 
 
@@ -409,10 +410,11 @@ class _$AuthFailureCopyWithImpl<$Res>
 
 /// Create a copy of Failure
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? statusCode = freezed,}) {
   return _then(AuthFailure(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+as String,statusCode: freezed == statusCode ? _self.statusCode : statusCode // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
