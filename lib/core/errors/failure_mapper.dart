@@ -17,7 +17,7 @@ extension FailureMapper on Failure {
       network: (message) =>
           message ?? 'Please check your internet connection and try again.',
       backend: (message, statusCode) => message,
-      auth: (message) => message,
+      auth: (message, statusCode) => message,
       validation: (message) => message,
       permission: (type, permanentlyDenied) {
         switch (type) {

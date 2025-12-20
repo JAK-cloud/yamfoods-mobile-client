@@ -89,7 +89,7 @@ class ErrorHandler {
     switch (statusCode) {
       case 401:
       case 403:
-        return Failure.auth(message: message);
+        return Failure.auth(message: message, statusCode: statusCode);
       case 400:
       case 422:
         return Failure.validation(message: message);

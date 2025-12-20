@@ -92,7 +92,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final data = {'phone': phone, 'password': password};
       final body = RequestWrapper.wrap(data);
-
+  
       final response = await _apiService.login(body);
       return Right(response.data);
     } catch (e) {
@@ -172,6 +172,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return Right(response.data.user);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));
-    }
+}
   }
 }

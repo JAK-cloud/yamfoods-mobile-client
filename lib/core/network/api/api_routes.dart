@@ -20,4 +20,8 @@ class ApiRoutes {
       '$_authBase/request-reset-password-otp';
   static const String validateOtp = '$_authBase/validate-otp';
   static const String resetPassword = '$_authBase/reset-password';
+
+  // Branch endpoints
+  static const String _branchBase = '/branch';
+  static const String getAllBranches = '$_branchBase/get-all-branches';
 }
