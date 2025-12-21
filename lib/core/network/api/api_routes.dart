@@ -24,4 +24,21 @@ class ApiRoutes {
   // Branch endpoints
   static const String _branchBase = '/branch';
   static const String getAllBranches = '$_branchBase/get-all-branches';
+
+  // Category endpoints
+  static const String _categoryBase = '/category';
+  static const String getAllCategories =
+      '$_categoryBase/get-all-categories/{branchId}';
+
+  // Subcategory endpoints
+  static const String _subcategoryBase = '/subCategory';
+  static const String getAllSubcategories =
+      '$_subcategoryBase/get-all-subcategories/{branchId}/{categoryId}';
+
+  // Address endpoints
+  static const String _addressBase = '/address';
+  static const String getAddresses = '$_addressBase/get-address';
+  static const String createAddress = '$_addressBase/create-address';
+  static const String updateAddress = '$_addressBase/update-address/{id}';
+  static const String deleteAddress = '$_addressBase/delete-address/{id}';
 }

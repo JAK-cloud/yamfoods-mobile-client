@@ -1,3 +1,4 @@
+import '../errors/failure.dart';
 
 class Validators {
   static bool isValidEmail(String email) {
@@ -51,6 +52,28 @@ class Validators {
 
   static String? confirmPassword(String? value, String original) {
     if (value != original) return 'Passwords do not match';
+    return null;
+  }
+
+  /// Validates latitude and longitude coordinates.
+  ///
+  /// Returns a [ValidationFailure] if coordinates are out of valid range,
+  /// otherwise returns `null`.
+  ///
+  /// Valid ranges:
+  /// - Latitude: -90 to 90
+  /// - Longitude: -180 to 180
+  static Failure? validateCoordinates(double lat, double lng) {
+    if (lat < -90 || lat > 90) {
+      return const Failure.validation(
+        message: 'Latitude must be between -90 and 90',
+      );
+    }
+    if (lng < -180 || lng > 180) {
+      return const Failure.validation(
+        message: 'Longitude must be between -180 and 180',
+      );
+    }
     return null;
   }
 }
