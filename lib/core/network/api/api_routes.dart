@@ -35,6 +35,15 @@ class ApiRoutes {
   static const String getAllSubcategories =
       '$_subcategoryBase/get-all-subcategories/{branchId}/{categoryId}';
 
+  // Product endpoints
+  static const String _productBase = '/product';
+  static const String getAllBranchProducts =
+      '$_productBase/get-all-branch-products/{branchId}';
+  static const String getAllCategoryProducts =
+      '$_productBase/get-all-category-products/{branchId}/{categoryId}';
+  static const String getAllSubcategoryProducts =
+      '$_productBase/get-all-sub-category-products/{branchId}/{subCategoryId}';
+
   // Address endpoints
   static const String _addressBase = '/address';
   static const String getAddresses = '$_addressBase/get-address';
@@ -62,4 +71,15 @@ class ApiRoutes {
   static const String createReview = '$_reviewBase/create-review';
   static const String updateReview = '$_reviewBase/update-review/{reviewId}';
   static const String deleteReview = '$_reviewBase/delete-review/{reviewId}';
+
+  // Cart endpoints
+  static const String _cartBase = '/cart';
+  static const String addToCart = '$_cartBase/add-to-cart';
+  static const String increaseCartQuantity =
+      '$_cartBase/increase-cart-quantity/{cartId}';
+  static const String decreaseCartQuantity =
+      '$_cartBase/decrease-cart-quantity/{cartId}';
+  static const String getAllCarts = '$_cartBase/get-all-carts/{branchId}';
+  static const String deleteCartItem = '$_cartBase/delete-cart-item/{cartId}';
+  static const String deleteAllCartItems = '$_cartBase/delete-all-cart-items';
 }
