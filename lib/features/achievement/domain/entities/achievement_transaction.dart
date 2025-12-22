@@ -1,0 +1,17 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'achievement_transaction.freezed.dart';
+
+@freezed
+sealed class AchievementTransaction with _$AchievementTransaction {
+  const factory AchievementTransaction({
+    required int id,
+    required int userId,
+    required String type,
+    required int points,
+    int? relatedUserId,
+    int? referenceId,
+    String? description,
+    required DateTime createdAt,
+  }) = _AchievementTransaction;
+}
