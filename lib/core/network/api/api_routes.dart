@@ -41,4 +41,25 @@ class ApiRoutes {
   static const String createAddress = '$_addressBase/create-address';
   static const String updateAddress = '$_addressBase/update-address/{id}';
   static const String deleteAddress = '$_addressBase/delete-address/{id}';
+
+  // Promo code endpoints
+  static const String _promoCodeBase = '/promocode';
+  static const String verifyPromoCode = '$_promoCodeBase/verify-promo-code';
+  static const String getPromoCodes = '$_promoCodeBase/get-promocodes';
+
+  // Achievement endpoints
+  static const String _achievementBase = '/achievment';
+  static const String getAchievementPoint =
+      '$_achievementBase/get-achievment-point';
+  static const String sendPoint = '$_achievementBase/send-point';
+  static const String getAchievementHistory =
+      '$_achievementBase/get-achievment-history';
+
+  // Review endpoints
+  static const String _reviewBase = '/review';
+  static const String getAllReviews =
+      '$_reviewBase/get-all-reviews/{productId}';
+  static const String createReview = '$_reviewBase/create-review';
+  static const String updateReview = '$_reviewBase/update-review/{reviewId}';
+  static const String deleteReview = '$_reviewBase/delete-review/{reviewId}';
 }
