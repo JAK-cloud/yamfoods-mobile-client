@@ -36,4 +36,7 @@ class RouteName {
 
   /// Branches list route.
   static const String branches = '/branches';
+
+  /// Category screen route.
+  static const String categoryScreen = '/category';
 }

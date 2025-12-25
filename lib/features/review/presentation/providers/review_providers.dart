@@ -13,40 +13,54 @@ import '../../domain/usecases/delete_review_usecase.dart';
 
 part 'review_providers.g.dart';
 
+/// Review API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) to support both:
+/// - Unprotected route: getAllReviews (guests can view reviews)
+/// - Protected routes: create, update, delete (require authentication)
+///
+/// The AuthInterceptor automatically skips adding auth headers for unprotected
+/// endpoints (like getAllReviews) and adds them for protected endpoints.
 @riverpod
-ReviewApiService reviewApiService(Ref ref) {
-  final dio = ref.watch(baseDioClientProvider);
+Future<ReviewApiService> reviewApiService(Ref ref) async {
+  final dio = await ref.watch(dioClientProvider.future);
   return ReviewApiService(dio);
 }
 
 @riverpod
-ReviewRemoteDataSource reviewRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(reviewApiServiceProvider);
+Future<ReviewRemoteDataSource> reviewRemoteDataSource(Ref ref) async {
+  final apiService = await ref.watch(reviewApiServiceProvider.future);
   return ReviewRemoteDataSourceImpl(apiService);
 }
 
 @riverpod
-ReviewRepository reviewRepository(Ref ref) {
-  final remoteDataSource = ref.watch(reviewRemoteDataSourceProvider);
+Future<ReviewRepository> reviewRepository(Ref ref) async {
+  final remoteDataSource = await ref.watch(
+    reviewRemoteDataSourceProvider.future,
+  );
   return ReviewRepositoryImpl(remoteDataSource);
 }
 
 @riverpod
-GetAllReviewsUsecase getAllReviewsUseCase(Ref ref) {
-  return GetAllReviewsUsecase(ref.watch(reviewRepositoryProvider));
+Future<GetAllReviewsUsecase> getAllReviewsUseCase(Ref ref) async {
+  final repository = await ref.watch(reviewRepositoryProvider.future);
+  return GetAllReviewsUsecase(repository);
 }
 
 @riverpod
-CreateReviewUsecase createReviewUseCase(Ref ref) {
-  return CreateReviewUsecase(ref.watch(reviewRepositoryProvider));
+Future<CreateReviewUsecase> createReviewUseCase(Ref ref) async {
+  final repository = await ref.watch(reviewRepositoryProvider.future);
+  return CreateReviewUsecase(repository);
 }
 
 @riverpod
-UpdateReviewUsecase updateReviewUseCase(Ref ref) {
-  return UpdateReviewUsecase(ref.watch(reviewRepositoryProvider));
+Future<UpdateReviewUsecase> updateReviewUseCase(Ref ref) async {
+  final repository = await ref.watch(reviewRepositoryProvider.future);
+  return UpdateReviewUsecase(repository);
 }
 
 @riverpod
-DeleteReviewUsecase deleteReviewUseCase(Ref ref) {
-  return DeleteReviewUsecase(ref.watch(reviewRepositoryProvider));
+Future<DeleteReviewUsecase> deleteReviewUseCase(Ref ref) async {
+  final repository = await ref.watch(reviewRepositoryProvider.future);
+  return DeleteReviewUsecase(repository);
 }

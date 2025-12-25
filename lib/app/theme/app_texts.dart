@@ -138,4 +138,13 @@ class AppTexts {
   static const String workingHours = 'Working Hours';
   static const String workingDays = 'Working Days';
   static const String awayFromYou = 'away from you';
+
+  // Home screen
+  static const String goodMorning = 'Good Morning';
+  static const String goodAfternoon = 'Good Afternoon';
+  static const String goodEvening = 'Good Evening';
+  static const String searchForFood = 'Search for food...';
+  static const String notifications = 'Notifications';
+  static const String orderNow = 'Order Now';
+  static const String guest = 'Guest';
 }

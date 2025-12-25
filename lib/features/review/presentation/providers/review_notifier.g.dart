@@ -68,7 +68,7 @@ final class ReviewNotifierProvider
   }
 }
 
-String _$reviewNotifierHash() => r'55fa50e623f11c728458fb5a4966498e2a6f6819';
+String _$reviewNotifierHash() => r'3d92f502223bc4b81c9d387dee914e05b6cd68c9';
 
 /// Manages review list state and CRUD operations for a specific product.
 ///

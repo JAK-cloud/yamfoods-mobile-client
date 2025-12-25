@@ -16,6 +16,9 @@ import '../components/bottom_nav_screen.dart';
 import 'route_names.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/branch/presentation/screens/branch_selection_screen.dart';
+import '../../features/category/domain/entities/category.dart';
+import '../../features/category/presentation/screens/category_screen.dart';
+import '../../features/home/screens/home_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -29,7 +32,7 @@ final GoRouter appRouter = GoRouter(
   // SnackbarService uses this key to get the overlay context for displaying snackbars
   // that appear on top of the entire navigation stack, regardless of the current route.
   navigatorKey: SnackbarService.rootNavigatorKey,
-  initialLocation: RouteName.branches,
+  initialLocation: RouteName.home,
   routes: [
     GoRoute(
       path: RouteName.splash,
@@ -99,6 +102,13 @@ final GoRouter appRouter = GoRouter(
       name: RouteName.branches,
       builder: (context, state) => const BranchSelectionScreen(),
     ),
+    GoRoute(
+      path: RouteName.categoryScreen,
+      builder: (context, state) {
+        final category = state.extra as Category;
+        return CategoryScreen(category: category);
+      },
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return BottomNavScreen(navigationShell: navigationShell);
@@ -108,10 +118,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteName.home,
-              builder: (context, state) => const _PlaceholderScreen(
-                title: 'Home',
-                message: 'Home screen will be implemented here.',
-              ),
+              builder: (context, state) => const HomeScreen(),
             ),
           ],
         ),

@@ -135,6 +135,9 @@ class AuthInterceptor extends Interceptor {
       ApiRoutes.resetPassword,
       ApiRoutes.refreshToken,
       ApiRoutes.getAllBranches,
+      // Review endpoints - getAllReviews is unprotected (guests can view)
+      // create, update, delete are protected and require authentication
+      ApiRoutes.getAllReviews,
     ];
 
     return unprotectedPaths.any((route) => path.contains(route));

@@ -82,4 +82,18 @@ class ApiRoutes {
   static const String getAllCarts = '$_cartBase/get-all-carts/{branchId}';
   static const String deleteCartItem = '$_cartBase/delete-cart-item/{cartId}';
   static const String deleteAllCartItems = '$_cartBase/delete-all-cart-items';
+
+  // Order endpoints
+  static const String _orderBase = '/order';
+  static const String createOrder = '$_orderBase/create-order';
+  static const String getAllOrders = '$_orderBase/get-deliverer-orders';
+  static const String getOrderDetail = '$_orderBase/get-order-detail/{orderId}';
+  static const String updateOrderStatus = '$_orderBase/update-order-status';
+  static const String getOutForDeliveryOrder =
+      '$_orderBase/get-out-for-delivery-order';
+
+  // Promo banner endpoints
+  static const String _promoBannerBase = '/promo-banner';
+  static const String getActivePromoBanners =
+      '$_promoBannerBase/get-active-banners';
 }

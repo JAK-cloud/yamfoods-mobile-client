@@ -29,8 +29,11 @@ class ReviewNotifier extends _$ReviewNotifier {
     final createLoading = ref.read(reviewCreateLoadingProvider.notifier);
     createLoading.setLoading(true);
 
-    final useCase = ref.read(createReviewUseCaseProvider);
+    final useCase = await ref.watch(createReviewUseCaseProvider.future);
     final result = await useCase.call(data);
+    //this line exact same as below
+    // final result = await useCase(data);
+    //both works exactly same
 
     result.fold(
       (failure) {
@@ -54,7 +57,7 @@ class ReviewNotifier extends _$ReviewNotifier {
   }) async {
     final updating = ref.read(reviewUpdateLoadingProvider.notifier);
     updating.start(id);
-    final useCase = ref.read(updateReviewUseCaseProvider);
+    final useCase = await ref.read(updateReviewUseCaseProvider.future);
     final result = await useCase.call(id: id, data: data);
 
     result.fold(
@@ -79,7 +82,7 @@ class ReviewNotifier extends _$ReviewNotifier {
     final deleting = ref.read(reviewDeleteLoadingProvider.notifier);
     deleting.start(id);
 
-    final useCase = ref.read(deleteReviewUseCaseProvider);
+    final useCase = await ref.read(deleteReviewUseCaseProvider.future);
     final result = await useCase.call(id);
 
     result.fold(
@@ -101,7 +104,7 @@ class ReviewNotifier extends _$ReviewNotifier {
 
   /// Throws [Failure] to be caught by [AsyncValue.guard].
   Future<List<Review>> _load(int productId) async {
-    final useCase = ref.read(getAllReviewsUseCaseProvider);
+    final useCase = await ref.read(getAllReviewsUseCaseProvider.future);
     final result = await useCase.call(productId);
     return result.fold((failure) {
       throw failure;
