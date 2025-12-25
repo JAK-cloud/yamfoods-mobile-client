@@ -1,0 +1,17 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'payment.freezed.dart';
+
+@freezed
+sealed class Payment with _$Payment {
+  const factory Payment({
+    required int id,
+    required int orderId,
+    required String method,
+    String? transactionId,  // should not be required because the customer will order with his point 
+    required double amount,
+    required DateTime date,
+  }) = _Payment;
+
+
+}

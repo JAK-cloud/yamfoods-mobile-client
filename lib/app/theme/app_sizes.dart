@@ -13,5 +13,6 @@ class AppSizes {
   static const radiusLg = 16.0;
 
   static const btnHeight = 60.0;
-  static const iconSize = 20.0;
+  static const iconSize = 26.0;
+  static const bannerHeight = 150.0;
 }

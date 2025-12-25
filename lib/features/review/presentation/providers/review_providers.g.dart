@@ -8,18 +8,43 @@ part of 'review_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Review API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) to support both:
+/// - Unprotected route: getAllReviews (guests can view reviews)
+/// - Protected routes: create, update, delete (require authentication)
+///
+/// The AuthInterceptor automatically skips adding auth headers for unprotected
+/// endpoints (like getAllReviews) and adds them for protected endpoints.
 
 @ProviderFor(reviewApiService)
 const reviewApiServiceProvider = ReviewApiServiceProvider._();
 
+/// Review API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) to support both:
+/// - Unprotected route: getAllReviews (guests can view reviews)
+/// - Protected routes: create, update, delete (require authentication)
+///
+/// The AuthInterceptor automatically skips adding auth headers for unprotected
+/// endpoints (like getAllReviews) and adds them for protected endpoints.
+
 final class ReviewApiServiceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<ReviewApiService>,
           ReviewApiService,
-          ReviewApiService,
-          ReviewApiService
+          FutureOr<ReviewApiService>
         >
-    with $Provider<ReviewApiService> {
+    with $FutureModifier<ReviewApiService>, $FutureProvider<ReviewApiService> {
+  /// Review API service provider
+  ///
+  /// Uses dioClientProvider (with auth interceptor) to support both:
+  /// - Unprotected route: getAllReviews (guests can view reviews)
+  /// - Protected routes: create, update, delete (require authentication)
+  ///
+  /// The AuthInterceptor automatically skips adding auth headers for unprotected
+  /// endpoints (like getAllReviews) and adds them for protected endpoints.
   const ReviewApiServiceProvider._()
     : super(
         from: null,
@@ -36,24 +61,17 @@ final class ReviewApiServiceProvider
 
   @$internal
   @override
-  $ProviderElement<ReviewApiService> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<ReviewApiService> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  ReviewApiService create(Ref ref) {
+  FutureOr<ReviewApiService> create(Ref ref) {
     return reviewApiService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ReviewApiService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<ReviewApiService>(value),
-    );
   }
 }
 
-String _$reviewApiServiceHash() => r'bf4a446cfca22447b3203213490f203b9990adbb';
+String _$reviewApiServiceHash() => r'41cc7621c796c38daf44bdce16965e66a6fc3ed0';
 
 @ProviderFor(reviewRemoteDataSource)
 const reviewRemoteDataSourceProvider = ReviewRemoteDataSourceProvider._();
@@ -61,11 +79,13 @@ const reviewRemoteDataSourceProvider = ReviewRemoteDataSourceProvider._();
 final class ReviewRemoteDataSourceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<ReviewRemoteDataSource>,
           ReviewRemoteDataSource,
-          ReviewRemoteDataSource,
-          ReviewRemoteDataSource
+          FutureOr<ReviewRemoteDataSource>
         >
-    with $Provider<ReviewRemoteDataSource> {
+    with
+        $FutureModifier<ReviewRemoteDataSource>,
+        $FutureProvider<ReviewRemoteDataSource> {
   const ReviewRemoteDataSourceProvider._()
     : super(
         from: null,
@@ -82,26 +102,18 @@ final class ReviewRemoteDataSourceProvider
 
   @$internal
   @override
-  $ProviderElement<ReviewRemoteDataSource> $createElement(
+  $FutureProviderElement<ReviewRemoteDataSource> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  ReviewRemoteDataSource create(Ref ref) {
+  FutureOr<ReviewRemoteDataSource> create(Ref ref) {
     return reviewRemoteDataSource(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ReviewRemoteDataSource value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<ReviewRemoteDataSource>(value),
-    );
   }
 }
 
 String _$reviewRemoteDataSourceHash() =>
-    r'eb9dfc005b8883c6bb7b68ea7b24a8d0d6e74fb3';
+    r'f1d715a85bc1d2fbdff832c783c1c2a3273171ff';
 
 @ProviderFor(reviewRepository)
 const reviewRepositoryProvider = ReviewRepositoryProvider._();
@@ -109,11 +121,11 @@ const reviewRepositoryProvider = ReviewRepositoryProvider._();
 final class ReviewRepositoryProvider
     extends
         $FunctionalProvider<
+          AsyncValue<ReviewRepository>,
           ReviewRepository,
-          ReviewRepository,
-          ReviewRepository
+          FutureOr<ReviewRepository>
         >
-    with $Provider<ReviewRepository> {
+    with $FutureModifier<ReviewRepository>, $FutureProvider<ReviewRepository> {
   const ReviewRepositoryProvider._()
     : super(
         from: null,
@@ -130,24 +142,17 @@ final class ReviewRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<ReviewRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<ReviewRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  ReviewRepository create(Ref ref) {
+  FutureOr<ReviewRepository> create(Ref ref) {
     return reviewRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ReviewRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<ReviewRepository>(value),
-    );
   }
 }
 
-String _$reviewRepositoryHash() => r'b92961a0a5d162e38025b24df9b74a69dd78fd77';
+String _$reviewRepositoryHash() => r'2e1f44f230beb85b3a78fbecf2b47a0d7dd091ea';
 
 @ProviderFor(getAllReviewsUseCase)
 const getAllReviewsUseCaseProvider = GetAllReviewsUseCaseProvider._();
@@ -155,11 +160,13 @@ const getAllReviewsUseCaseProvider = GetAllReviewsUseCaseProvider._();
 final class GetAllReviewsUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetAllReviewsUsecase>,
           GetAllReviewsUsecase,
-          GetAllReviewsUsecase,
-          GetAllReviewsUsecase
+          FutureOr<GetAllReviewsUsecase>
         >
-    with $Provider<GetAllReviewsUsecase> {
+    with
+        $FutureModifier<GetAllReviewsUsecase>,
+        $FutureProvider<GetAllReviewsUsecase> {
   const GetAllReviewsUseCaseProvider._()
     : super(
         from: null,
@@ -176,26 +183,18 @@ final class GetAllReviewsUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetAllReviewsUsecase> $createElement(
+  $FutureProviderElement<GetAllReviewsUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetAllReviewsUsecase create(Ref ref) {
+  FutureOr<GetAllReviewsUsecase> create(Ref ref) {
     return getAllReviewsUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAllReviewsUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetAllReviewsUsecase>(value),
-    );
   }
 }
 
 String _$getAllReviewsUseCaseHash() =>
-    r'84b9fb4e09bb7aa24b97b5a6768c84de31991117';
+    r'2f72cf5c482c4ca04ce0a8d0a0998b79f3275028';
 
 @ProviderFor(createReviewUseCase)
 const createReviewUseCaseProvider = CreateReviewUseCaseProvider._();
@@ -203,11 +202,13 @@ const createReviewUseCaseProvider = CreateReviewUseCaseProvider._();
 final class CreateReviewUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<CreateReviewUsecase>,
           CreateReviewUsecase,
-          CreateReviewUsecase,
-          CreateReviewUsecase
+          FutureOr<CreateReviewUsecase>
         >
-    with $Provider<CreateReviewUsecase> {
+    with
+        $FutureModifier<CreateReviewUsecase>,
+        $FutureProvider<CreateReviewUsecase> {
   const CreateReviewUseCaseProvider._()
     : super(
         from: null,
@@ -224,26 +225,18 @@ final class CreateReviewUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<CreateReviewUsecase> $createElement(
+  $FutureProviderElement<CreateReviewUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CreateReviewUsecase create(Ref ref) {
+  FutureOr<CreateReviewUsecase> create(Ref ref) {
     return createReviewUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CreateReviewUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CreateReviewUsecase>(value),
-    );
   }
 }
 
 String _$createReviewUseCaseHash() =>
-    r'edcacecfca9971afb01492cefa59bf2903ba4779';
+    r'7d5a41a9a15dbf3fbe188a65e4da17a4f6d2ed1c';
 
 @ProviderFor(updateReviewUseCase)
 const updateReviewUseCaseProvider = UpdateReviewUseCaseProvider._();
@@ -251,11 +244,13 @@ const updateReviewUseCaseProvider = UpdateReviewUseCaseProvider._();
 final class UpdateReviewUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<UpdateReviewUsecase>,
           UpdateReviewUsecase,
-          UpdateReviewUsecase,
-          UpdateReviewUsecase
+          FutureOr<UpdateReviewUsecase>
         >
-    with $Provider<UpdateReviewUsecase> {
+    with
+        $FutureModifier<UpdateReviewUsecase>,
+        $FutureProvider<UpdateReviewUsecase> {
   const UpdateReviewUseCaseProvider._()
     : super(
         from: null,
@@ -272,26 +267,18 @@ final class UpdateReviewUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<UpdateReviewUsecase> $createElement(
+  $FutureProviderElement<UpdateReviewUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  UpdateReviewUsecase create(Ref ref) {
+  FutureOr<UpdateReviewUsecase> create(Ref ref) {
     return updateReviewUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UpdateReviewUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UpdateReviewUsecase>(value),
-    );
   }
 }
 
 String _$updateReviewUseCaseHash() =>
-    r'fe7a9cafbb3033e0d31024a26cef20a969466702';
+    r'9a6d7cbc4b5ad483915fb793c5b61a2eb361896d';
 
 @ProviderFor(deleteReviewUseCase)
 const deleteReviewUseCaseProvider = DeleteReviewUseCaseProvider._();
@@ -299,11 +286,13 @@ const deleteReviewUseCaseProvider = DeleteReviewUseCaseProvider._();
 final class DeleteReviewUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<DeleteReviewUsecase>,
           DeleteReviewUsecase,
-          DeleteReviewUsecase,
-          DeleteReviewUsecase
+          FutureOr<DeleteReviewUsecase>
         >
-    with $Provider<DeleteReviewUsecase> {
+    with
+        $FutureModifier<DeleteReviewUsecase>,
+        $FutureProvider<DeleteReviewUsecase> {
   const DeleteReviewUseCaseProvider._()
     : super(
         from: null,
@@ -320,23 +309,15 @@ final class DeleteReviewUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<DeleteReviewUsecase> $createElement(
+  $FutureProviderElement<DeleteReviewUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  DeleteReviewUsecase create(Ref ref) {
+  FutureOr<DeleteReviewUsecase> create(Ref ref) {
     return deleteReviewUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DeleteReviewUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DeleteReviewUsecase>(value),
-    );
   }
 }
 
 String _$deleteReviewUseCaseHash() =>
-    r'4460f279d1330b7ce025b256dfc0b038ed789d5b';
+    r'9197e59e2553ebcdc8e6660f5aac8f834da424bb';

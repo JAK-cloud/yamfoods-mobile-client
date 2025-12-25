@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../app/components/empty_state.dart';
+import '../../../../app/components/error_widget.dart' as app_error;
+import '../../../../app/components/skeleton/product_card_skeleton.dart';
+import '../../../../app/theme/app_sizes.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../product/presentation/providers/product_providers.dart';
+import '../../../product/presentation/widgets/product_card.dart';
+import '../../../subcategory/domain/entities/subcategory.dart';
+
+class CategoryProductsGrid extends ConsumerWidget {
+  final int branchId;
+  final int categoryId;
+  final Subcategory? selectedSubcategory;
+
+  const CategoryProductsGrid({
+    super.key,
+    required this.branchId,
+    required this.categoryId,
+    this.selectedSubcategory,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productsAsync = selectedSubcategory == null
+        ? ref.watch(categoryProductsProvider(branchId, categoryId))
+        : ref.watch(
+            subcategoryProductsProvider(branchId, selectedSubcategory!.id),
+          );
+
+    return productsAsync.when(
+      data: (products) {
+        if (products.isEmpty) {
+          return EmptyState(
+            icon: Icons.fastfood_outlined,
+            title: 'No Products Available',
+            subtitle: selectedSubcategory == null
+                ? 'There are no products available for this category.'
+                : 'There are no products available for this subcategory.',
+          );
+        }
+
+        return GridView.builder(
+          padding: EdgeInsets.all(AppSizes.sm),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: AppSizes.sm,
+            mainAxisSpacing: AppSizes.sm,
+            childAspectRatio: 0.75,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return ProductCard(product: products[index]);
+          },
+        );
+      },
+      loading: () => GridView.builder(
+        padding: EdgeInsets.all(AppSizes.sm),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: AppSizes.sm,
+          mainAxisSpacing: AppSizes.sm,
+          childAspectRatio: 0.75,
+        ),
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return const ProductCardSkeleton();
+        },
+      ),
+      error: (error, stackTrace) => Center(
+        child: app_error.ErrorWidgett(
+          title: 'Failed to load products',
+          failure: error is Failure
+              ? error
+              : Failure.unexpected(message: error.toString()),
+          onRetry: () {
+            if (selectedSubcategory == null) {
+              ref.invalidate(categoryProductsProvider(branchId, categoryId));
+            } else {
+              ref.invalidate(
+                subcategoryProductsProvider(branchId, selectedSubcategory!.id),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'api_urls.dart';
 
 /// Environment configuration loaded from .env file
 ///
@@ -19,19 +20,24 @@ class EnvConfig {
   ///
   /// Falls back to default values if environment variables are not set
   /// or if dotenv is not initialized.
-  factory EnvConfig.fromEnv() {
+  factory EnvConfig.fromEnv({bool isDevelopment = true}) {
     // Check if dotenv is initialized before accessing it
     if (!dotenv.isInitialized) {
       // Return defaults if dotenv is not initialized
-      return const EnvConfig(
-        baseUrl: 'https://api.yamfoods.com/api',
-        connectTimeout: Duration(seconds: 10),
-        receiveTimeout: Duration(seconds: 10),
+      return EnvConfig(
+        baseUrl: ApiUrls.getBaseUrl(isDevelopment: isDevelopment),
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 10),
       );
     }
 
+    // Use DEV_URL for development, BASE_URL for production
+    final String envUrl = isDevelopment
+        ? (dotenv.env['DEV_URL'] ?? ApiUrls.development)
+        : (dotenv.env['BASE_URL'] ?? ApiUrls.production);
+
     return EnvConfig(
-      baseUrl: dotenv.env['BASE_URL'] ?? 'https://api.yamfoods.com/api',
+      baseUrl: envUrl,
       connectTimeout: Duration(
         seconds: int.tryParse(dotenv.env['CONNECT_TIMEOUT'] ?? '10') ?? 10,
       ),

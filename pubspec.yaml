@@ -48,6 +48,7 @@ dependencies:
   cached_network_image: ^3.4.1
   dartz: ^0.10.1
   smooth_page_indicator: ^2.0.1
+  carousel_slider: ^5.1.1
   riverpod_annotation: ^3.0.3
   uuid: ^4.5.2
   jwt_decode: ^0.3.1
@@ -108,6 +109,9 @@ flutter:
       fonts:
         - asset: assets/fonts/Cera-Pro-Bold.otf
         - asset: assets/fonts/Cera-Pro-Medium.otf
+    - family: Griffin
+      fonts:
+        - asset: assets/fonts/griffindemoregular-bwk25.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
