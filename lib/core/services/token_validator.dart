@@ -62,7 +62,10 @@ class TokenValidator {
 /// Token validator provider
 ///
 /// Provides a TokenValidator instance with injected logger.
-@riverpod
+///
+/// Uses `keepAlive: true` because this is a core authentication service used
+/// app-wide by the auth interceptor. It's a stateless singleton with no reason to dispose.
+@Riverpod(keepAlive: true)
 TokenValidator tokenValidator(Ref ref) {
   final logger = ref.watch(loggerProvider);
   return TokenValidator(logger: logger);

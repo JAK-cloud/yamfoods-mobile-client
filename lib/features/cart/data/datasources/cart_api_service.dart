@@ -15,10 +15,10 @@ abstract class CartApiService {
   Future<void> addToCart(@Body() Map<String, dynamic> body);
 
   @POST(ApiRoutes.increaseCartQuantity)
-  Future<void> increaseCartQuantity(@Path('cartId') int cartId);
+  Future<void> increaseCartQuantity(@Path('productId') int productId);
 
   @POST(ApiRoutes.decreaseCartQuantity)
-  Future<void> decreaseCartQuantity(@Path('cartId') int cartId);
+  Future<void> decreaseCartQuantity(@Path('productId') int productId);
 
   @GET(ApiRoutes.getAllCarts)
   Future<ApiResponse<CartsResponseModel>> getAllCarts(
@@ -26,7 +26,7 @@ abstract class CartApiService {
   );
 
   @DELETE(ApiRoutes.deleteCartItem)
-  Future<void> deleteCartItem(@Path('cartId') int cartId);
+  Future<void> deleteCartItem(@Path('productId') int productId);
 
   @DELETE(ApiRoutes.deleteAllCartItems)
   Future<void> deleteAllCartItems();

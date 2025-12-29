@@ -11,6 +11,9 @@ part of 'token_validator.dart';
 /// Token validator provider
 ///
 /// Provides a TokenValidator instance with injected logger.
+///
+/// Uses `keepAlive: true` because this is a core authentication service used
+/// app-wide by the auth interceptor. It's a stateless singleton with no reason to dispose.
 
 @ProviderFor(tokenValidator)
 const tokenValidatorProvider = TokenValidatorProvider._();
@@ -18,6 +21,9 @@ const tokenValidatorProvider = TokenValidatorProvider._();
 /// Token validator provider
 ///
 /// Provides a TokenValidator instance with injected logger.
+///
+/// Uses `keepAlive: true` because this is a core authentication service used
+/// app-wide by the auth interceptor. It's a stateless singleton with no reason to dispose.
 
 final class TokenValidatorProvider
     extends $FunctionalProvider<TokenValidator, TokenValidator, TokenValidator>
@@ -25,13 +31,16 @@ final class TokenValidatorProvider
   /// Token validator provider
   ///
   /// Provides a TokenValidator instance with injected logger.
+  ///
+  /// Uses `keepAlive: true` because this is a core authentication service used
+  /// app-wide by the auth interceptor. It's a stateless singleton with no reason to dispose.
   const TokenValidatorProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'tokenValidatorProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -58,4 +67,4 @@ final class TokenValidatorProvider
   }
 }
 
-String _$tokenValidatorHash() => r'21873e9ecf15015d36f238a6d1567f1ec7d08566';
+String _$tokenValidatorHash() => r'59672a7e2a8715a46ce732968c9e5fa0d7ba5c03';

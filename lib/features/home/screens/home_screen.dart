@@ -24,36 +24,49 @@ class HomeScreen extends ConsumerWidget {
         bottom: false,
         child: Column(
           children: [
-            // Fixed header only
+            // Fixed header
             Container(
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-              ),
+              decoration: const BoxDecoration(color: AppColors.primary),
               child: const HomeHeader(),
             ),
 
-            // Scrollable content: search, banner, categories, and products
+            // Fixed search bar with gradient continuation
+            Container(
+              padding: EdgeInsets.only(bottom: AppSizes.sm),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.primary,
+                    AppColors.primary.withValues(alpha: 0.9),
+                  ],
+                ),
+              ),
+              child: const HomeSearchBar(),
+            ),
+
+            // Scrollable content: banner, categories, and products
             Expanded(
               child: CustomScrollView(
                 slivers: [
-                  // Premium surface section (search, banner, categories)
+                  // Premium surface section (banner, categories) with gradient
                   SliverToBoxAdapter(
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [AppColors.primary, AppColors.background],
+                          colors: [
+                            AppColors.primary.withValues(alpha: 0.9),
+                            AppColors.background,
+                          ],
                         ),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Search bar
-                          const HomeSearchBar(),
-
-                          SizedBox(height: AppSizes.md),
-
+                          const SizedBox(height: 2),
                           // Promo banner slider
                           const PromoBannerSlider(),
 
@@ -61,7 +74,6 @@ class HomeScreen extends ConsumerWidget {
 
                           // Category chips list
                           CategoryChipsList(branchId: 2),
-
                         ],
                       ),
                     ),

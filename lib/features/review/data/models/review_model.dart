@@ -10,7 +10,8 @@ sealed class ReviewModel with _$ReviewModel {
   const factory ReviewModel({
     required int id,
     @JsonKey(name: 'productId') required int productId,
-    @JsonKey(name: 'userId') required int userId,
+    @JsonKey(name: 'reviewerId') required int reviewerId,
+    @JsonKey(name: 'reviewerName') required String reviewerName,
     required int rating,
     required String comment,
     @JsonKey(name: 'createdAt') required DateTime createdAt,

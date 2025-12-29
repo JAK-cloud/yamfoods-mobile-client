@@ -34,9 +34,24 @@ class RouteName {
   /// Profile route.
   static const String profile = '/profile';
 
+  /// Update profile route.
+  static const String updateProfile = '/update-profile';
+
+  /// Change password route.
+  static const String changePassword = '/change-password';
+
   /// Branches list route.
   static const String branches = '/branches';
 
   /// Category screen route.
   static const String categoryScreen = '/category';
+
+  /// Product detail route.
+  static const String productDetail = '/product-detail';
+
+  /// Addresses route.
+  static const String addresses = '/addresses';
+
+  /// Create or update address route.
+  static const String createOrUpdateAddress = '/addresses/create-or-update';
 }

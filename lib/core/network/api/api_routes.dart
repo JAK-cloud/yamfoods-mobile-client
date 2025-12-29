@@ -21,6 +21,11 @@ class ApiRoutes {
   static const String validateOtp = '$_authBase/validate-otp';
   static const String resetPassword = '$_authBase/reset-password';
 
+  // Profile endpoints
+  static const String getProfile = '$_authBase/profile';
+  static const String updateProfile = '$_authBase/update-profile';
+  static const String changePassword = '$_authBase/change-password';
+
   // Branch endpoints
   static const String _branchBase = '/branch';
   static const String getAllBranches = '$_branchBase/get-all-branches';
@@ -76,11 +81,12 @@ class ApiRoutes {
   static const String _cartBase = '/cart';
   static const String addToCart = '$_cartBase/add-to-cart';
   static const String increaseCartQuantity =
-      '$_cartBase/increase-cart-quantity/{cartId}';
+      '$_cartBase/increase-cart-quantity/{productId}';
   static const String decreaseCartQuantity =
-      '$_cartBase/decrease-cart-quantity/{cartId}';
+      '$_cartBase/decrease-cart-quantity/{productId}';
   static const String getAllCarts = '$_cartBase/get-all-carts/{branchId}';
-  static const String deleteCartItem = '$_cartBase/delete-cart-item/{cartId}';
+  static const String deleteCartItem =
+      '$_cartBase/delete-cart-item/{productId}';
   static const String deleteAllCartItems = '$_cartBase/delete-all-cart-items';
 
   // Order endpoints

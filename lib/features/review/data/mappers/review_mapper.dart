@@ -7,7 +7,8 @@ extension ReviewModelMapper on ReviewModel {
     return Review(
       id: id,
       productId: productId,
-      userId: userId,
+      reviewerId: reviewerId,
+      reviewerName: reviewerName,
       rating: rating,
       comment: comment,
       createdAt: createdAt,

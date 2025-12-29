@@ -124,6 +124,8 @@ class AuthInterceptor extends Interceptor {
   /// Checks if endpoint doesn't require authentication
   ///
   /// Uses ApiRoutes constants to determine unprotected endpoints.
+  /// Note: For routes with path parameters (e.g., {productId}), we check
+  /// the base path without the parameter placeholder.
   bool _isUnprotectedEndpoint(String path) {
     final unprotectedPaths = [
       ApiRoutes.register,
@@ -137,7 +139,8 @@ class AuthInterceptor extends Interceptor {
       ApiRoutes.getAllBranches,
       // Review endpoints - getAllReviews is unprotected (guests can view)
       // create, update, delete are protected and require authentication
-      ApiRoutes.getAllReviews,
+      // Check base path without {productId} placeholder
+      '/review/get-all-reviews',
     ];
 
     return unprotectedPaths.any((route) => path.contains(route));

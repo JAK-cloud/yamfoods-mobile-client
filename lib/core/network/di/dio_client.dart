@@ -16,7 +16,11 @@ part 'dio_client.g.dart';
 /// This is used to break the circular dependency with auth providers.
 ///
 /// The full `dioClientProvider` adds the AuthInterceptor on top of this base client.
-@riverpod
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 8+ features (auth, branch,
+/// category, subcategory, product, achievement, promocode, promo_banner).
+/// Recreating it causes unnecessary overhead and interceptor recreation.
+@Riverpod(keepAlive: true)
 Dio baseDioClient(Ref ref) {
   final envConfig = ref.watch(envConfigProvider);
   final logger = ref.watch(loggerProvider);
@@ -63,7 +67,11 @@ Dio baseDioClient(Ref ref) {
 ///
 /// Note: This uses baseDioClient and adds AuthInterceptor to avoid circular dependency.
 /// Auth providers are watched here to inject into AuthInterceptor.
-@riverpod
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 3+ authenticated features
+/// (review, cart, order). Recreating it causes expensive auth interceptor recreation
+/// and re-watching of auth providers.
+@Riverpod(keepAlive: true)
 Future<Dio> dioClient(Ref ref) async {
   // Get base Dio client (without auth interceptor)
   final baseDio = ref.watch(baseDioClientProvider);

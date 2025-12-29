@@ -530,3 +530,609 @@ final class SubcategoryProductsFamily extends $Family
   @override
   String toString() => r'subcategoryProductsProvider';
 }
+
+/// Provider that returns related products based on category and subcategory matching.
+///
+/// This provider filters products from the cached branch products (already loaded
+/// from the home page) to find related products. It uses a priority-based filtering
+/// system to return the most relevant products first.
+///
+/// **Filtering Priority (in order):**
+/// 1. **Highest Priority**: Products matching both `categoryId` and `subCategoryId`
+/// 2. **Second Priority**: Products matching only `subCategoryId`
+/// 3. **Third Priority**: Products matching only `categoryId`
+///
+/// **Behavior:**
+/// - Excludes the product with the provided `productId` from results
+/// - Returns a maximum of 10 products
+/// - Fills remaining slots with lower priority matches if highest priority has < 10 products
+/// - Returns empty list if no products match any criteria or if branch products aren't loaded yet
+///
+/// **Performance:**
+/// - Synchronous operation (uses cached data, no network calls)
+/// - Single pass through products (O(n) time complexity)
+/// - Minimal memory allocation (only creates small lists for categorization)
+///
+/// **Parameters:**
+/// - [productId]: The ID of the product to exclude from results
+/// - [branchId]: The branch ID to filter products from
+/// - [categoryId]: The category ID to match against
+/// - [subCategoryId]: The subcategory ID to match against
+///
+/// **Returns:**
+/// A list of related products (max 10), prioritized by relevance.
+
+@ProviderFor(relatedProducts)
+const relatedProductsProvider = RelatedProductsFamily._();
+
+/// Provider that returns related products based on category and subcategory matching.
+///
+/// This provider filters products from the cached branch products (already loaded
+/// from the home page) to find related products. It uses a priority-based filtering
+/// system to return the most relevant products first.
+///
+/// **Filtering Priority (in order):**
+/// 1. **Highest Priority**: Products matching both `categoryId` and `subCategoryId`
+/// 2. **Second Priority**: Products matching only `subCategoryId`
+/// 3. **Third Priority**: Products matching only `categoryId`
+///
+/// **Behavior:**
+/// - Excludes the product with the provided `productId` from results
+/// - Returns a maximum of 10 products
+/// - Fills remaining slots with lower priority matches if highest priority has < 10 products
+/// - Returns empty list if no products match any criteria or if branch products aren't loaded yet
+///
+/// **Performance:**
+/// - Synchronous operation (uses cached data, no network calls)
+/// - Single pass through products (O(n) time complexity)
+/// - Minimal memory allocation (only creates small lists for categorization)
+///
+/// **Parameters:**
+/// - [productId]: The ID of the product to exclude from results
+/// - [branchId]: The branch ID to filter products from
+/// - [categoryId]: The category ID to match against
+/// - [subCategoryId]: The subcategory ID to match against
+///
+/// **Returns:**
+/// A list of related products (max 10), prioritized by relevance.
+
+final class RelatedProductsProvider
+    extends $FunctionalProvider<List<Product>, List<Product>, List<Product>>
+    with $Provider<List<Product>> {
+  /// Provider that returns related products based on category and subcategory matching.
+  ///
+  /// This provider filters products from the cached branch products (already loaded
+  /// from the home page) to find related products. It uses a priority-based filtering
+  /// system to return the most relevant products first.
+  ///
+  /// **Filtering Priority (in order):**
+  /// 1. **Highest Priority**: Products matching both `categoryId` and `subCategoryId`
+  /// 2. **Second Priority**: Products matching only `subCategoryId`
+  /// 3. **Third Priority**: Products matching only `categoryId`
+  ///
+  /// **Behavior:**
+  /// - Excludes the product with the provided `productId` from results
+  /// - Returns a maximum of 10 products
+  /// - Fills remaining slots with lower priority matches if highest priority has < 10 products
+  /// - Returns empty list if no products match any criteria or if branch products aren't loaded yet
+  ///
+  /// **Performance:**
+  /// - Synchronous operation (uses cached data, no network calls)
+  /// - Single pass through products (O(n) time complexity)
+  /// - Minimal memory allocation (only creates small lists for categorization)
+  ///
+  /// **Parameters:**
+  /// - [productId]: The ID of the product to exclude from results
+  /// - [branchId]: The branch ID to filter products from
+  /// - [categoryId]: The category ID to match against
+  /// - [subCategoryId]: The subcategory ID to match against
+  ///
+  /// **Returns:**
+  /// A list of related products (max 10), prioritized by relevance.
+  const RelatedProductsProvider._({
+    required RelatedProductsFamily super.from,
+    required (int, int, int, int) super.argument,
+  }) : super(
+         retry: null,
+         name: r'relatedProductsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$relatedProductsHash();
+
+  @override
+  String toString() {
+    return r'relatedProductsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<List<Product>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  List<Product> create(Ref ref) {
+    final argument = this.argument as (int, int, int, int);
+    return relatedProducts(
+      ref,
+      argument.$1,
+      argument.$2,
+      argument.$3,
+      argument.$4,
+    );
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<Product> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Product>>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RelatedProductsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$relatedProductsHash() => r'9c5a64c5465da33c3a072265e52b0bc52a0b8860';
+
+/// Provider that returns related products based on category and subcategory matching.
+///
+/// This provider filters products from the cached branch products (already loaded
+/// from the home page) to find related products. It uses a priority-based filtering
+/// system to return the most relevant products first.
+///
+/// **Filtering Priority (in order):**
+/// 1. **Highest Priority**: Products matching both `categoryId` and `subCategoryId`
+/// 2. **Second Priority**: Products matching only `subCategoryId`
+/// 3. **Third Priority**: Products matching only `categoryId`
+///
+/// **Behavior:**
+/// - Excludes the product with the provided `productId` from results
+/// - Returns a maximum of 10 products
+/// - Fills remaining slots with lower priority matches if highest priority has < 10 products
+/// - Returns empty list if no products match any criteria or if branch products aren't loaded yet
+///
+/// **Performance:**
+/// - Synchronous operation (uses cached data, no network calls)
+/// - Single pass through products (O(n) time complexity)
+/// - Minimal memory allocation (only creates small lists for categorization)
+///
+/// **Parameters:**
+/// - [productId]: The ID of the product to exclude from results
+/// - [branchId]: The branch ID to filter products from
+/// - [categoryId]: The category ID to match against
+/// - [subCategoryId]: The subcategory ID to match against
+///
+/// **Returns:**
+/// A list of related products (max 10), prioritized by relevance.
+
+final class RelatedProductsFamily extends $Family
+    with $FunctionalFamilyOverride<List<Product>, (int, int, int, int)> {
+  const RelatedProductsFamily._()
+    : super(
+        retry: null,
+        name: r'relatedProductsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider that returns related products based on category and subcategory matching.
+  ///
+  /// This provider filters products from the cached branch products (already loaded
+  /// from the home page) to find related products. It uses a priority-based filtering
+  /// system to return the most relevant products first.
+  ///
+  /// **Filtering Priority (in order):**
+  /// 1. **Highest Priority**: Products matching both `categoryId` and `subCategoryId`
+  /// 2. **Second Priority**: Products matching only `subCategoryId`
+  /// 3. **Third Priority**: Products matching only `categoryId`
+  ///
+  /// **Behavior:**
+  /// - Excludes the product with the provided `productId` from results
+  /// - Returns a maximum of 10 products
+  /// - Fills remaining slots with lower priority matches if highest priority has < 10 products
+  /// - Returns empty list if no products match any criteria or if branch products aren't loaded yet
+  ///
+  /// **Performance:**
+  /// - Synchronous operation (uses cached data, no network calls)
+  /// - Single pass through products (O(n) time complexity)
+  /// - Minimal memory allocation (only creates small lists for categorization)
+  ///
+  /// **Parameters:**
+  /// - [productId]: The ID of the product to exclude from results
+  /// - [branchId]: The branch ID to filter products from
+  /// - [categoryId]: The category ID to match against
+  /// - [subCategoryId]: The subcategory ID to match against
+  ///
+  /// **Returns:**
+  /// A list of related products (max 10), prioritized by relevance.
+
+  RelatedProductsProvider call(
+    int productId,
+    int branchId,
+    int categoryId,
+    int subCategoryId,
+  ) => RelatedProductsProvider._(
+    argument: (productId, branchId, categoryId, subCategoryId),
+    from: this,
+  );
+
+  @override
+  String toString() => r'relatedProductsProvider';
+}
+
+/// Provider that returns the cart item for a specific product.
+///
+/// This provider checks if a product is in the cart and returns the
+/// corresponding [Cart] item if found, or `null` if the product is not in cart.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `null` if cart is not loaded yet or product is not in cart
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to find in cart
+///
+/// **Returns:**
+/// The [Cart] item if product is in cart, `null` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final cartItem = ref.watch(productCartItemProvider(product));
+/// ```
+
+@ProviderFor(productCartItem)
+const productCartItemProvider = ProductCartItemFamily._();
+
+/// Provider that returns the cart item for a specific product.
+///
+/// This provider checks if a product is in the cart and returns the
+/// corresponding [Cart] item if found, or `null` if the product is not in cart.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `null` if cart is not loaded yet or product is not in cart
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to find in cart
+///
+/// **Returns:**
+/// The [Cart] item if product is in cart, `null` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final cartItem = ref.watch(productCartItemProvider(product));
+/// ```
+
+final class ProductCartItemProvider
+    extends $FunctionalProvider<Cart?, Cart?, Cart?>
+    with $Provider<Cart?> {
+  /// Provider that returns the cart item for a specific product.
+  ///
+  /// This provider checks if a product is in the cart and returns the
+  /// corresponding [Cart] item if found, or `null` if the product is not in cart.
+  ///
+  /// **Behavior:**
+  /// - Uses cached cart data (no additional network calls)
+  /// - Returns `null` if cart is not loaded yet or product is not in cart
+  /// - Synchronous operation (O(n) time complexity where n is cart size)
+  ///
+  /// **Parameters:**
+  /// - [product]: The [Product] entity to find in cart
+  ///
+  /// **Returns:**
+  /// The [Cart] item if product is in cart, `null` otherwise.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final cartItem = ref.watch(productCartItemProvider(product));
+  /// ```
+  const ProductCartItemProvider._({
+    required ProductCartItemFamily super.from,
+    required Product super.argument,
+  }) : super(
+         retry: null,
+         name: r'productCartItemProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$productCartItemHash();
+
+  @override
+  String toString() {
+    return r'productCartItemProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<Cart?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Cart? create(Ref ref) {
+    final argument = this.argument as Product;
+    return productCartItem(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Cart? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Cart?>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProductCartItemProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$productCartItemHash() => r'066cf244b08ba66037ed3a8a602a808f378450dd';
+
+/// Provider that returns the cart item for a specific product.
+///
+/// This provider checks if a product is in the cart and returns the
+/// corresponding [Cart] item if found, or `null` if the product is not in cart.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `null` if cart is not loaded yet or product is not in cart
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to find in cart
+///
+/// **Returns:**
+/// The [Cart] item if product is in cart, `null` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final cartItem = ref.watch(productCartItemProvider(product));
+/// ```
+
+final class ProductCartItemFamily extends $Family
+    with $FunctionalFamilyOverride<Cart?, Product> {
+  const ProductCartItemFamily._()
+    : super(
+        retry: null,
+        name: r'productCartItemProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider that returns the cart item for a specific product.
+  ///
+  /// This provider checks if a product is in the cart and returns the
+  /// corresponding [Cart] item if found, or `null` if the product is not in cart.
+  ///
+  /// **Behavior:**
+  /// - Uses cached cart data (no additional network calls)
+  /// - Returns `null` if cart is not loaded yet or product is not in cart
+  /// - Synchronous operation (O(n) time complexity where n is cart size)
+  ///
+  /// **Parameters:**
+  /// - [product]: The [Product] entity to find in cart
+  ///
+  /// **Returns:**
+  /// The [Cart] item if product is in cart, `null` otherwise.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final cartItem = ref.watch(productCartItemProvider(product));
+  /// ```
+
+  ProductCartItemProvider call(Product product) =>
+      ProductCartItemProvider._(argument: product, from: this);
+
+  @override
+  String toString() => r'productCartItemProvider';
+}
+
+/// Provider that checks if a product is in the cart.
+///
+/// This provider returns a boolean indicating whether a specific product
+/// is currently in the user's cart for a given branch.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `false` if cart is not loaded yet
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to check
+///
+/// **Returns:**
+/// `true` if product is in cart, `false` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final isInCart = ref.watch(isProductInCartProvider(product));
+/// ```
+
+@ProviderFor(isProductInCart)
+const isProductInCartProvider = IsProductInCartFamily._();
+
+/// Provider that checks if a product is in the cart.
+///
+/// This provider returns a boolean indicating whether a specific product
+/// is currently in the user's cart for a given branch.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `false` if cart is not loaded yet
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to check
+///
+/// **Returns:**
+/// `true` if product is in cart, `false` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final isInCart = ref.watch(isProductInCartProvider(product));
+/// ```
+
+final class IsProductInCartProvider
+    extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Provider that checks if a product is in the cart.
+  ///
+  /// This provider returns a boolean indicating whether a specific product
+  /// is currently in the user's cart for a given branch.
+  ///
+  /// **Behavior:**
+  /// - Uses cached cart data (no additional network calls)
+  /// - Returns `false` if cart is not loaded yet
+  /// - Synchronous operation (O(n) time complexity where n is cart size)
+  ///
+  /// **Parameters:**
+  /// - [product]: The [Product] entity to check
+  ///
+  /// **Returns:**
+  /// `true` if product is in cart, `false` otherwise.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final isInCart = ref.watch(isProductInCartProvider(product));
+  /// ```
+  const IsProductInCartProvider._({
+    required IsProductInCartFamily super.from,
+    required Product super.argument,
+  }) : super(
+         retry: null,
+         name: r'isProductInCartProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$isProductInCartHash();
+
+  @override
+  String toString() {
+    return r'isProductInCartProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    final argument = this.argument as Product;
+    return isProductInCart(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is IsProductInCartProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$isProductInCartHash() => r'd2cf952ce7aa412606a77ec11407a445f4fdf197';
+
+/// Provider that checks if a product is in the cart.
+///
+/// This provider returns a boolean indicating whether a specific product
+/// is currently in the user's cart for a given branch.
+///
+/// **Behavior:**
+/// - Uses cached cart data (no additional network calls)
+/// - Returns `false` if cart is not loaded yet
+/// - Synchronous operation (O(n) time complexity where n is cart size)
+///
+/// **Parameters:**
+/// - [product]: The [Product] entity to check
+///
+/// **Returns:**
+/// `true` if product is in cart, `false` otherwise.
+///
+/// **Usage:**
+/// ```dart
+/// final isInCart = ref.watch(isProductInCartProvider(product));
+/// ```
+
+final class IsProductInCartFamily extends $Family
+    with $FunctionalFamilyOverride<bool, Product> {
+  const IsProductInCartFamily._()
+    : super(
+        retry: null,
+        name: r'isProductInCartProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider that checks if a product is in the cart.
+  ///
+  /// This provider returns a boolean indicating whether a specific product
+  /// is currently in the user's cart for a given branch.
+  ///
+  /// **Behavior:**
+  /// - Uses cached cart data (no additional network calls)
+  /// - Returns `false` if cart is not loaded yet
+  /// - Synchronous operation (O(n) time complexity where n is cart size)
+  ///
+  /// **Parameters:**
+  /// - [product]: The [Product] entity to check
+  ///
+  /// **Returns:**
+  /// `true` if product is in cart, `false` otherwise.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final isInCart = ref.watch(isProductInCartProvider(product));
+  /// ```
+
+  IsProductInCartProvider call(Product product) =>
+      IsProductInCartProvider._(argument: product, from: this);
+
+  @override
+  String toString() => r'isProductInCartProvider';
+}

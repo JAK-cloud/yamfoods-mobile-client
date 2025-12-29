@@ -8,7 +8,7 @@ class DeleteCartItemUsecase {
 
   const DeleteCartItemUsecase(this._repository);
 
-  Future<Either<Failure, Unit>> call(int cartId) async {
-    return await _repository.deleteCartItem(cartId);
+  Future<Either<Failure, Unit>> call(int productId) async {
+    return await _repository.deleteCartItem(productId);
   }
 }

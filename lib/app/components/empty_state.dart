@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yamfoods_customer_app/app/components/custom_button.dart';
 
 import '../../../../app/theme/app_sizes.dart';
 
@@ -40,7 +41,7 @@ class EmptyState extends StatelessWidget {
           ],
           if (onAction != null && actionText != null) ...[
             const SizedBox(height: AppSizes.lg),
-            ElevatedButton(onPressed: onAction, child: Text(actionText!)),
+            CustomButton(text: actionText!, onPressed: onAction, width: 300,),
           ],
         ],
       ),

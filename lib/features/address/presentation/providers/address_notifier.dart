@@ -29,7 +29,7 @@ class AddressNotifier extends _$AddressNotifier {
     final createLoading = ref.read(addressCreateLoadingProvider.notifier);
     createLoading.setLoading(true);
 
-    final useCase = ref.read(createAddressUseCaseProvider);
+    final useCase = await ref.read(createAddressUseCaseProvider.future);
     final result = await useCase.call(data);
 
     result.fold(
@@ -56,7 +56,7 @@ class AddressNotifier extends _$AddressNotifier {
   }) async {
     final updating = ref.read(addressUpdateLoadingProvider.notifier);
     updating.start(id);
-    final useCase = ref.read(updateAddressUseCaseProvider);
+    final useCase = await ref.read(updateAddressUseCaseProvider.future);
     final result = await useCase.call(id: id, data: data);
 
     result.fold(
@@ -83,7 +83,7 @@ class AddressNotifier extends _$AddressNotifier {
     final deleting = ref.read(addressDeleteLoadingProvider.notifier);
     deleting.start(id);
 
-    final useCase = ref.read(deleteAddressUseCaseProvider);
+    final useCase = await ref.read(deleteAddressUseCaseProvider.future);
     final result = await useCase.call(id);
 
     result.fold(
@@ -107,7 +107,7 @@ class AddressNotifier extends _$AddressNotifier {
 
   /// Throws [Failure] to be caught by [AsyncValue.guard].
   Future<List<Address>> _load() async {
-    final useCase = ref.read(getAddressesUseCaseProvider);
+    final useCase = await ref.read(getAddressesUseCaseProvider.future);
     final result = await useCase.call();
     return result.fold((failure) {
       throw failure;

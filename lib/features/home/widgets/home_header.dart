@@ -5,6 +5,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
+import '../../../../features/cart/presentation/widgets/animated_cart_icon.dart';
 import '../../../../features/auth/presentation/providers/auth_user_state.dart';
 
 /// Header component for home screen.
@@ -53,6 +54,8 @@ class HomeHeader extends ConsumerWidget {
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.white.withValues(alpha: 0.85),
                     fontStyle: FontStyle.italic,
+                    fontFamily: 'Griffin',
+                    fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -85,26 +88,12 @@ class HomeHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              // Cart icon with badge
-              GestureDetector(
+              // Cart icon with badge and animation
+              AnimatedCartIcon(
+                screenId: 'home',
                 onTap: () {
                   // TODO: Navigate to cart screen
                 },
-                child: Badge.count(
-                  count: 3, // Static count for now
-                  maxCount: 99,
-                  backgroundColor: AppColors.white,
-                  textColor: Colors.red,
-                  offset: const Offset(0, 0),
-                  child: Padding(
-                    padding: EdgeInsets.all(AppSizes.sm),
-                    child: Icon(
-                      Icons.shopping_basket_outlined,
-                      color: AppColors.white,
-                      size: AppSizes.iconSize,
-                    ),
-                  ),
-                ),
               ),
             ],
           ),

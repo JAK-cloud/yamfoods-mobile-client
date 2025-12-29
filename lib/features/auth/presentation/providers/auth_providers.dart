@@ -27,7 +27,10 @@ part 'auth_providers.g.dart';
 ///
 /// Provides Retrofit API service for authentication endpoints.
 /// Uses baseDioClientProvider to avoid circular dependency with dioClientProvider.
-@riverpod
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
+@Riverpod(keepAlive: true)
 AuthApiService authApiService(Ref ref) {
   final dio = ref.watch(baseDioClientProvider);
   return AuthApiService(dio);
@@ -36,7 +39,10 @@ AuthApiService authApiService(Ref ref) {
 /// Auth remote data source provider
 ///
 /// Provides implementation for fetching auth data from backend.
-@riverpod
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
+@Riverpod(keepAlive: true)
 AuthRemoteDataSource authRemoteDataSource(Ref ref) {
   final apiService = ref.watch(authApiServiceProvider);
   return AuthRemoteDataSourceImpl(apiService);
@@ -46,7 +52,10 @@ AuthRemoteDataSource authRemoteDataSource(Ref ref) {
 ///
 /// Provides implementation for local storage of auth data.
 /// This is async because SharedPreferences initialization is async.
-@riverpod
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
+@Riverpod(keepAlive: true)
 Future<AuthLocalDataSource> authLocalDataSource(Ref ref) async {
   final storage = ref.watch(secureStorageProvider);
   final prefs = await ref.watch(sharedPreferencesProvider.future);
@@ -59,7 +68,10 @@ Future<AuthLocalDataSource> authLocalDataSource(Ref ref) async {
 ///
 /// Provides the main repository for authentication operations.
 /// This is async because it depends on async authLocalDataSource.
-@riverpod
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
+@Riverpod(keepAlive: true)
 Future<AuthRepository> authRepository(Ref ref) async {
   final remoteDataSource = ref.watch(authRemoteDataSourceProvider);
   final localDataSource = await ref.watch(authLocalDataSourceProvider.future);
