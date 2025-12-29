@@ -7,7 +7,8 @@ sealed class Review with _$Review {
   const factory Review({
     required int id,
     required int productId,
-    required int userId,
+    required int reviewerId,
+    required String reviewerName,
     required int rating,
     required String comment,
     required DateTime createdAt,

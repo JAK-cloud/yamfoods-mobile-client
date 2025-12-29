@@ -13,40 +13,50 @@ import '../../domain/usecases/delete_address_usecase.dart';
 
 part 'address_providers.g.dart';
 
+/// Address API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all address endpoints
+/// require authentication.
 @riverpod
-AddressApiService addressApiService(Ref ref) {
-  final dio = ref.watch(baseDioClientProvider);
+Future<AddressApiService> addressApiService(Ref ref) async {
+  final dio = await ref.watch(dioClientProvider.future);
   return AddressApiService(dio);
 }
 
 @riverpod
-AddressRemoteDataSource addressRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(addressApiServiceProvider);
+Future<AddressRemoteDataSource> addressRemoteDataSource(Ref ref) async {
+  final apiService = await ref.watch(addressApiServiceProvider.future);
   return AddressRemoteDataSourceImpl(apiService);
 }
 
 @riverpod
-AddressRepository addressRepository(Ref ref) {
-  final remoteDataSource = ref.watch(addressRemoteDataSourceProvider);
+Future<AddressRepository> addressRepository(Ref ref) async {
+  final remoteDataSource = await ref.watch(
+    addressRemoteDataSourceProvider.future,
+  );
   return AddressRepositoryImpl(remoteDataSource);
 }
 
 @riverpod
-GetAddressesUsecase getAddressesUseCase(Ref ref) {
-  return GetAddressesUsecase(ref.watch(addressRepositoryProvider));
+Future<GetAddressesUsecase> getAddressesUseCase(Ref ref) async {
+  final repository = await ref.watch(addressRepositoryProvider.future);
+  return GetAddressesUsecase(repository);
 }
 
 @riverpod
-CreateAddressUsecase createAddressUseCase(Ref ref) {
-  return CreateAddressUsecase(ref.watch(addressRepositoryProvider));
+Future<CreateAddressUsecase> createAddressUseCase(Ref ref) async {
+  final repository = await ref.watch(addressRepositoryProvider.future);
+  return CreateAddressUsecase(repository);
 }
 
 @riverpod
-UpdateAddressUsecase updateAddressUseCase(Ref ref) {
-  return UpdateAddressUsecase(ref.watch(addressRepositoryProvider));
+Future<UpdateAddressUsecase> updateAddressUseCase(Ref ref) async {
+  final repository = await ref.watch(addressRepositoryProvider.future);
+  return UpdateAddressUsecase(repository);
 }
 
 @riverpod
-DeleteAddressUsecase deleteAddressUseCase(Ref ref) {
-  return DeleteAddressUsecase(ref.watch(addressRepositoryProvider));
+Future<DeleteAddressUsecase> deleteAddressUseCase(Ref ref) async {
+  final repository = await ref.watch(addressRepositoryProvider.future);
+  return DeleteAddressUsecase(repository);
 }

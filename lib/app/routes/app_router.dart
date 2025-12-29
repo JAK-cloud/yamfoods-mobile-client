@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/permissions/location_permission_screen.dart';
 import '../../core/services/snackbar_service.dart';
+import '../../features/address/presentation/screens/address_screen.dart';
+import '../../features/address/presentation/screens/create_or_update_address_screen.dart';
+import '../../features/address/domain/entities/address.dart';
 import '../../features/auth/domain/entities/user.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
@@ -11,6 +14,10 @@ import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/save_phone_number_screen.dart';
 import '../../features/auth/presentation/screens/validate_otp_screen.dart';
 import '../../features/auth/presentation/screens/verify_phone_screen.dart';
+import '../../features/cart/presentation/screens/cart_screen.dart';
+import '../../features/profile/presentation/screens/change_password_screen.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/profile/presentation/screens/update_profile_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../components/bottom_nav_screen.dart';
 import 'route_names.dart';
@@ -19,6 +26,8 @@ import '../../features/branch/presentation/screens/branch_selection_screen.dart'
 import '../../features/category/domain/entities/category.dart';
 import '../../features/category/presentation/screens/category_screen.dart';
 import '../../features/home/screens/home_screen.dart';
+import '../../features/product/domain/entities/product.dart';
+import '../../features/product/presentation/screens/product_detail_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -32,7 +41,7 @@ final GoRouter appRouter = GoRouter(
   // SnackbarService uses this key to get the overlay context for displaying snackbars
   // that appear on top of the entire navigation stack, regardless of the current route.
   navigatorKey: SnackbarService.rootNavigatorKey,
-  initialLocation: RouteName.home,
+  initialLocation: RouteName.login,
   routes: [
     GoRoute(
       path: RouteName.splash,
@@ -109,6 +118,35 @@ final GoRouter appRouter = GoRouter(
         return CategoryScreen(category: category);
       },
     ),
+    GoRoute(
+      path: RouteName.productDetail,
+      builder: (context, state) {
+        final product = state.extra as Product;
+        return ProductDetailScreen(product: product);
+      },
+    ),
+    GoRoute(
+      path: RouteName.updateProfile,
+      builder: (context, state) {
+        final user = state.extra as User;
+        return UpdateProfileScreen(user: user);
+      },
+    ),
+    GoRoute(
+      path: RouteName.changePassword,
+      builder: (context, state) => const ChangePasswordScreen(),
+    ),
+    GoRoute(
+      path: RouteName.addresses,
+      builder: (context, state) => const AddressScreen(),
+    ),
+    GoRoute(
+      path: RouteName.createOrUpdateAddress,
+      builder: (context, state) {
+        final address = state.extra is Address ? state.extra as Address : null;
+        return CreateOrUpdateAddressScreen(address: address);
+      },
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return BottomNavScreen(navigationShell: navigationShell);
@@ -126,10 +164,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteName.cart,
-              builder: (context, state) => const _PlaceholderScreen(
-                title: 'Cart',
-                message: 'Cart screen will be implemented here.',
-              ),
+              builder: (context, state) => const CartScreen(),
             ),
           ],
         ),
@@ -148,10 +183,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteName.profile,
-              builder: (context, state) => const _PlaceholderScreen(
-                title: 'Profile',
-                message: 'Profile screen will be implemented here.',
-              ),
+              builder: (context, state) => const ProfileScreen(),
             ),
           ],
         ),

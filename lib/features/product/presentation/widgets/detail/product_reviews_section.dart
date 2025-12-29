@@ -1,0 +1,246 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../../app/theme/app_colors.dart';
+import '../../../../../app/theme/app_sizes.dart';
+import '../../../../../app/theme/app_text_styles.dart';
+import '../../../../../core/utils/date_formatter.dart';
+import '../../../../review/domain/entities/review.dart';
+import '../../../../review/presentation/providers/review_notifier.dart';
+
+/// Product reviews section displaying user reviews.
+///
+/// Shows reviews with user avatar (first character), name, time ago,
+/// star rating, and comment. Uses separators between reviews.
+/// Shrinks to zero height on error or empty state.
+class ProductReviewsSection extends ConsumerWidget {
+  final int productId;
+
+  const ProductReviewsSection({super.key, required this.productId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reviewsAsync = ref.watch(reviewProvider(productId));
+
+    return reviewsAsync.when(
+      data: (reviews) {
+        if (reviews.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Section Title with count
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Vertical accent bar (wall) - matches title height
+                  Container(
+                    width: 4,
+                    height: 24,
+                    margin: const EdgeInsets.only(right: AppSizes.sm, top: 2),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  // Section Title with count
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Reviews',
+                          style: AppTextStyles.h4.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSizes.sm + 2,
+                            vertical: AppSizes.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(
+                              AppSizes.radiusSm,
+                            ),
+                          ),
+                          child: Text(
+                            '${reviews.length}',
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: AppSizes.lg),
+
+            // Reviews List
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.sm),
+              itemCount: reviews.length,
+              itemBuilder: (context, index) {
+                final review = reviews[index];
+                return _ReviewItem(review: review);
+              },
+            ),
+          ],
+        );
+      },
+      loading: () => const SizedBox.shrink(),
+      error: (_, __) => const SizedBox.shrink(),
+    );
+  }
+}
+
+/// Individual review item widget.
+class _ReviewItem extends StatelessWidget {
+  final Review review;
+
+  const _ReviewItem({required this.review});
+
+  @override
+  Widget build(BuildContext context) {
+    // Get first character of reviewer name
+    final firstChar = review.reviewerName.isNotEmpty
+        ? review.reviewerName[0].toUpperCase()
+        : '?';
+
+    // Format name (e.g., "Rejeb Dendir" → "Rejeb D.")
+    final formattedName = _formatName(review.reviewerName);
+
+    // Format time ago
+    final timeAgo = DateFormatter.formatTimeAgo(review.createdAt);
+
+    return Container(
+      padding: const EdgeInsets.all(AppSizes.lg),
+      margin: const EdgeInsets.only(bottom: AppSizes.sm),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppSizes.radius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.grey.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Avatar (first character)
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.2),
+                width: 1,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                firstChar,
+                style: AppTextStyles.h4.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+
+          const SizedBox(width: AppSizes.md),
+
+          // Review content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Name and rating stars on same row
+                Row(
+                  children: [
+                    Text(
+                      formattedName,
+                      style: AppTextStyles.labelLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                    // Star rating
+                    RatingBarIndicator(
+                      rating: review.rating.toDouble(),
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star_rounded,
+                        color: AppColors.warning,
+                      ),
+                      unratedColor: AppColors.grey.withValues(alpha: 0.25),
+                      itemCount: 5,
+                      itemSize: 16,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: AppSizes.xs),
+
+                // Time ago (where rating was)
+                Text(
+                  timeAgo,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.txtSecondary.withValues(alpha: 0.7),
+                  ),
+                ),
+
+                const SizedBox(height: AppSizes.sm),
+
+                // Comment
+                Text(
+                  review.comment,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.txtSecondary.withValues(alpha: 0.85),
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Formats name: "Rejeb Dendir" → "Rejeb D.", "Rejeb" → "Rejeb"
+  String _formatName(String fullName) {
+    if (fullName.isEmpty) return 'Anonymous';
+
+    final parts = fullName
+        .trim()
+        .split(' ')
+        .where((p) => p.isNotEmpty)
+        .toList();
+
+    if (parts.isEmpty) return 'Anonymous';
+    if (parts.length == 1) return parts[0];
+
+    // First name + first letter of second name + dot
+    final firstName = parts[0];
+    final secondNameFirstChar = parts[1][0].toUpperCase();
+    return '$firstName $secondNameFirstChar.';
+  }
+}

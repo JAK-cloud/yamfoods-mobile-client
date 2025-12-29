@@ -40,7 +40,7 @@ class _CartApiService implements CartApiService {
   }
 
   @override
-  Future<void> increaseCartQuantity(int cartId) async {
+  Future<void> increaseCartQuantity(int productId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -49,7 +49,7 @@ class _CartApiService implements CartApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/cart/increase-cart-quantity/${cartId}',
+            '/cart/increase-cart-quantity/${productId}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -59,7 +59,7 @@ class _CartApiService implements CartApiService {
   }
 
   @override
-  Future<void> decreaseCartQuantity(int cartId) async {
+  Future<void> decreaseCartQuantity(int productId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -68,7 +68,7 @@ class _CartApiService implements CartApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/cart/decrease-cart-quantity/${cartId}',
+            '/cart/decrease-cart-quantity/${productId}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -108,7 +108,7 @@ class _CartApiService implements CartApiService {
   }
 
   @override
-  Future<void> deleteCartItem(int cartId) async {
+  Future<void> deleteCartItem(int productId) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -117,7 +117,7 @@ class _CartApiService implements CartApiService {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/cart/delete-cart-item/${cartId}',
+            '/cart/delete-cart-item/${productId}',
             queryParameters: queryParameters,
             data: _data,
           )

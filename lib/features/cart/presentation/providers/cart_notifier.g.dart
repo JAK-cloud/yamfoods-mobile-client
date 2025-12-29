@@ -68,7 +68,7 @@ final class CartNotifierProvider
   }
 }
 
-String _$cartNotifierHash() => r'0286ba1a8e39af36dfd9894134f8ab3c2c2d9e6b';
+String _$cartNotifierHash() => r'c5f565c28cb648645ac575c4e5611411203e1a83';
 
 /// Manages cart list state and CRUD operations for a specific branch.
 ///

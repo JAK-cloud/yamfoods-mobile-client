@@ -8,18 +8,33 @@ part of 'address_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Address API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all address endpoints
+/// require authentication.
 
 @ProviderFor(addressApiService)
 const addressApiServiceProvider = AddressApiServiceProvider._();
 
+/// Address API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all address endpoints
+/// require authentication.
+
 final class AddressApiServiceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AddressApiService>,
           AddressApiService,
-          AddressApiService,
-          AddressApiService
+          FutureOr<AddressApiService>
         >
-    with $Provider<AddressApiService> {
+    with
+        $FutureModifier<AddressApiService>,
+        $FutureProvider<AddressApiService> {
+  /// Address API service provider
+  ///
+  /// Uses dioClientProvider (with auth interceptor) because all address endpoints
+  /// require authentication.
   const AddressApiServiceProvider._()
     : super(
         from: null,
@@ -36,25 +51,17 @@ final class AddressApiServiceProvider
 
   @$internal
   @override
-  $ProviderElement<AddressApiService> $createElement(
+  $FutureProviderElement<AddressApiService> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AddressApiService create(Ref ref) {
+  FutureOr<AddressApiService> create(Ref ref) {
     return addressApiService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AddressApiService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AddressApiService>(value),
-    );
   }
 }
 
-String _$addressApiServiceHash() => r'272f79d4ad722a85d37e025a61f2193cae5f807a';
+String _$addressApiServiceHash() => r'162c0668a9c675c95ec81b94fb234a7262c2778f';
 
 @ProviderFor(addressRemoteDataSource)
 const addressRemoteDataSourceProvider = AddressRemoteDataSourceProvider._();
@@ -62,11 +69,13 @@ const addressRemoteDataSourceProvider = AddressRemoteDataSourceProvider._();
 final class AddressRemoteDataSourceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AddressRemoteDataSource>,
           AddressRemoteDataSource,
-          AddressRemoteDataSource,
-          AddressRemoteDataSource
+          FutureOr<AddressRemoteDataSource>
         >
-    with $Provider<AddressRemoteDataSource> {
+    with
+        $FutureModifier<AddressRemoteDataSource>,
+        $FutureProvider<AddressRemoteDataSource> {
   const AddressRemoteDataSourceProvider._()
     : super(
         from: null,
@@ -83,26 +92,18 @@ final class AddressRemoteDataSourceProvider
 
   @$internal
   @override
-  $ProviderElement<AddressRemoteDataSource> $createElement(
+  $FutureProviderElement<AddressRemoteDataSource> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AddressRemoteDataSource create(Ref ref) {
+  FutureOr<AddressRemoteDataSource> create(Ref ref) {
     return addressRemoteDataSource(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AddressRemoteDataSource value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AddressRemoteDataSource>(value),
-    );
   }
 }
 
 String _$addressRemoteDataSourceHash() =>
-    r'22ef08416ae06f3ca4355ec2726aac5780ce5c3c';
+    r'608594d125aa544052cb335331a90a1e4bf39157';
 
 @ProviderFor(addressRepository)
 const addressRepositoryProvider = AddressRepositoryProvider._();
@@ -110,11 +111,13 @@ const addressRepositoryProvider = AddressRepositoryProvider._();
 final class AddressRepositoryProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AddressRepository>,
           AddressRepository,
-          AddressRepository,
-          AddressRepository
+          FutureOr<AddressRepository>
         >
-    with $Provider<AddressRepository> {
+    with
+        $FutureModifier<AddressRepository>,
+        $FutureProvider<AddressRepository> {
   const AddressRepositoryProvider._()
     : super(
         from: null,
@@ -131,25 +134,17 @@ final class AddressRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<AddressRepository> $createElement(
+  $FutureProviderElement<AddressRepository> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AddressRepository create(Ref ref) {
+  FutureOr<AddressRepository> create(Ref ref) {
     return addressRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AddressRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AddressRepository>(value),
-    );
   }
 }
 
-String _$addressRepositoryHash() => r'9b985e4d86ed01ea1db9d272a30f23cd418306a3';
+String _$addressRepositoryHash() => r'2b3d30dba7232f96ee57f261dc0324d02ba0fbbe';
 
 @ProviderFor(getAddressesUseCase)
 const getAddressesUseCaseProvider = GetAddressesUseCaseProvider._();
@@ -157,11 +152,13 @@ const getAddressesUseCaseProvider = GetAddressesUseCaseProvider._();
 final class GetAddressesUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetAddressesUsecase>,
           GetAddressesUsecase,
-          GetAddressesUsecase,
-          GetAddressesUsecase
+          FutureOr<GetAddressesUsecase>
         >
-    with $Provider<GetAddressesUsecase> {
+    with
+        $FutureModifier<GetAddressesUsecase>,
+        $FutureProvider<GetAddressesUsecase> {
   const GetAddressesUseCaseProvider._()
     : super(
         from: null,
@@ -178,26 +175,18 @@ final class GetAddressesUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetAddressesUsecase> $createElement(
+  $FutureProviderElement<GetAddressesUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetAddressesUsecase create(Ref ref) {
+  FutureOr<GetAddressesUsecase> create(Ref ref) {
     return getAddressesUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAddressesUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetAddressesUsecase>(value),
-    );
   }
 }
 
 String _$getAddressesUseCaseHash() =>
-    r'4bc459670439f4b352dff3f2b796fc8c3e5c536a';
+    r'7a494e46af75af863b4369e1434e9ca014ce8278';
 
 @ProviderFor(createAddressUseCase)
 const createAddressUseCaseProvider = CreateAddressUseCaseProvider._();
@@ -205,11 +194,13 @@ const createAddressUseCaseProvider = CreateAddressUseCaseProvider._();
 final class CreateAddressUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<CreateAddressUsecase>,
           CreateAddressUsecase,
-          CreateAddressUsecase,
-          CreateAddressUsecase
+          FutureOr<CreateAddressUsecase>
         >
-    with $Provider<CreateAddressUsecase> {
+    with
+        $FutureModifier<CreateAddressUsecase>,
+        $FutureProvider<CreateAddressUsecase> {
   const CreateAddressUseCaseProvider._()
     : super(
         from: null,
@@ -226,26 +217,18 @@ final class CreateAddressUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<CreateAddressUsecase> $createElement(
+  $FutureProviderElement<CreateAddressUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CreateAddressUsecase create(Ref ref) {
+  FutureOr<CreateAddressUsecase> create(Ref ref) {
     return createAddressUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CreateAddressUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CreateAddressUsecase>(value),
-    );
   }
 }
 
 String _$createAddressUseCaseHash() =>
-    r'0c4a55578c5bf295dbe7f51a24b966b409f04809';
+    r'2bffe59949f6812b40bb6ee157ddc78b94aff24f';
 
 @ProviderFor(updateAddressUseCase)
 const updateAddressUseCaseProvider = UpdateAddressUseCaseProvider._();
@@ -253,11 +236,13 @@ const updateAddressUseCaseProvider = UpdateAddressUseCaseProvider._();
 final class UpdateAddressUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<UpdateAddressUsecase>,
           UpdateAddressUsecase,
-          UpdateAddressUsecase,
-          UpdateAddressUsecase
+          FutureOr<UpdateAddressUsecase>
         >
-    with $Provider<UpdateAddressUsecase> {
+    with
+        $FutureModifier<UpdateAddressUsecase>,
+        $FutureProvider<UpdateAddressUsecase> {
   const UpdateAddressUseCaseProvider._()
     : super(
         from: null,
@@ -274,26 +259,18 @@ final class UpdateAddressUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<UpdateAddressUsecase> $createElement(
+  $FutureProviderElement<UpdateAddressUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  UpdateAddressUsecase create(Ref ref) {
+  FutureOr<UpdateAddressUsecase> create(Ref ref) {
     return updateAddressUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UpdateAddressUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UpdateAddressUsecase>(value),
-    );
   }
 }
 
 String _$updateAddressUseCaseHash() =>
-    r'f0524e49de59744f09f29d97c20fad546e282274';
+    r'8d1246f6b3f04f6fde1604f956ec23f94e509151';
 
 @ProviderFor(deleteAddressUseCase)
 const deleteAddressUseCaseProvider = DeleteAddressUseCaseProvider._();
@@ -301,11 +278,13 @@ const deleteAddressUseCaseProvider = DeleteAddressUseCaseProvider._();
 final class DeleteAddressUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<DeleteAddressUsecase>,
           DeleteAddressUsecase,
-          DeleteAddressUsecase,
-          DeleteAddressUsecase
+          FutureOr<DeleteAddressUsecase>
         >
-    with $Provider<DeleteAddressUsecase> {
+    with
+        $FutureModifier<DeleteAddressUsecase>,
+        $FutureProvider<DeleteAddressUsecase> {
   const DeleteAddressUseCaseProvider._()
     : super(
         from: null,
@@ -322,23 +301,15 @@ final class DeleteAddressUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<DeleteAddressUsecase> $createElement(
+  $FutureProviderElement<DeleteAddressUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  DeleteAddressUsecase create(Ref ref) {
+  FutureOr<DeleteAddressUsecase> create(Ref ref) {
     return deleteAddressUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DeleteAddressUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DeleteAddressUsecase>(value),
-    );
   }
 }
 
 String _$deleteAddressUseCaseHash() =>
-    r'd2db62162ac397883b6d9f203f321efbefab5349';
+    r'7fa5a809130f983814ed042382feac0689925986';

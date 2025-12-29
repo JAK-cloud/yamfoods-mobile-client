@@ -14,6 +14,10 @@ part of 'dio_client.dart';
 /// This is used to break the circular dependency with auth providers.
 ///
 /// The full `dioClientProvider` adds the AuthInterceptor on top of this base client.
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 8+ features (auth, branch,
+/// category, subcategory, product, achievement, promocode, promo_banner).
+/// Recreating it causes unnecessary overhead and interceptor recreation.
 
 @ProviderFor(baseDioClient)
 const baseDioClientProvider = BaseDioClientProvider._();
@@ -24,6 +28,10 @@ const baseDioClientProvider = BaseDioClientProvider._();
 /// This is used to break the circular dependency with auth providers.
 ///
 /// The full `dioClientProvider` adds the AuthInterceptor on top of this base client.
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 8+ features (auth, branch,
+/// category, subcategory, product, achievement, promocode, promo_banner).
+/// Recreating it causes unnecessary overhead and interceptor recreation.
 
 final class BaseDioClientProvider extends $FunctionalProvider<Dio, Dio, Dio>
     with $Provider<Dio> {
@@ -33,13 +41,17 @@ final class BaseDioClientProvider extends $FunctionalProvider<Dio, Dio, Dio>
   /// This is used to break the circular dependency with auth providers.
   ///
   /// The full `dioClientProvider` adds the AuthInterceptor on top of this base client.
+  ///
+  /// **CRITICAL:** Uses `keepAlive: true` because this is used by 8+ features (auth, branch,
+  /// category, subcategory, product, achievement, promocode, promo_banner).
+  /// Recreating it causes unnecessary overhead and interceptor recreation.
   const BaseDioClientProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'baseDioClientProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -66,7 +78,7 @@ final class BaseDioClientProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$baseDioClientHash() => r'c98c3e1bd6634b49553c08df4a193c50c41f4d00';
+String _$baseDioClientHash() => r'752f15ff0be29f29396b9ff9af97941b4a11fb3c';
 
 /// Dio client provider with all interceptors configured (including auth)
 ///
@@ -80,6 +92,10 @@ String _$baseDioClientHash() => r'c98c3e1bd6634b49553c08df4a193c50c41f4d00';
 ///
 /// Note: This uses baseDioClient and adds AuthInterceptor to avoid circular dependency.
 /// Auth providers are watched here to inject into AuthInterceptor.
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 3+ authenticated features
+/// (review, cart, order). Recreating it causes expensive auth interceptor recreation
+/// and re-watching of auth providers.
 
 @ProviderFor(dioClient)
 const dioClientProvider = DioClientProvider._();
@@ -96,6 +112,10 @@ const dioClientProvider = DioClientProvider._();
 ///
 /// Note: This uses baseDioClient and adds AuthInterceptor to avoid circular dependency.
 /// Auth providers are watched here to inject into AuthInterceptor.
+///
+/// **CRITICAL:** Uses `keepAlive: true` because this is used by 3+ authenticated features
+/// (review, cart, order). Recreating it causes expensive auth interceptor recreation
+/// and re-watching of auth providers.
 
 final class DioClientProvider
     extends $FunctionalProvider<AsyncValue<Dio>, Dio, FutureOr<Dio>>
@@ -112,13 +132,17 @@ final class DioClientProvider
   ///
   /// Note: This uses baseDioClient and adds AuthInterceptor to avoid circular dependency.
   /// Auth providers are watched here to inject into AuthInterceptor.
+  ///
+  /// **CRITICAL:** Uses `keepAlive: true` because this is used by 3+ authenticated features
+  /// (review, cart, order). Recreating it causes expensive auth interceptor recreation
+  /// and re-watching of auth providers.
   const DioClientProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'dioClientProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -137,4 +161,4 @@ final class DioClientProvider
   }
 }
 
-String _$dioClientHash() => r'8d45e32aa6c761c1b65ec0b7fbb44646612f652d';
+String _$dioClientHash() => r'5bac427a7dd57796a9497bb60b62fa7811f91040';

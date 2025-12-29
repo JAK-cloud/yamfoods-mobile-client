@@ -29,12 +29,12 @@ class SubcategoryChip extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: EdgeInsets.symmetric(
           horizontal: AppSizes.lg,
-          vertical: 2,
+          vertical: 0,
         ),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary
-              : AppColors.white,
+              : AppColors.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(AppSizes.lg),
           border: isSelected
               ? null

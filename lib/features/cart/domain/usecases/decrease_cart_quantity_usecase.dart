@@ -8,7 +8,7 @@ class DecreaseCartQuantityUsecase {
 
   const DecreaseCartQuantityUsecase(this._repository);
 
-  Future<Either<Failure, Unit>> call(int cartId) async {
-    return await _repository.decreaseCartQuantity(cartId);
+  Future<Either<Failure, Unit>> call(int productId) async {
+    return await _repository.decreaseCartQuantity(productId);
   }
 }

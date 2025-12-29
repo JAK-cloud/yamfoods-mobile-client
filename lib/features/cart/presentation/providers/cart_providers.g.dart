@@ -8,13 +8,37 @@ part of 'cart_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Cart API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all cart endpoints
+/// are protected and require authentication:
+/// - getAllCarts, addToCart, increaseCartQuantity, decreaseCartQuantity,
+///   deleteCartItem, deleteAllCartItems
 
 @ProviderFor(cartApiService)
 const cartApiServiceProvider = CartApiServiceProvider._();
 
+/// Cart API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all cart endpoints
+/// are protected and require authentication:
+/// - getAllCarts, addToCart, increaseCartQuantity, decreaseCartQuantity,
+///   deleteCartItem, deleteAllCartItems
+
 final class CartApiServiceProvider
-    extends $FunctionalProvider<CartApiService, CartApiService, CartApiService>
-    with $Provider<CartApiService> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<CartApiService>,
+          CartApiService,
+          FutureOr<CartApiService>
+        >
+    with $FutureModifier<CartApiService>, $FutureProvider<CartApiService> {
+  /// Cart API service provider
+  ///
+  /// Uses dioClientProvider (with auth interceptor) because all cart endpoints
+  /// are protected and require authentication:
+  /// - getAllCarts, addToCart, increaseCartQuantity, decreaseCartQuantity,
+  ///   deleteCartItem, deleteAllCartItems
   const CartApiServiceProvider._()
     : super(
         from: null,
@@ -31,24 +55,17 @@ final class CartApiServiceProvider
 
   @$internal
   @override
-  $ProviderElement<CartApiService> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<CartApiService> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CartApiService create(Ref ref) {
+  FutureOr<CartApiService> create(Ref ref) {
     return cartApiService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CartApiService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CartApiService>(value),
-    );
   }
 }
 
-String _$cartApiServiceHash() => r'ef6e50503d6905730a312df4dfde171a072e5bad';
+String _$cartApiServiceHash() => r'a86e0d44c7599e1b22b10243ab17f0d0b38bdf2b';
 
 @ProviderFor(cartRemoteDataSource)
 const cartRemoteDataSourceProvider = CartRemoteDataSourceProvider._();
@@ -56,11 +73,13 @@ const cartRemoteDataSourceProvider = CartRemoteDataSourceProvider._();
 final class CartRemoteDataSourceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<CartRemoteDataSource>,
           CartRemoteDataSource,
-          CartRemoteDataSource,
-          CartRemoteDataSource
+          FutureOr<CartRemoteDataSource>
         >
-    with $Provider<CartRemoteDataSource> {
+    with
+        $FutureModifier<CartRemoteDataSource>,
+        $FutureProvider<CartRemoteDataSource> {
   const CartRemoteDataSourceProvider._()
     : super(
         from: null,
@@ -77,33 +96,30 @@ final class CartRemoteDataSourceProvider
 
   @$internal
   @override
-  $ProviderElement<CartRemoteDataSource> $createElement(
+  $FutureProviderElement<CartRemoteDataSource> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CartRemoteDataSource create(Ref ref) {
+  FutureOr<CartRemoteDataSource> create(Ref ref) {
     return cartRemoteDataSource(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CartRemoteDataSource value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CartRemoteDataSource>(value),
-    );
   }
 }
 
 String _$cartRemoteDataSourceHash() =>
-    r'08dec42ccc4383eebb0a5f50a55aab8d4ad61272';
+    r'80b841638e8d3086b3e26158fd92e0530c1c29b4';
 
 @ProviderFor(cartRepository)
 const cartRepositoryProvider = CartRepositoryProvider._();
 
 final class CartRepositoryProvider
-    extends $FunctionalProvider<CartRepository, CartRepository, CartRepository>
-    with $Provider<CartRepository> {
+    extends
+        $FunctionalProvider<
+          AsyncValue<CartRepository>,
+          CartRepository,
+          FutureOr<CartRepository>
+        >
+    with $FutureModifier<CartRepository>, $FutureProvider<CartRepository> {
   const CartRepositoryProvider._()
     : super(
         from: null,
@@ -120,24 +136,17 @@ final class CartRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<CartRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<CartRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  CartRepository create(Ref ref) {
+  FutureOr<CartRepository> create(Ref ref) {
     return cartRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CartRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<CartRepository>(value),
-    );
   }
 }
 
-String _$cartRepositoryHash() => r'1bd2343de0dc50facc6bd86b8d56aa2eee17e1a7';
+String _$cartRepositoryHash() => r'5d6935cf9020e8d1f7996f4e09ba7fbab462144b';
 
 @ProviderFor(addToCartUseCase)
 const addToCartUseCaseProvider = AddToCartUseCaseProvider._();
@@ -145,11 +154,11 @@ const addToCartUseCaseProvider = AddToCartUseCaseProvider._();
 final class AddToCartUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AddToCartUsecase>,
           AddToCartUsecase,
-          AddToCartUsecase,
-          AddToCartUsecase
+          FutureOr<AddToCartUsecase>
         >
-    with $Provider<AddToCartUsecase> {
+    with $FutureModifier<AddToCartUsecase>, $FutureProvider<AddToCartUsecase> {
   const AddToCartUseCaseProvider._()
     : super(
         from: null,
@@ -166,24 +175,17 @@ final class AddToCartUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<AddToCartUsecase> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<AddToCartUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AddToCartUsecase create(Ref ref) {
+  FutureOr<AddToCartUsecase> create(Ref ref) {
     return addToCartUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AddToCartUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AddToCartUsecase>(value),
-    );
   }
 }
 
-String _$addToCartUseCaseHash() => r'205594e2f41cf566b5d978e997a968ec93a6cffe';
+String _$addToCartUseCaseHash() => r'304f92837b58380f5f2846e481b0f84b2f63f71f';
 
 @ProviderFor(increaseCartQuantityUseCase)
 const increaseCartQuantityUseCaseProvider =
@@ -192,11 +194,13 @@ const increaseCartQuantityUseCaseProvider =
 final class IncreaseCartQuantityUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<IncreaseCartQuantityUsecase>,
           IncreaseCartQuantityUsecase,
-          IncreaseCartQuantityUsecase,
-          IncreaseCartQuantityUsecase
+          FutureOr<IncreaseCartQuantityUsecase>
         >
-    with $Provider<IncreaseCartQuantityUsecase> {
+    with
+        $FutureModifier<IncreaseCartQuantityUsecase>,
+        $FutureProvider<IncreaseCartQuantityUsecase> {
   const IncreaseCartQuantityUseCaseProvider._()
     : super(
         from: null,
@@ -213,26 +217,18 @@ final class IncreaseCartQuantityUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<IncreaseCartQuantityUsecase> $createElement(
+  $FutureProviderElement<IncreaseCartQuantityUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  IncreaseCartQuantityUsecase create(Ref ref) {
+  FutureOr<IncreaseCartQuantityUsecase> create(Ref ref) {
     return increaseCartQuantityUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(IncreaseCartQuantityUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<IncreaseCartQuantityUsecase>(value),
-    );
   }
 }
 
 String _$increaseCartQuantityUseCaseHash() =>
-    r'3848db4e1844f0fe4ab357214a1e9bc9b7caa4e8';
+    r'9090ef6a45fdb3d3b238766dde738e7e53edfbfd';
 
 @ProviderFor(decreaseCartQuantityUseCase)
 const decreaseCartQuantityUseCaseProvider =
@@ -241,11 +237,13 @@ const decreaseCartQuantityUseCaseProvider =
 final class DecreaseCartQuantityUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<DecreaseCartQuantityUsecase>,
           DecreaseCartQuantityUsecase,
-          DecreaseCartQuantityUsecase,
-          DecreaseCartQuantityUsecase
+          FutureOr<DecreaseCartQuantityUsecase>
         >
-    with $Provider<DecreaseCartQuantityUsecase> {
+    with
+        $FutureModifier<DecreaseCartQuantityUsecase>,
+        $FutureProvider<DecreaseCartQuantityUsecase> {
   const DecreaseCartQuantityUseCaseProvider._()
     : super(
         from: null,
@@ -262,26 +260,18 @@ final class DecreaseCartQuantityUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<DecreaseCartQuantityUsecase> $createElement(
+  $FutureProviderElement<DecreaseCartQuantityUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  DecreaseCartQuantityUsecase create(Ref ref) {
+  FutureOr<DecreaseCartQuantityUsecase> create(Ref ref) {
     return decreaseCartQuantityUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DecreaseCartQuantityUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DecreaseCartQuantityUsecase>(value),
-    );
   }
 }
 
 String _$decreaseCartQuantityUseCaseHash() =>
-    r'e45190cfbfc483ff6c03492b536ade6250f6f5f3';
+    r'f347a69f95a58a0629ea5ca5cba56635fad6a9c9';
 
 @ProviderFor(getAllCartsUseCase)
 const getAllCartsUseCaseProvider = GetAllCartsUseCaseProvider._();
@@ -289,11 +279,13 @@ const getAllCartsUseCaseProvider = GetAllCartsUseCaseProvider._();
 final class GetAllCartsUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetAllCartsUsecase>,
           GetAllCartsUsecase,
-          GetAllCartsUsecase,
-          GetAllCartsUsecase
+          FutureOr<GetAllCartsUsecase>
         >
-    with $Provider<GetAllCartsUsecase> {
+    with
+        $FutureModifier<GetAllCartsUsecase>,
+        $FutureProvider<GetAllCartsUsecase> {
   const GetAllCartsUseCaseProvider._()
     : super(
         from: null,
@@ -310,26 +302,18 @@ final class GetAllCartsUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetAllCartsUsecase> $createElement(
+  $FutureProviderElement<GetAllCartsUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetAllCartsUsecase create(Ref ref) {
+  FutureOr<GetAllCartsUsecase> create(Ref ref) {
     return getAllCartsUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAllCartsUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetAllCartsUsecase>(value),
-    );
   }
 }
 
 String _$getAllCartsUseCaseHash() =>
-    r'a453d591f0c4981df3aa4cf133aa5ce9a1a28d5a';
+    r'20902e81421c1dc00e14cc94f189e314c6c02e83';
 
 @ProviderFor(deleteCartItemUseCase)
 const deleteCartItemUseCaseProvider = DeleteCartItemUseCaseProvider._();
@@ -337,11 +321,13 @@ const deleteCartItemUseCaseProvider = DeleteCartItemUseCaseProvider._();
 final class DeleteCartItemUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<DeleteCartItemUsecase>,
           DeleteCartItemUsecase,
-          DeleteCartItemUsecase,
-          DeleteCartItemUsecase
+          FutureOr<DeleteCartItemUsecase>
         >
-    with $Provider<DeleteCartItemUsecase> {
+    with
+        $FutureModifier<DeleteCartItemUsecase>,
+        $FutureProvider<DeleteCartItemUsecase> {
   const DeleteCartItemUseCaseProvider._()
     : super(
         from: null,
@@ -358,26 +344,18 @@ final class DeleteCartItemUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<DeleteCartItemUsecase> $createElement(
+  $FutureProviderElement<DeleteCartItemUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  DeleteCartItemUsecase create(Ref ref) {
+  FutureOr<DeleteCartItemUsecase> create(Ref ref) {
     return deleteCartItemUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DeleteCartItemUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DeleteCartItemUsecase>(value),
-    );
   }
 }
 
 String _$deleteCartItemUseCaseHash() =>
-    r'6d84c3cf237a010429d08ccf7c76dec86dc95d6c';
+    r'1c2f2befbf2e9b1acc7e442964093d98e45f475b';
 
 @ProviderFor(deleteAllCartItemsUseCase)
 const deleteAllCartItemsUseCaseProvider = DeleteAllCartItemsUseCaseProvider._();
@@ -385,11 +363,13 @@ const deleteAllCartItemsUseCaseProvider = DeleteAllCartItemsUseCaseProvider._();
 final class DeleteAllCartItemsUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<DeleteAllCartItemsUsecase>,
           DeleteAllCartItemsUsecase,
-          DeleteAllCartItemsUsecase,
-          DeleteAllCartItemsUsecase
+          FutureOr<DeleteAllCartItemsUsecase>
         >
-    with $Provider<DeleteAllCartItemsUsecase> {
+    with
+        $FutureModifier<DeleteAllCartItemsUsecase>,
+        $FutureProvider<DeleteAllCartItemsUsecase> {
   const DeleteAllCartItemsUseCaseProvider._()
     : super(
         from: null,
@@ -406,23 +386,210 @@ final class DeleteAllCartItemsUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<DeleteAllCartItemsUsecase> $createElement(
+  $FutureProviderElement<DeleteAllCartItemsUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  DeleteAllCartItemsUsecase create(Ref ref) {
+  FutureOr<DeleteAllCartItemsUsecase> create(Ref ref) {
     return deleteAllCartItemsUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DeleteAllCartItemsUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DeleteAllCartItemsUsecase>(value),
-    );
   }
 }
 
 String _$deleteAllCartItemsUseCaseHash() =>
-    r'478e4cbe3f035c6dae45ec0100b1bb471937de83';
+    r'47ebaa9cbf92f0908058186026991770bcac3290';
+
+/// Provider that returns the current cart item count for a branch.
+///
+/// Returns 0 if cart is not loaded yet or empty.
+
+@ProviderFor(cartItemCount)
+const cartItemCountProvider = CartItemCountFamily._();
+
+/// Provider that returns the current cart item count for a branch.
+///
+/// Returns 0 if cart is not loaded yet or empty.
+
+final class CartItemCountProvider extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// Provider that returns the current cart item count for a branch.
+  ///
+  /// Returns 0 if cart is not loaded yet or empty.
+  const CartItemCountProvider._({
+    required CartItemCountFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'cartItemCountProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$cartItemCountHash();
+
+  @override
+  String toString() {
+    return r'cartItemCountProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    final argument = this.argument as int;
+    return cartItemCount(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CartItemCountProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$cartItemCountHash() => r'ae46209197533ece6911b06a87add2ddbb997993';
+
+/// Provider that returns the current cart item count for a branch.
+///
+/// Returns 0 if cart is not loaded yet or empty.
+
+final class CartItemCountFamily extends $Family
+    with $FunctionalFamilyOverride<int, int> {
+  const CartItemCountFamily._()
+    : super(
+        retry: null,
+        name: r'cartItemCountProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider that returns the current cart item count for a branch.
+  ///
+  /// Returns 0 if cart is not loaded yet or empty.
+
+  CartItemCountProvider call(int branchId) =>
+      CartItemCountProvider._(argument: branchId, from: this);
+
+  @override
+  String toString() => r'cartItemCountProvider';
+}
+
+/// Provider that checks if more items can be added to cart.
+///
+/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// `false` otherwise.
+
+@ProviderFor(canAddToCart)
+const canAddToCartProvider = CanAddToCartFamily._();
+
+/// Provider that checks if more items can be added to cart.
+///
+/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// `false` otherwise.
+
+final class CanAddToCartProvider extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Provider that checks if more items can be added to cart.
+  ///
+  /// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+  /// `false` otherwise.
+  const CanAddToCartProvider._({
+    required CanAddToCartFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'canAddToCartProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$canAddToCartHash();
+
+  @override
+  String toString() {
+    return r'canAddToCartProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    final argument = this.argument as int;
+    return canAddToCart(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CanAddToCartProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$canAddToCartHash() => r'806c9761e55ef7b1d6605a8acf545bb9af9bbf9a';
+
+/// Provider that checks if more items can be added to cart.
+///
+/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// `false` otherwise.
+
+final class CanAddToCartFamily extends $Family
+    with $FunctionalFamilyOverride<bool, int> {
+  const CanAddToCartFamily._()
+    : super(
+        retry: null,
+        name: r'canAddToCartProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider that checks if more items can be added to cart.
+  ///
+  /// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+  /// `false` otherwise.
+
+  CanAddToCartProvider call(int branchId) =>
+      CanAddToCartProvider._(argument: branchId, from: this);
+
+  @override
+  String toString() => r'canAddToCartProvider';
+}

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/widgets/cupertino_back_button.dart';
+import '../../../../features/cart/presentation/widgets/animated_cart_icon.dart';
 import '../../domain/entities/category.dart';
 
-class CategoryHeader extends StatelessWidget {
+class CategoryHeader extends ConsumerWidget {
   final Category category;
   final VoidCallback? onSearchTap;
 
   const CategoryHeader({super.key, required this.category, this.onSearchTap});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.fromLTRB(
         AppSizes.lg,
@@ -25,7 +27,7 @@ class CategoryHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CupertinoBackButton(),
+          CupertinoBackButton(color: AppColors.white),
           SizedBox(width: AppSizes.sm),
           Expanded(
             child: Column(
@@ -34,7 +36,7 @@ class CategoryHeader extends StatelessWidget {
               children: [
                 Text(
                   category.name,
-                  style: AppTextStyles.h3,
+                  style: AppTextStyles.h3.copyWith(color: AppColors.white),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -42,7 +44,7 @@ class CategoryHeader extends StatelessWidget {
                   SizedBox(height: AppSizes.xs / 2),
                   Text(
                     category.detail,
-                    style: AppTextStyles.bodyMedium,
+                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.white),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -51,13 +53,29 @@ class CategoryHeader extends StatelessWidget {
             ),
           ),
           SizedBox(width: AppSizes.md),
-          IconButton(
-            onPressed: onSearchTap,
-            icon: Icon(
-              Icons.search,
-              color: AppColors.txtPrimary,
-              size: AppSizes.iconSize,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Cart icon with badge and animation
+              AnimatedCartIcon(
+                screenId: 'category',
+                iconSize: AppSizes.iconSize,
+                padding: EdgeInsets.all(AppSizes.sm),
+                onTap: () {
+                  // TODO: Navigate to cart screen
+                },
+              ),
+              SizedBox(width: AppSizes.xs),
+              // Search icon
+              IconButton(
+                onPressed: onSearchTap,
+                icon: Icon(
+                  Icons.search,
+                  color: AppColors.white,
+                  size: AppSizes.iconSize,
+                ),
+              ),
+            ],
           ),
         ],
       ),

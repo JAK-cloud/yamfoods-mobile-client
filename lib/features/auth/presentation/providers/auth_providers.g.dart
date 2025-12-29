@@ -12,6 +12,9 @@ part of 'auth_providers.dart';
 ///
 /// Provides Retrofit API service for authentication endpoints.
 /// Uses baseDioClientProvider to avoid circular dependency with dioClientProvider.
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
 
 @ProviderFor(authApiService)
 const authApiServiceProvider = AuthApiServiceProvider._();
@@ -20,6 +23,9 @@ const authApiServiceProvider = AuthApiServiceProvider._();
 ///
 /// Provides Retrofit API service for authentication endpoints.
 /// Uses baseDioClientProvider to avoid circular dependency with dioClientProvider.
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
 
 final class AuthApiServiceProvider
     extends $FunctionalProvider<AuthApiService, AuthApiService, AuthApiService>
@@ -28,13 +34,16 @@ final class AuthApiServiceProvider
   ///
   /// Provides Retrofit API service for authentication endpoints.
   /// Uses baseDioClientProvider to avoid circular dependency with dioClientProvider.
+  ///
+  /// Uses `keepAlive: true` because this is part of the core auth dependency chain
+  /// used by the auth interceptor.
   const AuthApiServiceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'authApiServiceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -61,11 +70,14 @@ final class AuthApiServiceProvider
   }
 }
 
-String _$authApiServiceHash() => r'd38b7f064ea6e276a41dec0456c5cef24d7ca2e2';
+String _$authApiServiceHash() => r'a5d5fd1b7b21c2ed5116bf28517a26feca5590b9';
 
 /// Auth remote data source provider
 ///
 /// Provides implementation for fetching auth data from backend.
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
 
 @ProviderFor(authRemoteDataSource)
 const authRemoteDataSourceProvider = AuthRemoteDataSourceProvider._();
@@ -73,6 +85,9 @@ const authRemoteDataSourceProvider = AuthRemoteDataSourceProvider._();
 /// Auth remote data source provider
 ///
 /// Provides implementation for fetching auth data from backend.
+///
+/// Uses `keepAlive: true` because this is part of the core auth dependency chain
+/// used by the auth interceptor.
 
 final class AuthRemoteDataSourceProvider
     extends
@@ -85,13 +100,16 @@ final class AuthRemoteDataSourceProvider
   /// Auth remote data source provider
   ///
   /// Provides implementation for fetching auth data from backend.
+  ///
+  /// Uses `keepAlive: true` because this is part of the core auth dependency chain
+  /// used by the auth interceptor.
   const AuthRemoteDataSourceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'authRemoteDataSourceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -120,12 +138,15 @@ final class AuthRemoteDataSourceProvider
 }
 
 String _$authRemoteDataSourceHash() =>
-    r'369641ebc05efd26f122ce9bcacdb39bda8b9f88';
+    r'2ff6fe9874e5886efb7a45cc1e594d5bcb3c9ee3';
 
 /// Auth local data source provider (async)
 ///
 /// Provides implementation for local storage of auth data.
 /// This is async because SharedPreferences initialization is async.
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
 
 @ProviderFor(authLocalDataSource)
 const authLocalDataSourceProvider = AuthLocalDataSourceProvider._();
@@ -134,6 +155,9 @@ const authLocalDataSourceProvider = AuthLocalDataSourceProvider._();
 ///
 /// Provides implementation for local storage of auth data.
 /// This is async because SharedPreferences initialization is async.
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
 
 final class AuthLocalDataSourceProvider
     extends
@@ -149,13 +173,16 @@ final class AuthLocalDataSourceProvider
   ///
   /// Provides implementation for local storage of auth data.
   /// This is async because SharedPreferences initialization is async.
+  ///
+  /// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+  /// and should not be disposed during the app lifecycle.
   const AuthLocalDataSourceProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'authLocalDataSourceProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -176,12 +203,15 @@ final class AuthLocalDataSourceProvider
 }
 
 String _$authLocalDataSourceHash() =>
-    r'9ffce49807586b8f3a84eea4c07d36b0b04f194b';
+    r'5e438f645e6e0b787dc6fe73680468a7d49d37bf';
 
 /// Auth repository provider (async)
 ///
 /// Provides the main repository for authentication operations.
 /// This is async because it depends on async authLocalDataSource.
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
 
 @ProviderFor(authRepository)
 const authRepositoryProvider = AuthRepositoryProvider._();
@@ -190,6 +220,9 @@ const authRepositoryProvider = AuthRepositoryProvider._();
 ///
 /// Provides the main repository for authentication operations.
 /// This is async because it depends on async authLocalDataSource.
+///
+/// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+/// and should not be disposed during the app lifecycle.
 
 final class AuthRepositoryProvider
     extends
@@ -203,13 +236,16 @@ final class AuthRepositoryProvider
   ///
   /// Provides the main repository for authentication operations.
   /// This is async because it depends on async authLocalDataSource.
+  ///
+  /// Uses `keepAlive: true` because this is used by the app-wide auth interceptor
+  /// and should not be disposed during the app lifecycle.
   const AuthRepositoryProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'authRepositoryProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -229,7 +265,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'c9f4b5f584633a8123e10732926bf76314ecd919';
+String _$authRepositoryHash() => r'7b5555204d34d7594f58e274bddfb81e5f818fc7';
 
 /// Login usecase provider (async)
 ///

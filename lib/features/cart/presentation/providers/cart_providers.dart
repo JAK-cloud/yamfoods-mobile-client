@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/network/di/dio_client.dart';
 import '../../data/datasources/cart_api_service.dart';
 import '../../data/datasources/cart_remote_data_source.dart';
@@ -12,53 +13,85 @@ import '../../domain/usecases/decrease_cart_quantity_usecase.dart';
 import '../../domain/usecases/get_all_carts_usecase.dart';
 import '../../domain/usecases/delete_cart_item_usecase.dart';
 import '../../domain/usecases/delete_all_cart_items_usecase.dart';
+import 'cart_notifier.dart';
 
 part 'cart_providers.g.dart';
 
+/// Cart API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all cart endpoints
+/// are protected and require authentication:
+/// - getAllCarts, addToCart, increaseCartQuantity, decreaseCartQuantity,
+///   deleteCartItem, deleteAllCartItems
 @riverpod
-CartApiService cartApiService(Ref ref) {
-  final dio = ref.watch(baseDioClientProvider);
+Future<CartApiService> cartApiService(Ref ref) async {
+  final dio = await ref.watch(dioClientProvider.future);
   return CartApiService(dio);
 }
 
 @riverpod
-CartRemoteDataSource cartRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(cartApiServiceProvider);
+Future<CartRemoteDataSource> cartRemoteDataSource(Ref ref) async {
+  final apiService = await ref.watch(cartApiServiceProvider.future);
   return CartRemoteDataSourceImpl(apiService);
 }
 
 @riverpod
-CartRepository cartRepository(Ref ref) {
-  final remoteDataSource = ref.watch(cartRemoteDataSourceProvider);
+Future<CartRepository> cartRepository(Ref ref) async {
+  final remoteDataSource = await ref.watch(cartRemoteDataSourceProvider.future);
   return CartRepositoryImpl(remoteDataSource);
 }
 
 @riverpod
-AddToCartUsecase addToCartUseCase(Ref ref) {
-  return AddToCartUsecase(ref.watch(cartRepositoryProvider));
+Future<AddToCartUsecase> addToCartUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return AddToCartUsecase(repository);
 }
 
 @riverpod
-IncreaseCartQuantityUsecase increaseCartQuantityUseCase(Ref ref) {
-  return IncreaseCartQuantityUsecase(ref.watch(cartRepositoryProvider));
+Future<IncreaseCartQuantityUsecase> increaseCartQuantityUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return IncreaseCartQuantityUsecase(repository);
 }
 
 @riverpod
-DecreaseCartQuantityUsecase decreaseCartQuantityUseCase(Ref ref) {
-  return DecreaseCartQuantityUsecase(ref.watch(cartRepositoryProvider));
+Future<DecreaseCartQuantityUsecase> decreaseCartQuantityUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return DecreaseCartQuantityUsecase(repository);
 }
 
 @riverpod
-GetAllCartsUsecase getAllCartsUseCase(Ref ref) {
-  return GetAllCartsUsecase(ref.watch(cartRepositoryProvider));
+Future<GetAllCartsUsecase> getAllCartsUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return GetAllCartsUsecase(repository);
 }
 
 @riverpod
-DeleteCartItemUsecase deleteCartItemUseCase(Ref ref) {
-  return DeleteCartItemUsecase(ref.watch(cartRepositoryProvider));
+Future<DeleteCartItemUsecase> deleteCartItemUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return DeleteCartItemUsecase(repository);
 }
 
 @riverpod
-DeleteAllCartItemsUsecase deleteAllCartItemsUseCase(Ref ref) {
-  return DeleteAllCartItemsUsecase(ref.watch(cartRepositoryProvider));
+Future<DeleteAllCartItemsUsecase> deleteAllCartItemsUseCase(Ref ref) async {
+  final repository = await ref.watch(cartRepositoryProvider.future);
+  return DeleteAllCartItemsUsecase(repository);
+}
+
+/// Provider that returns the current cart item count for a branch.
+///
+/// Returns 0 if cart is not loaded yet or empty.
+@riverpod
+int cartItemCount(Ref ref, int branchId) {
+  final cartAsync = ref.watch(cartProvider(branchId));
+  return cartAsync.value?.length ?? 0;
+}
+
+/// Provider that checks if more items can be added to cart.
+///
+/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// `false` otherwise.
+@riverpod
+bool canAddToCart(Ref ref, int branchId) {
+  final count = ref.watch(cartItemCountProvider(branchId));
+  return count < AppConstants.maxCartItems;
 }

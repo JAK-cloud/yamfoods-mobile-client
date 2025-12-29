@@ -30,7 +30,7 @@ class CartNotifier extends _$CartNotifier {
     addLoading.setLoading(true);
 
     try {
-      final useCase = ref.read(addToCartUseCaseProvider);
+      final useCase = await ref.read(addToCartUseCaseProvider.future);
       final result = await useCase.call(data);
 
       result.fold(
@@ -66,23 +66,27 @@ class CartNotifier extends _$CartNotifier {
         final cart = list[idx];
         list[idx] = cart.copyWith(quantity: cart.quantity + 1);
         state = AsyncValue.data(list);
+
+        // Get productId from cart to call API
+        final productId = cart.productId;
+        final useCase = await ref.read(
+          increaseCartQuantityUseCaseProvider.future,
+        );
+        final result = await useCase.call(productId);
+
+        result.fold(
+          (failure) {
+            // Restore from reserve on failure (no load() call to preserve state)
+            state = AsyncValue.data(reserveState);
+            ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
+          },
+          (_) {
+            ref
+                .read(cartUiEventsProvider.notifier)
+                .emit(CartQuantityIncreased(cartId, 'Quantity increased'));
+          },
+        );
       }
-
-      final useCase = ref.read(increaseCartQuantityUseCaseProvider);
-      final result = await useCase.call(cartId);
-
-      result.fold(
-        (failure) {
-          // Restore from reserve on failure (no load() call to preserve state)
-          state = AsyncValue.data(reserveState);
-          ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
-        },
-        (_) {
-          ref
-              .read(cartUiEventsProvider.notifier)
-              .emit(CartQuantityIncreased(cartId, 'Quantity increased'));
-        },
-      );
     } finally {
       updating.stop(cartId);
     }
@@ -107,23 +111,27 @@ class CartNotifier extends _$CartNotifier {
             : cart.quantity;
         list[idx] = cart.copyWith(quantity: newQuantity);
         state = AsyncValue.data(list);
+
+        // Get productId from cart to call API
+        final productId = cart.productId;
+        final useCase = await ref.read(
+          decreaseCartQuantityUseCaseProvider.future,
+        );
+        final result = await useCase.call(productId);
+
+        result.fold(
+          (failure) {
+            // Restore from reserve on failure (no load() call to preserve state)
+            state = AsyncValue.data(reserveState);
+            ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
+          },
+          (_) {
+            ref
+                .read(cartUiEventsProvider.notifier)
+                .emit(CartQuantityDecreased(cartId, 'Quantity decreased'));
+          },
+        );
       }
-
-      final useCase = ref.read(decreaseCartQuantityUseCaseProvider);
-      final result = await useCase.call(cartId);
-
-      result.fold(
-        (failure) {
-          // Restore from reserve on failure (no load() call to preserve state)
-          state = AsyncValue.data(reserveState);
-          ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
-        },
-        (_) {
-          ref
-              .read(cartUiEventsProvider.notifier)
-              .emit(CartQuantityDecreased(cartId, 'Quantity decreased'));
-        },
-      );
     } finally {
       updating.stop(cartId);
     }
@@ -140,11 +148,14 @@ class CartNotifier extends _$CartNotifier {
 
       // Optimistic update: remove item locally
       final list = List<Cart>.from(current);
+      final cartToDelete = list.firstWhere((c) => c.id == cartId);
       list.removeWhere((c) => c.id == cartId);
       state = AsyncValue.data(list);
 
-      final useCase = ref.read(deleteCartItemUseCaseProvider);
-      final result = await useCase.call(cartId);
+      // Get productId from cart to call API
+      final productId = cartToDelete.productId;
+      final useCase = await ref.read(deleteCartItemUseCaseProvider.future);
+      final result = await useCase.call(productId);
 
       result.fold(
         (failure) {
@@ -175,7 +186,7 @@ class CartNotifier extends _$CartNotifier {
       // Optimistic update: clear list locally
       state = const AsyncValue.data([]);
 
-      final useCase = ref.read(deleteAllCartItemsUseCaseProvider);
+      final useCase = await ref.read(deleteAllCartItemsUseCaseProvider.future);
       final result = await useCase.call();
 
       result.fold(
@@ -197,7 +208,7 @@ class CartNotifier extends _$CartNotifier {
 
   /// Throws [Failure] to be caught by [AsyncValue.guard].
   Future<List<Cart>> _load(int branchId) async {
-    final useCase = ref.read(getAllCartsUseCaseProvider);
+    final useCase = await ref.read(getAllCartsUseCaseProvider.future);
     final result = await useCase.call(branchId);
     return result.fold((failure) {
       throw failure;

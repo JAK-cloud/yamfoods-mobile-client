@@ -36,9 +36,9 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> increaseCartQuantity(int cartId) async {
+  Future<Either<Failure, Unit>> increaseCartQuantity(int productId) async {
     try {
-      await _apiService.increaseCartQuantity(cartId);
+      await _apiService.increaseCartQuantity(productId);
       return const Right(unit);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));
@@ -46,9 +46,9 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> decreaseCartQuantity(int cartId) async {
+  Future<Either<Failure, Unit>> decreaseCartQuantity(int productId) async {
     try {
-      await _apiService.decreaseCartQuantity(cartId);
+      await _apiService.decreaseCartQuantity(productId);
       return const Right(unit);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));
@@ -66,9 +66,9 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteCartItem(int cartId) async {
+  Future<Either<Failure, Unit>> deleteCartItem(int productId) async {
     try {
-      await _apiService.deleteCartItem(cartId);
+      await _apiService.deleteCartItem(productId);
       return const Right(unit);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));

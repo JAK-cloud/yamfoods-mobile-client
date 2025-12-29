@@ -34,13 +34,13 @@ class AppTextStyles {
   );
   static TextStyle h5 = const TextStyle(
     fontFamily: 'Cera Pro',
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
     color: AppColors.txtPrimary,
   );
   static TextStyle h6 = const TextStyle(
     fontFamily: 'Cera Pro',
-    fontSize: 28,
+    fontSize: 16,
     fontWeight: FontWeight.w600,
     color: AppColors.txtPrimary,
   );

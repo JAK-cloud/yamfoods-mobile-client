@@ -7,13 +7,13 @@ import '../models/cart_model.dart';
 abstract class CartRemoteDataSource {
   Future<Either<Failure, Unit>> addToCart(CartRequestData data);
 
-  Future<Either<Failure, Unit>> increaseCartQuantity(int cartId);
+  Future<Either<Failure, Unit>> increaseCartQuantity(int productId);
 
-  Future<Either<Failure, Unit>> decreaseCartQuantity(int cartId);
+  Future<Either<Failure, Unit>> decreaseCartQuantity(int productId);
 
   Future<Either<Failure, List<CartModel>>> getAllCarts(int branchId);
 
-  Future<Either<Failure, Unit>> deleteCartItem(int cartId);
+  Future<Either<Failure, Unit>> deleteCartItem(int productId);
 
   Future<Either<Failure, Unit>> deleteAllCartItems();
 }

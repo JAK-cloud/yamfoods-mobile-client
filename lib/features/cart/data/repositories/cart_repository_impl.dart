@@ -18,13 +18,13 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> increaseCartQuantity(int cartId) async {
-    return await _remoteDataSource.increaseCartQuantity(cartId);
+  Future<Either<Failure, Unit>> increaseCartQuantity(int productId) async {
+    return await _remoteDataSource.increaseCartQuantity(productId);
   }
 
   @override
-  Future<Either<Failure, Unit>> decreaseCartQuantity(int cartId) async {
-    return await _remoteDataSource.decreaseCartQuantity(cartId);
+  Future<Either<Failure, Unit>> decreaseCartQuantity(int productId) async {
+    return await _remoteDataSource.decreaseCartQuantity(productId);
   }
 
   @override
@@ -38,8 +38,8 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteCartItem(int cartId) async {
-    return await _remoteDataSource.deleteCartItem(cartId);
+  Future<Either<Failure, Unit>> deleteCartItem(int productId) async {
+    return await _remoteDataSource.deleteCartItem(productId);
   }
 
   @override

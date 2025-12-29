@@ -67,6 +67,8 @@ class AuthUserState extends _$AuthUserState {
   /// Clears the authenticated user (called on logout)
   ///
   /// This clears the state, so next read will check local storage again.
+  /// Logout method in the repository also clears the local storage of the user.
+  /// So we don't need to clear the user here.
   Future<void> clearUser() async {
     state = const AsyncValue.data(null);
   }

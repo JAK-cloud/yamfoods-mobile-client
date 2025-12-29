@@ -27,6 +27,7 @@ class AppColors {
   static const warning = Color(0xFFF59E0B);
   static const error = Color.fromARGB(255, 245, 120, 120);
   static const info = Color(0xFF2563EB);
+  static const lightRed = Color(0xFFDC2626); // Red color for logout actions
 
   // Branch card colors
   static const cardGradientStart = primary;

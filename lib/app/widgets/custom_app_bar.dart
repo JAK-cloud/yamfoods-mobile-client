@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
+import 'cupertino_back_button.dart';
 
 /// Custom app bar widget with proper status bar handling.
 ///
@@ -24,13 +24,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.transparent,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
-      leading: leading,
+      leading: leading ?? CupertinoBackButton(),
       actions: actions,
       centerTitle: centerTitle,
-      title: Text(title, style: AppTextStyles.h3),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: AppColors.txtPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 

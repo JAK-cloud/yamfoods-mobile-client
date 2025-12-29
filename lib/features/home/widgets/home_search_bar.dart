@@ -20,7 +20,7 @@ class HomeSearchBar extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           color: AppColors.white.withValues(alpha: 0.2),
-          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          borderRadius: BorderRadius.circular(AppSizes.radius),
           border: Border.all(
             color: AppColors.white.withValues(alpha: 0.3),
             width: 1,

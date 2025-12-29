@@ -51,7 +51,7 @@ final class AddressNotifierProvider
   AddressNotifier create() => AddressNotifier();
 }
 
-String _$addressNotifierHash() => r'7b7b50f9c698015e2fa3ab6d27304c18a3571cc8';
+String _$addressNotifierHash() => r'87e7c22a4c9318083203405f721b768669cecc25';
 
 /// Manages address list state and CRUD operations.
 ///

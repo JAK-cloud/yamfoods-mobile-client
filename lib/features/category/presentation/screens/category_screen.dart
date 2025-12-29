@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_sizes.dart';
 import '../../domain/entities/category.dart';
 import '../widgets/category_header.dart';
 import '../widgets/category_products_grid.dart';
@@ -42,22 +43,35 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
         bottom: false,
         child: Column(
           children: [
-            CategoryHeader(
-              category: widget.category,
-              onSearchTap: () {
-                // TODO: Implement search functionality
-              },
+            Container(
+              padding: EdgeInsets.only(bottom: AppSizes.sm),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.primary,
+                    AppColors.primary.withValues(alpha: 0.05),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  CategoryHeader(
+                    category: widget.category,
+                    onSearchTap: () {
+                      // TODO: Implement search functionality
+                    },
+                  ),
+                   SubcategoryChipsList(
+                    branchId: branchId,
+                    categoryId: widget.category.id,
+                    onSubcategorySelected: _handleSubcategorySelected,
+                  ),
+                ],
+              ),
             ),
-            Divider(
-              height: 1,
-              thickness: 1,
-              color: AppColors.grey.withValues(alpha: 0.1),
-            ),
-            SubcategoryChipsList(
-              branchId: branchId,
-              categoryId: widget.category.id,
-              onSubcategorySelected: _handleSubcategorySelected,
-            ),
+           
             Expanded(
               child: CategoryProductsGrid(
                 branchId: branchId,
