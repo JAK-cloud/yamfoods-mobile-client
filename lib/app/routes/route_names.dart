@@ -54,4 +54,10 @@ class RouteName {
 
   /// Create or update address route.
   static const String createOrUpdateAddress = '/addresses/create-or-update';
+
+  /// Achievement points route.
+  static const String achievement = '/achievement';
+
+  /// Checkout route.
+  static const String checkout = '/checkout';
 }

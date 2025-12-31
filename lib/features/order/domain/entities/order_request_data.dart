@@ -7,16 +7,20 @@ part 'order_request_data.freezed.dart';
 sealed class OrderRequestData with _$OrderRequestData {
   const factory OrderRequestData({
     required int branchId,
-    required int deliveryAddressId,
+     int? deliveryAddressId, //only required if order type is delivery
     required String orderType, // "delivery" or "pickup"
     DateTime? scheduledAt,
     required String method, // payment method like "telebirr"
     String? note,
     required int quantity,
     required double subtotal,
-    double? vatTotal,
+    required double vatTotal,
     required double deliveryFee,
-    double? discountTotal,
+    required double discountTotal,
     required double totalAmount,
+    int? pointUsed,
+    double? pointDiscount,
+    String? promoCode,
+    double? promoCodeDiscount,
   }) = _OrderRequestData;
 }

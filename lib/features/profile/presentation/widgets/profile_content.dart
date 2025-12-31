@@ -51,6 +51,12 @@ class ProfileContent extends StatelessWidget {
                 subtitle: 'Manage your addresses',
                 onTap: () => context.push(RouteName.addresses),
               ),
+              MenuItem(
+                icon: Icons.account_balance_wallet_outlined,
+                title: 'Wallet',
+                subtitle: 'View your rewards and transaction history',
+                onTap: () => context.push(RouteName.achievement),
+              ),
             ],
           ),
           const SizedBox(height: AppSizes.lg),

@@ -15,11 +15,13 @@ const achievementApiServiceProvider = AchievementApiServiceProvider._();
 final class AchievementApiServiceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AchievementApiService>,
           AchievementApiService,
-          AchievementApiService,
-          AchievementApiService
+          FutureOr<AchievementApiService>
         >
-    with $Provider<AchievementApiService> {
+    with
+        $FutureModifier<AchievementApiService>,
+        $FutureProvider<AchievementApiService> {
   const AchievementApiServiceProvider._()
     : super(
         from: null,
@@ -36,26 +38,18 @@ final class AchievementApiServiceProvider
 
   @$internal
   @override
-  $ProviderElement<AchievementApiService> $createElement(
+  $FutureProviderElement<AchievementApiService> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AchievementApiService create(Ref ref) {
+  FutureOr<AchievementApiService> create(Ref ref) {
     return achievementApiService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AchievementApiService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AchievementApiService>(value),
-    );
   }
 }
 
 String _$achievementApiServiceHash() =>
-    r'5b822b36a8d3ac6e5dee97c37ff782f352e78d64';
+    r'a90d81684340246dc67e80d07c144b68dc38fa84';
 
 @ProviderFor(achievementRemoteDataSource)
 const achievementRemoteDataSourceProvider =
@@ -64,11 +58,13 @@ const achievementRemoteDataSourceProvider =
 final class AchievementRemoteDataSourceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AchievementRemoteDataSource>,
           AchievementRemoteDataSource,
-          AchievementRemoteDataSource,
-          AchievementRemoteDataSource
+          FutureOr<AchievementRemoteDataSource>
         >
-    with $Provider<AchievementRemoteDataSource> {
+    with
+        $FutureModifier<AchievementRemoteDataSource>,
+        $FutureProvider<AchievementRemoteDataSource> {
   const AchievementRemoteDataSourceProvider._()
     : super(
         from: null,
@@ -85,26 +81,18 @@ final class AchievementRemoteDataSourceProvider
 
   @$internal
   @override
-  $ProviderElement<AchievementRemoteDataSource> $createElement(
+  $FutureProviderElement<AchievementRemoteDataSource> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AchievementRemoteDataSource create(Ref ref) {
+  FutureOr<AchievementRemoteDataSource> create(Ref ref) {
     return achievementRemoteDataSource(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AchievementRemoteDataSource value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AchievementRemoteDataSource>(value),
-    );
   }
 }
 
 String _$achievementRemoteDataSourceHash() =>
-    r'0769c479a130b8f0eb37f2cfda5b79e731702e68';
+    r'e5fddfeea7a8c9a109044ac7bf87762d97ed901c';
 
 @ProviderFor(achievementRepository)
 const achievementRepositoryProvider = AchievementRepositoryProvider._();
@@ -112,11 +100,13 @@ const achievementRepositoryProvider = AchievementRepositoryProvider._();
 final class AchievementRepositoryProvider
     extends
         $FunctionalProvider<
+          AsyncValue<AchievementRepository>,
           AchievementRepository,
-          AchievementRepository,
-          AchievementRepository
+          FutureOr<AchievementRepository>
         >
-    with $Provider<AchievementRepository> {
+    with
+        $FutureModifier<AchievementRepository>,
+        $FutureProvider<AchievementRepository> {
   const AchievementRepositoryProvider._()
     : super(
         from: null,
@@ -133,26 +123,18 @@ final class AchievementRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<AchievementRepository> $createElement(
+  $FutureProviderElement<AchievementRepository> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  AchievementRepository create(Ref ref) {
+  FutureOr<AchievementRepository> create(Ref ref) {
     return achievementRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AchievementRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<AchievementRepository>(value),
-    );
   }
 }
 
 String _$achievementRepositoryHash() =>
-    r'6503a8aab899db6bb0152ae9b05a599a45b7224a';
+    r'efc0df20f6ce6e163b71ed70fee9bbcd0b0a48b8';
 
 @ProviderFor(getAchievementPointUseCase)
 const getAchievementPointUseCaseProvider =
@@ -161,11 +143,13 @@ const getAchievementPointUseCaseProvider =
 final class GetAchievementPointUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetAchievementPointUsecase>,
           GetAchievementPointUsecase,
-          GetAchievementPointUsecase,
-          GetAchievementPointUsecase
+          FutureOr<GetAchievementPointUsecase>
         >
-    with $Provider<GetAchievementPointUsecase> {
+    with
+        $FutureModifier<GetAchievementPointUsecase>,
+        $FutureProvider<GetAchievementPointUsecase> {
   const GetAchievementPointUseCaseProvider._()
     : super(
         from: null,
@@ -182,26 +166,18 @@ final class GetAchievementPointUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetAchievementPointUsecase> $createElement(
+  $FutureProviderElement<GetAchievementPointUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetAchievementPointUsecase create(Ref ref) {
+  FutureOr<GetAchievementPointUsecase> create(Ref ref) {
     return getAchievementPointUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAchievementPointUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetAchievementPointUsecase>(value),
-    );
   }
 }
 
 String _$getAchievementPointUseCaseHash() =>
-    r'0502261f1e438c911a5b3f1d7c2a44329d373bc7';
+    r'152dcd1c5be65e9ea281cb54b3e0ccbc1a46a481';
 
 @ProviderFor(sendPointUseCase)
 const sendPointUseCaseProvider = SendPointUseCaseProvider._();
@@ -209,11 +185,11 @@ const sendPointUseCaseProvider = SendPointUseCaseProvider._();
 final class SendPointUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<SendPointUsecase>,
           SendPointUsecase,
-          SendPointUsecase,
-          SendPointUsecase
+          FutureOr<SendPointUsecase>
         >
-    with $Provider<SendPointUsecase> {
+    with $FutureModifier<SendPointUsecase>, $FutureProvider<SendPointUsecase> {
   const SendPointUseCaseProvider._()
     : super(
         from: null,
@@ -230,24 +206,17 @@ final class SendPointUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<SendPointUsecase> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<SendPointUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  SendPointUsecase create(Ref ref) {
+  FutureOr<SendPointUsecase> create(Ref ref) {
     return sendPointUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SendPointUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SendPointUsecase>(value),
-    );
   }
 }
 
-String _$sendPointUseCaseHash() => r'7536151945542584e52dc3299e3b35946c0ba28f';
+String _$sendPointUseCaseHash() => r'8a3be3f672683291c7ad6676532d383f81a0998b';
 
 @ProviderFor(getAchievementHistoryUseCase)
 const getAchievementHistoryUseCaseProvider =
@@ -256,11 +225,13 @@ const getAchievementHistoryUseCaseProvider =
 final class GetAchievementHistoryUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetAchievementHistoryUsecase>,
           GetAchievementHistoryUsecase,
-          GetAchievementHistoryUsecase,
-          GetAchievementHistoryUsecase
+          FutureOr<GetAchievementHistoryUsecase>
         >
-    with $Provider<GetAchievementHistoryUsecase> {
+    with
+        $FutureModifier<GetAchievementHistoryUsecase>,
+        $FutureProvider<GetAchievementHistoryUsecase> {
   const GetAchievementHistoryUseCaseProvider._()
     : super(
         from: null,
@@ -277,26 +248,18 @@ final class GetAchievementHistoryUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetAchievementHistoryUsecase> $createElement(
+  $FutureProviderElement<GetAchievementHistoryUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetAchievementHistoryUsecase create(Ref ref) {
+  FutureOr<GetAchievementHistoryUsecase> create(Ref ref) {
     return getAchievementHistoryUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAchievementHistoryUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetAchievementHistoryUsecase>(value),
-    );
   }
 }
 
 String _$getAchievementHistoryUseCaseHash() =>
-    r'2fcb2322d43e0cddbc4e95a2e64769eb23b8e0b1';
+    r'53fe58d134f34fb0eb3c7d20ab4680532740bfbb';
 
 /// FutureProvider for getting achievement points.
 
@@ -340,7 +303,7 @@ final class AchievementPointProvider
   }
 }
 
-String _$achievementPointHash() => r'eea5db3c6422b6b2b74233c70881558910d35a89';
+String _$achievementPointHash() => r'2d589d69d191564fe278a8ead2428f27de8e4b40';
 
 /// FutureProvider for sending points to another user.
 ///
@@ -408,7 +371,7 @@ final class SendPointProvider
   }
 }
 
-String _$sendPointHash() => r'a061ea5b75db956103e577ffed7d1b5e768386a3';
+String _$sendPointHash() => r'63d0a8c957e20c09e24170fb004fc8ba42ae820b';
 
 /// FutureProvider for sending points to another user.
 ///
@@ -485,4 +448,4 @@ final class AchievementHistoryProvider
 }
 
 String _$achievementHistoryHash() =>
-    r'e730d1ffa92fe217af19229f51893cc72f1bac0f';
+    r'ca33b29bbaca3723a53bbd79f0b0dd0d5fd02f93';

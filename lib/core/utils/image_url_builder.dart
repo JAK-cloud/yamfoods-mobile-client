@@ -32,7 +32,7 @@ class ImageUrlBuilder {
     String imageBasePath = '/uploads',
   }) {
     // TODO: Remove this after testing
-    baseUrl = 'http://192.168.66.58:3000';
+    baseUrl = 'http://192.168.185.58:3000';
     // Return empty string if imagePath is empty
     if (imagePath.isEmpty) {
       return '';

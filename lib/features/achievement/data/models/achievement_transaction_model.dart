@@ -13,6 +13,7 @@ sealed class AchievementTransactionModel with _$AchievementTransactionModel {
     required String type,
     required int points,
     @JsonKey(name: 'relatedUserId') int? relatedUserId,
+    @JsonKey(name: 'relatedUserPhone') String? relatedUserPhone,
     @JsonKey(name: 'referenceId') int? referenceId,
     String? description,
     @JsonKey(name: 'createdAt') required DateTime createdAt,

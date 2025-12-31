@@ -67,6 +67,30 @@ class DateFormatter {
     }
   }
 
+  /// Formats a date for transaction history display.
+  ///
+  /// Examples:
+  /// - "14:30" (today)
+  /// - "Yesterday"
+  /// - "Mon" (this week)
+  /// - "Jan 15, 2024" (older)
+  static String formatTransactionDate(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+
+    if (difference.inDays == 0) {
+      return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inDays < 7) {
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      return days[date.weekday - 1];
+    } else {
+      final month = _getMonthAbbreviation(date.month);
+      return '$month ${date.day}, ${date.year}';
+    }
+  }
+
   /// Gets the abbreviated month name.
   static String _getMonthAbbreviation(int month) {
     const months = [

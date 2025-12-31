@@ -28,6 +28,9 @@ import '../../features/category/presentation/screens/category_screen.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/product/domain/entities/product.dart';
 import '../../features/product/presentation/screens/product_detail_screen.dart';
+import '../../features/achievement/presentation/screens/achievement_screen.dart';
+import '../../features/checkout/models/checkout_args.dart';
+import '../../features/checkout/presentation/screens/checkout_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -145,6 +148,20 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final address = state.extra is Address ? state.extra as Address : null;
         return CreateOrUpdateAddressScreen(address: address);
+      },
+    ),
+    GoRoute(
+      path: RouteName.achievement,
+      builder: (context, state) => const AchievementScreen(),
+    ),
+    GoRoute(
+      path: RouteName.checkout,
+      builder: (context, state) {
+        final args = state.extra as CheckoutArgs;
+        return CheckoutScreen(
+          branchId: args.branchId,
+          carts: args.carts,
+        );
       },
     ),
     StatefulShellRoute.indexedStack(

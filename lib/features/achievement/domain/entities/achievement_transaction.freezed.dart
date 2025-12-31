@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AchievementTransaction {
 
- int get id; int get userId; String get type; int get points; int? get relatedUserId; int? get referenceId; String? get description; DateTime get createdAt;
+ int get id; int get userId; String get type; int get points; int? get relatedUserId; String? get relatedUserPhone; int? get referenceId; String? get description; DateTime get createdAt;
 /// Create a copy of AchievementTransaction
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AchievementTransactionCopyWith<AchievementTransaction> get copyWith => _$Achiev
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AchievementTransaction&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.type, type) || other.type == type)&&(identical(other.points, points) || other.points == points)&&(identical(other.relatedUserId, relatedUserId) || other.relatedUserId == relatedUserId)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AchievementTransaction&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.type, type) || other.type == type)&&(identical(other.points, points) || other.points == points)&&(identical(other.relatedUserId, relatedUserId) || other.relatedUserId == relatedUserId)&&(identical(other.relatedUserPhone, relatedUserPhone) || other.relatedUserPhone == relatedUserPhone)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,type,points,relatedUserId,referenceId,description,createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,type,points,relatedUserId,relatedUserPhone,referenceId,description,createdAt);
 
 @override
 String toString() {
-  return 'AchievementTransaction(id: $id, userId: $userId, type: $type, points: $points, relatedUserId: $relatedUserId, referenceId: $referenceId, description: $description, createdAt: $createdAt)';
+  return 'AchievementTransaction(id: $id, userId: $userId, type: $type, points: $points, relatedUserId: $relatedUserId, relatedUserPhone: $relatedUserPhone, referenceId: $referenceId, description: $description, createdAt: $createdAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AchievementTransactionCopyWith<$Res>  {
   factory $AchievementTransactionCopyWith(AchievementTransaction value, $Res Function(AchievementTransaction) _then) = _$AchievementTransactionCopyWithImpl;
 @useResult
 $Res call({
- int id, int userId, String type, int points, int? relatedUserId, int? referenceId, String? description, DateTime createdAt
+ int id, int userId, String type, int points, int? relatedUserId, String? relatedUserPhone, int? referenceId, String? description, DateTime createdAt
 });
 
 
@@ -62,14 +62,15 @@ class _$AchievementTransactionCopyWithImpl<$Res>
 
 /// Create a copy of AchievementTransaction
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? type = null,Object? points = null,Object? relatedUserId = freezed,Object? referenceId = freezed,Object? description = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? type = null,Object? points = null,Object? relatedUserId = freezed,Object? relatedUserPhone = freezed,Object? referenceId = freezed,Object? description = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,relatedUserId: freezed == relatedUserId ? _self.relatedUserId : relatedUserId // ignore: cast_nullable_to_non_nullable
-as int?,referenceId: freezed == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
+as int?,relatedUserPhone: freezed == relatedUserPhone ? _self.relatedUserPhone : relatedUserPhone // ignore: cast_nullable_to_non_nullable
+as String?,referenceId: freezed == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
 as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  int? referenceId,  String? description,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  String? relatedUserPhone,  int? referenceId,  String? description,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AchievementTransaction() when $default != null:
-return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.referenceId,_that.description,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.relatedUserPhone,_that.referenceId,_that.description,_that.createdAt);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserI
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  int? referenceId,  String? description,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  String? relatedUserPhone,  int? referenceId,  String? description,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _AchievementTransaction():
-return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.referenceId,_that.description,_that.createdAt);}
+return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.relatedUserPhone,_that.referenceId,_that.description,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +193,10 @@ return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserI
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  int? referenceId,  String? description,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int userId,  String type,  int points,  int? relatedUserId,  String? relatedUserPhone,  int? referenceId,  String? description,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AchievementTransaction() when $default != null:
-return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.referenceId,_that.description,_that.createdAt);case _:
+return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserId,_that.relatedUserPhone,_that.referenceId,_that.description,_that.createdAt);case _:
   return null;
 
 }
@@ -207,7 +208,7 @@ return $default(_that.id,_that.userId,_that.type,_that.points,_that.relatedUserI
 
 
 class _AchievementTransaction implements AchievementTransaction {
-  const _AchievementTransaction({required this.id, required this.userId, required this.type, required this.points, this.relatedUserId, this.referenceId, this.description, required this.createdAt});
+  const _AchievementTransaction({required this.id, required this.userId, required this.type, required this.points, this.relatedUserId, this.relatedUserPhone, this.referenceId, this.description, required this.createdAt});
   
 
 @override final  int id;
@@ -215,6 +216,7 @@ class _AchievementTransaction implements AchievementTransaction {
 @override final  String type;
 @override final  int points;
 @override final  int? relatedUserId;
+@override final  String? relatedUserPhone;
 @override final  int? referenceId;
 @override final  String? description;
 @override final  DateTime createdAt;
@@ -229,16 +231,16 @@ _$AchievementTransactionCopyWith<_AchievementTransaction> get copyWith => __$Ach
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AchievementTransaction&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.type, type) || other.type == type)&&(identical(other.points, points) || other.points == points)&&(identical(other.relatedUserId, relatedUserId) || other.relatedUserId == relatedUserId)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AchievementTransaction&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.type, type) || other.type == type)&&(identical(other.points, points) || other.points == points)&&(identical(other.relatedUserId, relatedUserId) || other.relatedUserId == relatedUserId)&&(identical(other.relatedUserPhone, relatedUserPhone) || other.relatedUserPhone == relatedUserPhone)&&(identical(other.referenceId, referenceId) || other.referenceId == referenceId)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,userId,type,points,relatedUserId,referenceId,description,createdAt);
+int get hashCode => Object.hash(runtimeType,id,userId,type,points,relatedUserId,relatedUserPhone,referenceId,description,createdAt);
 
 @override
 String toString() {
-  return 'AchievementTransaction(id: $id, userId: $userId, type: $type, points: $points, relatedUserId: $relatedUserId, referenceId: $referenceId, description: $description, createdAt: $createdAt)';
+  return 'AchievementTransaction(id: $id, userId: $userId, type: $type, points: $points, relatedUserId: $relatedUserId, relatedUserPhone: $relatedUserPhone, referenceId: $referenceId, description: $description, createdAt: $createdAt)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$AchievementTransactionCopyWith<$Res> implements $Achievem
   factory _$AchievementTransactionCopyWith(_AchievementTransaction value, $Res Function(_AchievementTransaction) _then) = __$AchievementTransactionCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int userId, String type, int points, int? relatedUserId, int? referenceId, String? description, DateTime createdAt
+ int id, int userId, String type, int points, int? relatedUserId, String? relatedUserPhone, int? referenceId, String? description, DateTime createdAt
 });
 
 
@@ -266,14 +268,15 @@ class __$AchievementTransactionCopyWithImpl<$Res>
 
 /// Create a copy of AchievementTransaction
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? type = null,Object? points = null,Object? relatedUserId = freezed,Object? referenceId = freezed,Object? description = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? type = null,Object? points = null,Object? relatedUserId = freezed,Object? relatedUserPhone = freezed,Object? referenceId = freezed,Object? description = freezed,Object? createdAt = null,}) {
   return _then(_AchievementTransaction(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,relatedUserId: freezed == relatedUserId ? _self.relatedUserId : relatedUserId // ignore: cast_nullable_to_non_nullable
-as int?,referenceId: freezed == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
+as int?,relatedUserPhone: freezed == relatedUserPhone ? _self.relatedUserPhone : relatedUserPhone // ignore: cast_nullable_to_non_nullable
+as String?,referenceId: freezed == referenceId ? _self.referenceId : referenceId // ignore: cast_nullable_to_non_nullable
 as int?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,

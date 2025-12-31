@@ -14,9 +14,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderRequestData {
 
- int get branchId; int get deliveryAddressId; String get orderType;// "delivery" or "pickup"
+ int get branchId; int? get deliveryAddressId;//only required if order type is delivery
+ String get orderType;// "delivery" or "pickup"
  DateTime? get scheduledAt; String get method;// payment method like "telebirr"
- String? get note; int get quantity; double get subtotal; double? get vatTotal; double get deliveryFee; double? get discountTotal; double get totalAmount;
+ String? get note; int get quantity; double get subtotal; double get vatTotal; double get deliveryFee; double get discountTotal; double get totalAmount; int? get pointUsed; double? get pointDiscount; String? get promoCode; double? get promoCodeDiscount;
 /// Create a copy of OrderRequestData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,16 +28,16 @@ $OrderRequestDataCopyWith<OrderRequestData> get copyWith => _$OrderRequestDataCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderRequestData&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.deliveryAddressId, deliveryAddressId) || other.deliveryAddressId == deliveryAddressId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.method, method) || other.method == method)&&(identical(other.note, note) || other.note == note)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderRequestData&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.deliveryAddressId, deliveryAddressId) || other.deliveryAddressId == deliveryAddressId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.method, method) || other.method == method)&&(identical(other.note, note) || other.note == note)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,branchId,deliveryAddressId,orderType,scheduledAt,method,note,quantity,subtotal,vatTotal,deliveryFee,discountTotal,totalAmount);
+int get hashCode => Object.hash(runtimeType,branchId,deliveryAddressId,orderType,scheduledAt,method,note,quantity,subtotal,vatTotal,deliveryFee,discountTotal,totalAmount,pointUsed,pointDiscount,promoCode,promoCodeDiscount);
 
 @override
 String toString() {
-  return 'OrderRequestData(branchId: $branchId, deliveryAddressId: $deliveryAddressId, orderType: $orderType, scheduledAt: $scheduledAt, method: $method, note: $note, quantity: $quantity, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, discountTotal: $discountTotal, totalAmount: $totalAmount)';
+  return 'OrderRequestData(branchId: $branchId, deliveryAddressId: $deliveryAddressId, orderType: $orderType, scheduledAt: $scheduledAt, method: $method, note: $note, quantity: $quantity, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, discountTotal: $discountTotal, totalAmount: $totalAmount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount)';
 }
 
 
@@ -47,7 +48,7 @@ abstract mixin class $OrderRequestDataCopyWith<$Res>  {
   factory $OrderRequestDataCopyWith(OrderRequestData value, $Res Function(OrderRequestData) _then) = _$OrderRequestDataCopyWithImpl;
 @useResult
 $Res call({
- int branchId, int deliveryAddressId, String orderType, DateTime? scheduledAt, String method, String? note, int quantity, double subtotal, double? vatTotal, double deliveryFee, double? discountTotal, double totalAmount
+ int branchId, int? deliveryAddressId, String orderType, DateTime? scheduledAt, String method, String? note, int quantity, double subtotal, double vatTotal, double deliveryFee, double discountTotal, double totalAmount, int? pointUsed, double? pointDiscount, String? promoCode, double? promoCodeDiscount
 });
 
 
@@ -64,21 +65,25 @@ class _$OrderRequestDataCopyWithImpl<$Res>
 
 /// Create a copy of OrderRequestData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? deliveryAddressId = null,Object? orderType = null,Object? scheduledAt = freezed,Object? method = null,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? discountTotal = freezed,Object? totalAmount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? deliveryAddressId = freezed,Object? orderType = null,Object? scheduledAt = freezed,Object? method = null,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? discountTotal = null,Object? totalAmount = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,}) {
   return _then(_self.copyWith(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
-as int,deliveryAddressId: null == deliveryAddressId ? _self.deliveryAddressId : deliveryAddressId // ignore: cast_nullable_to_non_nullable
-as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
+as int,deliveryAddressId: freezed == deliveryAddressId ? _self.deliveryAddressId : deliveryAddressId // ignore: cast_nullable_to_non_nullable
+as int?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
 as String,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
-as double,vatTotal: freezed == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
-as double?,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
-as double,discountTotal: freezed == discountTotal ? _self.discountTotal : discountTotal // ignore: cast_nullable_to_non_nullable
-as double?,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,
+as double,vatTotal: null == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
+as double,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
+as double,discountTotal: null == discountTotal ? _self.discountTotal : discountTotal // ignore: cast_nullable_to_non_nullable
+as double,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
+as double,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // ignore: cast_nullable_to_non_nullable
+as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable
+as double?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as String?,promoCodeDiscount: freezed == promoCodeDiscount ? _self.promoCodeDiscount : promoCodeDiscount // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 
@@ -160,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  int deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double? vatTotal,  double deliveryFee,  double? discountTotal,  double totalAmount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  int? deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double vatTotal,  double deliveryFee,  double discountTotal,  double totalAmount,  int? pointUsed,  double? pointDiscount,  String? promoCode,  double? promoCodeDiscount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderRequestData() when $default != null:
-return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount);case _:
+return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount);case _:
   return orElse();
 
 }
@@ -181,10 +186,10 @@ return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.sch
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  int deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double? vatTotal,  double deliveryFee,  double? discountTotal,  double totalAmount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  int? deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double vatTotal,  double deliveryFee,  double discountTotal,  double totalAmount,  int? pointUsed,  double? pointDiscount,  String? promoCode,  double? promoCodeDiscount)  $default,) {final _that = this;
 switch (_that) {
 case _OrderRequestData():
-return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount);}
+return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -198,10 +203,10 @@ return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.sch
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  int deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double? vatTotal,  double deliveryFee,  double? discountTotal,  double totalAmount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  int? deliveryAddressId,  String orderType,  DateTime? scheduledAt,  String method,  String? note,  int quantity,  double subtotal,  double vatTotal,  double deliveryFee,  double discountTotal,  double totalAmount,  int? pointUsed,  double? pointDiscount,  String? promoCode,  double? promoCodeDiscount)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderRequestData() when $default != null:
-return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount);case _:
+return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.scheduledAt,_that.method,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.discountTotal,_that.totalAmount,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount);case _:
   return null;
 
 }
@@ -213,11 +218,12 @@ return $default(_that.branchId,_that.deliveryAddressId,_that.orderType,_that.sch
 
 
 class _OrderRequestData implements OrderRequestData {
-  const _OrderRequestData({required this.branchId, required this.deliveryAddressId, required this.orderType, this.scheduledAt, required this.method, this.note, required this.quantity, required this.subtotal, this.vatTotal, required this.deliveryFee, this.discountTotal, required this.totalAmount});
+  const _OrderRequestData({required this.branchId, this.deliveryAddressId, required this.orderType, this.scheduledAt, required this.method, this.note, required this.quantity, required this.subtotal, required this.vatTotal, required this.deliveryFee, required this.discountTotal, required this.totalAmount, this.pointUsed, this.pointDiscount, this.promoCode, this.promoCodeDiscount});
   
 
 @override final  int branchId;
-@override final  int deliveryAddressId;
+@override final  int? deliveryAddressId;
+//only required if order type is delivery
 @override final  String orderType;
 // "delivery" or "pickup"
 @override final  DateTime? scheduledAt;
@@ -226,10 +232,14 @@ class _OrderRequestData implements OrderRequestData {
 @override final  String? note;
 @override final  int quantity;
 @override final  double subtotal;
-@override final  double? vatTotal;
+@override final  double vatTotal;
 @override final  double deliveryFee;
-@override final  double? discountTotal;
+@override final  double discountTotal;
 @override final  double totalAmount;
+@override final  int? pointUsed;
+@override final  double? pointDiscount;
+@override final  String? promoCode;
+@override final  double? promoCodeDiscount;
 
 /// Create a copy of OrderRequestData
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +251,16 @@ _$OrderRequestDataCopyWith<_OrderRequestData> get copyWith => __$OrderRequestDat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderRequestData&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.deliveryAddressId, deliveryAddressId) || other.deliveryAddressId == deliveryAddressId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.method, method) || other.method == method)&&(identical(other.note, note) || other.note == note)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderRequestData&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.deliveryAddressId, deliveryAddressId) || other.deliveryAddressId == deliveryAddressId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.method, method) || other.method == method)&&(identical(other.note, note) || other.note == note)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,branchId,deliveryAddressId,orderType,scheduledAt,method,note,quantity,subtotal,vatTotal,deliveryFee,discountTotal,totalAmount);
+int get hashCode => Object.hash(runtimeType,branchId,deliveryAddressId,orderType,scheduledAt,method,note,quantity,subtotal,vatTotal,deliveryFee,discountTotal,totalAmount,pointUsed,pointDiscount,promoCode,promoCodeDiscount);
 
 @override
 String toString() {
-  return 'OrderRequestData(branchId: $branchId, deliveryAddressId: $deliveryAddressId, orderType: $orderType, scheduledAt: $scheduledAt, method: $method, note: $note, quantity: $quantity, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, discountTotal: $discountTotal, totalAmount: $totalAmount)';
+  return 'OrderRequestData(branchId: $branchId, deliveryAddressId: $deliveryAddressId, orderType: $orderType, scheduledAt: $scheduledAt, method: $method, note: $note, quantity: $quantity, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, discountTotal: $discountTotal, totalAmount: $totalAmount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount)';
 }
 
 
@@ -261,7 +271,7 @@ abstract mixin class _$OrderRequestDataCopyWith<$Res> implements $OrderRequestDa
   factory _$OrderRequestDataCopyWith(_OrderRequestData value, $Res Function(_OrderRequestData) _then) = __$OrderRequestDataCopyWithImpl;
 @override @useResult
 $Res call({
- int branchId, int deliveryAddressId, String orderType, DateTime? scheduledAt, String method, String? note, int quantity, double subtotal, double? vatTotal, double deliveryFee, double? discountTotal, double totalAmount
+ int branchId, int? deliveryAddressId, String orderType, DateTime? scheduledAt, String method, String? note, int quantity, double subtotal, double vatTotal, double deliveryFee, double discountTotal, double totalAmount, int? pointUsed, double? pointDiscount, String? promoCode, double? promoCodeDiscount
 });
 
 
@@ -278,21 +288,25 @@ class __$OrderRequestDataCopyWithImpl<$Res>
 
 /// Create a copy of OrderRequestData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? deliveryAddressId = null,Object? orderType = null,Object? scheduledAt = freezed,Object? method = null,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? discountTotal = freezed,Object? totalAmount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? deliveryAddressId = freezed,Object? orderType = null,Object? scheduledAt = freezed,Object? method = null,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? discountTotal = null,Object? totalAmount = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,}) {
   return _then(_OrderRequestData(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
-as int,deliveryAddressId: null == deliveryAddressId ? _self.deliveryAddressId : deliveryAddressId // ignore: cast_nullable_to_non_nullable
-as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
+as int,deliveryAddressId: freezed == deliveryAddressId ? _self.deliveryAddressId : deliveryAddressId // ignore: cast_nullable_to_non_nullable
+as int?,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
 as String,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
-as double,vatTotal: freezed == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
-as double?,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
-as double,discountTotal: freezed == discountTotal ? _self.discountTotal : discountTotal // ignore: cast_nullable_to_non_nullable
-as double?,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
-as double,
+as double,vatTotal: null == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
+as double,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
+as double,discountTotal: null == discountTotal ? _self.discountTotal : discountTotal // ignore: cast_nullable_to_non_nullable
+as double,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
+as double,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // ignore: cast_nullable_to_non_nullable
+as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable
+as double?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as String?,promoCodeDiscount: freezed == promoCodeDiscount ? _self.promoCodeDiscount : promoCodeDiscount // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 

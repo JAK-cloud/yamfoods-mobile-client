@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/services/snackbar_service.dart';
+import '../../../checkout/models/checkout_args.dart';
 import '../providers/cart_events.dart';
 import '../providers/cart_notifier.dart';
 import '../widgets/cart_header.dart';
@@ -69,7 +72,11 @@ class CartScreen extends ConsumerWidget {
           ? CartSummaryCard(
               branchId: branchId,
               onPlaceOrder: () {
-                // TODO: Navigate to checkout screen
+                final carts = cartAsync.value ?? [];
+                context.push(
+                  RouteName.checkout,
+                  extra: CheckoutArgs(branchId: branchId, carts: carts),
+                );
               },
             )
           : null,
