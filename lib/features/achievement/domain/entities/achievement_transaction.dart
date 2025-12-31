@@ -10,6 +10,7 @@ sealed class AchievementTransaction with _$AchievementTransaction {
     required String type,
     required int points,
     int? relatedUserId,
+    String? relatedUserPhone,
     int? referenceId,
     String? description,
     required DateTime createdAt,

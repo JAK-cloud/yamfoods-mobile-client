@@ -185,3 +185,52 @@ class _VerifiedBadge extends StatelessWidget {
     );
   }
 }
+
+
+
+
+good design
+
+/// Placeholder for transaction history (to be implemented later).
+class _TransactionHistoryPlaceholder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+      padding: const EdgeInsets.all(AppSizes.xxl),
+      decoration: BoxDecoration(
+        color: Colors.grey.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.2), width: 1),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            Icons.history_outlined,
+            size: 48,
+            color: Colors.grey.withValues(alpha: 0.5),
+          ),
+          const SizedBox(height: AppSizes.lg),
+          Text(
+            'Transaction History',
+            style: TextStyle(
+              fontFamily: 'Cera Pro',
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: AppSizes.sm),
+          Text(
+            'Coming soon',
+            style: TextStyle(
+              fontFamily: 'Cera Pro',
+              fontSize: 14,
+              color: Colors.grey.withValues(alpha: 0.5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

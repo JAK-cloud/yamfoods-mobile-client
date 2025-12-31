@@ -530,3 +530,11 @@ user only should create max of 5 items in his cart with max of 5 quantity in eac
 
 
 update cart.mjs method such as getCart and getAllCarts
+
+
+on the achievemnt table specify types as below
+transfer in
+transfer out
+spend
+reward
+other

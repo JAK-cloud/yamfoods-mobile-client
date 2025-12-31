@@ -39,9 +39,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         if (data.note != null) 'note': data.note,
         'quantity': data.quantity,
         'subtotal': data.subtotal,
-        if (data.vatTotal != null) 'vatTotal': data.vatTotal,
+        if (data.vatTotal > 0) 'vatTotal': data.vatTotal,
         'deliveryFee': data.deliveryFee,
-        if (data.discountTotal != null) 'discountTotal': data.discountTotal,
+        if (data.discountTotal > 0) 'discountTotal': data.discountTotal,
         'totalAmount': data.totalAmount,
       };
       final body = RequestWrapper.wrap(requestData);

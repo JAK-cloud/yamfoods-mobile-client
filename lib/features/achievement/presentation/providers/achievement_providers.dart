@@ -15,42 +15,51 @@ import '../../domain/usecases/get_achievement_history_usecase.dart';
 part 'achievement_providers.g.dart';
 
 @riverpod
-AchievementApiService achievementApiService(Ref ref) {
-  final dio = ref.watch(baseDioClientProvider);
+Future<AchievementApiService> achievementApiService(Ref ref) async {
+  // Use dioClientProvider (with auth interceptor) because all achievement
+  // endpoints require authentication (getAchievementPoint, sendPoint, getAchievementHistory)
+  final dio = await ref.watch(dioClientProvider.future);
   return AchievementApiService(dio);
 }
 
 @riverpod
-AchievementRemoteDataSource achievementRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(achievementApiServiceProvider);
+Future<AchievementRemoteDataSource> achievementRemoteDataSource(Ref ref) async {
+  final apiService = await ref.watch(achievementApiServiceProvider.future);
   return AchievementRemoteDataSourceImpl(apiService);
 }
 
 @riverpod
-AchievementRepository achievementRepository(Ref ref) {
-  final remoteDataSource = ref.watch(achievementRemoteDataSourceProvider);
+Future<AchievementRepository> achievementRepository(Ref ref) async {
+  final remoteDataSource = await ref.watch(
+    achievementRemoteDataSourceProvider.future,
+  );
   return AchievementRepositoryImpl(remoteDataSource);
 }
 
 @riverpod
-GetAchievementPointUsecase getAchievementPointUseCase(Ref ref) {
-  return GetAchievementPointUsecase(ref.watch(achievementRepositoryProvider));
+Future<GetAchievementPointUsecase> getAchievementPointUseCase(Ref ref) async {
+  final repository = await ref.watch(achievementRepositoryProvider.future);
+  return GetAchievementPointUsecase(repository);
 }
 
 @riverpod
-SendPointUsecase sendPointUseCase(Ref ref) {
-  return SendPointUsecase(ref.watch(achievementRepositoryProvider));
+Future<SendPointUsecase> sendPointUseCase(Ref ref) async {
+  final repository = await ref.watch(achievementRepositoryProvider.future);
+  return SendPointUsecase(repository);
 }
 
 @riverpod
-GetAchievementHistoryUsecase getAchievementHistoryUseCase(Ref ref) {
-  return GetAchievementHistoryUsecase(ref.watch(achievementRepositoryProvider));
+Future<GetAchievementHistoryUsecase> getAchievementHistoryUseCase(
+  Ref ref,
+) async {
+  final repository = await ref.watch(achievementRepositoryProvider.future);
+  return GetAchievementHistoryUsecase(repository);
 }
 
 /// FutureProvider for getting achievement points.
 @riverpod
 Future<AchievementPoint> achievementPoint(Ref ref) async {
-  final useCase = ref.watch(getAchievementPointUseCaseProvider);
+  final useCase = await ref.watch(getAchievementPointUseCaseProvider.future);
   final result = await useCase.call();
   return result.fold((failure) => throw failure, (point) => point);
 }
@@ -62,7 +71,7 @@ Future<AchievementPoint> achievementPoint(Ref ref) async {
 /// - [phone]: The phone number of the recipient
 @riverpod
 Future<void> sendPoint(Ref ref, int point, String phone) async {
-  final useCase = ref.watch(sendPointUseCaseProvider);
+  final useCase = await ref.watch(sendPointUseCaseProvider.future);
   final result = await useCase.call(point: point, phone: phone);
   result.fold((failure) => throw failure, (_) {});
 }
@@ -70,7 +79,7 @@ Future<void> sendPoint(Ref ref, int point, String phone) async {
 /// FutureProvider for getting achievement history.
 @riverpod
 Future<List<AchievementTransaction>> achievementHistory(Ref ref) async {
-  final useCase = ref.watch(getAchievementHistoryUseCaseProvider);
+  final useCase = await ref.watch(getAchievementHistoryUseCaseProvider.future);
   final result = await useCase.call();
   return result.fold((failure) => throw failure, (history) => history);
 }
