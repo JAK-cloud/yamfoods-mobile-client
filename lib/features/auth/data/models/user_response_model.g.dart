@@ -7,9 +7,15 @@ part of 'user_response_model.dart';
 // **************************************************************************
 
 _UserResponseModel _$UserResponseModelFromJson(Map<String, dynamic> json) =>
-    _UserResponseModel(
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-    );
+    $checkedCreate('_UserResponseModel', json, ($checkedConvert) {
+      final val = _UserResponseModel(
+        user: $checkedConvert(
+          'user',
+          (v) => UserModel.fromJson(v as Map<String, dynamic>),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$UserResponseModelToJson(_UserResponseModel instance) =>
-    <String, dynamic>{'user': instance.user};
+    <String, dynamic>{'user': instance.user.toJson()};

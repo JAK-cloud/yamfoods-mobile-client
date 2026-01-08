@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../providers/checkout_notifier.dart';
 
 /// Modern segmented control for delivery type selection
-class DeliveryTypeSection extends StatefulWidget {
-  const DeliveryTypeSection({super.key});
+class DeliveryTypeSection extends ConsumerWidget {
+  final int branchId;
+
+  const DeliveryTypeSection({super.key, required this.branchId});
 
   @override
-  State<DeliveryTypeSection> createState() => _DeliveryTypeSectionState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final checkoutState = ref.watch(checkoutProvider(branchId));
+    final orderType = checkoutState.orderType;
+    final isPickup = orderType == 'pickup';
 
-class _DeliveryTypeSectionState extends State<DeliveryTypeSection> {
-  int _selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AppSizes.sm,
+        vertical: AppSizes.xs,
+      ),
       padding: EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -48,13 +53,17 @@ class _DeliveryTypeSectionState extends State<DeliveryTypeSection> {
                 child: _DeliveryOption(
                   label: 'Pickup',
                   icon: Icons.store_outlined,
-                  isSelected: _selectedIndex == 0,
-                  onTap: () => setState(() => _selectedIndex = 0),
+                  isSelected: isPickup,
+                  onTap: () {
+                    ref
+                        .read(checkoutProvider(branchId).notifier)
+                        .setOrderType('pickup');
+                  },
                 ),
               ),
               SizedBox(width: AppSizes.sm),
               Container(
-                width: 2,
+                width: 1,
                 height: 40,
                 color: AppColors.grey.withValues(alpha: 0.3),
               ),
@@ -63,8 +72,12 @@ class _DeliveryTypeSectionState extends State<DeliveryTypeSection> {
                 child: _DeliveryOption(
                   label: 'Delivery',
                   icon: Icons.local_shipping_outlined,
-                  isSelected: _selectedIndex == 1,
-                  onTap: () => setState(() => _selectedIndex = 1),
+                  isSelected: !isPickup,
+                  onTap: () {
+                    ref
+                        .read(checkoutProvider(branchId).notifier)
+                        .setOrderType('delivery');
+                  },
                 ),
               ),
             ],
@@ -107,6 +120,18 @@ class _DeliveryOption extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Circular indicator when selected
+            if (isSelected) ...[
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              SizedBox(width: AppSizes.xs / 2),
+            ],
             Icon(
               icon,
               size: 20,

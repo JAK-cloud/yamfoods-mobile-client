@@ -8,7 +8,12 @@ part of 'achievement_point_model.dart';
 
 _AchievementPointModel _$AchievementPointModelFromJson(
   Map<String, dynamic> json,
-) => _AchievementPointModel(point: (json['point'] as num).toInt());
+) => $checkedCreate('_AchievementPointModel', json, ($checkedConvert) {
+  final val = _AchievementPointModel(
+    point: $checkedConvert('point', (v) => (v as num).toInt()),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$AchievementPointModelToJson(
   _AchievementPointModel instance,

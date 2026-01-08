@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # Enable runtime type checking for better error messages
+          # This will show the exact field that causes serialization issues
+          checked: true
+          # Also enable explicit JSON conversion for nested objects
+          explicit_to_json: true

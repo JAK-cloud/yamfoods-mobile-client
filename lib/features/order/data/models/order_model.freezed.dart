@@ -15,8 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderModel {
 
- int get id; int? get userId; String get userPhone; int get branchId; String get qrCode; String get status; String get type; int get delivererId;// here it is required because this order class intended for deliverer not for customer. for customer it should be nullable
- String get delivererPhone; DateTime? get scheduledAt; String? get note; int get quantity;@JsonKey(fromJson: parseDouble) double get subtotal;@JsonKey(fromJson: parseDouble) double? get vatTotal;@JsonKey(fromJson: parseDouble) double get deliveryFee; int? get pointUsed;@JsonKey(fromJson: parseDouble) double? get pointDiscount; String? get promoCode;@JsonKey(fromJson: parseDouble) double? get promoCodeDiscount;@JsonKey(fromJson: parseDouble) double? get discountTotal;@JsonKey(fromJson: parseDouble) double get totalAmount; DateTime get createdAt; DateTime get updatedAt;
+ int get id; int? get userId; String get userPhone; int get branchId; String get qrCode; String get status; String get type; int? get delivererId;// nullable because this order class intended for customer not for deliverer. for deliverer it should be required
+ String? get delivererPhone; DateTime? get scheduledAt; String? get note; int get quantity;@JsonKey(fromJson: parseDouble) double get subtotal;@JsonKey(fromJson: parseDouble) double? get vatTotal;@JsonKey(fromJson: parseDouble) double get deliveryFee; int? get pointUsed;@JsonKey(fromJson: parseDouble) double? get pointDiscount; String? get promoCode;@JsonKey(fromJson: parseDouble) double? get promoCodeDiscount;@JsonKey(fromJson: parseDouble) double? get discountTotal;@JsonKey(fromJson: parseDouble) double get totalAmount; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $OrderModelCopyWith<$Res>  {
   factory $OrderModelCopyWith(OrderModel value, $Res Function(OrderModel) _then) = _$OrderModelCopyWithImpl;
 @useResult
 $Res call({
- int id, int? userId, String userPhone, int branchId, String qrCode, String status, String type, int delivererId, String delivererPhone, DateTime? scheduledAt, String? note, int quantity,@JsonKey(fromJson: parseDouble) double subtotal,@JsonKey(fromJson: parseDouble) double? vatTotal,@JsonKey(fromJson: parseDouble) double deliveryFee, int? pointUsed,@JsonKey(fromJson: parseDouble) double? pointDiscount, String? promoCode,@JsonKey(fromJson: parseDouble) double? promoCodeDiscount,@JsonKey(fromJson: parseDouble) double? discountTotal,@JsonKey(fromJson: parseDouble) double totalAmount, DateTime createdAt, DateTime updatedAt
+ int id, int? userId, String userPhone, int branchId, String qrCode, String status, String type, int? delivererId, String? delivererPhone, DateTime? scheduledAt, String? note, int quantity,@JsonKey(fromJson: parseDouble) double subtotal,@JsonKey(fromJson: parseDouble) double? vatTotal,@JsonKey(fromJson: parseDouble) double deliveryFee, int? pointUsed,@JsonKey(fromJson: parseDouble) double? pointDiscount, String? promoCode,@JsonKey(fromJson: parseDouble) double? promoCodeDiscount,@JsonKey(fromJson: parseDouble) double? discountTotal,@JsonKey(fromJson: parseDouble) double totalAmount, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -66,7 +66,7 @@ class _$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = freezed,Object? userPhone = null,Object? branchId = null,Object? qrCode = null,Object? status = null,Object? type = null,Object? delivererId = null,Object? delivererPhone = null,Object? scheduledAt = freezed,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? discountTotal = freezed,Object? totalAmount = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = freezed,Object? userPhone = null,Object? branchId = null,Object? qrCode = null,Object? status = null,Object? type = null,Object? delivererId = freezed,Object? delivererPhone = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? discountTotal = freezed,Object? totalAmount = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -75,9 +75,9 @@ as String,branchId: null == branchId ? _self.branchId : branchId // ignore: cast
 as int,qrCode: null == qrCode ? _self.qrCode : qrCode // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,delivererId: null == delivererId ? _self.delivererId : delivererId // ignore: cast_nullable_to_non_nullable
-as int,delivererPhone: null == delivererPhone ? _self.delivererPhone : delivererPhone // ignore: cast_nullable_to_non_nullable
-as String,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
+as String,delivererId: freezed == delivererId ? _self.delivererId : delivererId // ignore: cast_nullable_to_non_nullable
+as int?,delivererPhone: freezed == delivererPhone ? _self.delivererPhone : delivererPhone // ignore: cast_nullable_to_non_nullable
+as String?,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
@@ -173,7 +173,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int delivererId,  String delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int? delivererId,  String? delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
 return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCode,_that.status,_that.type,_that.delivererId,_that.delivererPhone,_that.scheduledAt,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount,_that.discountTotal,_that.totalAmount,_that.createdAt,_that.updatedAt);case _:
@@ -194,7 +194,7 @@ return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCod
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int delivererId,  String delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int? delivererId,  String? delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel():
 return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCode,_that.status,_that.type,_that.delivererId,_that.delivererPhone,_that.scheduledAt,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount,_that.discountTotal,_that.totalAmount,_that.createdAt,_that.updatedAt);}
@@ -211,7 +211,7 @@ return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCod
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int delivererId,  String delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? userId,  String userPhone,  int branchId,  String qrCode,  String status,  String type,  int? delivererId,  String? delivererPhone,  DateTime? scheduledAt,  String? note,  int quantity, @JsonKey(fromJson: parseDouble)  double subtotal, @JsonKey(fromJson: parseDouble)  double? vatTotal, @JsonKey(fromJson: parseDouble)  double deliveryFee,  int? pointUsed, @JsonKey(fromJson: parseDouble)  double? pointDiscount,  String? promoCode, @JsonKey(fromJson: parseDouble)  double? promoCodeDiscount, @JsonKey(fromJson: parseDouble)  double? discountTotal, @JsonKey(fromJson: parseDouble)  double totalAmount,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderModel() when $default != null:
 return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCode,_that.status,_that.type,_that.delivererId,_that.delivererPhone,_that.scheduledAt,_that.note,_that.quantity,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.pointUsed,_that.pointDiscount,_that.promoCode,_that.promoCodeDiscount,_that.discountTotal,_that.totalAmount,_that.createdAt,_that.updatedAt);case _:
@@ -226,7 +226,7 @@ return $default(_that.id,_that.userId,_that.userPhone,_that.branchId,_that.qrCod
 @JsonSerializable()
 
 class _OrderModel extends OrderModel {
-  const _OrderModel({required this.id, this.userId, required this.userPhone, required this.branchId, required this.qrCode, required this.status, required this.type, required this.delivererId, required this.delivererPhone, this.scheduledAt, this.note, required this.quantity, @JsonKey(fromJson: parseDouble) required this.subtotal, @JsonKey(fromJson: parseDouble) this.vatTotal, @JsonKey(fromJson: parseDouble) required this.deliveryFee, this.pointUsed, @JsonKey(fromJson: parseDouble) this.pointDiscount, this.promoCode, @JsonKey(fromJson: parseDouble) this.promoCodeDiscount, @JsonKey(fromJson: parseDouble) this.discountTotal, @JsonKey(fromJson: parseDouble) required this.totalAmount, required this.createdAt, required this.updatedAt}): super._();
+  const _OrderModel({required this.id, this.userId, required this.userPhone, required this.branchId, required this.qrCode, required this.status, required this.type, this.delivererId, this.delivererPhone, this.scheduledAt, this.note, required this.quantity, @JsonKey(fromJson: parseDouble) required this.subtotal, @JsonKey(fromJson: parseDouble) this.vatTotal, @JsonKey(fromJson: parseDouble) required this.deliveryFee, this.pointUsed, @JsonKey(fromJson: parseDouble) this.pointDiscount, this.promoCode, @JsonKey(fromJson: parseDouble) this.promoCodeDiscount, @JsonKey(fromJson: parseDouble) this.discountTotal, @JsonKey(fromJson: parseDouble) required this.totalAmount, required this.createdAt, required this.updatedAt}): super._();
   factory _OrderModel.fromJson(Map<String, dynamic> json) => _$OrderModelFromJson(json);
 
 @override final  int id;
@@ -236,9 +236,9 @@ class _OrderModel extends OrderModel {
 @override final  String qrCode;
 @override final  String status;
 @override final  String type;
-@override final  int delivererId;
-// here it is required because this order class intended for deliverer not for customer. for customer it should be nullable
-@override final  String delivererPhone;
+@override final  int? delivererId;
+// nullable because this order class intended for customer not for deliverer. for deliverer it should be required
+@override final  String? delivererPhone;
 @override final  DateTime? scheduledAt;
 @override final  String? note;
 @override final  int quantity;
@@ -287,7 +287,7 @@ abstract mixin class _$OrderModelCopyWith<$Res> implements $OrderModelCopyWith<$
   factory _$OrderModelCopyWith(_OrderModel value, $Res Function(_OrderModel) _then) = __$OrderModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int? userId, String userPhone, int branchId, String qrCode, String status, String type, int delivererId, String delivererPhone, DateTime? scheduledAt, String? note, int quantity,@JsonKey(fromJson: parseDouble) double subtotal,@JsonKey(fromJson: parseDouble) double? vatTotal,@JsonKey(fromJson: parseDouble) double deliveryFee, int? pointUsed,@JsonKey(fromJson: parseDouble) double? pointDiscount, String? promoCode,@JsonKey(fromJson: parseDouble) double? promoCodeDiscount,@JsonKey(fromJson: parseDouble) double? discountTotal,@JsonKey(fromJson: parseDouble) double totalAmount, DateTime createdAt, DateTime updatedAt
+ int id, int? userId, String userPhone, int branchId, String qrCode, String status, String type, int? delivererId, String? delivererPhone, DateTime? scheduledAt, String? note, int quantity,@JsonKey(fromJson: parseDouble) double subtotal,@JsonKey(fromJson: parseDouble) double? vatTotal,@JsonKey(fromJson: parseDouble) double deliveryFee, int? pointUsed,@JsonKey(fromJson: parseDouble) double? pointDiscount, String? promoCode,@JsonKey(fromJson: parseDouble) double? promoCodeDiscount,@JsonKey(fromJson: parseDouble) double? discountTotal,@JsonKey(fromJson: parseDouble) double totalAmount, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -304,7 +304,7 @@ class __$OrderModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = freezed,Object? userPhone = null,Object? branchId = null,Object? qrCode = null,Object? status = null,Object? type = null,Object? delivererId = null,Object? delivererPhone = null,Object? scheduledAt = freezed,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? discountTotal = freezed,Object? totalAmount = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = freezed,Object? userPhone = null,Object? branchId = null,Object? qrCode = null,Object? status = null,Object? type = null,Object? delivererId = freezed,Object? delivererPhone = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? quantity = null,Object? subtotal = null,Object? vatTotal = freezed,Object? deliveryFee = null,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? discountTotal = freezed,Object? totalAmount = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_OrderModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
@@ -313,9 +313,9 @@ as String,branchId: null == branchId ? _self.branchId : branchId // ignore: cast
 as int,qrCode: null == qrCode ? _self.qrCode : qrCode // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,delivererId: null == delivererId ? _self.delivererId : delivererId // ignore: cast_nullable_to_non_nullable
-as int,delivererPhone: null == delivererPhone ? _self.delivererPhone : delivererPhone // ignore: cast_nullable_to_non_nullable
-as String,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
+as String,delivererId: freezed == delivererId ? _self.delivererId : delivererId // ignore: cast_nullable_to_non_nullable
+as int?,delivererPhone: freezed == delivererPhone ? _self.delivererPhone : delivererPhone // ignore: cast_nullable_to_non_nullable
+as String?,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable

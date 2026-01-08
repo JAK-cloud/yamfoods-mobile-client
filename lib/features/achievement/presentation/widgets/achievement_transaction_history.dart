@@ -33,7 +33,7 @@ class AchievementTransactionHistory extends ConsumerWidget {
         }
 
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+        //  margin: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
           padding: const EdgeInsets.all(AppSizes.lg),
           decoration: BoxDecoration(
             color: AppColors.background,

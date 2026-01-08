@@ -2,6 +2,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+         // Allow resolving local AARs copied into android/app/libs (used by telebirr_inapp_sdk)
+        flatDir {
+            dirs("${project.rootDir}/app/libs")
+        }
     }
 }
 

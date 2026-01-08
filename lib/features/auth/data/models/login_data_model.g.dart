@@ -7,17 +7,23 @@ part of 'login_data_model.dart';
 // **************************************************************************
 
 _LoginDataModel _$LoginDataModelFromJson(Map<String, dynamic> json) =>
-    _LoginDataModel(
-      message: json['message'] as String,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      accessToken: json['accessToken'] as String,
-      refreshToken: json['refreshToken'] as String,
-    );
+    $checkedCreate('_LoginDataModel', json, ($checkedConvert) {
+      final val = _LoginDataModel(
+        message: $checkedConvert('message', (v) => v as String),
+        user: $checkedConvert(
+          'user',
+          (v) => UserModel.fromJson(v as Map<String, dynamic>),
+        ),
+        accessToken: $checkedConvert('accessToken', (v) => v as String),
+        refreshToken: $checkedConvert('refreshToken', (v) => v as String),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$LoginDataModelToJson(_LoginDataModel instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'user': instance.user,
+      'user': instance.user.toJson(),
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
     };

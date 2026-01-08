@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_sizes.dart';
@@ -12,6 +13,8 @@ class InputTextfield extends StatefulWidget {
   final bool isPassword;
   final int? maxLength;
   final int? maxLines;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? prefixText;
 
   const InputTextfield({
     super.key,
@@ -23,6 +26,8 @@ class InputTextfield extends StatefulWidget {
     this.isPassword = false,
     this.maxLength,
     this.maxLines,
+    this.inputFormatters,
+    this.prefixText,
   });
 
   @override
@@ -41,6 +46,7 @@ class _InputTextfieldState extends State<InputTextfield> {
       obscureText: widget.isPassword && _obscureText,
       maxLength: widget.maxLength,
       maxLines: widget.maxLines ?? 1,
+      inputFormatters: widget.inputFormatters,
       style: const TextStyle(fontSize: 15, color: AppColors.txtPrimary),
       decoration: InputDecoration(
         hintText: widget.hintText,
@@ -56,6 +62,8 @@ class _InputTextfieldState extends State<InputTextfield> {
           ),
         ),
         prefixIconConstraints: const BoxConstraints(minWidth: 48),
+        prefixText: widget.prefixText,
+        prefixStyle: TextStyle(color: AppColors.txtPrimary, fontSize: 15),
         suffixIcon: widget.isPassword
             ? IconButton(
                 onPressed: () => setState(() => _obscureText = !_obscureText),

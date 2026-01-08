@@ -7,14 +7,14 @@ import 'payment.dart';
 part 'order_detail.freezed.dart';
 
 @freezed
-sealed class OrderDetail with _$OrderDetail{
+sealed class OrderDetail with _$OrderDetail {
   const factory OrderDetail({
     required Orderr order,
     required List<OrderItem> items,
-    required OrderAddress address,
+    OrderAddress?
+    address, // Nullable because pickup orders don't have addresses
     required Payment payment,
   }) = _OrderDetail;
-
 }
 /*
 we have problems in our datasource folder let's think before we create these files because there is a bit different thing when it becomes to order usecase since get order details and get all orders response are a bit dirrent so using ApiResponse will not make things correct for get order details or get all order i think let's make a professional educated discussion first

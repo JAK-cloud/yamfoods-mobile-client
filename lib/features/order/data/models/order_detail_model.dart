@@ -15,11 +15,11 @@ sealed class OrderDetailModel with _$OrderDetailModel {
   const factory OrderDetailModel({
     required OrderModel order,
     required List<OrderItemModel> items,
-    required OrderAddressModel address,
+    OrderAddressModel?
+    address, // Nullable because pickup orders don't have addresses
     required PaymentModel payment,
   }) = _OrderDetailModel;
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) =>
       _$OrderDetailModelFromJson(json);
-
 }

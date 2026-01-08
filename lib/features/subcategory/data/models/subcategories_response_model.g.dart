@@ -8,12 +8,20 @@ part of 'subcategories_response_model.dart';
 
 _SubcategoriesResponseModel _$SubcategoriesResponseModelFromJson(
   Map<String, dynamic> json,
-) => _SubcategoriesResponseModel(
-  subCategories: (json['subCategories'] as List<dynamic>)
-      .map((e) => SubcategoryModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-);
+) => $checkedCreate('_SubcategoriesResponseModel', json, ($checkedConvert) {
+  final val = _SubcategoriesResponseModel(
+    subCategories: $checkedConvert(
+      'subCategories',
+      (v) => (v as List<dynamic>)
+          .map((e) => SubcategoryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    ),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$SubcategoriesResponseModelToJson(
   _SubcategoriesResponseModel instance,
-) => <String, dynamic>{'subCategories': instance.subCategories};
+) => <String, dynamic>{
+  'subCategories': instance.subCategories.map((e) => e.toJson()).toList(),
+};

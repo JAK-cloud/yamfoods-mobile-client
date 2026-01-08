@@ -8,14 +8,20 @@ part of 'create_order_response_model.dart';
 
 _CreateOrderResponseModel _$CreateOrderResponseModelFromJson(
   Map<String, dynamic> json,
-) => _CreateOrderResponseModel(
-  receiveCode: json['receiveCode'] as String,
-  order: OrderModel.fromJson(json['order'] as Map<String, dynamic>),
-);
+) => $checkedCreate('_CreateOrderResponseModel', json, ($checkedConvert) {
+  final val = _CreateOrderResponseModel(
+    receiveCode: $checkedConvert('receiveCode', (v) => v as String),
+    order: $checkedConvert(
+      'order',
+      (v) => OrderModel.fromJson(v as Map<String, dynamic>),
+    ),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$CreateOrderResponseModelToJson(
   _CreateOrderResponseModel instance,
 ) => <String, dynamic>{
   'receiveCode': instance.receiveCode,
-  'order': instance.order,
+  'order': instance.order.toJson(),
 };

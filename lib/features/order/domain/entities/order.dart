@@ -17,7 +17,7 @@ sealed class Orderr with _$Orderr {  //we do Orderr as double rr because dartz p
     DateTime? scheduledAt,
     String? note,
     required int quantity,
-    required double subtotal,
+    required double subtotal,                           
      double? vatTotal,
     required double deliveryFee,
      int? pointUsed,

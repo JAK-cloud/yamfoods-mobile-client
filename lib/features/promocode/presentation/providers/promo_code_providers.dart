@@ -6,64 +6,52 @@ import '../../data/datasources/promo_code_remote_data_source.dart';
 import '../../data/datasources/promo_code_remote_data_source_impl.dart';
 import '../../data/repositories/promo_code_repository_impl.dart';
 import '../../domain/entities/promo_code.dart';
-import '../../domain/entities/promo_code_verification_result.dart';
 import '../../domain/repositories/promo_code_repository.dart';
 import '../../domain/usecases/get_promo_codes_usecase.dart';
 import '../../domain/usecases/verify_promo_code_usecase.dart';
 
 part 'promo_code_providers.g.dart';
 
+/// Promo code API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all promo code endpoints
+/// require authentication.
 @riverpod
-PromoCodeApiService promoCodeApiService(Ref ref) {
-  final dio = ref.watch(baseDioClientProvider);
+Future<PromoCodeApiService> promoCodeApiService(Ref ref) async {
+  final dio = await ref.watch(dioClientProvider.future);
   return PromoCodeApiService(dio);
 }
 
 @riverpod
-PromoCodeRemoteDataSource promoCodeRemoteDataSource(Ref ref) {
-  final apiService = ref.watch(promoCodeApiServiceProvider);
+Future<PromoCodeRemoteDataSource> promoCodeRemoteDataSource(Ref ref) async {
+  final apiService = await ref.watch(promoCodeApiServiceProvider.future);
   return PromoCodeRemoteDataSourceImpl(apiService);
 }
 
 @riverpod
-PromoCodeRepository promoCodeRepository(Ref ref) {
-  final remoteDataSource = ref.watch(promoCodeRemoteDataSourceProvider);
+Future<PromoCodeRepository> promoCodeRepository(Ref ref) async {
+  final remoteDataSource = await ref.watch(
+    promoCodeRemoteDataSourceProvider.future,
+  );
   return PromoCodeRepositoryImpl(remoteDataSource);
 }
 
 @riverpod
-VerifyPromoCodeUsecase verifyPromoCodeUseCase(Ref ref) {
-  return VerifyPromoCodeUsecase(ref.watch(promoCodeRepositoryProvider));
+Future<VerifyPromoCodeUsecase> verifyPromoCodeUseCase(Ref ref) async {
+  final repository = await ref.watch(promoCodeRepositoryProvider.future);
+  return VerifyPromoCodeUsecase(repository);
 }
 
 @riverpod
-GetPromoCodesUsecase getPromoCodesUseCase(Ref ref) {
-  return GetPromoCodesUsecase(ref.watch(promoCodeRepositoryProvider));
+Future<GetPromoCodesUsecase> getPromoCodesUseCase(Ref ref) async {
+  final repository = await ref.watch(promoCodeRepositoryProvider.future);
+  return GetPromoCodesUsecase(repository);
 }
 
 /// FutureProvider for getting all promo codes.
 @riverpod
 Future<List<PromoCode>> promoCodeList(Ref ref) async {
-  final useCase = ref.watch(getPromoCodesUseCaseProvider);
+  final useCase = await ref.watch(getPromoCodesUseCaseProvider.future);
   final result = await useCase.call();
   return result.fold((failure) => throw failure, (promoCodes) => promoCodes);
-}
-
-/// FutureProvider for verifying a promo code.
-///
-/// Parameters:
-/// - [code]: The promo code to verify
-/// - [orderAmount]: The order amount to validate against
-@riverpod
-Future<PromoCodeVerificationResult> promoCodeVerification(
-  Ref ref,
-  String code,
-  double orderAmount,
-) async {
-  final useCase = ref.watch(verifyPromoCodeUseCaseProvider);
-  final result = await useCase.call(code: code, orderAmount: orderAmount);
-  return result.fold(
-    (failure) => throw failure,
-    (verificationResult) => verificationResult,
-  );
 }

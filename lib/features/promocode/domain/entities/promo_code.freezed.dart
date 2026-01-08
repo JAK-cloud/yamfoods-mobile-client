@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PromoCode {
 
- int get id; String get code; String get discount; String get minOrderAmount; DateTime get startDate; DateTime get endDate; DateTime get createdAt; DateTime get updatedAt;
+ int get id; String get code; String get discount; int get minOrderQty; DateTime get startDate; DateTime get endDate; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of PromoCode
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PromoCodeCopyWith<PromoCode> get copyWith => _$PromoCodeCopyWithImpl<PromoCode>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PromoCode&&(identical(other.id, id) || other.id == id)&&(identical(other.code, code) || other.code == code)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.minOrderAmount, minOrderAmount) || other.minOrderAmount == minOrderAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PromoCode&&(identical(other.id, id) || other.id == id)&&(identical(other.code, code) || other.code == code)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.minOrderQty, minOrderQty) || other.minOrderQty == minOrderQty)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,code,discount,minOrderAmount,startDate,endDate,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,code,discount,minOrderQty,startDate,endDate,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'PromoCode(id: $id, code: $code, discount: $discount, minOrderAmount: $minOrderAmount, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'PromoCode(id: $id, code: $code, discount: $discount, minOrderQty: $minOrderQty, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $PromoCodeCopyWith<$Res>  {
   factory $PromoCodeCopyWith(PromoCode value, $Res Function(PromoCode) _then) = _$PromoCodeCopyWithImpl;
 @useResult
 $Res call({
- int id, String code, String discount, String minOrderAmount, DateTime startDate, DateTime endDate, DateTime createdAt, DateTime updatedAt
+ int id, String code, String discount, int minOrderQty, DateTime startDate, DateTime endDate, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -62,13 +62,13 @@ class _$PromoCodeCopyWithImpl<$Res>
 
 /// Create a copy of PromoCode
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? code = null,Object? discount = null,Object? minOrderAmount = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? code = null,Object? discount = null,Object? minOrderQty = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,discount: null == discount ? _self.discount : discount // ignore: cast_nullable_to_non_nullable
-as String,minOrderAmount: null == minOrderAmount ? _self.minOrderAmount : minOrderAmount // ignore: cast_nullable_to_non_nullable
-as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as String,minOrderQty: null == minOrderQty ? _self.minOrderQty : minOrderQty // ignore: cast_nullable_to_non_nullable
+as int,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -154,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String code,  String discount,  String minOrderAmount,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String code,  String discount,  int minOrderQty,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PromoCode() when $default != null:
-return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.code,_that.discount,_that.minOrderQty,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -175,10 +175,10 @@ return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.st
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String code,  String discount,  String minOrderAmount,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String code,  String discount,  int minOrderQty,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _PromoCode():
-return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);}
+return $default(_that.id,_that.code,_that.discount,_that.minOrderQty,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +192,10 @@ return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.st
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String code,  String discount,  String minOrderAmount,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String code,  String discount,  int minOrderQty,  DateTime startDate,  DateTime endDate,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _PromoCode() when $default != null:
-return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.code,_that.discount,_that.minOrderQty,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -207,13 +207,13 @@ return $default(_that.id,_that.code,_that.discount,_that.minOrderAmount,_that.st
 
 
 class _PromoCode implements PromoCode {
-  const _PromoCode({required this.id, required this.code, required this.discount, required this.minOrderAmount, required this.startDate, required this.endDate, required this.createdAt, required this.updatedAt});
+  const _PromoCode({required this.id, required this.code, required this.discount, required this.minOrderQty, required this.startDate, required this.endDate, required this.createdAt, required this.updatedAt});
   
 
 @override final  int id;
 @override final  String code;
 @override final  String discount;
-@override final  String minOrderAmount;
+@override final  int minOrderQty;
 @override final  DateTime startDate;
 @override final  DateTime endDate;
 @override final  DateTime createdAt;
@@ -229,16 +229,16 @@ _$PromoCodeCopyWith<_PromoCode> get copyWith => __$PromoCodeCopyWithImpl<_PromoC
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PromoCode&&(identical(other.id, id) || other.id == id)&&(identical(other.code, code) || other.code == code)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.minOrderAmount, minOrderAmount) || other.minOrderAmount == minOrderAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PromoCode&&(identical(other.id, id) || other.id == id)&&(identical(other.code, code) || other.code == code)&&(identical(other.discount, discount) || other.discount == discount)&&(identical(other.minOrderQty, minOrderQty) || other.minOrderQty == minOrderQty)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,code,discount,minOrderAmount,startDate,endDate,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,code,discount,minOrderQty,startDate,endDate,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'PromoCode(id: $id, code: $code, discount: $discount, minOrderAmount: $minOrderAmount, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'PromoCode(id: $id, code: $code, discount: $discount, minOrderQty: $minOrderQty, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -249,7 +249,7 @@ abstract mixin class _$PromoCodeCopyWith<$Res> implements $PromoCodeCopyWith<$Re
   factory _$PromoCodeCopyWith(_PromoCode value, $Res Function(_PromoCode) _then) = __$PromoCodeCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String code, String discount, String minOrderAmount, DateTime startDate, DateTime endDate, DateTime createdAt, DateTime updatedAt
+ int id, String code, String discount, int minOrderQty, DateTime startDate, DateTime endDate, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -266,13 +266,13 @@ class __$PromoCodeCopyWithImpl<$Res>
 
 /// Create a copy of PromoCode
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? code = null,Object? discount = null,Object? minOrderAmount = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? code = null,Object? discount = null,Object? minOrderQty = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_PromoCode(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,discount: null == discount ? _self.discount : discount // ignore: cast_nullable_to_non_nullable
-as String,minOrderAmount: null == minOrderAmount ? _self.minOrderAmount : minOrderAmount // ignore: cast_nullable_to_non_nullable
-as String,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as String,minOrderQty: null == minOrderQty ? _self.minOrderQty : minOrderQty // ignore: cast_nullable_to_non_nullable
+as int,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as DateTime,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as DateTime,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable

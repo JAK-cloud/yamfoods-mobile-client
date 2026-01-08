@@ -7,14 +7,17 @@ part of 'payment_model.dart';
 // **************************************************************************
 
 _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
-    _PaymentModel(
-      id: (json['id'] as num).toInt(),
-      orderId: (json['orderId'] as num).toInt(),
-      method: json['method'] as String,
-      transactionId: json['transactionId'] as String?,
-      amount: parseDouble(json['amount']),
-      date: DateTime.parse(json['date'] as String),
-    );
+    $checkedCreate('_PaymentModel', json, ($checkedConvert) {
+      final val = _PaymentModel(
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        orderId: $checkedConvert('orderId', (v) => (v as num).toInt()),
+        method: $checkedConvert('method', (v) => v as String),
+        transactionId: $checkedConvert('transactionId', (v) => v as String?),
+        amount: $checkedConvert('amount', (v) => parseDouble(v)),
+        date: $checkedConvert('date', (v) => DateTime.parse(v as String)),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
     <String, dynamic>{

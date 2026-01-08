@@ -270,6 +270,59 @@ final class GetOrderDetailUseCaseProvider
 String _$getOrderDetailUseCaseHash() =>
     r'5e87c65af841652ee3eae15c060ac5796e3185c2';
 
+/// Create order usecase provider
+///
+/// Provides usecase for creating orders.
+
+@ProviderFor(createOrderUseCase)
+const createOrderUseCaseProvider = CreateOrderUseCaseProvider._();
+
+/// Create order usecase provider
+///
+/// Provides usecase for creating orders.
+
+final class CreateOrderUseCaseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CreateOrderUseCase>,
+          CreateOrderUseCase,
+          FutureOr<CreateOrderUseCase>
+        >
+    with
+        $FutureModifier<CreateOrderUseCase>,
+        $FutureProvider<CreateOrderUseCase> {
+  /// Create order usecase provider
+  ///
+  /// Provides usecase for creating orders.
+  const CreateOrderUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'createOrderUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$createOrderUseCaseHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<CreateOrderUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<CreateOrderUseCase> create(Ref ref) {
+    return createOrderUseCase(ref);
+  }
+}
+
+String _$createOrderUseCaseHash() =>
+    r'880c0a3cf1f8d1a0ae8830462ca2faa994d68a63';
+
 /// All orders list provider
 ///
 /// Fetches all orders using the usecase.

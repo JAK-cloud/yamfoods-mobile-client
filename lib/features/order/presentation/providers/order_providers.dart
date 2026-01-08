@@ -8,6 +8,7 @@ import '../../data/repositories/order_repository_impl.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_detail.dart';
 import '../../domain/repositories/order_repository.dart';
+import '../../domain/usecases/create_order_usecase.dart';
 import '../../domain/usecases/get_all_orders_usecase.dart';
 import '../../domain/usecases/get_order_detail_usecase.dart';
 
@@ -65,6 +66,15 @@ Future<GetAllOrdersUseCase> getAllOrdersUseCase(Ref ref) async {
 Future<GetOrderDetailUseCase> getOrderDetailUseCase(Ref ref) async {
   final repository = await ref.watch(orderRepositoryProvider.future);
   return GetOrderDetailUseCase(repository);
+}
+
+/// Create order usecase provider
+///
+/// Provides usecase for creating orders.
+@riverpod
+Future<CreateOrderUseCase> createOrderUseCase(Ref ref) async {
+  final repository = await ref.watch(orderRepositoryProvider.future);
+  return CreateOrderUseCase(repository);
 }
 
 // ==================== Data Providers ====================

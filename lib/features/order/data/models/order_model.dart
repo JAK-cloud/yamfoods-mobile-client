@@ -21,9 +21,8 @@ sealed class OrderModel with _$OrderModel {
     required String qrCode,
     required String status,
     required String type,
-    required int
-    delivererId, // here it is required because this order class intended for deliverer not for customer. for customer it should be nullable
-    required String delivererPhone,
+    int? delivererId, // nullable because this order class intended for customer not for deliverer. for deliverer it should be required
+    String? delivererPhone,
     DateTime? scheduledAt,
     String? note,
     required int quantity,

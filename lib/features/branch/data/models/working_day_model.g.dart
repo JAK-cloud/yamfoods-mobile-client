@@ -7,10 +7,13 @@ part of 'working_day_model.dart';
 // **************************************************************************
 
 _WorkingDayModel _$WorkingDayModelFromJson(Map<String, dynamic> json) =>
-    _WorkingDayModel(
-      label: json['label'] as String,
-      value: json['value'] as bool,
-    );
+    $checkedCreate('_WorkingDayModel', json, ($checkedConvert) {
+      final val = _WorkingDayModel(
+        label: $checkedConvert('label', (v) => v as String),
+        value: $checkedConvert('value', (v) => v as bool),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$WorkingDayModelToJson(_WorkingDayModel instance) =>
     <String, dynamic>{'label': instance.label, 'value': instance.value};

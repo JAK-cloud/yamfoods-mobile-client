@@ -115,19 +115,19 @@ Following modern app patterns, use a **single scrollable screen** with sections:
 │                                 │
 │  5. Schedule Order (Optional)   │
 │     - Toggle switch             │
-│     - Date/Time picker          │
-│                                 │
+│     - Date/Time picker           │
+│                                │
 │  6. Special Instructions        │
-│     - Text field                │
+│     - Text field                 │
 │                                 │
-│  7. Price Breakdown             │
+│  7. Price Breakdown            │
 │     - Subtotal                  │
-│     - VAT                       │
-│     - Delivery Fee              │
+│     - VAT                        │ 
+│     - Delivery Fee             │
 │     - Discounts                 │
-│     - Total (highlighted)       │
+│     - Total (highlighted)        │
 │                                 │
-│  8. Place Order Button          │
+│  8. Place Order Button         │
 │     (Fixed at bottom)           │
 └─────────────────────────────────┘
 ```
