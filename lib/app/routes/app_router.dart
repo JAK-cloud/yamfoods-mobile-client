@@ -31,6 +31,11 @@ import '../../features/product/presentation/screens/product_detail_screen.dart';
 import '../../features/achievement/presentation/screens/achievement_screen.dart';
 import '../../features/checkout/models/checkout_args.dart';
 import '../../features/checkout/presentation/screens/checkout_screen.dart';
+import '../../features/order/presentation/screens/order_screen.dart';
+import '../../features/order/presentation/screens/order_detail_screen.dart';
+import '../../features/map/presentation/screens/map_screen.dart';
+import '../../features/map/presentation/models/map_screen_args.dart';
+import '../../features/map/presentation/screens/driver_arrived_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -44,7 +49,7 @@ final GoRouter appRouter = GoRouter(
   // SnackbarService uses this key to get the overlay context for displaying snackbars
   // that appear on top of the entire navigation stack, regardless of the current route.
   navigatorKey: SnackbarService.rootNavigatorKey,
-  initialLocation: RouteName.login,
+  initialLocation: RouteName.home,
   routes: [
     GoRoute(
       path: RouteName.splash,
@@ -158,10 +163,32 @@ final GoRouter appRouter = GoRouter(
       path: RouteName.checkout,
       builder: (context, state) {
         final args = state.extra as CheckoutArgs;
-        return CheckoutScreen(
-          branchId: args.branchId,
-          carts: args.carts,
+        return CheckoutScreen(branchId: args.branchId, carts: args.carts);
+      },
+    ),
+    GoRoute(
+      path: RouteName.orderDetail,
+      builder: (context, state) {
+        final orderId = state.extra as int;
+        return OrderDetailScreen(orderId: orderId);
+      },
+    ),
+    GoRoute(
+      path: RouteName.orderTracking,
+      builder: (context, state) {
+        final args = state.extra as MapScreenArgs;
+        return MapScreen(
+          customerLocation: args.customerLocation,
+          restaurantLocation: args.restaurantLocation,
+          orderId: args.orderId,
         );
+      },
+    ),
+    GoRoute(
+      path: RouteName.driverArrived,
+      builder: (context, state) {
+        final orderId = state.extra as int;
+        return DriverArrivedScreen(orderId: orderId);
       },
     ),
     StatefulShellRoute.indexedStack(
@@ -189,10 +216,7 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteName.order,
-              builder: (context, state) => const _PlaceholderScreen(
-                title: 'Order',
-                message: 'Order screen will be implemented here.',
-              ),
+              builder: (context, state) => const OrderScreen(),
             ),
           ],
         ),
@@ -208,19 +232,3 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
 );
-
-/// Generic placeholder screen used until real screens are implemented.
-class _PlaceholderScreen extends StatelessWidget {
-  final String title;
-  final String message;
-
-  const _PlaceholderScreen({required this.title, required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Center(child: Text(message, textAlign: TextAlign.center)),
-    );
-  }
-}

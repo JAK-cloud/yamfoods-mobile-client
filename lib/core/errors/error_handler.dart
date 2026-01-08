@@ -146,6 +146,12 @@ class ErrorHandler {
     final statusCode = error.response?.statusCode ?? 0;
     final responseData = error.response?.data;
 
+    // Check if this is a map API error (external API with different format)
+    final requestUri = error.requestOptions.uri.toString();
+    if (requestUri.contains('mapapi.gebeta.app')) {
+      return _handleMapApiError(error, statusCode, responseData);
+    }
+
     // Try to extract error message from response
     String errorMessage = 'An error occurred';
 
@@ -182,6 +188,70 @@ class ErrorHandler {
       ErrorModel(code: 'HTTP_$statusCode', message: errorMessage),
       statusCode,
     );
+  }
+
+  /// Handles map API (external API) errors and maps them to [Failure.mapError].
+  ///
+  /// The map API uses different error response formats than our backend.
+  /// Error response format: {"error": {"message": "...", "code": "...", "status": 401}}
+  static Failure _handleMapApiError(
+    DioException error,
+    int statusCode,
+    dynamic responseData,
+  ) {
+    String errorMessage;
+
+    // Try to extract error message from response
+    if (responseData is Map<String, dynamic>) {
+      // Map API error format: {"error": {"message": "...", "code": "...", "status": 401}}
+      if (responseData.containsKey('error') &&
+          responseData['error'] is Map<String, dynamic>) {
+        final errorData = responseData['error'] as Map<String, dynamic>;
+        if (errorData.containsKey('message') &&
+            errorData['message'] is String) {
+          errorMessage = errorData['message'] as String;
+        } else {
+          // Fall back to status code-based messages
+          errorMessage = _getMapApiErrorMessage(statusCode);
+        }
+      } else if (responseData.containsKey('message') &&
+          responseData['message'] is String) {
+        // Direct message field (fallback)
+        errorMessage = responseData['message'] as String;
+      } else {
+        // Fall back to status code-based messages
+        errorMessage = _getMapApiErrorMessage(statusCode);
+      }
+    } else if (responseData is String) {
+      errorMessage = responseData;
+    } else {
+      // Fall back to status code-based messages
+      errorMessage = _getMapApiErrorMessage(statusCode);
+    }
+
+    _logError('Map API error: $statusCode', error, responseData: responseData);
+
+    return Failure.mapError(errorMessage);
+  }
+
+  /// Returns user-friendly error messages for map API based on status code.
+  ///
+  /// Status codes from Gebeta Maps API:
+  /// - 200: OK - Request successful
+  /// - 404: NoRoute - No route exists between locations
+  /// - 401: Not Authorized - Invalid or missing token
+  /// - 422: InvalidInput - Request parameters are incorrect
+  static String _getMapApiErrorMessage(int statusCode) {
+    switch (statusCode) {
+      case 404:
+        return 'No route exists between the specified locations. Confirm that the locations are accessible by route.';
+      case 401:
+        return 'The authentication token provided is either invalid or expired. Use a current, valid token.';
+      case 422:
+        return 'The request parameters are incorrect. Review the input values and adjust as needed.';
+      default:
+        return 'An error occurred while fetching the route. Please try again.';
+    }
   }
 
   /// Logs error details for debugging (only in debug mode).

@@ -63,7 +63,7 @@ class _OrderApiService implements OrderApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/order/get-deliverer-orders',
+            '/order/get-orders',
             queryParameters: queryParameters,
             data: _data,
           )

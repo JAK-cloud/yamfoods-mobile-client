@@ -4,6 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../domain/entities/achievement_point.dart';
+import 'send_point_bottom_sheet.dart';
 
 /// Premium virtual wallet card with brand-aligned premium aesthetic.
 ///
@@ -177,7 +178,12 @@ class AchievementWalletCard extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   // Action area: Send button
-                  Align(alignment: Alignment.centerRight, child: _SendButton()),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: _SendButton(
+                      onTap: () => _showSendPointBottomSheet(context),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -190,34 +196,51 @@ class AchievementWalletCard extends StatelessWidget {
 
 /// Send button with premium styling.
 class _SendButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _SendButton({required this.onTap});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.send_rounded, color: Colors.white, size: 14),
-          const SizedBox(width: 5),
-          Text(
-            'Send',
-            style: AppTextStyles.buttonMedium.copyWith(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 1,
           ),
-        ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.send_rounded, color: Colors.white, size: 14),
+            const SizedBox(width: 5),
+            Text(
+              'Send',
+              style: AppTextStyles.buttonMedium.copyWith(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+void _showSendPointBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) => const SendPointBottomSheet(),
+  );
 }
 
 /// Grain texture overlay for premium feel.

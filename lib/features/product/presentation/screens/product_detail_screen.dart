@@ -4,9 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../domain/entities/product.dart';
+import '../widgets/detail/product_cart_bottom_sheet.dart';
 import '../widgets/detail/product_description_section.dart';
 import '../widgets/detail/product_detail_header.dart';
-import '../widgets/detail/product_image_carousel.dart';
+import '../widgets/detail/product_image_carousel_modern.dart';
 import '../widgets/detail/product_info_section.dart';
 import '../widgets/detail/product_ingredients_section.dart';
 import '../widgets/detail/product_nutrition_panel.dart';
@@ -26,6 +27,7 @@ class ProductDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: false,
       body: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
@@ -34,19 +36,21 @@ class ProductDetailScreen extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Stack(
                 children: [
-                  // Curved background and carousel
-                  Container(
-                    padding: const EdgeInsets.only(top: 28),
-                    height: 330,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(200),
-                        bottomRight: Radius.circular(200),
-                      ),
-                    ),
-                    child: ProductImageCarousel(images: product.imageUrls),
-                  ),
+                    // Curved background and carousel
+                  // Container(
+                  //   padding: const EdgeInsets.only(top: 28),
+                  //   height: 330,
+                  //   decoration: const BoxDecoration(
+                  //     color: AppColors.primary,
+                  //     borderRadius: BorderRadius.only(
+                  //       bottomLeft: Radius.circular(200),
+                  //       bottomRight: Radius.circular(200),
+                  //     ),
+                  //   ),
+                  //   child: ProductImageCarousel(images: product.imageUrls),
+                  // ),
+                  // Modern full-width image carousel with rounded bottom corners
+                  ProductImageCarouselModern(images: product.imageUrls),
 
                   // Floating Header
                   const ProductDetailHeader(),
@@ -97,16 +101,18 @@ class ProductDetailScreen extends ConsumerWidget {
             ),
 
             SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
+
             // Reviews
             SliverToBoxAdapter(
               child: ProductReviewsSection(productId: product.id),
             ),
 
-            // Bottom padding for scroll
-            const SliverToBoxAdapter(child: SizedBox(height: 120)),
+            // Bottom padding for scroll (space for bottom sheet)
+            const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
       ),
+      bottomSheet: ProductCartBottomSheet(product: product),
     );
   }
 }

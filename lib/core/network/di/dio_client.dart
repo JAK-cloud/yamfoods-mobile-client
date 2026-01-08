@@ -55,6 +55,53 @@ Dio baseDioClient(Ref ref) {
   return dio;
 }
 
+/// External API Dio client provider (for APIs with different base URLs)
+///
+/// This creates a Dio instance specifically for external APIs (like Gebeta Maps)
+/// that have different base URLs than our backend. The baseUrl is intentionally
+/// left empty since Retrofit services will specify their own baseUrl via the
+/// @RestApi annotation.
+///
+/// This provider:
+/// - Uses hardcoded timeout values for external APIs
+/// - Does NOT set a baseUrl (let Retrofit handle it via annotation)
+/// - Does NOT include auth interceptor (external APIs handle their own auth)
+///
+/// **CRITICAL:** Uses `keepAlive: true` to avoid unnecessary recreation.
+@Riverpod(keepAlive: true)
+Dio externalApiDioClient(Ref ref) {
+  final logger = ref.watch(loggerProvider);
+
+  // Create Dio instance without baseUrl - Retrofit will use annotation's baseUrl
+  final dio = Dio(
+    BaseOptions(
+      // No baseUrl - let Retrofit @RestApi annotation handle it
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      headers: {'content-type': 'application/json'},
+    ),
+  );
+
+  // Add non-auth interceptors:
+  // 1. Retry (retries failed requests)
+  // 2. Logging (logs requests/responses) - should be last
+  dio.interceptors.addAll([
+    RetryInterceptor(
+      dio: dio,
+      logger: logger,
+      retries: 3,
+      retryDelays: const [
+        Duration(seconds: 1),
+        Duration(seconds: 2),
+        Duration(seconds: 3),
+      ],
+    ),
+    LoggingInterceptor(),
+  ]);
+
+  return dio;
+}
+
 /// Dio client provider with all interceptors configured (including auth)
 ///
 /// This provider creates a Dio instance with:

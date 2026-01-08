@@ -6,20 +6,24 @@ part of 'address_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_AddressModel _$AddressModelFromJson(Map<String, dynamic> json) =>
-    _AddressModel(
-      id: (json['id'] as num).toInt(),
-      userId: (json['userId'] as num).toInt(),
-      subcity: json['subcity'] as String? ?? 'N/A',
-      street: json['street'] as String? ?? 'N/A',
-      building: json['building'] as String? ?? 'N/A',
-      houseNo: json['houseNo'] as String? ?? 'N/A',
-      note: json['note'] as String? ?? 'N/A',
-      lat: json['lat'] as String,
-      lng: json['lng'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
+_AddressModel _$AddressModelFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('_AddressModel', json, ($checkedConvert) {
+  final val = _AddressModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    userId: $checkedConvert('userId', (v) => (v as num).toInt()),
+    subcity: $checkedConvert('subcity', (v) => v as String? ?? 'N/A'),
+    street: $checkedConvert('street', (v) => v as String? ?? 'N/A'),
+    building: $checkedConvert('building', (v) => v as String? ?? 'N/A'),
+    houseNo: $checkedConvert('houseNo', (v) => v as String? ?? 'N/A'),
+    note: $checkedConvert('note', (v) => v as String? ?? 'N/A'),
+    lat: $checkedConvert('lat', (v) => v as String),
+    lng: $checkedConvert('lng', (v) => v as String),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$AddressModelToJson(_AddressModel instance) =>
     <String, dynamic>{

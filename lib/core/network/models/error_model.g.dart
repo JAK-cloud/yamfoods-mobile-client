@@ -6,12 +6,16 @@ part of 'error_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ErrorModel _$ErrorModelFromJson(Map<String, dynamic> json) => _ErrorModel(
-  code: json['code'] as String,
-  message: json['message'] as String,
-  details: json['details'] as String?,
-  retry: json['retry'] as String?,
-);
+_ErrorModel _$ErrorModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_ErrorModel', json, ($checkedConvert) {
+      final val = _ErrorModel(
+        code: $checkedConvert('code', (v) => v as String),
+        message: $checkedConvert('message', (v) => v as String),
+        details: $checkedConvert('details', (v) => v as String?),
+        retry: $checkedConvert('retry', (v) => v as String?),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$ErrorModelToJson(_ErrorModel instance) =>
     <String, dynamic>{

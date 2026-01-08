@@ -8,10 +8,13 @@ part of 'address_location_model.dart';
 
 _AddressLocationModel _$AddressLocationModelFromJson(
   Map<String, dynamic> json,
-) => _AddressLocationModel(
-  latitude: parseDouble(json['latitude']),
-  longitude: parseDouble(json['longitude']),
-);
+) => $checkedCreate('_AddressLocationModel', json, ($checkedConvert) {
+  final val = _AddressLocationModel(
+    latitude: $checkedConvert('latitude', (v) => parseDouble(v)),
+    longitude: $checkedConvert('longitude', (v) => parseDouble(v)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$AddressLocationModelToJson(
   _AddressLocationModel instance,

@@ -6,16 +6,21 @@ part of 'review_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ReviewModel _$ReviewModelFromJson(Map<String, dynamic> json) => _ReviewModel(
-  id: (json['id'] as num).toInt(),
-  productId: (json['productId'] as num).toInt(),
-  reviewerId: (json['reviewerId'] as num).toInt(),
-  reviewerName: json['reviewerName'] as String,
-  rating: (json['rating'] as num).toInt(),
-  comment: json['comment'] as String,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-);
+_ReviewModel _$ReviewModelFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('_ReviewModel', json, ($checkedConvert) {
+  final val = _ReviewModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    productId: $checkedConvert('productId', (v) => (v as num).toInt()),
+    reviewerId: $checkedConvert('reviewerId', (v) => (v as num).toInt()),
+    reviewerName: $checkedConvert('reviewerName', (v) => v as String),
+    rating: $checkedConvert('rating', (v) => (v as num).toInt()),
+    comment: $checkedConvert('comment', (v) => v as String),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$ReviewModelToJson(_ReviewModel instance) =>
     <String, dynamic>{

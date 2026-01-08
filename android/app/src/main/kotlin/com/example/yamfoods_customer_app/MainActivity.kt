@@ -1,5 +1,7 @@
 package com.example.yamfoods_customer_app
 
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity : FlutterActivity()
+// Use FlutterFragmentActivity so plugins that require a FragmentActivity
+// (like telebirr_inapp_sdk) can safely cast the activity.
+class MainActivity : FlutterFragmentActivity()

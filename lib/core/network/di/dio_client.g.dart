@@ -80,6 +80,89 @@ final class BaseDioClientProvider extends $FunctionalProvider<Dio, Dio, Dio>
 
 String _$baseDioClientHash() => r'752f15ff0be29f29396b9ff9af97941b4a11fb3c';
 
+/// External API Dio client provider (for APIs with different base URLs)
+///
+/// This creates a Dio instance specifically for external APIs (like Gebeta Maps)
+/// that have different base URLs than our backend. The baseUrl is intentionally
+/// left empty since Retrofit services will specify their own baseUrl via the
+/// @RestApi annotation.
+///
+/// This provider:
+/// - Uses hardcoded timeout values for external APIs
+/// - Does NOT set a baseUrl (let Retrofit handle it via annotation)
+/// - Does NOT include auth interceptor (external APIs handle their own auth)
+///
+/// **CRITICAL:** Uses `keepAlive: true` to avoid unnecessary recreation.
+
+@ProviderFor(externalApiDioClient)
+const externalApiDioClientProvider = ExternalApiDioClientProvider._();
+
+/// External API Dio client provider (for APIs with different base URLs)
+///
+/// This creates a Dio instance specifically for external APIs (like Gebeta Maps)
+/// that have different base URLs than our backend. The baseUrl is intentionally
+/// left empty since Retrofit services will specify their own baseUrl via the
+/// @RestApi annotation.
+///
+/// This provider:
+/// - Uses hardcoded timeout values for external APIs
+/// - Does NOT set a baseUrl (let Retrofit handle it via annotation)
+/// - Does NOT include auth interceptor (external APIs handle their own auth)
+///
+/// **CRITICAL:** Uses `keepAlive: true` to avoid unnecessary recreation.
+
+final class ExternalApiDioClientProvider
+    extends $FunctionalProvider<Dio, Dio, Dio>
+    with $Provider<Dio> {
+  /// External API Dio client provider (for APIs with different base URLs)
+  ///
+  /// This creates a Dio instance specifically for external APIs (like Gebeta Maps)
+  /// that have different base URLs than our backend. The baseUrl is intentionally
+  /// left empty since Retrofit services will specify their own baseUrl via the
+  /// @RestApi annotation.
+  ///
+  /// This provider:
+  /// - Uses hardcoded timeout values for external APIs
+  /// - Does NOT set a baseUrl (let Retrofit handle it via annotation)
+  /// - Does NOT include auth interceptor (external APIs handle their own auth)
+  ///
+  /// **CRITICAL:** Uses `keepAlive: true` to avoid unnecessary recreation.
+  const ExternalApiDioClientProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'externalApiDioClientProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$externalApiDioClientHash();
+
+  @$internal
+  @override
+  $ProviderElement<Dio> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Dio create(Ref ref) {
+    return externalApiDioClient(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Dio value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Dio>(value),
+    );
+  }
+}
+
+String _$externalApiDioClientHash() =>
+    r'32b6f1cf8f22f9785d001d0e9d98bafa3d792a1f';
+
 /// Dio client provider with all interceptors configured (including auth)
 ///
 /// This provider creates a Dio instance with:

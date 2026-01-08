@@ -7,10 +7,13 @@ part of 'product_image_model.dart';
 // **************************************************************************
 
 _ProductImageModel _$ProductImageModelFromJson(Map<String, dynamic> json) =>
-    _ProductImageModel(
-      url: json['url'] as String,
-      isMain: json['is_main'] as bool,
-    );
+    $checkedCreate('_ProductImageModel', json, ($checkedConvert) {
+      final val = _ProductImageModel(
+        url: $checkedConvert('url', (v) => v as String),
+        isMain: $checkedConvert('is_main', (v) => v as bool),
+      );
+      return val;
+    }, fieldKeyMap: const {'isMain': 'is_main'});
 
 Map<String, dynamic> _$ProductImageModelToJson(_ProductImageModel instance) =>
     <String, dynamic>{'url': instance.url, 'is_main': instance.isMain};

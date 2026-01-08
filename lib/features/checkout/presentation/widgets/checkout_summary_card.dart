@@ -1,0 +1,210 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../app/components/custom_button.dart';
+import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_sizes.dart';
+import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../order/presentation/providers/order_loading_providers.dart';
+import '../providers/checkout_summary_provider.dart';
+import '../providers/checkout_validation_provider.dart';
+
+/// Checkout summary card displaying price breakdown and place order button.
+///
+/// Shows complete price breakdown:
+/// - Price Total
+/// - Item Discount
+/// - Promo Discount (if any)
+/// - Point Discount (if any)
+/// - Subtotal
+/// - VAT
+/// - Delivery Fee (if delivery)
+/// - Total Amount (highlighted)
+class CheckoutSummaryCard extends ConsumerWidget {
+  final int branchId;
+  final VoidCallback? onPlaceOrder;
+
+  const CheckoutSummaryCard({
+    super.key,
+    required this.branchId,
+    this.onPlaceOrder,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final summary = ref.watch(checkoutSummaryProvider(branchId));
+    final validation = ref.watch(checkoutValidationProvider(branchId));
+    final isLoading = ref.watch(orderCreationLoadingProvider);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppSizes.radiusLg),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.grey.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: AppSizes.sm,
+            left: AppSizes.sm,
+            right: AppSizes.sm,
+          ),
+          margin: EdgeInsets.all(AppSizes.sm),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            borderRadius: BorderRadius.circular(AppSizes.radius),
+            border: Border.all(
+              color: AppColors.grey.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Price Total
+              _PriceRow(
+                label: 'Price Total',
+                value: summary.priceTotal,
+                isTotal: false,
+              ),
+              // Item Discount
+              if (summary.itemDiscountTotal > 0) ...[
+                SizedBox(height: AppSizes.sm),
+                _PriceRow(
+                  label: 'Item Discount',
+                  value: -summary.itemDiscountTotal,
+                  isTotal: false,
+                  isDiscount: true,
+                ),
+              ],
+              // Promo Discount
+              if (summary.promoDiscount > 0) ...[
+                SizedBox(height: AppSizes.sm),
+                _PriceRow(
+                  label: 'Promo Discount',
+                  value: -summary.promoDiscount,
+                  isTotal: false,
+                  isDiscount: true,
+                ),
+              ],
+              // Point Discount
+              if (summary.pointDiscount > 0) ...[
+                SizedBox(height: AppSizes.sm),
+                _PriceRow(
+                  label: 'Points Discount',
+                  value: -summary.pointDiscount,
+                  isTotal: false,
+                  isDiscount: true,
+                ),
+              ],
+              SizedBox(height: AppSizes.sm),
+              // Subtotal
+              _PriceRow(
+                label: 'Subtotal',
+                value: summary.subtotal,
+                isTotal: false,
+              ),
+              SizedBox(height: AppSizes.sm),
+              // VAT
+              _PriceRow(label: 'VAT', value: summary.vatTotal, isTotal: false),
+              // Delivery Fee
+              if (summary.deliveryFee > 0) ...[
+                SizedBox(height: AppSizes.sm),
+                _PriceRow(
+                  label: 'Delivery Fee',
+                  value: summary.deliveryFee,
+                  isTotal: false,
+                ),
+              ],
+              Divider(
+                height: AppSizes.xl,
+                thickness: 1,
+                color: AppColors.grey.withValues(alpha: 0.5),
+              ),
+              // Total Amount
+              _PriceRow(
+                label: 'Total',
+                value: summary.totalAmount,
+                isTotal: true,
+              ),
+              SizedBox(height: AppSizes.lg),
+              // Proceed to Payment button
+              CustomButton(
+                text: 'Proceed to Payment',
+                isLoading: isLoading,
+                onPressed:
+                    (summary.totalAmount > 0 &&
+                        validation.isValid &&
+                        !isLoading)
+                    ? onPlaceOrder
+                    : null,
+                height: AppSizes.btnHeight,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Individual price row in summary.
+class _PriceRow extends StatelessWidget {
+  final String label;
+  final double value;
+  final bool isTotal;
+  final bool isDiscount;
+
+  const _PriceRow({
+    required this.label,
+    required this.value,
+    this.isTotal = false,
+    this.isDiscount = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: isTotal
+              ? AppTextStyles.h5.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                )
+              : AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.txtSecondary,
+                ),
+        ),
+        Text(
+          isDiscount
+              ? '-${value.abs().toStringAsFixed(2)} ${AppConstants.currency}'
+              : '${value.toStringAsFixed(2)} ${AppConstants.currency}',
+          style: isTotal
+              ? AppTextStyles.h4.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                )
+              : AppTextStyles.bodyLarge.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: isDiscount ? AppColors.success : AppColors.txtPrimary,
+                ),
+        ),
+      ],
+    );
+  }
+}

@@ -11,7 +11,7 @@ sealed class PromoCodeModel with _$PromoCodeModel {
     required int id,
     required String code,
     required String discount,
-    @JsonKey(name: 'minOrderAmount') required String minOrderAmount,
+    @JsonKey(name: 'minOrderAmount') required int minOrderQty,
     @JsonKey(name: 'startDate') required DateTime startDate,
     @JsonKey(name: 'endDate') required DateTime endDate,
     @JsonKey(name: 'createdAt') required DateTime createdAt,

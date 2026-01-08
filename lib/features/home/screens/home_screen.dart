@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
+import '../../product/presentation/providers/product_providers.dart';
 import '../../promo_banner/presentation/widgets/promo_banner_slider.dart';
 import '../widgets/category_chips_list.dart';
 import '../widgets/home_header.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final int branchId = 2;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -48,48 +50,53 @@ class HomeScreen extends ConsumerWidget {
 
             // Scrollable content: banner, categories, and products
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  // Premium surface section (banner, categories) with gradient
-                  SliverToBoxAdapter(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.9),
-                            AppColors.background,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(branchProductsProvider(branchId));
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    // Premium surface section (banner, categories) with gradient
+                    SliverToBoxAdapter(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              AppColors.primary.withValues(alpha: 0.9),
+                              AppColors.background,
+                            ],
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(height: 2),
+                            // Promo banner slider
+                            const PromoBannerSlider(),
+
+                            SizedBox(height: AppSizes.lg),
+
+                            // Category chips list
+                            CategoryChipsList(branchId: 2),
                           ],
                         ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(height: 2),
-                          // Promo banner slider
-                          const PromoBannerSlider(),
+                    ),
 
-                          SizedBox(height: AppSizes.lg),
+                    // Product grid - scrolls with content
+                    ProductSliverGrid(branchId: 2),
 
-                          // Category chips list
-                          CategoryChipsList(branchId: 2),
-                        ],
+                    // Bottom padding for safe area
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height:
+                            MediaQuery.of(context).padding.bottom + AppSizes.lg,
                       ),
                     ),
-                  ),
-
-                  // Product grid - scrolls with content
-                  ProductSliverGrid(branchId: 2),
-
-                  // Bottom padding for safe area
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height:
-                          MediaQuery.of(context).padding.bottom + AppSizes.lg,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

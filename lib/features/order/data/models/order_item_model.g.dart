@@ -7,26 +7,34 @@ part of 'order_item_model.dart';
 // **************************************************************************
 
 _OrderItemModel _$OrderItemModelFromJson(Map<String, dynamic> json) =>
-    _OrderItemModel(
-      id: (json['id'] as num).toInt(),
-      orderId: (json['orderId'] as num).toInt(),
-      productId: (json['productId'] as num?)?.toInt(),
-      quantity: (json['quantity'] as num).toInt(),
-      name: json['name'] as String,
-      price: parseDouble(json['price']),
-      images: (json['images'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      description: json['description'] as String?,
-      ingredients: (json['ingredients'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      discount: json['discount'] as String?,
-      variants: json['variants'] as String?,
-      nutrition: json['nutrition'] as String?,
-      vatRate: parseDouble(json['vatRate']),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-    );
+    $checkedCreate('_OrderItemModel', json, ($checkedConvert) {
+      final val = _OrderItemModel(
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        orderId: $checkedConvert('orderId', (v) => (v as num).toInt()),
+        productId: $checkedConvert('productId', (v) => (v as num?)?.toInt()),
+        quantity: $checkedConvert('quantity', (v) => (v as num).toInt()),
+        name: $checkedConvert('name', (v) => v as String),
+        price: $checkedConvert('price', (v) => parseDouble(v)),
+        images: $checkedConvert(
+          'images',
+          (v) => (v as List<dynamic>).map((e) => e as String).toList(),
+        ),
+        description: $checkedConvert('description', (v) => v as String?),
+        ingredients: $checkedConvert(
+          'ingredients',
+          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList(),
+        ),
+        discount: $checkedConvert('discount', (v) => v as String?),
+        variants: $checkedConvert('variants', (v) => v as String?),
+        nutrition: $checkedConvert('nutrition', (v) => v as String?),
+        vatRate: $checkedConvert('vatRate', (v) => parseDouble(v)),
+        createdAt: $checkedConvert(
+          'createdAt',
+          (v) => DateTime.parse(v as String),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$OrderItemModelToJson(_OrderItemModel instance) =>
     <String, dynamic>{

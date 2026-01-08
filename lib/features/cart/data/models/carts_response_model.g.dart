@@ -7,11 +7,17 @@ part of 'carts_response_model.dart';
 // **************************************************************************
 
 _CartsResponseModel _$CartsResponseModelFromJson(Map<String, dynamic> json) =>
-    _CartsResponseModel(
-      carts: (json['carts'] as List<dynamic>)
-          .map((e) => CartModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+    $checkedCreate('_CartsResponseModel', json, ($checkedConvert) {
+      final val = _CartsResponseModel(
+        carts: $checkedConvert(
+          'carts',
+          (v) => (v as List<dynamic>)
+              .map((e) => CartModel.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$CartsResponseModelToJson(_CartsResponseModel instance) =>
-    <String, dynamic>{'carts': instance.carts};
+    <String, dynamic>{'carts': instance.carts.map((e) => e.toJson()).toList()};

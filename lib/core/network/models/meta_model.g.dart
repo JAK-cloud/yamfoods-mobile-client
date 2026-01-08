@@ -6,10 +6,14 @@ part of 'meta_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_MetaModel _$MetaModelFromJson(Map<String, dynamic> json) => _MetaModel(
-  requestId: json['request_id'] as String,
-  timestamp: json['timestamp'] as String,
-);
+_MetaModel _$MetaModelFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_MetaModel', json, ($checkedConvert) {
+      final val = _MetaModel(
+        requestId: $checkedConvert('request_id', (v) => v as String),
+        timestamp: $checkedConvert('timestamp', (v) => v as String),
+      );
+      return val;
+    }, fieldKeyMap: const {'requestId': 'request_id'});
 
 Map<String, dynamic> _$MetaModelToJson(_MetaModel instance) =>
     <String, dynamic>{

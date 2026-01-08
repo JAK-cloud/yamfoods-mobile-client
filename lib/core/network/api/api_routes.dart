@@ -92,7 +92,7 @@ class ApiRoutes {
   // Order endpoints
   static const String _orderBase = '/order';
   static const String createOrder = '$_orderBase/create-order';
-  static const String getAllOrders = '$_orderBase/get-deliverer-orders';
+  static const String getAllOrders = '$_orderBase/get-orders';
   static const String getOrderDetail = '$_orderBase/get-order-detail/{orderId}';
   static const String updateOrderStatus = '$_orderBase/update-order-status';
   static const String getOutForDeliveryOrder =

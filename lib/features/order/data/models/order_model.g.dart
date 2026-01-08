@@ -6,33 +6,42 @@ part of 'order_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => _OrderModel(
-  id: (json['id'] as num).toInt(),
-  userId: (json['userId'] as num?)?.toInt(),
-  userPhone: json['userPhone'] as String,
-  branchId: (json['branchId'] as num).toInt(),
-  qrCode: json['qrCode'] as String,
-  status: json['status'] as String,
-  type: json['type'] as String,
-  delivererId: (json['delivererId'] as num).toInt(),
-  delivererPhone: json['delivererPhone'] as String,
-  scheduledAt: json['scheduledAt'] == null
-      ? null
-      : DateTime.parse(json['scheduledAt'] as String),
-  note: json['note'] as String?,
-  quantity: (json['quantity'] as num).toInt(),
-  subtotal: parseDouble(json['subtotal']),
-  vatTotal: parseDouble(json['vatTotal']),
-  deliveryFee: parseDouble(json['deliveryFee']),
-  pointUsed: (json['pointUsed'] as num?)?.toInt(),
-  pointDiscount: parseDouble(json['pointDiscount']),
-  promoCode: json['promoCode'] as String?,
-  promoCodeDiscount: parseDouble(json['promoCodeDiscount']),
-  discountTotal: parseDouble(json['discountTotal']),
-  totalAmount: parseDouble(json['totalAmount']),
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-);
+_OrderModel _$OrderModelFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('_OrderModel', json, ($checkedConvert) {
+  final val = _OrderModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    userId: $checkedConvert('userId', (v) => (v as num?)?.toInt()),
+    userPhone: $checkedConvert('userPhone', (v) => v as String),
+    branchId: $checkedConvert('branchId', (v) => (v as num).toInt()),
+    qrCode: $checkedConvert('qrCode', (v) => v as String),
+    status: $checkedConvert('status', (v) => v as String),
+    type: $checkedConvert('type', (v) => v as String),
+    delivererId: $checkedConvert('delivererId', (v) => (v as num?)?.toInt()),
+    delivererPhone: $checkedConvert('delivererPhone', (v) => v as String?),
+    scheduledAt: $checkedConvert(
+      'scheduledAt',
+      (v) => v == null ? null : DateTime.parse(v as String),
+    ),
+    note: $checkedConvert('note', (v) => v as String?),
+    quantity: $checkedConvert('quantity', (v) => (v as num).toInt()),
+    subtotal: $checkedConvert('subtotal', (v) => parseDouble(v)),
+    vatTotal: $checkedConvert('vatTotal', (v) => parseDouble(v)),
+    deliveryFee: $checkedConvert('deliveryFee', (v) => parseDouble(v)),
+    pointUsed: $checkedConvert('pointUsed', (v) => (v as num?)?.toInt()),
+    pointDiscount: $checkedConvert('pointDiscount', (v) => parseDouble(v)),
+    promoCode: $checkedConvert('promoCode', (v) => v as String?),
+    promoCodeDiscount: $checkedConvert(
+      'promoCodeDiscount',
+      (v) => parseDouble(v),
+    ),
+    discountTotal: $checkedConvert('discountTotal', (v) => parseDouble(v)),
+    totalAmount: $checkedConvert('totalAmount', (v) => parseDouble(v)),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$OrderModelToJson(_OrderModel instance) =>
     <String, dynamic>{

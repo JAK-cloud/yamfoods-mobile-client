@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../achievement/presentation/providers/achievement_providers.dart';
 import '../../models/checkout_validator.dart';
 import 'checkout_notifier.dart';
 
@@ -78,9 +79,18 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
     errors.add('Invalid promo code');
   }
 
-  // Points validation (handled by UI, but double-check)
-  if (checkoutState.pointUsed != null && checkoutState.pointUsed! < 100) {
-    errors.add('Minimum 100 points required');
+  // Points validation
+  if (checkoutState.pointUsed != null) {
+    if (checkoutState.pointUsed! < 100) {
+      errors.add('Minimum 100 points required');
+    } else {
+      // Check if user has enough points
+      final achievementAsync = ref.watch(achievementPointProvider);
+      final availablePoints = achievementAsync.value?.point ?? 0;
+      if (checkoutState.pointUsed! > availablePoints) {
+        errors.add('Insufficient points');
+      }
+    }
   }
 
   // Schedule validation
@@ -102,10 +112,18 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
             checkoutState.promoCodeDiscount == null
         ? 'Invalid promo code'
         : null,
-    pointsError:
-        checkoutState.pointUsed != null && checkoutState.pointUsed! < 100
-        ? 'Minimum 100 points required'
-        : null,
+    pointsError: () {
+      if (checkoutState.pointUsed == null) return null;
+      if (checkoutState.pointUsed! < 100) {
+        return 'Minimum 100 points required';
+      }
+      final achievementAsync = ref.watch(achievementPointProvider);
+      final availablePoints = achievementAsync.value?.point ?? 0;
+      if (checkoutState.pointUsed! > availablePoints) {
+        return 'Insufficient points';
+      }
+      return null;
+    }(),
     scheduleError:
         checkoutState.scheduledAt != null &&
             checkoutState.scheduledAt!.isBefore(DateTime.now())

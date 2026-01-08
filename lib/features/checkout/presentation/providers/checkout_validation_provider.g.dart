@@ -10,16 +10,118 @@ part of 'checkout_validation_provider.dart';
 // ignore_for_file: type=lint, type=warning
 /// Provider that validates checkout state.
 ///
-/// Returns validation result with specific error messages.
-/// Watches checkout state and validates all required fields.
+/// **What it does:**
+/// A computed provider that watches [CheckoutState] and returns validation
+/// results in real time. Automatically re-validates when checkout state changes.
+///
+/// **When it's used:**
+///
+/// 1. **Disable/enable "Place Order" button:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    CustomButton(
+///      onPressed: validation.isValid ? () => placeOrder() : null,
+///      text: 'Place Order',
+///    )
+///    ```
+///
+/// 2. **Show inline error messages:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    if (validation.addressError != null) {
+///      Text(validation.addressError!, style: errorStyle)
+///    }
+///    ```
+///
+/// 3. **Prevent order placement:**
+///    ```dart
+///    void placeOrder() {
+///      final validation = ref.read(checkoutValidationProvider(branchId));
+///      if (!validation.isValid) {
+///        // Show error, don't proceed
+///        return;
+///      }
+///      // Proceed with order
+///    }
+///    ```
+///
+/// **Why it's useful:**
+/// - **Reactive:** Updates automatically when state changes
+/// - **Centralized:** All validation logic in one place
+/// - **Reusable:** Same validation used in multiple places
+/// - **Type-safe:** Structured error messages
+///
+/// **Example flow:**
+/// 1. User selects "Delivery" → validation checks for address
+/// 2. User removes address → validation shows error
+/// 3. User adds address → validation clears error
+/// 4. Button enables/disables automatically
+///
+/// **Without it:**
+/// You'd duplicate validation logic in multiple widgets, making it harder
+/// to maintain and keep consistent.
+///
+/// **In short:** Centralizes validation and enables reactive UI updates
+/// (button states, error messages) based on checkout state.
 
 @ProviderFor(checkoutValidation)
 const checkoutValidationProvider = CheckoutValidationFamily._();
 
 /// Provider that validates checkout state.
 ///
-/// Returns validation result with specific error messages.
-/// Watches checkout state and validates all required fields.
+/// **What it does:**
+/// A computed provider that watches [CheckoutState] and returns validation
+/// results in real time. Automatically re-validates when checkout state changes.
+///
+/// **When it's used:**
+///
+/// 1. **Disable/enable "Place Order" button:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    CustomButton(
+///      onPressed: validation.isValid ? () => placeOrder() : null,
+///      text: 'Place Order',
+///    )
+///    ```
+///
+/// 2. **Show inline error messages:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    if (validation.addressError != null) {
+///      Text(validation.addressError!, style: errorStyle)
+///    }
+///    ```
+///
+/// 3. **Prevent order placement:**
+///    ```dart
+///    void placeOrder() {
+///      final validation = ref.read(checkoutValidationProvider(branchId));
+///      if (!validation.isValid) {
+///        // Show error, don't proceed
+///        return;
+///      }
+///      // Proceed with order
+///    }
+///    ```
+///
+/// **Why it's useful:**
+/// - **Reactive:** Updates automatically when state changes
+/// - **Centralized:** All validation logic in one place
+/// - **Reusable:** Same validation used in multiple places
+/// - **Type-safe:** Structured error messages
+///
+/// **Example flow:**
+/// 1. User selects "Delivery" → validation checks for address
+/// 2. User removes address → validation shows error
+/// 3. User adds address → validation clears error
+/// 4. Button enables/disables automatically
+///
+/// **Without it:**
+/// You'd duplicate validation logic in multiple widgets, making it harder
+/// to maintain and keep consistent.
+///
+/// **In short:** Centralizes validation and enables reactive UI updates
+/// (button states, error messages) based on checkout state.
 
 final class CheckoutValidationProvider
     extends
@@ -31,8 +133,59 @@ final class CheckoutValidationProvider
     with $Provider<CheckoutValidation> {
   /// Provider that validates checkout state.
   ///
-  /// Returns validation result with specific error messages.
-  /// Watches checkout state and validates all required fields.
+  /// **What it does:**
+  /// A computed provider that watches [CheckoutState] and returns validation
+  /// results in real time. Automatically re-validates when checkout state changes.
+  ///
+  /// **When it's used:**
+  ///
+  /// 1. **Disable/enable "Place Order" button:**
+  ///    ```dart
+  ///    final validation = ref.watch(checkoutValidationProvider(branchId));
+  ///    CustomButton(
+  ///      onPressed: validation.isValid ? () => placeOrder() : null,
+  ///      text: 'Place Order',
+  ///    )
+  ///    ```
+  ///
+  /// 2. **Show inline error messages:**
+  ///    ```dart
+  ///    final validation = ref.watch(checkoutValidationProvider(branchId));
+  ///    if (validation.addressError != null) {
+  ///      Text(validation.addressError!, style: errorStyle)
+  ///    }
+  ///    ```
+  ///
+  /// 3. **Prevent order placement:**
+  ///    ```dart
+  ///    void placeOrder() {
+  ///      final validation = ref.read(checkoutValidationProvider(branchId));
+  ///      if (!validation.isValid) {
+  ///        // Show error, don't proceed
+  ///        return;
+  ///      }
+  ///      // Proceed with order
+  ///    }
+  ///    ```
+  ///
+  /// **Why it's useful:**
+  /// - **Reactive:** Updates automatically when state changes
+  /// - **Centralized:** All validation logic in one place
+  /// - **Reusable:** Same validation used in multiple places
+  /// - **Type-safe:** Structured error messages
+  ///
+  /// **Example flow:**
+  /// 1. User selects "Delivery" → validation checks for address
+  /// 2. User removes address → validation shows error
+  /// 3. User adds address → validation clears error
+  /// 4. Button enables/disables automatically
+  ///
+  /// **Without it:**
+  /// You'd duplicate validation logic in multiple widgets, making it harder
+  /// to maintain and keep consistent.
+  ///
+  /// **In short:** Centralizes validation and enables reactive UI updates
+  /// (button states, error messages) based on checkout state.
   const CheckoutValidationProvider._({
     required CheckoutValidationFamily super.from,
     required int super.argument,
@@ -86,12 +239,63 @@ final class CheckoutValidationProvider
 }
 
 String _$checkoutValidationHash() =>
-    r'83da489a392d032edae88453441dc307a9984ff8';
+    r'24434502c31e045e21bf816a21ae49937151dc0c';
 
 /// Provider that validates checkout state.
 ///
-/// Returns validation result with specific error messages.
-/// Watches checkout state and validates all required fields.
+/// **What it does:**
+/// A computed provider that watches [CheckoutState] and returns validation
+/// results in real time. Automatically re-validates when checkout state changes.
+///
+/// **When it's used:**
+///
+/// 1. **Disable/enable "Place Order" button:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    CustomButton(
+///      onPressed: validation.isValid ? () => placeOrder() : null,
+///      text: 'Place Order',
+///    )
+///    ```
+///
+/// 2. **Show inline error messages:**
+///    ```dart
+///    final validation = ref.watch(checkoutValidationProvider(branchId));
+///    if (validation.addressError != null) {
+///      Text(validation.addressError!, style: errorStyle)
+///    }
+///    ```
+///
+/// 3. **Prevent order placement:**
+///    ```dart
+///    void placeOrder() {
+///      final validation = ref.read(checkoutValidationProvider(branchId));
+///      if (!validation.isValid) {
+///        // Show error, don't proceed
+///        return;
+///      }
+///      // Proceed with order
+///    }
+///    ```
+///
+/// **Why it's useful:**
+/// - **Reactive:** Updates automatically when state changes
+/// - **Centralized:** All validation logic in one place
+/// - **Reusable:** Same validation used in multiple places
+/// - **Type-safe:** Structured error messages
+///
+/// **Example flow:**
+/// 1. User selects "Delivery" → validation checks for address
+/// 2. User removes address → validation shows error
+/// 3. User adds address → validation clears error
+/// 4. Button enables/disables automatically
+///
+/// **Without it:**
+/// You'd duplicate validation logic in multiple widgets, making it harder
+/// to maintain and keep consistent.
+///
+/// **In short:** Centralizes validation and enables reactive UI updates
+/// (button states, error messages) based on checkout state.
 
 final class CheckoutValidationFamily extends $Family
     with $FunctionalFamilyOverride<CheckoutValidation, int> {
@@ -106,8 +310,59 @@ final class CheckoutValidationFamily extends $Family
 
   /// Provider that validates checkout state.
   ///
-  /// Returns validation result with specific error messages.
-  /// Watches checkout state and validates all required fields.
+  /// **What it does:**
+  /// A computed provider that watches [CheckoutState] and returns validation
+  /// results in real time. Automatically re-validates when checkout state changes.
+  ///
+  /// **When it's used:**
+  ///
+  /// 1. **Disable/enable "Place Order" button:**
+  ///    ```dart
+  ///    final validation = ref.watch(checkoutValidationProvider(branchId));
+  ///    CustomButton(
+  ///      onPressed: validation.isValid ? () => placeOrder() : null,
+  ///      text: 'Place Order',
+  ///    )
+  ///    ```
+  ///
+  /// 2. **Show inline error messages:**
+  ///    ```dart
+  ///    final validation = ref.watch(checkoutValidationProvider(branchId));
+  ///    if (validation.addressError != null) {
+  ///      Text(validation.addressError!, style: errorStyle)
+  ///    }
+  ///    ```
+  ///
+  /// 3. **Prevent order placement:**
+  ///    ```dart
+  ///    void placeOrder() {
+  ///      final validation = ref.read(checkoutValidationProvider(branchId));
+  ///      if (!validation.isValid) {
+  ///        // Show error, don't proceed
+  ///        return;
+  ///      }
+  ///      // Proceed with order
+  ///    }
+  ///    ```
+  ///
+  /// **Why it's useful:**
+  /// - **Reactive:** Updates automatically when state changes
+  /// - **Centralized:** All validation logic in one place
+  /// - **Reusable:** Same validation used in multiple places
+  /// - **Type-safe:** Structured error messages
+  ///
+  /// **Example flow:**
+  /// 1. User selects "Delivery" → validation checks for address
+  /// 2. User removes address → validation shows error
+  /// 3. User adds address → validation clears error
+  /// 4. Button enables/disables automatically
+  ///
+  /// **Without it:**
+  /// You'd duplicate validation logic in multiple widgets, making it harder
+  /// to maintain and keep consistent.
+  ///
+  /// **In short:** Centralizes validation and enables reactive UI updates
+  /// (button states, error messages) based on checkout state.
 
   CheckoutValidationProvider call(int branchId) =>
       CheckoutValidationProvider._(argument: branchId, from: this);

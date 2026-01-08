@@ -34,119 +34,140 @@ class CartCard extends ConsumerWidget {
         : null;
     final isDeleting = ref.watch(cartDeleteLoadingProvider).contains(cart.id);
 
-    return Container(
-      padding: EdgeInsets.all(AppSizes.sm),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppSizes.radius),
+    return Dismissible(
+      key: Key('cart_item_${cart.id}'),
+      direction: DismissDirection.endToStart, // Swipe left to delete
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: AppSizes.lg),
+        decoration: BoxDecoration(
+          color: AppColors.error,
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+        ),
+        child: const Icon(
+          Icons.delete_outline,
+          color: AppColors.white,
+          size: 28,
+        ),
       ),
-      child: Stack(
-        children: [
-          Row(
-            crossAxisAlignment: .start,
-            children: [
-              //cart product main image
-              ClipRRect(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(AppSizes.radius),
-                ),
-                child: imageUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        width: 90,
-                        height: 90,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => Container(
-                          width: 100,
-                          height: 100,
+      confirmDismiss: (direction) async {
+        // Show confirmation dialog and return result
+        return await _showDeleteConfirmation(context, ref);
+      },
+      onDismissed: (direction) {
+        // This is called after confirmDismiss returns true
+        // The item is already deleted by confirmDismiss, so we don't need to do anything here
+      },
+      child: Container(
+        padding: EdgeInsets.all(AppSizes.sm),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+        ),
+        child: Stack(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //cart product main image
+                ClipRRect(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(AppSizes.radiusSm),
+                  ),
+                  child: imageUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            width: 70,
+                            height: 70,
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            child: Center(
+                              child: Icon(
+                                Icons.fastfood_outlined,
+                                color: AppColors.primary,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Container(
+                            width: 70,
+                            height: 70,
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            child: Center(
+                              child: Icon(
+                                Icons.fastfood_outlined,
+                                color: AppColors.primary,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: 70,
+                          height: 70,
                           color: AppColors.primary.withValues(alpha: 0.1),
                           child: Center(
                             child: Icon(
                               Icons.fastfood_outlined,
                               color: AppColors.primary,
-                              size: 30,
+                              size: 24,
                             ),
                           ),
                         ),
-                        errorWidget: (context, url, error) => Container(
-                          width: 100,
-                          height: 100,
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          child: Center(
-                            child: Icon(
-                              Icons.fastfood_outlined,
-                              color: AppColors.primary,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        width: 100,
-                        height: 100,
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        child: Center(
-                          child: Icon(
-                            Icons.fastfood_outlined,
-                            color: AppColors.primary,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-              ),
-              SizedBox(width: AppSizes.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    Text(
-                      cart.product.name,
-                      style: AppTextStyles.h5.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 19,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      cart.product.hasDiscount
-                          ? '${AppConstants.currency} ${cart.product.discountedPriceValue.toStringAsFixed(2)}'
-                          : '${AppConstants.currency} ${double.parse(cart.product.price).toStringAsFixed(2)}',
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(height: AppSizes.sm),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CartQuantityControlCard(
-                        cart: cart,
-                        branchId: branchId,
-                      ),
-                    ),
-                  ],
                 ),
-              ),
-            ],
-          ),
-          // Delete button in top right corner
-          Positioned(
-            top: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: isDeleting
-                  ? null
-                  : () => _showDeleteConfirmation(context, ref),
-              child: Container(
-                padding: EdgeInsets.all(AppSizes.xs),
-                decoration: BoxDecoration(
-                  color: AppColors.error.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
+                SizedBox(width: AppSizes.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        cart.product.name,
+                        style: AppTextStyles.h6.copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        cart.product.hasDiscount
+                            ? '${AppConstants.currency} ${cart.product.discountedPriceValue.toStringAsFixed(2)}'
+                            : '${AppConstants.currency} ${double.parse(cart.product.price).toStringAsFixed(2)}',
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      SizedBox(height: AppSizes.xs),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: CartQuantityControlCard(
+                          cart: cart,
+                          branchId: branchId,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+              ],
+            ),
+            // Delete button in top right corner
+            Positioned(
+              top: 0,
+              right: 0,
+              child: GestureDetector(
+                onTap: isDeleting
+                    ? null
+                    : () => _showDeleteConfirmation(context, ref),
                 child: isDeleting
                     ? SizedBox(
-                        width: 16,
-                        height: 16,
+                        width: 14,
+                        height: 14,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: const AlwaysStoppedAnimation<Color>(
@@ -157,15 +178,21 @@ class CartCard extends ConsumerWidget {
                     : Icon(Icons.close, color: Colors.red, size: 18),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   /// Shows confirmation dialog before deleting cart item.
-  void _showDeleteConfirmation(BuildContext context, WidgetRef ref) {
-    ConfirmationDialog.show(
+  ///
+  /// Returns `true` if user confirmed, `false` if cancelled.
+  /// Used by both swipe-to-delete and tap-to-delete actions.
+  Future<bool> _showDeleteConfirmation(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final confirmed = await ConfirmationDialog.show(
       context: context,
       title: 'Remove Item?',
       message:
@@ -173,10 +200,13 @@ class CartCard extends ConsumerWidget {
       confirmText: 'Remove',
       cancelText: 'Cancel',
       confirmButtonColor: AppColors.error,
-    ).then((confirmed) {
-      if (confirmed == true) {
-        ref.read(cartProvider(branchId).notifier).deleteCartItem(cart.id);
-      }
-    });
+    );
+
+    if (confirmed == true) {
+      ref.read(cartProvider(branchId).notifier).deleteCartItem(cart.id);
+      return true;
+    }
+
+    return false;
   }
 }

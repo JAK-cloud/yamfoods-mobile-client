@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderDetailModel {
 
- OrderModel get order; List<OrderItemModel> get items; OrderAddressModel get address; PaymentModel get payment;
+ OrderModel get order; List<OrderItemModel> get items; OrderAddressModel? get address;// Nullable because pickup orders don't have addresses
+ PaymentModel get payment;
 /// Create a copy of OrderDetailModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +49,11 @@ abstract mixin class $OrderDetailModelCopyWith<$Res>  {
   factory $OrderDetailModelCopyWith(OrderDetailModel value, $Res Function(OrderDetailModel) _then) = _$OrderDetailModelCopyWithImpl;
 @useResult
 $Res call({
- OrderModel order, List<OrderItemModel> items, OrderAddressModel address, PaymentModel payment
+ OrderModel order, List<OrderItemModel> items, OrderAddressModel? address, PaymentModel payment
 });
 
 
-$OrderModelCopyWith<$Res> get order;$OrderAddressModelCopyWith<$Res> get address;$PaymentModelCopyWith<$Res> get payment;
+$OrderModelCopyWith<$Res> get order;$OrderAddressModelCopyWith<$Res>? get address;$PaymentModelCopyWith<$Res> get payment;
 
 }
 /// @nodoc
@@ -65,12 +66,12 @@ class _$OrderDetailModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderDetailModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? order = null,Object? items = null,Object? address = null,Object? payment = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? order = null,Object? items = null,Object? address = freezed,Object? payment = null,}) {
   return _then(_self.copyWith(
 order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as OrderModel,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<OrderItemModel>,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as OrderAddressModel,payment: null == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
+as List<OrderItemModel>,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as OrderAddressModel?,payment: null == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
 as PaymentModel,
   ));
 }
@@ -87,9 +88,12 @@ $OrderModelCopyWith<$Res> get order {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$OrderAddressModelCopyWith<$Res> get address {
-  
-  return $OrderAddressModelCopyWith<$Res>(_self.address, (value) {
+$OrderAddressModelCopyWith<$Res>? get address {
+    if (_self.address == null) {
+    return null;
+  }
+
+  return $OrderAddressModelCopyWith<$Res>(_self.address!, (value) {
     return _then(_self.copyWith(address: value));
   });
 }/// Create a copy of OrderDetailModel
@@ -180,7 +184,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel address,  PaymentModel payment)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel? address,  PaymentModel payment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderDetailModel() when $default != null:
 return $default(_that.order,_that.items,_that.address,_that.payment);case _:
@@ -201,7 +205,7 @@ return $default(_that.order,_that.items,_that.address,_that.payment);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel address,  PaymentModel payment)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel? address,  PaymentModel payment)  $default,) {final _that = this;
 switch (_that) {
 case _OrderDetailModel():
 return $default(_that.order,_that.items,_that.address,_that.payment);}
@@ -218,7 +222,7 @@ return $default(_that.order,_that.items,_that.address,_that.payment);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel address,  PaymentModel payment)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( OrderModel order,  List<OrderItemModel> items,  OrderAddressModel? address,  PaymentModel payment)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderDetailModel() when $default != null:
 return $default(_that.order,_that.items,_that.address,_that.payment);case _:
@@ -233,7 +237,7 @@ return $default(_that.order,_that.items,_that.address,_that.payment);case _:
 @JsonSerializable()
 
 class _OrderDetailModel extends OrderDetailModel {
-  const _OrderDetailModel({required this.order, required final  List<OrderItemModel> items, required this.address, required this.payment}): _items = items,super._();
+  const _OrderDetailModel({required this.order, required final  List<OrderItemModel> items, this.address, required this.payment}): _items = items,super._();
   factory _OrderDetailModel.fromJson(Map<String, dynamic> json) => _$OrderDetailModelFromJson(json);
 
 @override final  OrderModel order;
@@ -244,7 +248,8 @@ class _OrderDetailModel extends OrderDetailModel {
   return EqualUnmodifiableListView(_items);
 }
 
-@override final  OrderAddressModel address;
+@override final  OrderAddressModel? address;
+// Nullable because pickup orders don't have addresses
 @override final  PaymentModel payment;
 
 /// Create a copy of OrderDetailModel
@@ -280,11 +285,11 @@ abstract mixin class _$OrderDetailModelCopyWith<$Res> implements $OrderDetailMod
   factory _$OrderDetailModelCopyWith(_OrderDetailModel value, $Res Function(_OrderDetailModel) _then) = __$OrderDetailModelCopyWithImpl;
 @override @useResult
 $Res call({
- OrderModel order, List<OrderItemModel> items, OrderAddressModel address, PaymentModel payment
+ OrderModel order, List<OrderItemModel> items, OrderAddressModel? address, PaymentModel payment
 });
 
 
-@override $OrderModelCopyWith<$Res> get order;@override $OrderAddressModelCopyWith<$Res> get address;@override $PaymentModelCopyWith<$Res> get payment;
+@override $OrderModelCopyWith<$Res> get order;@override $OrderAddressModelCopyWith<$Res>? get address;@override $PaymentModelCopyWith<$Res> get payment;
 
 }
 /// @nodoc
@@ -297,12 +302,12 @@ class __$OrderDetailModelCopyWithImpl<$Res>
 
 /// Create a copy of OrderDetailModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? order = null,Object? items = null,Object? address = null,Object? payment = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? order = null,Object? items = null,Object? address = freezed,Object? payment = null,}) {
   return _then(_OrderDetailModel(
 order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as OrderModel,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<OrderItemModel>,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as OrderAddressModel,payment: null == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
+as List<OrderItemModel>,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as OrderAddressModel?,payment: null == payment ? _self.payment : payment // ignore: cast_nullable_to_non_nullable
 as PaymentModel,
   ));
 }
@@ -320,9 +325,12 @@ $OrderModelCopyWith<$Res> get order {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$OrderAddressModelCopyWith<$Res> get address {
-  
-  return $OrderAddressModelCopyWith<$Res>(_self.address, (value) {
+$OrderAddressModelCopyWith<$Res>? get address {
+    if (_self.address == null) {
+    return null;
+  }
+
+  return $OrderAddressModelCopyWith<$Res>(_self.address!, (value) {
     return _then(_self.copyWith(address: value));
   });
 }/// Create a copy of OrderDetailModel

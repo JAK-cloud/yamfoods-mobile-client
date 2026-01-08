@@ -10,7 +10,7 @@ extension PromoCodeModelMapper on PromoCodeModel {
       id: id,
       code: code,
       discount: discount,
-      minOrderAmount: minOrderAmount,
+      minOrderQty: minOrderQty,
       startDate: startDate,
       endDate: endDate,
       createdAt: createdAt,

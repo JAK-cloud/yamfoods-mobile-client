@@ -60,4 +60,13 @@ class RouteName {
 
   /// Checkout route.
   static const String checkout = '/checkout';
+
+  /// Order detail route.
+  static const String orderDetail = '/order-detail';
+
+  /// Order tracking map route.
+  static const String orderTracking = '/order-tracking';
+
+  /// Driver arrived congratulations route.
+  static const String driverArrived = '/driver-arrived';
 }

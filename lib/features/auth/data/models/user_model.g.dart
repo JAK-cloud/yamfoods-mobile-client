@@ -6,19 +6,24 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
-  id: (json['id'] as num).toInt(),
-  imageUrl: json['imageUrl'] as String?,
-  name: json['name'] as String,
-  phone: json['phone'] as String?,
-  role: json['role'] as String,
-  email: json['email'] as String,
-  phoneVerified: (json['phoneVerified'] as num).toInt(),
-  googleId: json['googleId'] as String?,
-  provider: json['provider'] as String,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
-);
+_UserModel _$UserModelFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('_UserModel', json, ($checkedConvert) {
+  final val = _UserModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    imageUrl: $checkedConvert('imageUrl', (v) => v as String?),
+    name: $checkedConvert('name', (v) => v as String),
+    phone: $checkedConvert('phone', (v) => v as String?),
+    role: $checkedConvert('role', (v) => v as String),
+    email: $checkedConvert('email', (v) => v as String),
+    phoneVerified: $checkedConvert('phoneVerified', (v) => (v as num).toInt()),
+    googleId: $checkedConvert('googleId', (v) => v as String?),
+    provider: $checkedConvert('provider', (v) => v as String),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{

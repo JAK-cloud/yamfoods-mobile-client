@@ -8,17 +8,23 @@ part of 'achievement_transaction_model.dart';
 
 _AchievementTransactionModel _$AchievementTransactionModelFromJson(
   Map<String, dynamic> json,
-) => _AchievementTransactionModel(
-  id: (json['id'] as num).toInt(),
-  userId: (json['userId'] as num).toInt(),
-  type: json['type'] as String,
-  points: (json['points'] as num).toInt(),
-  relatedUserId: (json['relatedUserId'] as num?)?.toInt(),
-  relatedUserPhone: json['relatedUserPhone'] as String?,
-  referenceId: (json['referenceId'] as num?)?.toInt(),
-  description: json['description'] as String?,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-);
+) => $checkedCreate('_AchievementTransactionModel', json, ($checkedConvert) {
+  final val = _AchievementTransactionModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    userId: $checkedConvert('userId', (v) => (v as num).toInt()),
+    type: $checkedConvert('type', (v) => v as String),
+    points: $checkedConvert('points', (v) => (v as num).toInt()),
+    relatedUserId: $checkedConvert(
+      'relatedUserId',
+      (v) => (v as num?)?.toInt(),
+    ),
+    relatedUserPhone: $checkedConvert('relatedUserPhone', (v) => v as String?),
+    referenceId: $checkedConvert('referenceId', (v) => (v as num?)?.toInt()),
+    description: $checkedConvert('description', (v) => v as String?),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$AchievementTransactionModelToJson(
   _AchievementTransactionModel instance,

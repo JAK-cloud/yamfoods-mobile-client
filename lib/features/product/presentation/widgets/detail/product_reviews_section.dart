@@ -12,22 +12,36 @@ import '../../../../review/presentation/providers/review_notifier.dart';
 /// Product reviews section displaying user reviews.
 ///
 /// Shows reviews with user avatar (first character), name, time ago,
-/// star rating, and comment. Uses separators between reviews.
+/// star rating, and comment. Initially shows 2 reviews with a "See more" button.
 /// Shrinks to zero height on error or empty state.
-class ProductReviewsSection extends ConsumerWidget {
+class ProductReviewsSection extends ConsumerStatefulWidget {
   final int productId;
 
   const ProductReviewsSection({super.key, required this.productId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final reviewsAsync = ref.watch(reviewProvider(productId));
+  ConsumerState<ProductReviewsSection> createState() =>
+      _ProductReviewsSectionState();
+}
+
+class _ProductReviewsSectionState extends ConsumerState<ProductReviewsSection> {
+  bool _showAll = false;
+  static const int _initialDisplayCount = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final reviewsAsync = ref.watch(reviewProvider(widget.productId));
 
     return reviewsAsync.when(
       data: (reviews) {
         if (reviews.isEmpty) {
           return const SizedBox.shrink();
         }
+
+        final displayedReviews = _showAll
+            ? reviews
+            : reviews.take(_initialDisplayCount).toList();
+        final remainingCount = reviews.length - displayedReviews.length;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,13 +105,46 @@ class ProductReviewsSection extends ConsumerWidget {
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.sm),
-              itemCount: reviews.length,
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+              itemCount: displayedReviews.length,
               itemBuilder: (context, index) {
-                final review = reviews[index];
-                return _ReviewItem(review: review);
+                final review = displayedReviews[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSizes.sm),
+                  child: _ReviewItem(review: review),
+                );
               },
             ),
+
+            // See more button
+            if (remainingCount > 0 && !_showAll)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.xl,
+                  vertical: AppSizes.md,
+                ),
+                child: GestureDetector(
+                  onTap: () => setState(() => _showAll = true),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'See more ($remainingCount)',
+                        style: AppTextStyles.labelLarge.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.xs),
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         );
       },
@@ -128,7 +175,6 @@ class _ReviewItem extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.all(AppSizes.lg),
-      margin: const EdgeInsets.only(bottom: AppSizes.sm),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSizes.radius),

@@ -9,7 +9,7 @@ extension OrderDetailMapper on OrderDetailModel {
   OrderDetail toDomain() => OrderDetail(
     order: order.toDomain(),
     items: items.map((item) => item.toDomain()).toList(),
-    address: address.toDomain(),
+    address: address?.toDomain(), // Handle null address for pickup orders
     payment: payment.toDomain(),
   );
 }

@@ -6,19 +6,23 @@ part of 'promo_banner_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_PromoBannerModel _$PromoBannerModelFromJson(Map<String, dynamic> json) =>
-    _PromoBannerModel(
-      id: (json['id'] as num).toInt(),
-      imageUrl: json['imageUrl'] as String,
-      title: json['title'] as String,
-      subtitle: json['subtitle'] as String?,
-      status: json['status'] as String,
-      startDate: DateTime.parse(json['startDate'] as String),
-      endDate: DateTime.parse(json['endDate'] as String),
-      productId: (json['productId'] as num?)?.toInt(),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
+_PromoBannerModel _$PromoBannerModelFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('_PromoBannerModel', json, ($checkedConvert) {
+  final val = _PromoBannerModel(
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    imageUrl: $checkedConvert('imageUrl', (v) => v as String),
+    title: $checkedConvert('title', (v) => v as String),
+    subtitle: $checkedConvert('subtitle', (v) => v as String?),
+    status: $checkedConvert('status', (v) => v as String),
+    startDate: $checkedConvert('startDate', (v) => DateTime.parse(v as String)),
+    endDate: $checkedConvert('endDate', (v) => DateTime.parse(v as String)),
+    productId: $checkedConvert('productId', (v) => (v as num?)?.toInt()),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$PromoBannerModelToJson(_PromoBannerModel instance) =>
     <String, dynamic>{

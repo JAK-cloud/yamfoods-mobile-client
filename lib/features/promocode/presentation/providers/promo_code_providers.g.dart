@@ -8,18 +8,33 @@ part of 'promo_code_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Promo code API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all promo code endpoints
+/// require authentication.
 
 @ProviderFor(promoCodeApiService)
 const promoCodeApiServiceProvider = PromoCodeApiServiceProvider._();
 
+/// Promo code API service provider
+///
+/// Uses dioClientProvider (with auth interceptor) because all promo code endpoints
+/// require authentication.
+
 final class PromoCodeApiServiceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<PromoCodeApiService>,
           PromoCodeApiService,
-          PromoCodeApiService,
-          PromoCodeApiService
+          FutureOr<PromoCodeApiService>
         >
-    with $Provider<PromoCodeApiService> {
+    with
+        $FutureModifier<PromoCodeApiService>,
+        $FutureProvider<PromoCodeApiService> {
+  /// Promo code API service provider
+  ///
+  /// Uses dioClientProvider (with auth interceptor) because all promo code endpoints
+  /// require authentication.
   const PromoCodeApiServiceProvider._()
     : super(
         from: null,
@@ -36,26 +51,18 @@ final class PromoCodeApiServiceProvider
 
   @$internal
   @override
-  $ProviderElement<PromoCodeApiService> $createElement(
+  $FutureProviderElement<PromoCodeApiService> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  PromoCodeApiService create(Ref ref) {
+  FutureOr<PromoCodeApiService> create(Ref ref) {
     return promoCodeApiService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PromoCodeApiService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PromoCodeApiService>(value),
-    );
   }
 }
 
 String _$promoCodeApiServiceHash() =>
-    r'a8dd097cb55ad7c194ec3e48841db63e09df012e';
+    r'93eacfded1f6b92a2f70a038d1ff946788d4cebc';
 
 @ProviderFor(promoCodeRemoteDataSource)
 const promoCodeRemoteDataSourceProvider = PromoCodeRemoteDataSourceProvider._();
@@ -63,11 +70,13 @@ const promoCodeRemoteDataSourceProvider = PromoCodeRemoteDataSourceProvider._();
 final class PromoCodeRemoteDataSourceProvider
     extends
         $FunctionalProvider<
+          AsyncValue<PromoCodeRemoteDataSource>,
           PromoCodeRemoteDataSource,
-          PromoCodeRemoteDataSource,
-          PromoCodeRemoteDataSource
+          FutureOr<PromoCodeRemoteDataSource>
         >
-    with $Provider<PromoCodeRemoteDataSource> {
+    with
+        $FutureModifier<PromoCodeRemoteDataSource>,
+        $FutureProvider<PromoCodeRemoteDataSource> {
   const PromoCodeRemoteDataSourceProvider._()
     : super(
         from: null,
@@ -84,26 +93,18 @@ final class PromoCodeRemoteDataSourceProvider
 
   @$internal
   @override
-  $ProviderElement<PromoCodeRemoteDataSource> $createElement(
+  $FutureProviderElement<PromoCodeRemoteDataSource> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  PromoCodeRemoteDataSource create(Ref ref) {
+  FutureOr<PromoCodeRemoteDataSource> create(Ref ref) {
     return promoCodeRemoteDataSource(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PromoCodeRemoteDataSource value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PromoCodeRemoteDataSource>(value),
-    );
   }
 }
 
 String _$promoCodeRemoteDataSourceHash() =>
-    r'64d7b3f2ee61b4fd9c2a7918bd240535b951ecc5';
+    r'f4de7bfff7be4470c2924a8313f3e91680e2e590';
 
 @ProviderFor(promoCodeRepository)
 const promoCodeRepositoryProvider = PromoCodeRepositoryProvider._();
@@ -111,11 +112,13 @@ const promoCodeRepositoryProvider = PromoCodeRepositoryProvider._();
 final class PromoCodeRepositoryProvider
     extends
         $FunctionalProvider<
+          AsyncValue<PromoCodeRepository>,
           PromoCodeRepository,
-          PromoCodeRepository,
-          PromoCodeRepository
+          FutureOr<PromoCodeRepository>
         >
-    with $Provider<PromoCodeRepository> {
+    with
+        $FutureModifier<PromoCodeRepository>,
+        $FutureProvider<PromoCodeRepository> {
   const PromoCodeRepositoryProvider._()
     : super(
         from: null,
@@ -132,26 +135,18 @@ final class PromoCodeRepositoryProvider
 
   @$internal
   @override
-  $ProviderElement<PromoCodeRepository> $createElement(
+  $FutureProviderElement<PromoCodeRepository> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  PromoCodeRepository create(Ref ref) {
+  FutureOr<PromoCodeRepository> create(Ref ref) {
     return promoCodeRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PromoCodeRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PromoCodeRepository>(value),
-    );
   }
 }
 
 String _$promoCodeRepositoryHash() =>
-    r'906d59fff25e4851f481291387625618d392944b';
+    r'ed8d79957062e11e95a8005035e398fb2c6dd481';
 
 @ProviderFor(verifyPromoCodeUseCase)
 const verifyPromoCodeUseCaseProvider = VerifyPromoCodeUseCaseProvider._();
@@ -159,11 +154,13 @@ const verifyPromoCodeUseCaseProvider = VerifyPromoCodeUseCaseProvider._();
 final class VerifyPromoCodeUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<VerifyPromoCodeUsecase>,
           VerifyPromoCodeUsecase,
-          VerifyPromoCodeUsecase,
-          VerifyPromoCodeUsecase
+          FutureOr<VerifyPromoCodeUsecase>
         >
-    with $Provider<VerifyPromoCodeUsecase> {
+    with
+        $FutureModifier<VerifyPromoCodeUsecase>,
+        $FutureProvider<VerifyPromoCodeUsecase> {
   const VerifyPromoCodeUseCaseProvider._()
     : super(
         from: null,
@@ -180,26 +177,18 @@ final class VerifyPromoCodeUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<VerifyPromoCodeUsecase> $createElement(
+  $FutureProviderElement<VerifyPromoCodeUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  VerifyPromoCodeUsecase create(Ref ref) {
+  FutureOr<VerifyPromoCodeUsecase> create(Ref ref) {
     return verifyPromoCodeUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(VerifyPromoCodeUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<VerifyPromoCodeUsecase>(value),
-    );
   }
 }
 
 String _$verifyPromoCodeUseCaseHash() =>
-    r'4e27fa38b556af7bff385cc1d238c2fa18f146af';
+    r'73195b9ea3f5724b3d981e385f32dbb0504c51f0';
 
 @ProviderFor(getPromoCodesUseCase)
 const getPromoCodesUseCaseProvider = GetPromoCodesUseCaseProvider._();
@@ -207,11 +196,13 @@ const getPromoCodesUseCaseProvider = GetPromoCodesUseCaseProvider._();
 final class GetPromoCodesUseCaseProvider
     extends
         $FunctionalProvider<
+          AsyncValue<GetPromoCodesUsecase>,
           GetPromoCodesUsecase,
-          GetPromoCodesUsecase,
-          GetPromoCodesUsecase
+          FutureOr<GetPromoCodesUsecase>
         >
-    with $Provider<GetPromoCodesUsecase> {
+    with
+        $FutureModifier<GetPromoCodesUsecase>,
+        $FutureProvider<GetPromoCodesUsecase> {
   const GetPromoCodesUseCaseProvider._()
     : super(
         from: null,
@@ -228,26 +219,18 @@ final class GetPromoCodesUseCaseProvider
 
   @$internal
   @override
-  $ProviderElement<GetPromoCodesUsecase> $createElement(
+  $FutureProviderElement<GetPromoCodesUsecase> $createElement(
     $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  ) => $FutureProviderElement(pointer);
 
   @override
-  GetPromoCodesUsecase create(Ref ref) {
+  FutureOr<GetPromoCodesUsecase> create(Ref ref) {
     return getPromoCodesUseCase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetPromoCodesUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetPromoCodesUsecase>(value),
-    );
   }
 }
 
 String _$getPromoCodesUseCaseHash() =>
-    r'1a2cdd8e3bbd1396c751e6a16be4d0275e8100b2';
+    r'e23244378e54770c883aee1a32c2976b7ca3fadc';
 
 /// FutureProvider for getting all promo codes.
 
@@ -291,118 +274,4 @@ final class PromoCodeListProvider
   }
 }
 
-String _$promoCodeListHash() => r'164c93ce3cd8eace932bda249d4c56294f1d66ea';
-
-/// FutureProvider for verifying a promo code.
-///
-/// Parameters:
-/// - [code]: The promo code to verify
-/// - [orderAmount]: The order amount to validate against
-
-@ProviderFor(promoCodeVerification)
-const promoCodeVerificationProvider = PromoCodeVerificationFamily._();
-
-/// FutureProvider for verifying a promo code.
-///
-/// Parameters:
-/// - [code]: The promo code to verify
-/// - [orderAmount]: The order amount to validate against
-
-final class PromoCodeVerificationProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PromoCodeVerificationResult>,
-          PromoCodeVerificationResult,
-          FutureOr<PromoCodeVerificationResult>
-        >
-    with
-        $FutureModifier<PromoCodeVerificationResult>,
-        $FutureProvider<PromoCodeVerificationResult> {
-  /// FutureProvider for verifying a promo code.
-  ///
-  /// Parameters:
-  /// - [code]: The promo code to verify
-  /// - [orderAmount]: The order amount to validate against
-  const PromoCodeVerificationProvider._({
-    required PromoCodeVerificationFamily super.from,
-    required (String, double) super.argument,
-  }) : super(
-         retry: null,
-         name: r'promoCodeVerificationProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$promoCodeVerificationHash();
-
-  @override
-  String toString() {
-    return r'promoCodeVerificationProvider'
-        ''
-        '$argument';
-  }
-
-  @$internal
-  @override
-  $FutureProviderElement<PromoCodeVerificationResult> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<PromoCodeVerificationResult> create(Ref ref) {
-    final argument = this.argument as (String, double);
-    return promoCodeVerification(ref, argument.$1, argument.$2);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is PromoCodeVerificationProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$promoCodeVerificationHash() =>
-    r'f88ded5fbda06700f1650989b90e21e75b1b485a';
-
-/// FutureProvider for verifying a promo code.
-///
-/// Parameters:
-/// - [code]: The promo code to verify
-/// - [orderAmount]: The order amount to validate against
-
-final class PromoCodeVerificationFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-          FutureOr<PromoCodeVerificationResult>,
-          (String, double)
-        > {
-  const PromoCodeVerificationFamily._()
-    : super(
-        retry: null,
-        name: r'promoCodeVerificationProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// FutureProvider for verifying a promo code.
-  ///
-  /// Parameters:
-  /// - [code]: The promo code to verify
-  /// - [orderAmount]: The order amount to validate against
-
-  PromoCodeVerificationProvider call(String code, double orderAmount) =>
-      PromoCodeVerificationProvider._(
-        argument: (code, orderAmount),
-        from: this,
-      );
-
-  @override
-  String toString() => r'promoCodeVerificationProvider';
-}
+String _$promoCodeListHash() => r'ccfd0e2fea833d55a5ea0c3f68e533167313507d';
