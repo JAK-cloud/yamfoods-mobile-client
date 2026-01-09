@@ -1,22 +1,54 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../routes/auth_guard_helper.dart';
+import '../routes/route_names.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_sizes.dart';
 import 'location_guard_wrapper.dart';
 
-class BottomNavScreen extends StatefulWidget {
+class BottomNavScreen extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
 
   const BottomNavScreen({super.key, required this.navigationShell});
 
   @override
-  State<BottomNavScreen> createState() => _BottomNavScreenState();
+  ConsumerState<BottomNavScreen> createState() => _BottomNavScreenState();
 }
 
-class _BottomNavScreenState extends State<BottomNavScreen> {
-  void _onItemTapped(int index) {
+class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
+  // Map of tab indices to their corresponding routes
+  static const Map<int, String> _tabRoutes = {
+    0: RouteName.home, // Home
+    1: RouteName.cart, // Cart (protected)
+    2: RouteName.order, // Order (protected)
+    3: RouteName.profile, // Profile (protected)
+  };
+
+  // Protected tab indices (require authentication)
+  static const List<int> _protectedTabs = [1, 2, 3]; // Cart, Order, Profile
+
+  Future<void> _onItemTapped(int index) async {
+    // Check if this is a protected tab
+    if (_protectedTabs.contains(index)) {
+      final targetRoute = _tabRoutes[index]!;
+
+      // Check authentication and show dialog if guest
+      final canNavigate = await AuthGuardHelper.canNavigateToTab(
+        context: context,
+        ref: ref,
+        targetRoute: targetRoute,
+      );
+
+      if (!canNavigate) {
+        // User is guest and dialog was shown - don't navigate
+        return;
+      }
+    }
+
+    // User is authenticated or tab is public - proceed with navigation
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,
@@ -52,7 +84,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.house_alt),
-                activeIcon: Icon(CupertinoIcons.house_fill, color: AppColors.primary),
+                activeIcon: Icon(
+                  CupertinoIcons.house_fill,
+                  color: AppColors.primary,
+                ),
                 label: 'Home',
               ),
               BottomNavigationBarItem(

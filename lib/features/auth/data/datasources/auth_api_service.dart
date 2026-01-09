@@ -33,7 +33,7 @@ abstract class AuthApiService {
   @POST(ApiRoutes.login)
   Future<ApiResponse<LoginDataModel>> login(@Body() Map<String, dynamic> body);
 
-  @DELETE(ApiRoutes.logout)
+  @POST(ApiRoutes.logout)
   Future<void> logout(@Body() Map<String, dynamic> body);
 
   @POST(ApiRoutes.refreshToken)

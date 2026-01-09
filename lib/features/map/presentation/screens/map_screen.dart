@@ -96,13 +96,23 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     // Listen to socket UI events (driver_arrived, order_status_updated)
     // Using ref.listen for side effects (navigation) without widget rebuilds
     ref.listen<SocketUiEvent?>(socketUiEventsProvider, (previous, next) {
+      if(next == null) return;
       if (next is DriverArrived && mounted) {
         // Driver has arrived - replace map screen with congratulations screen
         // Using pushReplacement to replace only MapScreen, keeping previous screens in stack
         context.pushReplacement(RouteName.driverArrived, extra: widget.orderId);
       }
-      // Handle OrderStatusUpdated if needed in the future
-    });
+       // Handle OrderStatusUpdated
+       // For we don't needto track order status update user can see by manually refreshing the order detail
+      // if (next is OrderStatusUpdated && mounted) {
+      //   print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ OrderStatusUpdated lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.');
+      //   //invalidate that order detail
+      //   ref.invalidate(orderDetailProvider(widget.orderId));
+      // }
+      //clear the socket ui events
+      ref.read(socketUiEventsProvider.notifier).clear();
+    },
+    );
 
     // Listen to driver location updates and update marker when location changes
     // Using ref.listen for side effects (marker update) without widget rebuilds

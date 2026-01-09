@@ -157,7 +157,7 @@ class _AuthApiService implements AuthApiService {
     final _data = <String, dynamic>{};
     _data.addAll(body);
     final _options = _setStreamType<void>(
-      Options(method: 'DELETE', headers: _headers, extra: _extra)
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
             '/user/logout',

@@ -17,6 +17,50 @@ class AuthNotifier extends _$AuthNotifier {
   @override
   bool build() => false; // false = not loading
 
+//use below code when you want to keep the provider alive for the duration of the action
+  /*
+   /// Prevents "Cannot use the Ref ... after it has been disposed" during async gaps.
+  ///
+  /// `@riverpod` notifiers are autoDispose by default. If no widget is actively
+  /// watching `authProvider`, Riverpod may dispose it while an async operation
+  /// is in-flight (even if the user didn't navigate).
+  ///
+  /// This keeps the provider alive for the duration of the action.
+  Future<void> _runWithLoading(Future<void> Function() action) async {
+    final link = ref.keepAlive();
+    state = true;
+    try {
+      await action();
+    } finally {
+      if (ref.mounted) {
+        state = false;
+      }
+      link.close();
+    }
+  }
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    await _runWithLoading(() async {
+      final registerUsecase = await ref.read(registerUsecaseProvider.future);
+      final result = await registerUsecase(
+        name: name,
+        email: email,
+        password: password,
+      );
+      result.fold(
+        (failure) => ref
+            .read(registerUiEventsProvider.notifier)
+            .emit(RegisterFailure(failure: failure)),
+        (user) => ref
+            .read(registerUiEventsProvider.notifier)
+            .emit(RegisterSuccess(user: user)),
+      );
+    });
+  }
+*/
   /// Refreshes the authentication state
   ///
   /// This forces a re-check of local storage and updates AuthUserState.
