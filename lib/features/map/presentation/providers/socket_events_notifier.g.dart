@@ -108,7 +108,7 @@ final class SocketEventsNotifierProvider
 }
 
 String _$socketEventsNotifierHash() =>
-    r'bee0de4386f5e7d1705edf03c7caefbff96a6027';
+    r'169ecc2dcd008d3ee3b5640774324f1f545b6516';
 
 /// Notifier for listening to socket events and emitting UI events
 ///

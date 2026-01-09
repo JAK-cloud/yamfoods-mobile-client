@@ -10,12 +10,13 @@ import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../auth/presentation/providers/auth_notifier.dart';
 
-
 class LogoutButton extends ConsumerWidget {
   const LogoutButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(authProvider);
+
     return Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -28,7 +29,7 @@ class LogoutButton extends ConsumerWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => _showLogoutDialog(context, ref),
+              onTap: isLoading ? null : () => _showLogoutDialog(context, ref),
               borderRadius: BorderRadius.circular(AppSizes.radiusLg),
               child: Padding(
                 padding: const EdgeInsets.symmetric(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/auth_guard_helper.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
@@ -257,19 +258,29 @@ class ProductCard extends ConsumerWidget {
 
   Widget _buildAddButton(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         final canAdd = ref.read(canAddToCartProvider(product.branchId));
         if (canAdd) {
-          // Trigger animation BEFORE adding to cart
-          final controller = ref.read(
-            cartAnimationControllerProvider(screenId),
-          );
-          controller.animateTag('product_${product.id}');
+          // Check authentication before adding to cart
+          await AuthGuardHelper.requireAuthOrShowDialog(
+            context: context,
+            ref: ref,
+            onAuthenticated: () {
+              // User is authenticated - proceed with adding to cart
+              // Trigger animation BEFORE adding to cart
+              final controller = ref.read(
+                cartAnimationControllerProvider(screenId),
+              );
+              controller.animateTag('product_${product.id}');
 
-          // Add to cart (this happens in parallel with animation)
-          ref
-              .read(cartProvider(product.branchId).notifier)
-              .addToCart(CartRequestData(productId: product.id, quantity: 1));
+              // Add to cart (this happens in parallel with animation)
+              ref
+                  .read(cartProvider(product.branchId).notifier)
+                  .addToCart(
+                    CartRequestData(productId: product.id, quantity: 1),
+                  );
+            },
+          );
         } else {
           InfoSnackBar.show(
             context,

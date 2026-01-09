@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/components/custom_button.dart';
 import '../../../../app/components/custom_textfield.dart';
 import '../../../../app/routes/route_names.dart';
+import '../../../../app/routes/target_screen_provider.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_texts.dart';
@@ -65,8 +66,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         }
 
         // User is fully authenticated
-        snackbar.showSuccess('Login successful!');
-        context.go(RouteName.home);
+        // Defer navigation and provider modification to after current frame
+        // This prevents "modify provider during build" errors
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+
+          // Check if there's a target screen to navigate to
+          final targetScreen = ref.read(targetScreenProvider);
+          if (targetScreen != null) {
+            // Navigate to the target screen user wanted to access
+            context.go(targetScreen);
+            // Clear target screen after navigation
+            ref.read(targetScreenProvider.notifier).clear();
+          } else {
+            // No target screen - navigate to home
+            context.go(RouteName.home);
+          }
+
+          // Show success snackbar AFTER navigation completes
+          // This prevents Navigator state conflicts
+          Future.delayed(const Duration(milliseconds: 100), () {
+            if (mounted) {
+              snackbar.showSuccess('Login successful!');
+            }
+          });
+        });
       } else if (next is AuthenticationFailure) {
         final failure = next.failure;
 

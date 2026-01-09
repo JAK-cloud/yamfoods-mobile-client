@@ -24,11 +24,11 @@ extension OrderStatusX on OrderStatus {
   };
 
   Color get color => switch (this) {
-    OrderStatus.pending => Colors.amber[700]!,
-    OrderStatus.confirmed => Colors.cyan,
+    OrderStatus.pending => Colors.amber,
+    OrderStatus.confirmed => Colors.blueGrey,
     OrderStatus.preparing => Colors.orange,
     OrderStatus.ready => Colors.blue,
-    OrderStatus.outForDelivery => Colors.purple,
+    OrderStatus.outForDelivery => Colors.indigo,
     OrderStatus.delivered => Colors.green,
     OrderStatus.cancelled => Colors.red,
     OrderStatus.failed => Colors.red,

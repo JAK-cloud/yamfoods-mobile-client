@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/components/custom_button.dart';
+import '../../../../../app/routes/auth_guard_helper.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
@@ -71,12 +72,20 @@ class ProductCartBottomSheet extends ConsumerWidget {
     return CustomButton(
       text: 'Add to Cart',
       onPressed: canAdd
-          ? () {
-              ref
-                  .read(cartProvider(product.branchId).notifier)
-                  .addToCart(
-                    CartRequestData(productId: product.id, quantity: 1),
-                  );
+          ? () async {
+              // Check authentication before adding to cart
+              await AuthGuardHelper.requireAuthOrShowDialog(
+                context: context,
+                ref: ref,
+                onAuthenticated: () {
+                  // User is authenticated - proceed with adding to cart
+                  ref
+                      .read(cartProvider(product.branchId).notifier)
+                      .addToCart(
+                        CartRequestData(productId: product.id, quantity: 1),
+                      );
+                },
+              );
             }
           : () {
               InfoSnackBar.show(

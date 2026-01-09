@@ -62,8 +62,8 @@ class OrderStatusTimeline extends StatelessWidget {
             theme: TimelineThemeData(
               direction: Axis.vertical,
               // nodePosition: 0.0, // Align indicator to left edge if you want
-               //to align the indicator to the left edge and don't want altrnate
-               // opposit direction display
+              //to align the indicator to the left edge and don't want altrnate
+              // opposit direction display
               connectorTheme: const ConnectorThemeData(
                 thickness: 2.0,
                 space: 16.0,
@@ -133,7 +133,7 @@ class OrderStatusTimeline extends StatelessWidget {
                           color:
                               stageStatus == StageStatus.active ||
                                   stageStatus == StageStatus.completed
-                              ? AppColors.txtPrimary
+                              ? stage.color
                               : AppColors.grey,
                           fontWeight: stageStatus == StageStatus.active
                               ? FontWeight.w700
