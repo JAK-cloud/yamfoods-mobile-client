@@ -11,6 +11,7 @@ import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
 import '../../domain/entities/branch.dart';
 import '../../domain/extensions/branch_extensions.dart';
 import '../providers/branch_providers.dart';
@@ -38,74 +39,77 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
   Widget build(BuildContext context) {
     final branchesAsync = ref.watch(branchesProvider);
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 0.3, 0.7, 1.0],
-              colors: [
-                AppColors.primary,
-                AppColors.primary.withValues(alpha: 0.95),
-                AppColors.primary.withValues(alpha: 0.85),
-                AppColors.secondary,
+    // Wrap with GPS guard - ensures GPS is enabled before showing branch selection
+    return LocationGpsGuardPerscreen(
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.3, 0.7, 1.0],
+                colors: [
+                  AppColors.primary,
+                  AppColors.primary.withValues(alpha: 0.95),
+                  AppColors.primary.withValues(alpha: 0.85),
+                  AppColors.secondary,
+                ],
+              ),
+            ),
+            child: Stack(
+              children: [
+                // Animated floating circle - top right
+                _buildAnimatedCircle(
+                  right: -50,
+                  top: 80,
+                  size: 180,
+                  opacity: 0.06,
+                  duration: 3,
+                ),
+                // Animated floating circle - bottom left
+                _buildAnimatedCircle(
+                  left: -40,
+                  bottom: 150,
+                  size: 140,
+                  opacity: 0.04,
+                  duration: 4,
+                ),
+                // Main content
+                branchesAsync.when(
+                  data: (branches) {
+                    if (branches.isEmpty) {
+                      return EmptyState(
+                        icon: Icons.store_outlined,
+                        title: 'No Branches Available',
+                        subtitle:
+                            'There are no branches available at the moment.',
+                      );
+                    }
+
+                    final selectedBranch = branches[_selectedIndex];
+                    return _buildContent(branches, selectedBranch);
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: AppColors.white),
+                  ),
+                  error: (error, stackTrace) {
+                    final failure = error is Failure
+                        ? error
+                        : Failure.unexpected(message: error.toString());
+
+                    return ErrorWidgett(
+                      title: 'Failed to Load Branches',
+                      failure: failure,
+                      onRetry: () => ref.invalidate(branchesProvider),
+                    );
+                  },
+                ),
               ],
             ),
-          ),
-          child: Stack(
-            children: [
-              // Animated floating circle - top right
-              _buildAnimatedCircle(
-                right: -50,
-                top: 80,
-                size: 180,
-                opacity: 0.06,
-                duration: 3,
-              ),
-              // Animated floating circle - bottom left
-              _buildAnimatedCircle(
-                left: -40,
-                bottom: 150,
-                size: 140,
-                opacity: 0.04,
-                duration: 4,
-              ),
-              // Main content
-              branchesAsync.when(
-                data: (branches) {
-                  if (branches.isEmpty) {
-                    return EmptyState(
-                      icon: Icons.store_outlined,
-                      title: 'No Branches Available',
-                      subtitle:
-                          'There are no branches available at the moment.',
-                    );
-                  }
-
-                  final selectedBranch = branches[_selectedIndex];
-                  return _buildContent(branches, selectedBranch);
-                },
-                loading: () => const Center(
-                  child: CircularProgressIndicator(color: AppColors.white),
-                ),
-                error: (error, stackTrace) {
-                  final failure = error is Failure
-                      ? error
-                      : Failure.unexpected(message: error.toString());
-
-                  return ErrorWidgett(
-                    title: 'Failed to Load Branches',
-                    failure: failure,
-                    onRetry: () => ref.invalidate(branchesProvider),
-                  );
-                },
-              ),
-            ],
           ),
         ),
       ),
@@ -217,16 +221,10 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
       child: CustomButton(
-        text: AppTexts.openNow,
+        text: 'CONTINUE >>>',
         textColor: AppColors.white,
         onPressed: () {
           // TODO: Handle branch selection and navigate
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Selected: ${branch.name}'),
-              duration: const Duration(seconds: 1),
-            ),
-          );
         },
       ),
     );

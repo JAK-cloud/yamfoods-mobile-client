@@ -47,7 +47,7 @@ class _SubcategoryApiService implements SubcategoryApiService {
             SubcategoriesResponseModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;

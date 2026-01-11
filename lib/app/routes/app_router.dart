@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 
-import '../../core/permissions/location_permission_screen.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../features/address/presentation/screens/address_screen.dart';
 import '../../features/address/presentation/screens/create_or_update_address_screen.dart';
@@ -48,7 +47,7 @@ final GoRouter appRouter = GoRouter(
   // SnackbarService uses this key to get the overlay context for displaying snackbars
   // that appear on top of the entire navigation stack, regardless of the current route.
   navigatorKey: SnackbarService.rootNavigatorKey,
-  initialLocation: RouteName.home,
+  initialLocation: RouteName.splash,
   routes: [
     GoRoute(
       path: RouteName.splash,
@@ -102,11 +101,6 @@ final GoRouter appRouter = GoRouter(
         final phone = state.extra as String;
         return ValidateOtpScreen(phoneNumber: phone);
       },
-    ),
-    GoRoute(
-      path: RouteName.locationPermission,
-      name: RouteName.locationPermission,
-      builder: (context, state) => const LocationPermissionScreen(),
     ),
     GoRoute(
       path: RouteName.onboarding,
