@@ -7,7 +7,6 @@ import '../routes/auth_guard_helper.dart';
 import '../routes/route_names.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_sizes.dart';
-import 'location_guard_wrapper.dart';
 
 class BottomNavScreen extends ConsumerStatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -57,8 +56,7 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LocationGuardWrapper(
-      child: Scaffold(
+    return Scaffold(
         body: SafeArea(child: widget.navigationShell),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
@@ -117,7 +115,7 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

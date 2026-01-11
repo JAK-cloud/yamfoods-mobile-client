@@ -47,7 +47,7 @@ class _OrderApiService implements OrderApiService {
             CreateOrderResponseModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -83,7 +83,7 @@ class _OrderApiService implements OrderApiService {
             : List.empty(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -113,7 +113,7 @@ class _OrderApiService implements OrderApiService {
         (json) => OrderDetailModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -146,7 +146,7 @@ class _OrderApiService implements OrderApiService {
         (json) => OrderModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -178,7 +178,7 @@ class _OrderApiService implements OrderApiService {
             : OrderDetailModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;

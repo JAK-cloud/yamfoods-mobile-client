@@ -49,7 +49,7 @@ class _PromoBannerApiService implements PromoBannerApiService {
             : List.empty(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;

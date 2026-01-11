@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app/app.dart';
+
 //progress_tracker: ^0.0.16, connection_notifier: ^2.0.1, order_tracker: ^0.0.2
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

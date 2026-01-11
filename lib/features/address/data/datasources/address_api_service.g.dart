@@ -49,7 +49,7 @@ class _AddressApiService implements AddressApiService {
             : List.empty(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -82,7 +82,7 @@ class _AddressApiService implements AddressApiService {
         (json) => AddressModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -116,7 +116,7 @@ class _AddressApiService implements AddressApiService {
         (json) => AddressModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;

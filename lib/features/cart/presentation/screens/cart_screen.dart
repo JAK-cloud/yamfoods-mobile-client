@@ -10,6 +10,8 @@ import '../providers/cart_notifier.dart';
 import '../widgets/cart_header.dart';
 import '../widgets/cart_list.dart';
 import '../widgets/cart_summary_card.dart';
+import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
+
 
 /// Cart screen displaying user's cart items.
 ///
@@ -50,36 +52,38 @@ class CartScreen extends ConsumerWidget {
     const branchId = 2;
     final cartAsync = ref.watch(cartProvider(branchId));
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            // Fixed header section
-            CartHeader(
-              branchId: branchId,
-              itemCount: cartAsync.value?.length ?? 0,
-            ),
-
-            // Scrollable content area
-            CartList(cartAsync: cartAsync, branchId: branchId),
-          ],
+    return LocationGpsGuardPerscreen(
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              // Fixed header section
+              CartHeader(
+                branchId: branchId,
+                itemCount: cartAsync.value?.length ?? 0,
+              ),
+      
+              // Scrollable content area
+              CartList(cartAsync: cartAsync, branchId: branchId),
+            ],
+          ),
         ),
+        // Bottom sheet with summary and checkout
+        bottomSheet: cartAsync.value?.isNotEmpty == true
+            ? CartSummaryCard(
+                branchId: branchId,
+                onPlaceOrder: () {
+                  final carts = cartAsync.value ?? [];
+                  context.push(
+                    RouteName.checkout,
+                    extra: CheckoutArgs(branchId: branchId, carts: carts),
+                  );
+                },
+              )
+            : null,
       ),
-      // Bottom sheet with summary and checkout
-      bottomSheet: cartAsync.value?.isNotEmpty == true
-          ? CartSummaryCard(
-              branchId: branchId,
-              onPlaceOrder: () {
-                final carts = cartAsync.value ?? [];
-                context.push(
-                  RouteName.checkout,
-                  extra: CheckoutArgs(branchId: branchId, carts: carts),
-                );
-              },
-            )
-          : null,
     );
   }
 }

@@ -4,6 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
+import '../../../../core/utils/distance_calculator.dart';
 import '../../domain/entities/branch.dart';
 import 'working_days_row.dart';
 
@@ -68,21 +69,31 @@ class BranchDetailsSection extends StatelessWidget {
           const SizedBox(height: AppSizes.sm),
 
           // Distance
-          Row(
-            children: [
-              Icon(
-                Icons.directions_car_outlined,
-                size: 18,
-                color: AppColors.white.withValues(alpha: 0.7),
-              ),
-              const SizedBox(width: AppSizes.sm),
-              Text(
-                '23m ${AppTexts.awayFromYou}',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.white.withValues(alpha: 0.7),
-                ),
-              ),
-            ],
+          Builder(
+            builder: (context) {
+              final formattedDistance =
+                  DistanceCalculator.calculateDistanceInMeters(
+                    defaultCustomerPosition,
+                    branch.location,
+                  );
+
+              return Row(
+                children: [
+                  Icon(
+                    Icons.directions_car_outlined,
+                    size: 18,
+                    color: AppColors.white.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: AppSizes.sm),
+                  Text(
+                    '$formattedDistance ${AppTexts.awayFromYou}',
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.white.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),

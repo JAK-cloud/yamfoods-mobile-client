@@ -51,7 +51,7 @@ class _PromoCodeApiService implements PromoCodeApiService {
         ),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
@@ -87,7 +87,7 @@ class _PromoCodeApiService implements PromoCodeApiService {
             : List.empty(),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;
