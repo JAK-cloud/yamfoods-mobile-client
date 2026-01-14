@@ -6,6 +6,8 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/constants/api_urls.dart';
+import '../../../../core/utils/image_url_builder.dart';
 import '../../category/domain/entities/category.dart';
 
 /// Individual category chip widget.
@@ -19,6 +21,13 @@ class CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = category.imageUrl != null
+        ? ImageUrlBuilder.build(
+            baseUrl: ApiUrls.getPortalImageBaseUrl(),
+            imagePath: category.imageUrl!,
+          )
+        : null;
+
     return GestureDetector(
       onTap: () {
         context.push(RouteName.categoryScreen, extra: category);
@@ -44,10 +53,10 @@ class CategoryChip extends StatelessWidget {
                   ),
                 ],
               ),
-              child: category.imageUrl != null
+              child: imageUrl != null
                   ? ClipOval(
                       child: CachedNetworkImage(
-                        imageUrl: category.imageUrl!,
+                        imageUrl: imageUrl,
                         width: 56,
                         height: 56,
                         fit: BoxFit.cover,
@@ -80,7 +89,7 @@ class CategoryChip extends StatelessWidget {
                 color: AppColors.txtPrimary,
                 fontWeight: FontWeight.w500,
               ),
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
             ),

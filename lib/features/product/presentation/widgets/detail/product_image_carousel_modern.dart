@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
-import '../../../../../core/providers/core_providers.dart';
+import '../../../../../core/constants/api_urls.dart';
 import '../../../../../core/utils/image_url_builder.dart';
 import '../../../domain/entities/product_image.dart';
 
@@ -52,8 +52,6 @@ class _ProductImageCarouselModernState
 
   @override
   Widget build(BuildContext context) {
-    final envConfig = ref.watch(envConfigProvider);
-
     if (widget.images.isEmpty) {
       return _buildPlaceholder();
     }
@@ -73,7 +71,7 @@ class _ProductImageCarouselModernState
             itemBuilder: (context, index) {
               final image = sortedImages[index];
               final imageUrl = ImageUrlBuilder.build(
-                baseUrl: envConfig.baseUrl,
+                baseUrl: ApiUrls.getPortalImageBaseUrl(),
                 imagePath: image.url,
               );
 

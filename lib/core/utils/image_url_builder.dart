@@ -31,8 +31,6 @@ class ImageUrlBuilder {
     required String imagePath,
     String imageBasePath = '/uploads',
   }) {
-    // TODO: Remove this after testing
-    baseUrl = 'http://192.168.185.58:3000';
     // Return empty string if imagePath is empty
     if (imagePath.isEmpty) {
       return '';
@@ -48,25 +46,35 @@ class ImageUrlBuilder {
         ? baseUrl.substring(0, baseUrl.length - 1)
         : baseUrl;
 
-    // If imagePath already starts with /uploads or the imageBasePath, use it directly
-    if (imagePath.startsWith('/uploads') ||
-        imagePath.startsWith(imageBasePath)) {
-      // Ensure imagePath starts with /
-      final cleanImagePath = imagePath.startsWith('/')
-          ? imagePath
-          : '/$imagePath';
+    // Normalize imageBasePath (remove leading slash for comparison)
+    final imageBasePathWithoutSlash = imageBasePath.startsWith('/')
+        ? imageBasePath.substring(1)
+        : imageBasePath;
+
+    // Check if imagePath already contains the base path (with or without leading slash)
+    // Examples: "/uploads/products/image.jpg" or "uploads/products/image.jpg"
+    final hasLeadingSlash = imagePath.startsWith('/');
+    final pathWithoutLeadingSlash = hasLeadingSlash
+        ? imagePath.substring(1)
+        : imagePath;
+
+    if (pathWithoutLeadingSlash.startsWith(imageBasePathWithoutSlash)) {
+      // Image path already contains the base path, use it directly
+      // Ensure it starts with / for proper URL construction
+      final cleanImagePath = hasLeadingSlash ? imagePath : '/$imagePath';
       return '$cleanBaseUrl$cleanImagePath';
     }
+
+    // Image path doesn't contain the base path, prepend it
+    // Ensure imageBasePath starts with /
+    final cleanImageBasePath = imageBasePath.startsWith('/')
+        ? imageBasePath
+        : '/$imageBasePath';
 
     // Remove leading slash from imagePath if present (we'll add it via imageBasePath)
     final cleanImagePath = imagePath.startsWith('/')
         ? imagePath.substring(1)
         : imagePath;
-
-    // Ensure imageBasePath starts with /
-    final cleanImageBasePath = imageBasePath.startsWith('/')
-        ? imageBasePath
-        : '/$imageBasePath';
 
     // Construct full URL
     return '$cleanBaseUrl$cleanImageBasePath/$cleanImagePath';

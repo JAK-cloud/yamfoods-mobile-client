@@ -12,7 +12,7 @@ import '../../../../app/components/input_textfield.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/widgets/custom_app_bar.dart';
-import '../../../../core/providers/core_providers.dart';
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../../auth/domain/entities/user.dart';
 import '../providers/profile_events.dart';
@@ -71,12 +71,12 @@ class _UpdateProfileScreenState extends ConsumerState<UpdateProfileScreen> {
     }
   }
 
-  String? _buildImageUrl(String baseUrl) {
+  String? _buildImageUrl() {
     if (widget.user.imageUrl == null || widget.user.imageUrl!.isEmpty) {
       return null;
     }
     return ImageUrlBuilder.build(
-      baseUrl: baseUrl,
+      baseUrl: ApiUrls.getClientImageBaseUrl(),
       imagePath: widget.user.imageUrl!,
     );
   }
@@ -119,8 +119,7 @@ class _UpdateProfileScreenState extends ConsumerState<UpdateProfileScreen> {
     });
 
     final isLoading = ref.watch(profileProvider);
-    final envConfig = ref.watch(envConfigProvider);
-    final imageUrl = _buildImageUrl(envConfig.baseUrl);
+    final imageUrl = _buildImageUrl();
 
     return Scaffold(
       backgroundColor: AppColors.background,

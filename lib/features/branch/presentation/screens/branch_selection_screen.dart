@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/custom_button.dart';
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -224,7 +226,17 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
         text: 'CONTINUE >>>',
         textColor: AppColors.white,
         onPressed: () {
-          // TODO: Handle branch selection and navigate
+          // Store the selected branch ID and check if successful
+          final success = ref
+              .read(currentBranchProvider.notifier)
+              .set(branch.id);
+
+          // Only navigate if branch ID was successfully stored
+          if (success && mounted) {
+            context.push(RouteName.home);
+          }
+          // If setting failed, the user stays on the branch selection screen
+          // This is a safety measure - in practice, this should rarely fail
         },
       ),
     );

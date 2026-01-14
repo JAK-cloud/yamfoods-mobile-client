@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772377488112",
+    "project_id": "yam-foods",
+    "storage_bucket": "yam-foods.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772377488112:android:1878a67b4551e77d9d7035",
+        "android_client_info": {
+          "package_name": "com.example.yamfoods_customer_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh6o6aqPvsjYArIXFVVgQgj8ElXKEhTSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

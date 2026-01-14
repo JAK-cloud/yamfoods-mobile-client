@@ -69,4 +69,10 @@ class RouteName {
 
   /// Driver arrived congratulations route.
   static const String driverArrived = '/driver-arrived';
+
+  /// Search route.
+  static const String search = '/search';
+
+  /// Notifications route.
+  static const String notifications = '/notifications';
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/theme/app_colors.dart';
-import '../../../../../core/providers/core_providers.dart';
+import '../../../../../core/constants/api_urls.dart';
 import '../../../../../core/utils/image_url_builder.dart';
 import '../../../domain/entities/product_image.dart';
 
@@ -45,8 +45,6 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    final envConfig = ref.watch(envConfigProvider);
-
     if (widget.images.isEmpty) {
       return _buildPlaceholder();
     }
@@ -65,7 +63,7 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
 
           // Build image URL
           final imageUrl = ImageUrlBuilder.build(
-            baseUrl: envConfig.baseUrl,
+            baseUrl: ApiUrls.getPortalImageBaseUrl(),
             imagePath: image.url,
           );
 

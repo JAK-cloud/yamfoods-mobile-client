@@ -49,7 +49,8 @@ class OrderTrackButton extends StatelessWidget {
             extra: MapScreenArgs(
               customerLocation: customerLocation,
               restaurantLocation: restaurantLocation,
-              orderId: 70,
+              orderId: orderDetail.order.id,
+              delivererPhone: orderDetail.order.delivererPhone,
             ),
           );
         },

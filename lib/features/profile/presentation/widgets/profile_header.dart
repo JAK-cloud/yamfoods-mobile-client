@@ -8,7 +8,7 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import '../../../../core/providers/core_providers.dart';
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../../auth/domain/entities/user.dart';
 import 'image_viewer.dart';
@@ -21,8 +21,7 @@ class ProfileHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final envConfig = ref.watch(envConfigProvider);
-    final imageUrl = _buildImageUrl(envConfig.baseUrl);
+    final imageUrl = _buildImageUrl(ApiUrls.getClientImageBaseUrl());
 
     return Container(
       width: double.infinity,

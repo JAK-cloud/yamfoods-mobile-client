@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/services/snackbar_service.dart';
+import '../../../branch/presentation/providers/branch_providers.dart';
 import '../../../checkout/models/checkout_args.dart';
 import '../providers/cart_events.dart';
 import '../providers/cart_notifier.dart';
@@ -11,7 +12,6 @@ import '../widgets/cart_header.dart';
 import '../widgets/cart_list.dart';
 import '../widgets/cart_summary_card.dart';
 import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
-
 
 /// Cart screen displaying user's cart items.
 ///
@@ -49,7 +49,8 @@ class CartScreen extends ConsumerWidget {
       ref.read(cartUiEventsProvider.notifier).clear();
     });
 
-    const branchId = 2;
+    // Get current branch ID - guaranteed to exist since branch selection is enforced
+    final branchId = ref.watch(currentBranchProvider)!;
     final cartAsync = ref.watch(cartProvider(branchId));
 
     return LocationGpsGuardPerscreen(
@@ -64,7 +65,7 @@ class CartScreen extends ConsumerWidget {
                 branchId: branchId,
                 itemCount: cartAsync.value?.length ?? 0,
               ),
-      
+
               // Scrollable content area
               CartList(cartAsync: cartAsync, branchId: branchId),
             ],

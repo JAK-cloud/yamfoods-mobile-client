@@ -105,6 +105,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     });
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'Checkout'),
       body: SafeArea(

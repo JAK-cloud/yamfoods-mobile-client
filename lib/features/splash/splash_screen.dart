@@ -75,7 +75,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (isFirstTime) {
       context.go(RouteName.onboarding);
     } else {
-      context.go(RouteName.home);
+      context.go(RouteName.branches);
     }
   }
 

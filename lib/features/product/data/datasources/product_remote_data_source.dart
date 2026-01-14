@@ -1,11 +1,17 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../models/product_filter_request_model.dart';
 import '../models/product_model.dart';
 
 abstract class ProductRemoteDataSource {
   Future<Either<Failure, List<ProductModel>>> getAllBranchProducts(
     int branchId,
+  );
+
+  Future<Either<Failure, List<ProductModel>>> getAllBranchProductsWithFilters(
+    int branchId,
+    ProductFilterRequestModel filters,
   );
 
   Future<Either<Failure, List<ProductModel>>> getAllCategoryProducts(

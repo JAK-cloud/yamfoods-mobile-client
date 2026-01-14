@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
+import '../../../../../core/constants/api_urls.dart';
 import '../../../../../core/constants/app_constants.dart';
-import '../../../../../core/providers/core_providers.dart';
 import '../../../../../core/utils/image_url_builder.dart';
 import '../../../../../features/order/domain/entities/order_item.dart';
 
@@ -18,8 +18,6 @@ class OrderItemsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final envConfig = ref.watch(envConfigProvider);
-
     return Container(
       padding: EdgeInsets.all(AppSizes.lg),
       decoration: BoxDecoration(
@@ -41,7 +39,7 @@ class OrderItemsSection extends ConsumerWidget {
             final index = entry.key;
             final item = entry.value;
             return [
-              _OrderItemRow(item: item, envConfig: envConfig),
+              _OrderItemRow(item: item),
               if (index < items.length - 1)
                 Divider(
                   height: AppSizes.lg,
@@ -58,15 +56,14 @@ class OrderItemsSection extends ConsumerWidget {
 
 class _OrderItemRow extends StatelessWidget {
   final OrderItem item;
-  final envConfig;
 
-  const _OrderItemRow({required this.item, required this.envConfig});
+  const _OrderItemRow({required this.item});
 
   @override
   Widget build(BuildContext context) {
     final imageUrl = item.images.isNotEmpty
         ? ImageUrlBuilder.build(
-            baseUrl: envConfig.baseUrl,
+            baseUrl: ApiUrls.getPortalImageBaseUrl(),
             imagePath: item.images.first,
           )
         : null;
