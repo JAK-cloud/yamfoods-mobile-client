@@ -34,6 +34,8 @@ import '../../features/order/presentation/screens/order_detail_screen.dart';
 import '../../features/map/presentation/screens/map_screen.dart';
 import '../../features/map/presentation/models/map_screen_args.dart';
 import '../../features/map/presentation/screens/driver_arrived_screen.dart';
+import '../../features/search/presentation/screens/search_screen.dart';
+import '../../features/notification/presentation/screens/notification_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -174,6 +176,7 @@ final GoRouter appRouter = GoRouter(
           customerLocation: args.customerLocation,
           restaurantLocation: args.restaurantLocation,
           orderId: args.orderId,
+          delivererPhone: args.delivererPhone,
         );
       },
     ),
@@ -183,6 +186,14 @@ final GoRouter appRouter = GoRouter(
         final orderId = state.extra as int;
         return DriverArrivedScreen(orderId: orderId);
       },
+    ),
+    GoRoute(
+      path: RouteName.search,
+      builder: (context, state) => const SearchScreen(),
+    ),
+    GoRoute(
+      path: RouteName.notifications,
+      builder: (context, state) => const NotificationScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

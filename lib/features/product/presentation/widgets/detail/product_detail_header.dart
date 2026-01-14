@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../app/routes/route_names.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../features/cart/presentation/widgets/animated_cart_icon.dart';
@@ -38,7 +39,7 @@ class ProductDetailHeader extends ConsumerWidget {
               padding: const EdgeInsets.all(AppSizes.sm),
               badgeOffset: const Offset(10, -10),
               onTap: () {
-                // TODO: Navigate to cart screen
+                context.go(RouteName.cart);
               },
             ),
           ),

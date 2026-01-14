@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
+import '../../../../core/services/snackbar_service.dart';
+import '../../../review/presentation/providers/review_events.dart';
 import '../../domain/entities/product.dart';
 import '../widgets/detail/product_cart_bottom_sheet.dart';
 import '../widgets/detail/product_description_section.dart';
@@ -12,6 +14,7 @@ import '../widgets/detail/product_info_section.dart';
 import '../widgets/detail/product_ingredients_section.dart';
 import '../widgets/detail/product_nutrition_panel.dart';
 import '../widgets/detail/product_related_section.dart';
+import '../widgets/detail/product_review_form_section.dart';
 import '../widgets/detail/product_reviews_section.dart';
 
 /// Product detail screen displaying full product information.
@@ -25,7 +28,26 @@ class ProductDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Listen to review events
+    ref.listen<ReviewUiEvent?>(reviewUiEventsProvider, (previous, next) {
+      if (next == null) return;
+
+      final snackbar = ref.read(snackbarServiceProvider);
+
+      if (next is ReviewUpdated) {
+        snackbar.showSuccess(next.message);
+      } else if (next is ReviewCreated) {
+        snackbar.showSuccess(next.message);
+      } else if (next is ReviewDeleted) {
+        snackbar.showSuccess(next.message);
+      } else if (next is ReviewFailure) {
+        snackbar.showError(next.failure);
+      }
+
+      ref.read(reviewUiEventsProvider.notifier).clear();
+    });
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.background,
       extendBody: false,
       body: SafeArea(
@@ -36,7 +58,7 @@ class ProductDetailScreen extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Stack(
                 children: [
-                    // Curved background and carousel
+                  // Curved background and carousel
                   // Container(
                   //   padding: const EdgeInsets.only(top: 28),
                   //   height: 330,
@@ -98,6 +120,13 @@ class ProductDetailScreen extends ConsumerWidget {
                 categoryId: product.categoryId,
                 subCategoryId: product.subCategoryId,
               ),
+            ),
+
+            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
+
+            // Review Form (only for authenticated users without review)
+            SliverToBoxAdapter(
+              child: ProductReviewFormSection(productId: product.id),
             ),
 
             SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),

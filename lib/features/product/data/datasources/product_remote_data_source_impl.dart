@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/error_handler.dart';
 import '../../../../core/errors/failure.dart';
+import '../models/product_filter_request_model.dart';
 import '../models/product_model.dart';
 import 'product_api_service.dart';
 import 'product_remote_data_source.dart';
@@ -17,6 +18,29 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ) async {
     try {
       final response = await _apiService.getAllBranchProducts(branchId);
+      return Right(response.data.products);
+    } catch (e) {
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductModel>>> getAllBranchProductsWithFilters(
+    int branchId,
+    ProductFilterRequestModel filters,
+  ) async {
+    try {
+      final queryParams = filters.toQueryParameters();
+      final response = await _apiService.getAllBranchProductsWithFilters(
+        branchId,
+        queryParams['search'] as String?,
+        queryParams['minPrice'] as double?,
+        queryParams['maxPrice'] as double?,
+        queryParams['category'] as int?,
+        queryParams['subcategory'] as int?,
+        queryParams['ingredients'] as String?,
+        queryParams['hasDiscount'] as String?,
+      );
       return Right(response.data.products);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));

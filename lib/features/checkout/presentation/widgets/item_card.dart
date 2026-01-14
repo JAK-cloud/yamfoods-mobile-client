@@ -6,8 +6,8 @@ import 'package:yamfoods_customer_app/features/product/domain/extensions/product
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/constants/api_urls.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/providers/core_providers.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../../product/domain/extensions/product_image_extensions.dart';
 import '../../../cart/domain/entities/cart.dart';
@@ -22,11 +22,10 @@ class ItemCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final envConfig = ref.watch(envConfigProvider);
     final mainImage = cart.product.getMainImage();
     final imageUrl = mainImage != null
         ? ImageUrlBuilder.build(
-            baseUrl: envConfig.baseUrl,
+            baseUrl: ApiUrls.getPortalImageBaseUrl(),
             imagePath: mainImage.url,
           )
         : null;
@@ -123,4 +122,3 @@ class ItemCard extends ConsumerWidget {
     );
   }
 }
-

@@ -85,3 +85,63 @@ Future<List<Branch>> branches(Ref ref) async {
 
   return result.fold((failure) => throw failure, (branches) => branches);
 }
+
+// ==================== Current Branch Provider ====================
+
+/// Current selected branch ID provider
+///
+/// Stores the currently selected branch ID that the user has chosen.
+/// - `null` means no branch has been selected yet
+/// - When user selects a branch, this is updated with the branch ID
+/// - When user changes branch, this value is overwritten with the new branch ID
+///
+/// **CRITICAL:** Uses `keepAlive: true` to persist state across navigation.
+/// Without this, the provider would be disposed when navigating away,
+/// losing the saved branch ID.
+///
+/// Usage:
+/// ```dart
+/// // Set current branch (returns true on success, false on failure)
+/// final success = ref.read(currentBranchProvider.notifier).set(branchId);
+/// if (success) {
+///   // Navigate or perform action
+/// }
+///
+/// // Get current branch ID
+/// final branchId = ref.watch(currentBranchProvider);
+///
+/// // Clear current branch (optional)
+/// ref.read(currentBranchProvider.notifier).clear();
+/// ```
+@Riverpod(keepAlive: true)
+class CurrentBranch extends _$CurrentBranch {
+  @override
+  int? build() => null;
+
+  /// Sets the current branch ID.
+  ///
+  /// Validates that the branch ID is valid (positive integer).
+  /// Returns `true` if successful, `false` if validation fails.
+  ///
+  /// This allows callers to safely check if the operation succeeded
+  /// before proceeding with navigation or other actions.
+  bool set(int branchId) {
+    // Validate branch ID is positive
+    if (branchId <= 0) {
+      return false;
+    }
+
+    try {
+      state = branchId;
+      return true;
+    } catch (e) {
+      // If setting state fails for any reason, return false
+      return false;
+    }
+  }
+
+  /// Clears the current branch ID.
+  void clear() {
+    state = null;
+  }
+}

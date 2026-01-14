@@ -12,6 +12,8 @@ import '../../domain/repositories/product_repository.dart';
 import '../../domain/usecases/get_all_branch_products_usecase.dart';
 import '../../domain/usecases/get_all_category_products_usecase.dart';
 import '../../domain/usecases/get_all_subcategory_products_usecase.dart';
+import '../../domain/usecases/search_products_usecase.dart';
+import '../../data/models/product_filter_request_model.dart';
 
 part 'product_providers.g.dart';
 
@@ -49,6 +51,12 @@ GetAllCategoryProductsUsecase getAllCategoryProductsUsecase(Ref ref) {
 GetAllSubcategoryProductsUsecase getAllSubcategoryProductsUsecase(Ref ref) {
   final repository = ref.watch(productRepositoryProvider);
   return GetAllSubcategoryProductsUsecase(repository);
+}
+
+@riverpod
+SearchProductsUsecase searchProductsUsecase(Ref ref) {
+  final repository = ref.watch(productRepositoryProvider);
+  return SearchProductsUsecase(repository);
 }
 
 @riverpod
@@ -240,4 +248,33 @@ Cart? productCartItem(Ref ref, Product product) {
 bool isProductInCart(Ref ref, Product product) {
   final cartItem = ref.watch(productCartItemProvider(product));
   return cartItem != null;
+}
+
+/// Provider for searching products with filters.
+///
+/// Takes a branch ID and filter request model, returns filtered products.
+/// Automatically refetches when filters change.
+///
+/// **Parameters:**
+/// - [branchId]: The branch ID to search products from
+/// - [filters]: The filter request model containing search criteria
+///
+/// **Returns:**
+/// A [Future] that resolves to a list of filtered products.
+///
+/// **Usage:**
+/// ```dart
+/// final filters = ProductFilterRequestModel(search: 'pizza');
+/// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+/// ```
+@riverpod
+Future<List<Product>> searchProducts(
+  Ref ref,
+  int branchId,
+  ProductFilterRequestModel filters,
+) async {
+  final usecase = ref.watch(searchProductsUsecaseProvider);
+  final result = await usecase(branchId, filters);
+
+  return result.fold((failure) => throw failure, (products) => products);
 }

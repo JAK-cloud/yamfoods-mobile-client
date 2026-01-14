@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
+import '../../../branch/presentation/providers/branch_providers.dart';
 import '../../domain/entities/category.dart';
 import '../widgets/category_header.dart';
 import '../widgets/category_products_grid.dart';
@@ -35,7 +36,8 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const branchId = 2;
+    // Get current branch ID - guaranteed to exist since branch selection is enforced
+    final branchId = ref.watch(currentBranchProvider)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -63,7 +65,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                       // TODO: Implement search functionality
                     },
                   ),
-                   SubcategoryChipsList(
+                  SubcategoryChipsList(
                     branchId: branchId,
                     categoryId: widget.category.id,
                     onSubcategorySelected: _handleSubcategorySelected,
@@ -71,7 +73,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                 ],
               ),
             ),
-           
+
             Expanded(
               child: CategoryProductsGrid(
                 branchId: branchId,

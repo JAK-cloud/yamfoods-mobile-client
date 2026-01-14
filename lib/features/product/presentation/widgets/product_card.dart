@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:yamfoods_customer_app/core/constants/api_urls.dart';
 
 import '../../../../app/routes/auth_guard_helper.dart';
 import '../../../../app/routes/route_names.dart';
@@ -10,7 +11,6 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/providers/animation_providers.dart';
-import '../../../../core/providers/core_providers.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
@@ -35,14 +35,13 @@ class ProductCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final envConfig = ref.watch(envConfigProvider);
     final cartItem = ref.watch(productCartItemProvider(product));
     final isInCart = ref.watch(isProductInCartProvider(product));
 
     final mainImage = product.getMainImage();
     final imageUrl = mainImage != null
         ? ImageUrlBuilder.build(
-            baseUrl: envConfig.baseUrl,
+            baseUrl: ApiUrls.getPortalImageBaseUrl(),
             imagePath: mainImage.url,
           )
         : null;

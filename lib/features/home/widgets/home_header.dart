@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -70,7 +72,7 @@ class HomeHeader extends ConsumerWidget {
               // Notification icon with badge
               GestureDetector(
                 onTap: () {
-                  // TODO: Navigate to notifications screen
+                  context.push(RouteName.notifications);
                 },
                 child: Badge.count(
                   count: 5, // Static count for now
@@ -92,7 +94,7 @@ class HomeHeader extends ConsumerWidget {
               AnimatedCartIcon(
                 screenId: 'home',
                 onTap: () {
-                  // TODO: Navigate to cart screen
+                  context.go(RouteName.cart);
                 },
               ),
             ],

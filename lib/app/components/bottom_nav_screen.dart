@@ -54,9 +54,34 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
     );
   }
 
+  /// Handles back button navigation based on current tab.
+  ///
+  /// Navigation flow:
+  /// - If on home tab (index 0) → navigate to branch selection
+  /// - If on cart/order/profile tabs (index 1, 2, 3) → navigate to home tab first
+  void _handleBackButton() {
+    final currentIndex = widget.navigationShell.currentIndex;
+
+    // If on home tab, navigate to branch selection
+    if (currentIndex == 0) {
+      context.go(RouteName.branches);
+      return;
+    }
+
+    // If on cart/order/profile tabs, navigate to home tab
+    widget.navigationShell.goBranch(0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false, // We handle back button manually
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _handleBackButton();
+        }
+      },
+      child: Scaffold(
         body: SafeArea(child: widget.navigationShell),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
@@ -115,7 +140,7 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
             ],
           ),
         ),
-      );
-    
+      ),
+    );
   }
 }

@@ -347,3 +347,146 @@ final class BranchesProvider
 }
 
 String _$branchesHash() => r'c4e06b681c9d2edfbee1b77bf6455b6f5af0050d';
+
+/// Current selected branch ID provider
+///
+/// Stores the currently selected branch ID that the user has chosen.
+/// - `null` means no branch has been selected yet
+/// - When user selects a branch, this is updated with the branch ID
+/// - When user changes branch, this value is overwritten with the new branch ID
+///
+/// **CRITICAL:** Uses `keepAlive: true` to persist state across navigation.
+/// Without this, the provider would be disposed when navigating away,
+/// losing the saved branch ID.
+///
+/// Usage:
+/// ```dart
+/// // Set current branch
+/// ref.read(currentBranchProvider.notifier).set(branchId);
+///
+/// // Get current branch ID
+/// final branchId = ref.watch(currentBranchProvider);
+///
+/// // Clear current branch (optional)
+/// ref.read(currentBranchProvider.notifier).clear();
+/// ```
+
+@ProviderFor(CurrentBranch)
+const currentBranchProvider = CurrentBranchProvider._();
+
+/// Current selected branch ID provider
+///
+/// Stores the currently selected branch ID that the user has chosen.
+/// - `null` means no branch has been selected yet
+/// - When user selects a branch, this is updated with the branch ID
+/// - When user changes branch, this value is overwritten with the new branch ID
+///
+/// **CRITICAL:** Uses `keepAlive: true` to persist state across navigation.
+/// Without this, the provider would be disposed when navigating away,
+/// losing the saved branch ID.
+///
+/// Usage:
+/// ```dart
+/// // Set current branch
+/// ref.read(currentBranchProvider.notifier).set(branchId);
+///
+/// // Get current branch ID
+/// final branchId = ref.watch(currentBranchProvider);
+///
+/// // Clear current branch (optional)
+/// ref.read(currentBranchProvider.notifier).clear();
+/// ```
+final class CurrentBranchProvider
+    extends $NotifierProvider<CurrentBranch, int?> {
+  /// Current selected branch ID provider
+  ///
+  /// Stores the currently selected branch ID that the user has chosen.
+  /// - `null` means no branch has been selected yet
+  /// - When user selects a branch, this is updated with the branch ID
+  /// - When user changes branch, this value is overwritten with the new branch ID
+  ///
+  /// **CRITICAL:** Uses `keepAlive: true` to persist state across navigation.
+  /// Without this, the provider would be disposed when navigating away,
+  /// losing the saved branch ID.
+  ///
+  /// Usage:
+  /// ```dart
+  /// // Set current branch
+  /// ref.read(currentBranchProvider.notifier).set(branchId);
+  ///
+  /// // Get current branch ID
+  /// final branchId = ref.watch(currentBranchProvider);
+  ///
+  /// // Clear current branch (optional)
+  /// ref.read(currentBranchProvider.notifier).clear();
+  /// ```
+  const CurrentBranchProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentBranchProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentBranchHash();
+
+  @$internal
+  @override
+  CurrentBranch create() => CurrentBranch();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int?>(value),
+    );
+  }
+}
+
+String _$currentBranchHash() => r'fd9af6d7606832fa0d616162f79b8e635098eaed';
+
+/// Current selected branch ID provider
+///
+/// Stores the currently selected branch ID that the user has chosen.
+/// - `null` means no branch has been selected yet
+/// - When user selects a branch, this is updated with the branch ID
+/// - When user changes branch, this value is overwritten with the new branch ID
+///
+/// **CRITICAL:** Uses `keepAlive: true` to persist state across navigation.
+/// Without this, the provider would be disposed when navigating away,
+/// losing the saved branch ID.
+///
+/// Usage:
+/// ```dart
+/// // Set current branch
+/// ref.read(currentBranchProvider.notifier).set(branchId);
+///
+/// // Get current branch ID
+/// final branchId = ref.watch(currentBranchProvider);
+///
+/// // Clear current branch (optional)
+/// ref.read(currentBranchProvider.notifier).clear();
+/// ```
+
+abstract class _$CurrentBranch extends $Notifier<int?> {
+  int? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<int?, int?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<int?, int?>,
+              int?,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

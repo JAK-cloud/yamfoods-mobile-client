@@ -302,6 +302,54 @@ final class GetAllSubcategoryProductsUsecaseProvider
 String _$getAllSubcategoryProductsUsecaseHash() =>
     r'b704aee7a254e20be177a681c21fc5988fc279c0';
 
+@ProviderFor(searchProductsUsecase)
+const searchProductsUsecaseProvider = SearchProductsUsecaseProvider._();
+
+final class SearchProductsUsecaseProvider
+    extends
+        $FunctionalProvider<
+          SearchProductsUsecase,
+          SearchProductsUsecase,
+          SearchProductsUsecase
+        >
+    with $Provider<SearchProductsUsecase> {
+  const SearchProductsUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'searchProductsUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchProductsUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SearchProductsUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SearchProductsUsecase create(Ref ref) {
+    return searchProductsUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SearchProductsUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SearchProductsUsecase>(value),
+    );
+  }
+}
+
+String _$searchProductsUsecaseHash() =>
+    r'eeec4436e7e931f038dfac8fa40787831f2b63fa';
+
 @ProviderFor(branchProducts)
 const branchProductsProvider = BranchProductsFamily._();
 
@@ -1135,4 +1183,174 @@ final class IsProductInCartFamily extends $Family
 
   @override
   String toString() => r'isProductInCartProvider';
+}
+
+/// Provider for searching products with filters.
+///
+/// Takes a branch ID and filter request model, returns filtered products.
+/// Automatically refetches when filters change.
+///
+/// **Parameters:**
+/// - [branchId]: The branch ID to search products from
+/// - [filters]: The filter request model containing search criteria
+///
+/// **Returns:**
+/// A [Future] that resolves to a list of filtered products.
+///
+/// **Usage:**
+/// ```dart
+/// final filters = ProductFilterRequestModel(search: 'pizza');
+/// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+/// ```
+
+@ProviderFor(searchProducts)
+const searchProductsProvider = SearchProductsFamily._();
+
+/// Provider for searching products with filters.
+///
+/// Takes a branch ID and filter request model, returns filtered products.
+/// Automatically refetches when filters change.
+///
+/// **Parameters:**
+/// - [branchId]: The branch ID to search products from
+/// - [filters]: The filter request model containing search criteria
+///
+/// **Returns:**
+/// A [Future] that resolves to a list of filtered products.
+///
+/// **Usage:**
+/// ```dart
+/// final filters = ProductFilterRequestModel(search: 'pizza');
+/// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+/// ```
+
+final class SearchProductsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Product>>,
+          List<Product>,
+          FutureOr<List<Product>>
+        >
+    with $FutureModifier<List<Product>>, $FutureProvider<List<Product>> {
+  /// Provider for searching products with filters.
+  ///
+  /// Takes a branch ID and filter request model, returns filtered products.
+  /// Automatically refetches when filters change.
+  ///
+  /// **Parameters:**
+  /// - [branchId]: The branch ID to search products from
+  /// - [filters]: The filter request model containing search criteria
+  ///
+  /// **Returns:**
+  /// A [Future] that resolves to a list of filtered products.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final filters = ProductFilterRequestModel(search: 'pizza');
+  /// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+  /// ```
+  const SearchProductsProvider._({
+    required SearchProductsFamily super.from,
+    required (int, ProductFilterRequestModel) super.argument,
+  }) : super(
+         retry: null,
+         name: r'searchProductsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchProductsHash();
+
+  @override
+  String toString() {
+    return r'searchProductsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Product>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Product>> create(Ref ref) {
+    final argument = this.argument as (int, ProductFilterRequestModel);
+    return searchProducts(ref, argument.$1, argument.$2);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SearchProductsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$searchProductsHash() => r'7d218561f505b79c5ec61ce8994eecd9fbe2b524';
+
+/// Provider for searching products with filters.
+///
+/// Takes a branch ID and filter request model, returns filtered products.
+/// Automatically refetches when filters change.
+///
+/// **Parameters:**
+/// - [branchId]: The branch ID to search products from
+/// - [filters]: The filter request model containing search criteria
+///
+/// **Returns:**
+/// A [Future] that resolves to a list of filtered products.
+///
+/// **Usage:**
+/// ```dart
+/// final filters = ProductFilterRequestModel(search: 'pizza');
+/// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+/// ```
+
+final class SearchProductsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Product>>,
+          (int, ProductFilterRequestModel)
+        > {
+  const SearchProductsFamily._()
+    : super(
+        retry: null,
+        name: r'searchProductsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider for searching products with filters.
+  ///
+  /// Takes a branch ID and filter request model, returns filtered products.
+  /// Automatically refetches when filters change.
+  ///
+  /// **Parameters:**
+  /// - [branchId]: The branch ID to search products from
+  /// - [filters]: The filter request model containing search criteria
+  ///
+  /// **Returns:**
+  /// A [Future] that resolves to a list of filtered products.
+  ///
+  /// **Usage:**
+  /// ```dart
+  /// final filters = ProductFilterRequestModel(search: 'pizza');
+  /// final productsAsync = ref.watch(searchProductsProvider(branchId, filters));
+  /// ```
+
+  SearchProductsProvider call(
+    int branchId,
+    ProductFilterRequestModel filters,
+  ) => SearchProductsProvider._(argument: (branchId, filters), from: this);
+
+  @override
+  String toString() => r'searchProductsProvider';
 }

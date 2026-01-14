@@ -52,6 +52,54 @@ class _ProductApiService implements ProductApiService {
   }
 
   @override
+  Future<ApiResponse<ProductsResponseModel>> getAllBranchProductsWithFilters(
+    int branchId,
+    String? search,
+    double? minPrice,
+    double? maxPrice,
+    int? category,
+    int? subcategory,
+    String? ingredients,
+    String? hasDiscount,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'search': search,
+      r'minPrice': minPrice,
+      r'maxPrice': maxPrice,
+      r'category': category,
+      r'subcategory': subcategory,
+      r'ingredients': ingredients,
+      r'hasDiscount': hasDiscount,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<ProductsResponseModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/product/get-all-branch-products/${branchId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<ProductsResponseModel> _value;
+    try {
+      _value = ApiResponse<ProductsResponseModel>.fromJson(
+        _result.data!,
+        (json) => ProductsResponseModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ApiResponse<ProductsResponseModel>> getAllCategoryProducts(
     int branchId,
     int categoryId,

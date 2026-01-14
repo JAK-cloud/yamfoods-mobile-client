@@ -7,10 +7,12 @@ class MapScreenArgs {
   final AddressLocation customerLocation;
   final AddressLocation restaurantLocation;
   final int orderId;
+  final String? delivererPhone;
 
   const MapScreenArgs({
     required this.customerLocation,
     required this.restaurantLocation,
     required this.orderId,
+    this.delivererPhone,
   });
 }

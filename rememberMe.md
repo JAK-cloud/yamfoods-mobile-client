@@ -79,7 +79,6 @@ router.delete("/delete-review/:reviewId",
 
 //get all reviews for a product
 router.get("/get-all-reviews/:productId", 
-    authMiddleware,
     reviewController.getAllReviews
 );
 

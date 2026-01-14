@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
+import '../../branch/presentation/providers/branch_providers.dart';
 import '../../product/presentation/providers/product_providers.dart';
 import '../../promo_banner/presentation/widgets/promo_banner_slider.dart';
 import '../widgets/category_chips_list.dart';
@@ -19,7 +20,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int branchId = 2;
+    // Get current branch ID - guaranteed to exist since branch selection is enforced
+    final branchId = ref.watch(currentBranchProvider)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -79,14 +81,14 @@ class HomeScreen extends ConsumerWidget {
                             SizedBox(height: AppSizes.lg),
 
                             // Category chips list
-                            CategoryChipsList(branchId: 2),
+                            CategoryChipsList(branchId: branchId),
                           ],
                         ),
                       ),
                     ),
 
                     // Product grid - scrolls with content
-                    ProductSliverGrid(branchId: 2),
+                    ProductSliverGrid(branchId: branchId),
 
                     // Bottom padding for safe area
                     SliverToBoxAdapter(
