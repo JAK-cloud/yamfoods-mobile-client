@@ -5,7 +5,6 @@ import 'package:yamfoods_customer_app/app/routes/route_names.dart';
 
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart';
-import '../../../../app/routes/navigation_shell_provider.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/entities/cart.dart';
@@ -43,17 +42,7 @@ class CartList extends ConsumerWidget {
               title: 'Your cart is empty',
               subtitle: 'Start adding delicious items to your cart',
               actionText: 'Browse Menu',
-              onAction: () {
-                // Tab switch (safe): in `StatefulShellRoute`, prefer `goBranch` over route nav
-                // from deep widgets (avoids wrong nested navigator/branch).
-                final switched = ref
-                    .read(navigationShellProvider.notifier)
-                    .goHome();
-                if (!switched) {
-                  // Fallback (should be rare): route navigation.
-                  context.go(RouteName.home);
-                }
-              },
+              onAction: () => context.go(RouteName.home),
             );
           }
           return ListView.builder(

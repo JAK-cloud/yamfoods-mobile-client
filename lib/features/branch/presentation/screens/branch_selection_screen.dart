@@ -226,6 +226,8 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
         text: 'CONTINUE >>>',
         textColor: AppColors.white,
         onPressed: () {
+          //first clear the branch id if exist
+          ref.read(currentBranchProvider.notifier).clear();
           // Store the selected branch ID and check if successful
           final success = ref
               .read(currentBranchProvider.notifier)
@@ -233,7 +235,9 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
 
           // Only navigate if branch ID was successfully stored
           if (success && mounted) {
-            context.push(RouteName.home);
+            // IMPORTANT: Use `go()` (not `push()`) when entering the tab shell routes (Home/Cart/Order/Profile).
+            // `push()` can create an inconsistent stack across nested navigators and later cause navigation/layout issues.
+            context.go(RouteName.home);
           }
           // If setting failed, the user stays on the branch selection screen
           // This is a safety measure - in practice, this should rarely fail

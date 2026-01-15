@@ -49,8 +49,16 @@ class CartScreen extends ConsumerWidget {
       ref.read(cartUiEventsProvider.notifier).clear();
     });
 
-    // Get current branch ID - guaranteed to exist since branch selection is enforced
-    final branchId = ref.watch(currentBranchProvider)!;
+    // Defensive: if branch is missing (cold start/deep link/etc.), redirect to selection
+    // instead of crashing or using a fake branchId.
+    final branchId = ref.watch(currentBranchProvider);
+    if (branchId == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) context.go(RouteName.branches);
+      });
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     final cartAsync = ref.watch(cartProvider(branchId));
 
     return LocationGpsGuardPerscreen(

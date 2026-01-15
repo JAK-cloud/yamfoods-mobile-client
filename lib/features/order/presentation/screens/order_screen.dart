@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart';
-import '../../../../app/routes/navigation_shell_provider.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
@@ -45,16 +44,7 @@ class OrderScreen extends ConsumerWidget {
                         subtitle:
                             'Your order history will appear here once you place an order',
                         actionText: 'Browse Menu',
-                        onAction: () {
-                          // Tab switch (safe): in `StatefulShellRoute`, prefer `goBranch` over route nav
-                          // from deep widgets (avoids wrong nested navigator/branch).
-                          final switched = ref
-                              .read(navigationShellProvider.notifier)
-                              .goHome();
-                          if (!switched) {
-                            context.go(RouteName.home);
-                          }
-                        },
+                        onAction: () => context.pushReplacement(RouteName.home),
                       );
                     }
 
