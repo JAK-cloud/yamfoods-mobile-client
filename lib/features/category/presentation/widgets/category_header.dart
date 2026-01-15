@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/auth_guard_helper.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
@@ -65,8 +66,14 @@ class CategoryHeader extends ConsumerWidget {
                 screenId: 'category',
                 iconSize: AppSizes.iconSize,
                 padding: EdgeInsets.all(AppSizes.sm),
-                onTap: () {
-                  context.go(RouteName.cart);
+                onTap: () async {
+                  await AuthGuardHelper.requireAuthOrShowDialog(
+                    context: context,
+                    ref: ref,
+                    onAuthenticated: () {
+                      context.go(RouteName.cart);
+                    },
+                  );
                 },
               ),
               SizedBox(width: AppSizes.xs),

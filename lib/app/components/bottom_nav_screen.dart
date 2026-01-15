@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../routes/auth_guard_helper.dart';
+import '../routes/navigation_shell_provider.dart';
 import '../routes/route_names.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_sizes.dart';
@@ -18,6 +19,28 @@ class BottomNavScreen extends ConsumerStatefulWidget {
 }
 
 class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Why: in a tabbed app (`StatefulShellRoute`), deep widgets should switch tabs via
+    // `goBranch(...)` (not `go/pushReplacement`), otherwise navigation can hit the wrong
+    // nested navigator/branch and cause weird UI bugs.
+    // Post-frame avoids "modify provider during build" issues.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref
+          .read(navigationShellProvider.notifier)
+          .setShell(widget.navigationShell);
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clear to avoid holding stale shell references.
+    ref.read(navigationShellProvider.notifier).clear();
+    super.dispose();
+  }
+
   // Map of tab indices to their corresponding routes
   static const Map<int, String> _tabRoutes = {
     0: RouteName.home, // Home
