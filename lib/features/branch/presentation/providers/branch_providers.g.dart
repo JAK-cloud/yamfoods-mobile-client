@@ -361,8 +361,11 @@ String _$branchesHash() => r'c4e06b681c9d2edfbee1b77bf6455b6f5af0050d';
 ///
 /// Usage:
 /// ```dart
-/// // Set current branch
-/// ref.read(currentBranchProvider.notifier).set(branchId);
+/// // Set current branch (returns true on success, false on failure)
+/// final success = ref.read(currentBranchProvider.notifier).set(branchId);
+/// if (success) {
+///   // Navigate or perform action
+/// }
 ///
 /// // Get current branch ID
 /// final branchId = ref.watch(currentBranchProvider);
@@ -387,8 +390,11 @@ const currentBranchProvider = CurrentBranchProvider._();
 ///
 /// Usage:
 /// ```dart
-/// // Set current branch
-/// ref.read(currentBranchProvider.notifier).set(branchId);
+/// // Set current branch (returns true on success, false on failure)
+/// final success = ref.read(currentBranchProvider.notifier).set(branchId);
+/// if (success) {
+///   // Navigate or perform action
+/// }
 ///
 /// // Get current branch ID
 /// final branchId = ref.watch(currentBranchProvider);
@@ -411,8 +417,11 @@ final class CurrentBranchProvider
   ///
   /// Usage:
   /// ```dart
-  /// // Set current branch
-  /// ref.read(currentBranchProvider.notifier).set(branchId);
+  /// // Set current branch (returns true on success, false on failure)
+  /// final success = ref.read(currentBranchProvider.notifier).set(branchId);
+  /// if (success) {
+  ///   // Navigate or perform action
+  /// }
   ///
   /// // Get current branch ID
   /// final branchId = ref.watch(currentBranchProvider);
@@ -447,7 +456,7 @@ final class CurrentBranchProvider
   }
 }
 
-String _$currentBranchHash() => r'fd9af6d7606832fa0d616162f79b8e635098eaed';
+String _$currentBranchHash() => r'1f27a3ed04f49b7011777553bff4466178078d90';
 
 /// Current selected branch ID provider
 ///
@@ -462,8 +471,11 @@ String _$currentBranchHash() => r'fd9af6d7606832fa0d616162f79b8e635098eaed';
 ///
 /// Usage:
 /// ```dart
-/// // Set current branch
-/// ref.read(currentBranchProvider.notifier).set(branchId);
+/// // Set current branch (returns true on success, false on failure)
+/// final success = ref.read(currentBranchProvider.notifier).set(branchId);
+/// if (success) {
+///   // Navigate or perform action
+/// }
 ///
 /// // Get current branch ID
 /// final branchId = ref.watch(currentBranchProvider);

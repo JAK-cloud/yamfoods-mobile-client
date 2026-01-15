@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/providers/auth_user_state.dart';
 import 'login_required_dialog.dart';
@@ -45,9 +44,12 @@ class AuthGuardHelper {
       return;
     }
 
-    // User is guest - save current route and show dialog
-    final currentRoute = GoRouterState.of(context).matchedLocation;
-    ref.read(targetScreenProvider.notifier).set(currentRoute);
+    // User is guest (ACTION trigger, not tab navigation):
+    // Do NOT store the current route as a targetScreen.
+    // After login, we want to land on Home (default) instead of navigating back
+    // to wherever the user was when they tapped the action button.
+    // Also clear any previously stored target to avoid stale redirects.
+    ref.read(targetScreenProvider.notifier).clear();
 
     // Show login dialog
     final shouldContinue = await LoginRequiredDialog.show(context: context);

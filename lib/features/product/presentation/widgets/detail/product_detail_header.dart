@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../app/routes/auth_guard_helper.dart';
 import '../../../../../app/routes/route_names.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
@@ -38,8 +39,14 @@ class ProductDetailHeader extends ConsumerWidget {
               iconSize: 24,
               padding: const EdgeInsets.all(AppSizes.sm),
               badgeOffset: const Offset(10, -10),
-              onTap: () {
-                context.go(RouteName.cart);
+              onTap: () async {
+                await AuthGuardHelper.requireAuthOrShowDialog(
+                  context: context,
+                  ref: ref,
+                  onAuthenticated: () {
+                    context.go(RouteName.cart);
+                  },
+                );
               },
             ),
           ),

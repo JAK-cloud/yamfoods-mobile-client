@@ -42,7 +42,7 @@ class CartList extends ConsumerWidget {
               title: 'Your cart is empty',
               subtitle: 'Start adding delicious items to your cart',
               actionText: 'Browse Menu',
-              onAction: () => context.pushReplacement(RouteName.home),
+              onAction: () => context.go(RouteName.home),
             );
           }
           return ListView.builder(
