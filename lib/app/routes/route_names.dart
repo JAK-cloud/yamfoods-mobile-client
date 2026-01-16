@@ -55,6 +55,9 @@ class RouteName {
   /// Create or update address route.
   static const String createOrUpdateAddress = '/addresses/create-or-update';
 
+  /// Full-screen map picker for choosing an address location.
+  static const String pickLocationFromMap = '/addresses/pick-location';
+
   /// Achievement points route.
   static const String achievement = '/achievement';
 

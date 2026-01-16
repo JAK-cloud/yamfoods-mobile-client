@@ -8,12 +8,16 @@ import '../../../../app/components/input_textfield.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/widgets/custom_app_bar.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/services/snackbar_service.dart';
 import '../../../../core/utils/validators.dart';
 import '../../domain/entities/address.dart';
 import '../../domain/entities/address_request_data.dart';
 import '../providers/address_events.dart';
 import '../providers/address_loading_providers.dart';
 import '../providers/address_notifier.dart';
+import '../providers/location_selection_provider.dart';
+import '../widgets/location_selection_section.dart';
 
 class CreateOrUpdateAddressScreen extends ConsumerStatefulWidget {
   final Address? address;
@@ -34,10 +38,6 @@ class _CreateOrUpdateAddressScreenState
   late final TextEditingController _houseNoController;
   late final TextEditingController _noteController;
 
-  // Static coordinates for Addis Ababa (can be replaced with location picker later)
-  static const double _defaultLat = 9.1450;
-  static const double _defaultLng = 38.7614;
-
   @override
   void initState() {
     super.initState();
@@ -56,6 +56,22 @@ class _CreateOrUpdateAddressScreenState
     _noteController = TextEditingController(
       text: widget.address?.note != 'N/A' ? widget.address?.note : '',
     );
+
+    // Initialize location based on mode (create vs update)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.address != null) {
+        // Update mode: use existing address coordinates
+        final lat = double.tryParse(widget.address!.lat);
+        final lng = double.tryParse(widget.address!.lng);
+        if (lat != null && lng != null) {
+          ref
+              .read(locationSelectionProvider.notifier)
+              .initializeWithExistingAddress(lat, lng);
+        }
+        // If parsing fails, provider will fall back to fetching current location
+      }
+      // Create mode: provider already fetches current location on build()
+    });
   }
 
   @override
@@ -70,6 +86,30 @@ class _CreateOrUpdateAddressScreenState
 
   Future<void> _handleSubmit() async {
     if (_formKey.currentState?.validate() ?? false) {
+      final locationState = ref.read(locationSelectionProvider);
+      final snackbar = ref.read(snackbarServiceProvider);
+
+      // Check if coordinates are available
+      if (locationState.selectedLat == null ||
+          locationState.selectedLng == null) {
+        snackbar.showError(
+          const Failure.validation(
+            message: 'Please select a location before submitting.',
+          ),
+        );
+        return;
+      }
+
+      // Validate coordinate ranges
+      final coordValidation = Validators.validateCoordinates(
+        locationState.selectedLat!,
+        locationState.selectedLng!,
+      );
+      if (coordValidation != null) {
+        snackbar.showError(coordValidation);
+        return;
+      }
+
       final data = AddressRequestData(
         subcity: _subcityController.text.trim(),
         street: _streetController.text.trim().isEmpty
@@ -84,8 +124,8 @@ class _CreateOrUpdateAddressScreenState
         note: _noteController.text.trim().isEmpty
             ? null
             : _noteController.text.trim(),
-        lat: _defaultLat,
-        lng: _defaultLng,
+        lat: locationState.selectedLat!,
+        lng: locationState.selectedLng!,
       );
 
       if (widget.address == null) {
@@ -145,6 +185,10 @@ class _CreateOrUpdateAddressScreenState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Location Selection Section
+                        const LocationSelectionSection(),
+                        const SizedBox(height: AppSizes.xl),
+
                         // Subcity Field (Required)
                         _buildLabel('Subcity *'),
                         const SizedBox(height: AppSizes.sm),

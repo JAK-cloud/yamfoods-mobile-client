@@ -8,6 +8,7 @@ import '../../../../app/components/error_widget.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/widgets/cupertino_back_button.dart';
+import '../../../../core/constants/gebeta_map_config.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/entities/address_location.dart';
 import '../../domain/entities/driver_location.dart';
@@ -40,9 +41,6 @@ class MapScreen extends ConsumerStatefulWidget {
 }
 
 class _MapScreenState extends ConsumerState<MapScreen> {
-  final apiKey =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55bmFtZSI6IlJlamViIiwiZGVzY3JpcHRpb24iOiIwY2MwYWFiZC0wYjlkLTQ1NDYtODY4Mi1hMDc2OGYyZjg1ZjkiLCJpZCI6IjVlMzgwN2FhLTQ2NGUtNGYyOC04Y2RjLTc1Y2M0NWYwZjdiMyIsImlzc3VlZF9hdCI6MTc2NDUzNTIyMSwiaXNzdWVyIjoiaHR0cHM6Ly9tYXBhcGkuZ2ViZXRhLmFwcCIsImp3dF9pZCI6IjAiLCJzY29wZXMiOlsiRkVBVFVSRV9BTEwiXSwidXNlcm5hbWUiOiJkZXYgcmVqZWIifQ.LFcL9jfwHT5Uv3iMpbUZJHiZHXuV3GFDCHRj1NYPBRc";
-
   GebetaMapController? _mapController;
   map_route.Route? _currentRoute;
 
@@ -155,7 +153,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             return _MapContent(
               route: route,
               customerLocation: widget.customerLocation,
-              apiKey: apiKey,
+              apiKey: GebetaMapConfig.apiKey,
               onMapCreated: _onMapCreated,
               onStyleLoaded: _onStyleLoaded,
             );
