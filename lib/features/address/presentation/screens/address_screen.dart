@@ -52,20 +52,20 @@ class AddressScreen extends ConsumerWidget {
         ),
         child: addressState.when(
           data: (addresses) {
-            if (addresses.isEmpty) {
-              return EmptyState(
-                icon: Icons.location_on_outlined,
-                title: 'No addresses found',
-                subtitle: 'Add your first address to get started',
-                actionText: 'Add Address',
+              if (addresses.isEmpty) {
+                return EmptyState(
+                  icon: Icons.location_on_outlined,
+                  title: 'No addresses found',
+                  subtitle: 'Add your first address to get started',
+                  actionText: 'Add Address',
                 onAction: () => context.push(RouteName.createOrUpdateAddress),
-              );
-            }
+                );
+              }
             return ListView.builder(
               itemCount: addresses.length,
               itemBuilder: (context, index) {
-                return AddressCard(address: addresses[index]);
-              },
+              return AddressCard(address: addresses[index]);
+            },
             );
           },
           error: (error, stackTrace) => ErrorWidgett(

@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../features/address/presentation/screens/address_screen.dart';
 import '../../features/address/presentation/screens/create_or_update_address_screen.dart';
+import '../../features/address/presentation/screens/pick_location_from_map_screen.dart';
 import '../../features/address/domain/entities/address.dart';
+import '../../core/permissions/location/location_gps_guard_perscreen.dart';
 import '../../features/auth/domain/entities/user.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
@@ -147,7 +149,21 @@ final GoRouter appRouter = GoRouter(
       path: RouteName.createOrUpdateAddress,
       builder: (context, state) {
         final address = state.extra is Address ? state.extra as Address : null;
-        return CreateOrUpdateAddressScreen(address: address);
+        return LocationGpsGuardPerscreen(
+          child: CreateOrUpdateAddressScreen(address: address),
+        );
+      },
+    ),
+    GoRoute(
+      path: RouteName.pickLocationFromMap,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        // Nullable - picker will get GPS location if not provided
+        final lat = extra?['lat'] as double?;
+        final lng = extra?['lng'] as double?;
+        return LocationGpsGuardPerscreen(
+          child: PickLocationFromMapScreen(initialLat: lat, initialLng: lng),
+        );
       },
     ),
     GoRoute(
