@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../achievement/presentation/providers/achievement_providers.dart';
 import '../../models/checkout_validator.dart';
 import 'checkout_notifier.dart';
@@ -81,8 +82,10 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
 
   // Points validation
   if (checkoutState.pointUsed != null) {
-    if (checkoutState.pointUsed! < 100) {
-      errors.add('Minimum 100 points required');
+    final appConfig = ref.watch(appConfigurationProvider).value;
+    final minimumPoints = appConfig?.minimumPointsRedemption ?? 10000;
+    if (checkoutState.pointUsed! < minimumPoints) {
+      errors.add('Minimum $minimumPoints points required');
     } else {
       // Check if user has enough points
       final achievementAsync = ref.watch(achievementPointProvider);
@@ -114,8 +117,10 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
         : null,
     pointsError: () {
       if (checkoutState.pointUsed == null) return null;
-      if (checkoutState.pointUsed! < 100) {
-        return 'Minimum 100 points required';
+      final appConfig = ref.watch(appConfigurationProvider).value;
+      final minimumPoints = appConfig?.minimumPointsRedemption ?? 10000;
+      if (checkoutState.pointUsed! < minimumPoints) {
+        return 'Minimum $minimumPoints points required';
       }
       final achievementAsync = ref.watch(achievementPointProvider);
       final availablePoints = achievementAsync.value?.point ?? 0;

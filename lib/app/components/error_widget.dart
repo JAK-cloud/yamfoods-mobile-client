@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
@@ -10,10 +12,10 @@ import '../../../../core/errors/failure_mapper.dart';
 ///
 /// Uses the current [Failure] class structure and [FailureMapper] extension
 /// to display user-friendly error messages.
-class ErrorWidgett extends StatelessWidget {
+class ErrorWidgett extends StatefulWidget {
   final String title;
   final Failure failure;
-  final VoidCallback onRetry;
+  final AsyncCallback onRetry;
   final IconData? icon;
 
   const ErrorWidgett({
@@ -25,9 +27,28 @@ class ErrorWidgett extends StatelessWidget {
   });
 
   @override
+  State<ErrorWidgett> createState() => _ErrorWidgettState();
+}
+
+class _ErrorWidgettState extends State<ErrorWidgett> {
+  bool _isRetrying = false;
+
+  Future<void> _handleRetry() async {
+    if (_isRetrying) return;
+    setState(() => _isRetrying = true);
+    try {
+      await Future.sync(widget.onRetry);
+    } finally {
+      if (mounted) {
+        setState(() => _isRetrying = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Use FailureMapper extension to get user-friendly message
-    final message = failure.toUserMessage();
+    final message = widget.failure.toUserMessage();
 
     return Center(
       child: Padding(
@@ -35,10 +56,10 @@ class ErrorWidgett extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 64, color: AppColors.error),
+            Icon(widget.icon, size: 64, color: AppColors.error),
             const SizedBox(height: AppSizes.lg),
             Text(
-              title,
+              widget.title,
               style: AppTextStyles.h4.copyWith(color: AppColors.error),
               textAlign: TextAlign.center,
             ),
@@ -52,7 +73,7 @@ class ErrorWidgett extends StatelessWidget {
             ),
             const SizedBox(height: AppSizes.xl),
             ElevatedButton(
-              onPressed: onRetry,
+              onPressed: _isRetrying ? null : _handleRetry,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.btnPrimary,
                 foregroundColor: AppColors.white,
@@ -64,7 +85,25 @@ class ErrorWidgett extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppSizes.radius),
                 ),
               ),
-              child: Text('Retry', style: AppTextStyles.buttonMedium),
+              child: _isRetrying
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.sm),
+                        Text('Retrying...', style: AppTextStyles.buttonMedium),
+                      ],
+                    )
+                  : Text('Retry', style: AppTextStyles.buttonMedium),
             ),
           ],
         ),

@@ -23,4 +23,6 @@ abstract class ProductRemoteDataSource {
     int branchId,
     int subCategoryId,
   );
+
+  Future<Either<Failure, ProductModel>> getProduct(int branchId, int productId);
 }

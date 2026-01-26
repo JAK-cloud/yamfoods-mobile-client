@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -9,7 +12,6 @@ import '../../../../core/constants/api_urls.dart';
 import '../../../../core/utils/date_formatter.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../domain/entities/promo_banner.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Individual promo banner item widget.
 ///
@@ -29,21 +31,29 @@ class PromoBannerItem extends ConsumerWidget {
       imagePath: banner.imageUrl,
     );
 
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.radius),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.grey.withValues(alpha: 0.15),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSizes.radius),
-        child: Stack(
+    void onTap() {
+      if (banner.productId != null) {
+        context.push(RouteName.productDetail, extra: banner.productId);
+      }
+    }
+
+    return GestureDetector(
+      onTap: banner.productId != null ? onTap : null,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.grey.withValues(alpha: 0.15),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+          child: Stack(
           children: [
             // Banner image
             Positioned.fill(
@@ -268,6 +278,7 @@ class PromoBannerItem extends ConsumerWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

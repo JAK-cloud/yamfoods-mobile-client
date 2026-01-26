@@ -4,11 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'app/app.dart';
+import 'core/permissions/notification/notification_module.dart';
 
 //progress_tracker: ^0.0.16, connection_notifier: ^2.0.1, order_tracker: ^0.0.2
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await NotificationModule.initialize();
 
   // Load environment variables from .env (if present)
   // This is optional - app will use default values if .env is missing
@@ -20,5 +23,6 @@ Future<void> main() async {
     debugPrint('Note: .env file not found. Using default configuration.');
   }
 
-  runApp(const ProviderScope(child: YamFoodsApp()));
+  runApp( ProviderScope(
+      child: YamFoodsApp()));
 }

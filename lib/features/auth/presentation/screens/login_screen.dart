@@ -14,6 +14,9 @@ import '../../../../app/theme/app_texts.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/services/snackbar_service.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/permissions/notification/notification_fcm_service.dart';
+import '../../../notification/presentation/providers/notification_providers.dart';
+import '../../data/services/google_sign_in_service.dart';
 import '../providers/auth_notifier.dart';
 import '../providers/events/auth_state.dart';
 
@@ -49,6 +52,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.read(authProvider.notifier).requestResetPasswordOtp(phone: phone);
   }
 
+  /// Saves FCM token to backend and subscribes to notification topics.
+  ///
+  /// This is called after successful login. Errors are silently handled
+  /// to avoid disrupting the login flow.
+  Future<void> _saveFcmTokenAndSubscribe(WidgetRef ref) async {
+    try {
+      final fcmService = NotificationFcmService.instance;
+      final token = await fcmService.getToken();
+
+      if (token == null) {
+        debugPrint('FCM token not available');
+        return;
+      }
+
+      final deviceType = NotificationFcmService.getDeviceType();
+
+      // Save token to backend
+      await ref.read(
+        saveOrUpdateFcmTokenProvider((
+          token: token,
+          deviceType: deviceType,
+        )).future,
+      );
+
+      // Subscribe to topics after successful save
+      await fcmService.subscribeToUserTopics();
+
+      debugPrint('FCM token saved and topics subscribed successfully');
+    } catch (e) {
+      // Silently handle errors - don't disrupt login flow
+      debugPrint('Error saving FCM token: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AuthEvent?>(authEventsProvider, (previous, next) {
@@ -64,12 +101,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ref.read(authEventsProvider.notifier).clear();
           return;
         }
+        if (next.user.phone == null) {
+          context.push(RouteName.savePhone, extra: next.user.id);
+          ref.read(authEventsProvider.notifier).clear();
+          return;
+        } 
 
         // User is fully authenticated
         // Defer navigation and provider modification to after current frame
         // This prevents "modify provider during build" errors
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
+
+          // Save FCM token and subscribe to topics (non-blocking)
+          _saveFcmTokenAndSubscribe(ref);
 
           // Check if there's a target screen to navigate to
           final targetScreen = ref.read(targetScreenProvider);
@@ -226,9 +271,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 20),
                   CustomButton(
                     text: AppTexts.loginWithGoogle,
-                    onPressed: () {
-                      // TODO: Implement Google login logic later
-                    },
+                    onPressed: isLoading
+                        ? null
+                        : () async {
+                            String? idToken;
+                            try {
+                              // Get Firebase ID token from Google Sign-In
+                              // Only catch errors from token retrieval
+                              idToken = await GoogleSignInService.signIn();
+                            } catch (e) {
+                              // Handle Google Sign-In token retrieval errors
+                              final snackbar = ref.read(
+                                snackbarServiceProvider,
+                              );
+                              snackbar.showError(
+                                Failure.unexpected(
+                                  message:
+                                      'Something went wrong when signing in with Google. Please contact support!',
+                                ),
+                              );
+                              return; // Exit early if token retrieval fails
+                            }
+
+                            // If idToken is null, user cancelled - do nothing
+                            if (idToken == null) return;
+
+                            // Authenticate with backend
+                            // Backend errors are handled by the auth event system
+                            ref
+                                .read(authProvider.notifier)
+                                .googleSignIn(idToken: idToken);
+                          },
+                    isLoading: isLoading,
                     isSocial: true,
                     color: AppColors.btnSecondary,
                   ),

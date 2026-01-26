@@ -18,7 +18,7 @@ class LogoutButton extends ConsumerWidget {
     final isLoading = ref.watch(authProvider);
 
     return Container(
-          width: double.infinity,
+          width: 200,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSizes.radiusLg),
             border: Border.all(

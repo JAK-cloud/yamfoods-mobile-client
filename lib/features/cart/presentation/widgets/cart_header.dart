@@ -5,7 +5,7 @@ import '../../../../app/components/confirmation_dialog.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import '../../../../core/constants/app_constants.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../providers/cart_notifier.dart';
 import '../providers/cart_loading_providers.dart';
 
@@ -26,6 +26,8 @@ class CartHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDeletingAll = ref.watch(cartDeleteAllLoadingProvider);
+    final appConfig = ref.watch(appConfigurationProvider).value;
+    final maxCartItems = appConfig?.maxCartItems ?? 5;
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -45,53 +47,52 @@ class CartHeader extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          
-              // Title and item count
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Your Cart',
-                    style: AppTextStyles.h3.copyWith(color: AppColors.white),
-                  ),
-                  if (itemCount > 0) ...[
-                    SizedBox(height: AppSizes.xs / 2),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '$itemCount ${itemCount == 1 ? 'item' : 'items'}',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.white.withValues(alpha: 0.85),
+          // Title and item count
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Your Cart',
+                style: AppTextStyles.h3.copyWith(color: AppColors.white),
+              ),
+              if (itemCount > 0) ...[
+                SizedBox(height: AppSizes.xs / 2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '$itemCount ${itemCount == 1 ? 'item' : 'items'}',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.white.withValues(alpha: 0.85),
+                      ),
+                    ),
+                    if (itemCount >= maxCartItems) ...[
+                      SizedBox(width: AppSizes.xs),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.error,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          'Limit reached',
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        if (itemCount >= AppConstants.maxCartItems) ...[
-                          SizedBox(width: AppSizes.xs),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.error,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              'Limit reached',
-                              style: AppTextStyles.caption.copyWith(
-                                color: AppColors.white,
-                                fontSize: 9,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ]
-                      ],
-                    ),
+                      ),
+                    ],
                   ],
-                ],
-              ),
+                ),
+              ],
+            ],
+          ),
           // Right side: Clear all button (only visible when items > 0)
           if (itemCount > 0)
             TextButton.icon(

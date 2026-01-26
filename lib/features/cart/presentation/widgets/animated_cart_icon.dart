@@ -41,11 +41,12 @@ class AnimatedCartIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Get current branch ID - guaranteed to exist since branch selection is enforced
-    final branchId = ref.watch(currentBranchProvider)!;
-    // Watch cart provider to get cart count
-    final cartAsync = ref.watch(cartProvider(branchId));
+      // Get current branch ID - guaranteed to exist since branch selection is enforced
+      final branchId = ref.watch(currentBranchProvider)!;
+      // Watch cart provider to get cart count
+      final cartAsync = ref.watch(cartProvider(branchId));
     final cartCount = cartAsync.value?.length ?? 0;
+
     final cartIcon = Padding(
       padding: padding,
       child: Icon(
@@ -57,25 +58,29 @@ class AnimatedCartIcon extends ConsumerWidget {
 
     return GestureDetector(
       onTap: onTap,
-      child: AnimateTo<int>(
-        controller: ref.watch(cartAnimationControllerProvider(screenId)),
-        builder: (context, child, animation) {
-          // Bounce animation when an item arrives to the cart.
-          return Transform.translate(
-            offset: Offset(math.sin(animation.value * 3 * math.pi) * 3, 0),
-            child: child,
-          );
-        },
-        child: cartCount > 0
-            ? Badge.count(
-                count: cartCount,
-                maxCount: 99,
-                backgroundColor: AppColors.white,
-                textColor: Colors.red,
-                offset: badgeOffset,
-                child: cartIcon,
-              )
-            : cartIcon,
+      child: SizedBox(
+        width: iconSize + padding.horizontal,
+        height: iconSize + padding.vertical,
+        child: AnimateTo<int>(
+          controller: ref.watch(cartAnimationControllerProvider(screenId)),
+          builder: (context, child, animation) {
+            // Bounce animation when an item arrives to the cart.
+            return Transform.translate(
+              offset: Offset(math.sin(animation.value * 3 * math.pi) * 3, 0),
+              child: child,
+            );
+          },
+          child: cartCount > 0
+              ? Badge.count(
+                  count: cartCount,
+                  maxCount: 99,
+                  backgroundColor: AppColors.white,
+                  textColor: Colors.red,
+                  offset: badgeOffset,
+                  child: cartIcon,
+                )
+              : cartIcon,
+        ),
       ),
     );
   }

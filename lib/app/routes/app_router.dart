@@ -38,6 +38,11 @@ import '../../features/map/presentation/models/map_screen_args.dart';
 import '../../features/map/presentation/screens/driver_arrived_screen.dart';
 import '../../features/search/presentation/screens/search_screen.dart';
 import '../../features/notification/presentation/screens/notification_screen.dart';
+import '../../features/info/presentation/screens/terms_and_conditions_screen.dart';
+import '../../features/info/presentation/screens/privacy_policy_screen.dart';
+import '../../features/info/presentation/screens/help_support_screen.dart';
+import '../../features/info/presentation/screens/faq_screen.dart';
+import '../../features/info/presentation/screens/feedback_screen.dart';
 
 /// Global app router configuration using go_router.
 ///
@@ -126,8 +131,15 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RouteName.productDetail,
       builder: (context, state) {
-        final product = state.extra as Product;
-        return ProductDetailScreen(product: product);
+        final extra = state.extra;
+        // Handle both Product object and productId (int)
+        if (extra is Product) {
+          return ProductDetailScreen.fromProduct(product: extra);
+        } else if (extra is int) {
+          return ProductDetailScreen.fromId(productId: extra);
+        }
+        // Fallback: try to cast as Product (for backward compatibility)
+        return ProductDetailScreen.fromProduct(product: extra as Product);
       },
     ),
     GoRoute(
@@ -210,6 +222,26 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: RouteName.notifications,
       builder: (context, state) => const NotificationScreen(),
+    ),
+    GoRoute(
+      path: RouteName.termsAndConditions,
+      builder: (context, state) => const TermsAndConditionsScreen(),
+    ),
+    GoRoute(
+      path: RouteName.privacyPolicy,
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: RouteName.helpSupport,
+      builder: (context, state) => const HelpSupportScreen(),
+    ),
+    GoRoute(
+      path: RouteName.faq,
+      builder: (context, state) => const FaqScreen(),
+    ),
+    GoRoute(
+      path: RouteName.feedback,
+      builder: (context, state) => const FeedbackScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

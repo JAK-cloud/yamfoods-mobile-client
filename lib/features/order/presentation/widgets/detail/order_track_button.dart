@@ -8,24 +8,37 @@ import '../../../../../app/theme/app_text_styles.dart';
 import '../../../../../core/enums/order_status.dart';
 import '../../../../../shared/entities/address_location.dart';
 import '../../../../map/presentation/models/map_screen_args.dart';
-import '../../../domain/entities/order_detail.dart';
+import '../../../domain/entities/order.dart';
 
 /// Track order button displayed when order status is outForDelivery.
 ///
 /// Navigates to order tracking map screen when pressed.
 class OrderTrackButton extends StatelessWidget {
   final OrderStatus status;
-  final OrderDetail orderDetail;
+  final Orderr order;
 
   const OrderTrackButton({
     super.key,
     required this.status,
-    required this.orderDetail,
+    required this.order,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Early return if not out for delivery or if any location data is missing
     if (status != OrderStatus.outForDelivery) {
+      return const SizedBox.shrink();
+    }
+
+    final branchLat = order.branchLocation.lat;
+    final branchLng = order.branchLocation.lng;
+    final deliveryLat = order.deliveryLocation.lat;
+    final deliveryLng = order.deliveryLocation.lng;
+
+    if (branchLat == null ||
+        branchLng == null ||
+        deliveryLat == null ||
+        deliveryLng == null) {
       return const SizedBox.shrink();
     }
 
@@ -33,15 +46,14 @@ class OrderTrackButton extends StatelessWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         onPressed: () {
-          // Hardcoded restaurant location as specified
-          const restaurantLocation = AddressLocation(
-            latitude: 8.990691,
-            longitude: 38.726214,
+          final restaurantLocation = AddressLocation(
+            latitude: branchLat,
+            longitude: branchLng,
           );
 
-          const customerLocation = AddressLocation(
-            latitude: 9.011046,
-            longitude: 38.761295,
+          final customerLocation = AddressLocation(
+            latitude: deliveryLat,
+            longitude: deliveryLng,
           );
 
           context.push(
@@ -49,8 +61,8 @@ class OrderTrackButton extends StatelessWidget {
             extra: MapScreenArgs(
               customerLocation: customerLocation,
               restaurantLocation: restaurantLocation,
-              orderId: orderDetail.order.id,
-              delivererPhone: orderDetail.order.delivererPhone,
+              orderId: order.id,
+              delivererPhone: order.delivererPhone,
             ),
           );
         },

@@ -9,6 +9,7 @@ import 'order_remote_data_source.dart';
 import '../models/create_order_response_model.dart';
 import '../models/order_detail_model.dart';
 import '../models/order_model.dart';
+import '../models/payment_model.dart';
 
 /// Handles API calls and error transformation.
 ///
@@ -95,6 +96,18 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<Either<Failure, OrderDetailModel?>> getOutForDeliveryOrder() async {
     try {
       final response = await _apiService.getOutForDeliveryOrder();
+      return Right(response.data);
+    } catch (e) {
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaymentModel>> queryOrderPayment(int orderId) async {
+    try {
+      final requestData = {'order_id': orderId};
+      final body = RequestWrapper.wrap(requestData);
+      final response = await _apiService.queryOrder(body);
       return Right(response.data);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));

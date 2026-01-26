@@ -49,9 +49,7 @@ class OrderScreen extends ConsumerWidget {
                     }
 
                     return RefreshIndicator(
-                      onRefresh: () async {
-                        ref.invalidate(allOrdersProvider);
-                      },
+                      onRefresh: () => ref.refresh(allOrdersProvider.future),
                       color: AppColors.primary,
                       child: ListView.separated(
                         itemCount: orders.length,
@@ -72,9 +70,7 @@ class OrderScreen extends ConsumerWidget {
                     failure: error is Failure
                         ? error
                         : Failure.unexpected(message: error.toString()),
-                    onRetry: () {
-                      ref.invalidate(allOrdersProvider);
-                    },
+                    onRetry: () => ref.refresh(allOrdersProvider.future),
                   ),
                   loading: () => const Center(
                     child: CircularProgressIndicator(color: AppColors.primary),

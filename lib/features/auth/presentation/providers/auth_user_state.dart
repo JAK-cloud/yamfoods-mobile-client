@@ -50,18 +50,31 @@ class AuthUserState extends _$AuthUserState {
       // Only check if user exists - don't validate token here
       // Token validation and refresh is handled by AuthInterceptor
       final user = await localDataSource.getUser();
-      return user;
+
+      // Check if user is fully authenticated
+      if (user != null) {
+        if (user.phone == null || user.phoneVerified == false) {
+          return null; // User is not fully authenticated
+        } else {
+          return user;
+        }
+      }
+      return null; // User is not authenticated
     } catch (e) {
-      // On error, assume not authenticated
-      return null;
+      return null; // On error, assume not authenticated
     }
   }
 
   /// Sets the authenticated user (called after successful login/register)
   ///
   /// This updates the state immediately, so future reads return instantly.
-  Future<void> setUser(User user) async {
-    state = AsyncValue.data(user);
+    Future<void> setUser(User user) async {
+    // Enforce same validation as _checkAuthState
+    if (user.phone == null || user.phoneVerified == false) {
+      state = const AsyncValue.data(null);
+    } else {
+      state = AsyncValue.data(user);
+    }
   }
 
   /// Clears the authenticated user (called on logout)

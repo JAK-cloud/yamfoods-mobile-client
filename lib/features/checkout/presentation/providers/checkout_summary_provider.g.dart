@@ -92,7 +92,7 @@ final class CheckoutSummaryProvider
   }
 }
 
-String _$checkoutSummaryHash() => r'41b9c9017bae2c6ab985cd7cfefe7ea4f368646c';
+String _$checkoutSummaryHash() => r'ca8244a6e3852d3347cfa1993390128b7f29567a';
 
 /// Provider that calculates checkout summary from checkout state and cart.
 ///

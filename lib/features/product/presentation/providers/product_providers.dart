@@ -12,6 +12,7 @@ import '../../domain/repositories/product_repository.dart';
 import '../../domain/usecases/get_all_branch_products_usecase.dart';
 import '../../domain/usecases/get_all_category_products_usecase.dart';
 import '../../domain/usecases/get_all_subcategory_products_usecase.dart';
+import '../../domain/usecases/get_product_usecase.dart';
 import '../../domain/usecases/search_products_usecase.dart';
 import '../../data/models/product_filter_request_model.dart';
 
@@ -57,6 +58,12 @@ GetAllSubcategoryProductsUsecase getAllSubcategoryProductsUsecase(Ref ref) {
 SearchProductsUsecase searchProductsUsecase(Ref ref) {
   final repository = ref.watch(productRepositoryProvider);
   return SearchProductsUsecase(repository);
+}
+
+@riverpod
+GetProductUsecase getProductUsecase(Ref ref) {
+  final repository = ref.watch(productRepositoryProvider);
+  return GetProductUsecase(repository);
 }
 
 @riverpod
@@ -277,4 +284,15 @@ Future<List<Product>> searchProducts(
   final result = await usecase(branchId, filters);
 
   return result.fold((failure) => throw failure, (products) => products);
+}
+
+/// Product by ID provider
+///
+/// Fetches a single product by branchId and productId.
+@riverpod
+Future<Product> productById(Ref ref, int branchId, int productId) async {
+  final usecase = ref.watch(getProductUsecaseProvider);
+  final result = await usecase.call(branchId: branchId, productId: productId);
+
+  return result.fold((failure) => throw failure, (product) => product);
 }

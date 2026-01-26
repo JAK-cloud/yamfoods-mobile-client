@@ -13,9 +13,9 @@ _ReviewModel _$ReviewModelFromJson(
     id: $checkedConvert('id', (v) => (v as num).toInt()),
     productId: $checkedConvert('productId', (v) => (v as num).toInt()),
     reviewerId: $checkedConvert('reviewerId', (v) => (v as num).toInt()),
-    reviewerName: $checkedConvert('reviewerName', (v) => v as String),
-    rating: $checkedConvert('rating', (v) => (v as num).toInt()),
-    comment: $checkedConvert('comment', (v) => v as String),
+    reviewerName: $checkedConvert('reviewerName', (v) => v as String?),
+    rating: $checkedConvert('rating', (v) => (v as num?)?.toInt()),
+    comment: $checkedConvert('comment', (v) => v as String?),
     createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
     updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
   );

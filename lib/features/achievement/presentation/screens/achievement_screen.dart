@@ -53,7 +53,7 @@ class AchievementScreen extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () => ref.invalidate(achievementPointProvider),
+          onRetry: () => ref.refresh(achievementPointProvider.future),
         ),
       ),
     );

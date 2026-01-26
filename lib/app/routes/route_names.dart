@@ -78,4 +78,19 @@ class RouteName {
 
   /// Notifications route.
   static const String notifications = '/notifications';
+
+  /// Terms and Conditions route.
+  static const String termsAndConditions = '/terms-and-conditions';
+
+  /// Privacy Policy route.
+  static const String privacyPolicy = '/privacy-policy';
+
+  /// Help & Support route.
+  static const String helpSupport = '/help-support';
+
+  /// FAQ route.
+  static const String faq = '/faq';
+
+  /// Feedback route.
+  static const String feedback = '/feedback';
 }

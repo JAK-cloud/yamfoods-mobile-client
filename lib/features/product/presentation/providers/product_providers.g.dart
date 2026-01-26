@@ -350,6 +350,53 @@ final class SearchProductsUsecaseProvider
 String _$searchProductsUsecaseHash() =>
     r'eeec4436e7e931f038dfac8fa40787831f2b63fa';
 
+@ProviderFor(getProductUsecase)
+const getProductUsecaseProvider = GetProductUsecaseProvider._();
+
+final class GetProductUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetProductUsecase,
+          GetProductUsecase,
+          GetProductUsecase
+        >
+    with $Provider<GetProductUsecase> {
+  const GetProductUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getProductUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getProductUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetProductUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetProductUsecase create(Ref ref) {
+    return getProductUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetProductUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetProductUsecase>(value),
+    );
+  }
+}
+
+String _$getProductUsecaseHash() => r'dfc0f42eb5e5a78f1cdfcdee8d2d9f9429fdeb34';
+
 @ProviderFor(branchProducts)
 const branchProductsProvider = BranchProductsFamily._();
 
@@ -1353,4 +1400,92 @@ final class SearchProductsFamily extends $Family
 
   @override
   String toString() => r'searchProductsProvider';
+}
+
+/// Product by ID provider
+///
+/// Fetches a single product by branchId and productId.
+
+@ProviderFor(productById)
+const productByIdProvider = ProductByIdFamily._();
+
+/// Product by ID provider
+///
+/// Fetches a single product by branchId and productId.
+
+final class ProductByIdProvider
+    extends $FunctionalProvider<AsyncValue<Product>, Product, FutureOr<Product>>
+    with $FutureModifier<Product>, $FutureProvider<Product> {
+  /// Product by ID provider
+  ///
+  /// Fetches a single product by branchId and productId.
+  const ProductByIdProvider._({
+    required ProductByIdFamily super.from,
+    required (int, int) super.argument,
+  }) : super(
+         retry: null,
+         name: r'productByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$productByIdHash();
+
+  @override
+  String toString() {
+    return r'productByIdProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Product> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Product> create(Ref ref) {
+    final argument = this.argument as (int, int);
+    return productById(ref, argument.$1, argument.$2);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProductByIdProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$productByIdHash() => r'83ae94b4ef70e46a00cf2e7330480d0feca52335';
+
+/// Product by ID provider
+///
+/// Fetches a single product by branchId and productId.
+
+final class ProductByIdFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Product>, (int, int)> {
+  const ProductByIdFamily._()
+    : super(
+        retry: null,
+        name: r'productByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Product by ID provider
+  ///
+  /// Fetches a single product by branchId and productId.
+
+  ProductByIdProvider call(int branchId, int productId) =>
+      ProductByIdProvider._(argument: (branchId, productId), from: this);
+
+  @override
+  String toString() => r'productByIdProvider';
 }

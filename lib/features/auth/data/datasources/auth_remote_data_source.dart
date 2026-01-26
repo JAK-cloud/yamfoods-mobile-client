@@ -32,7 +32,15 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
-  Future<Either<Failure, Unit>> logout(String refreshToken);
+  Future<Either<Failure, LoginDataModel>> googleSignIn({
+    required String idToken,
+  });
+
+  Future<Either<Failure, Unit>> logout({
+    required String refreshToken,
+    String? fcmToken,
+    String? deviceType,
+  });
 
   Future<Either<Failure, AuthTokensModel>> refreshToken(String refreshToken);
 

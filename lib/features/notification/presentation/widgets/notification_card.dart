@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/routes/route_names.dart';
@@ -6,138 +9,144 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/utils/date_formatter.dart';
-import '../../domain/entities/user_notification.dart';
+import '../../domain/entities/notification.dart';
+import '../providers/notification_providers.dart';
 
-/// Notification card widget displaying notification information.
+/// Minimal, professional notification card widget.
 ///
-/// **Design:**
-/// - Shows title, body, and relative time
-/// - Unread: bolder title, subtle background tint, small left indicator
-/// - Read: normal text weight, flat background
-/// - Shows trailing > icon if navigable (has orderId or productId)
-/// - Tapping anywhere on card navigates if navigable
-///
-/// **Navigation Rules:**
-/// - If orderId exists → navigate to order detail
-/// - Else if productId exists → navigate to product detail
-/// - Else → no navigation (card is static)
-class NotificationCard extends StatelessWidget {
-  final UserNotification userNotification;
+/// Features:
+/// - No elevation or shadow (designed for ListView.separated with dividers)
+/// - Visual distinction for unread notifications
+/// - Navigation indicator (>) when orderId or productId is present
+/// - Content-based height
+class NotificationCard extends ConsumerStatefulWidget {
+  final Notification notification;
 
-  const NotificationCard({super.key, required this.userNotification});
+  const NotificationCard({super.key, required this.notification});
 
-  /// Determines if notification is navigable.
-  bool get _isNavigable {
-    final notification = userNotification.notification;
-    return notification.orderId != null || notification.productId != null;
-  }
+  @override
+  ConsumerState<NotificationCard> createState() => _NotificationCardState();
+}
 
-  /// Gets navigation target based on notification data.
-  ///
-  /// Priority: orderId > productId
-  void _handleNavigation(BuildContext context) {
-    if (!_isNavigable) return;
-
-    final notification = userNotification.notification;
-
-    // Order takes priority over product
-    if (notification.orderId != null) {
-      context.push(RouteName.orderDetail, extra: notification.orderId);
-    } else if (notification.productId != null) {
-      // Note: Product detail requires Product object, not just ID
-      // For now, we'll skip navigation for products until we have a way to fetch by ID
-      // This matches the design doc's "no fake affordances" principle
-      // TODO: Implement product navigation when product detail accepts ID or we fetch product
-    }
-  }
+class _NotificationCardState extends ConsumerState<NotificationCard> {
+  bool? _optimisticIsRead;
 
   @override
   Widget build(BuildContext context) {
-    final notification = userNotification.notification;
-    final isUnread = !userNotification.isRead;
-    final timeAgo = DateFormatter.formatTimeAgo(notification.createdAt);
+    // null isRead means read (default to read)
+    final isRead = _optimisticIsRead ?? (widget.notification.isRead ?? true);
+    final hasNavigation =
+        widget.notification.orderId != null ||
+        widget.notification.productId != null;
 
-    return GestureDetector(
-      onTap: _isNavigable ? () => _handleNavigation(context) : null,
-      child: Container(
-        margin: EdgeInsets.only(bottom: AppSizes.md),
-        decoration: BoxDecoration(
-          color: isUnread
-              ? AppColors.primary.withValues(alpha: 0.05)
-              : AppColors.white,
-          borderRadius: BorderRadius.circular(AppSizes.radius),
-          border: Border.all(
-            color: isUnread
-                ? AppColors.primary.withValues(alpha: 0.2)
-                : AppColors.grey.withValues(alpha: 0.1),
-            width: 1,
-          ),
-        ),
+    void onTap() {
+      // Mark as read if unread
+      final wasUnread = widget.notification.isRead == false;
+      if (wasUnread) {
+        // Optimistic UI update (fire-and-forget backend update)
+        if (_optimisticIsRead != true) {
+          setState(() => _optimisticIsRead = true);
+        }
+
+        unawaited(
+          ref
+              .read(markNotificationReadProvider(widget.notification.id).future)
+              .catchError((_) {
+                // Silent failure (no toast/snackbar) as requested.
+              }),
+        );
+      }
+
+      // Navigate if productId is present
+      if (widget.notification.productId != null) {
+        context.push(
+          RouteName.productDetail,
+          extra: widget.notification.productId,
+        );
+      }
+      // Navigate if orderId is present
+      else if (widget.notification.orderId != null) {
+        context.push(
+          RouteName.orderDetail,
+          extra: widget.notification.orderId,
+        );
+      }
+    }
+
+    return Material(
+      color: isRead
+          ? AppColors.white
+          : AppColors.primary.withValues(alpha: 0.02),
+      child: InkWell(
+        onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.md),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Left indicator for unread notifications
-                if (isUnread)
-                  Container(
-                    width: 4,
-                    margin: EdgeInsets.only(right: AppSizes.md),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                // Main content
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Title
-                      Text(
-                        notification.title,
-                        style: AppTextStyles.bodyLarge.copyWith(
-                          fontWeight: isUnread
-                              ? FontWeight.w600
-                              : FontWeight.w500,
-                          color: AppColors.txtPrimary,
-                        ),
-                      ),
-                      SizedBox(height: AppSizes.xs),
-                      // Body
-                      Text(
-                        notification.body,
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.txtSecondary,
-                          height: 1.4,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: AppSizes.xs),
-                      // Time ago
-                      Text(
-                        timeAgo,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: AppColors.txtSecondary.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ],
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.md,
+            vertical: AppSizes.md,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Left indicator for unread notifications
+              if (!isRead)
+                Container(
+                  width: 3,
+                  margin: EdgeInsets.only(right: AppSizes.sm),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                // Trailing icon if navigable
-                if (_isNavigable) ...[
-                  SizedBox(width: AppSizes.sm),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    color: AppColors.txtSecondary.withValues(alpha: 0.5),
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Text(
+                      widget.notification.title,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: isRead ? FontWeight.w400 : FontWeight.w600,
+                        color: AppColors.txtPrimary,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: AppSizes.xs),
+                    // Body
+                    Text(
+                      widget.notification.body,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.txtSecondary,
+                      ),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: AppSizes.xs),
+                    // Timestamp
+                    Text(
+                      DateFormatter.formatTimeAgo(
+                        widget.notification.createdAt,
+                      ),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.txtSecondary.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Navigation indicator
+              if (hasNavigation)
+                Padding(
+                  padding: EdgeInsets.only(left: AppSizes.sm),
+                  child: Icon(
+                    Icons.chevron_right,
                     size: 20,
+                    color: AppColors.txtSecondary.withValues(alpha: 0.5),
                   ),
-                ],
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),

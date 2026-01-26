@@ -56,7 +56,7 @@ class _SubcategoryChipsListState extends ConsumerState<SubcategoryChipsList> {
         if (subcategories.isEmpty) {
           return const SizedBox.shrink();
         }
-    
+
         return SizedBox(
           height: 48,
           child: ListView.separated(
@@ -73,7 +73,7 @@ class _SubcategoryChipsListState extends ConsumerState<SubcategoryChipsList> {
                   onTap: () => _handleSubcategoryTap(null),
                 );
               }
-    
+
               final subcategory = subcategories[index - 1];
               return SubcategoryChip(
                 subcategory: subcategory,
@@ -113,11 +113,9 @@ class _SubcategoryChipsListState extends ConsumerState<SubcategoryChipsList> {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () {
-            ref.invalidate(
-              subcategoriesProvider(widget.branchId, widget.categoryId),
-            );
-          },
+          onRetry: () => ref.refresh(
+            subcategoriesProvider(widget.branchId, widget.categoryId).future,
+          ),
         ),
       ),
     );

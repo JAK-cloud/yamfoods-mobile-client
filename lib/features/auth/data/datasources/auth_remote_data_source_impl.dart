@@ -92,7 +92,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final data = {'phone': phone, 'password': password};
       final body = RequestWrapper.wrap(data);
-  
+
       final response = await _apiService.login(body);
       return Right(response.data);
     } catch (e) {
@@ -101,9 +101,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, Unit>> logout(String refreshToken) async {
+  Future<Either<Failure, LoginDataModel>> googleSignIn({
+    required String idToken,
+  }) async {
     try {
-      final data = {'refreshToken': refreshToken};
+      final data = {'idToken': idToken};
+      final body = RequestWrapper.wrap(data);
+
+      final response = await _apiService.googleSignIn(body);
+      return Right(response.data);
+    } catch (e) {
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> logout({
+    required String refreshToken,
+    String? fcmToken,
+    String? deviceType,
+  }) async {
+    try {
+      final data = {
+        'refreshToken': refreshToken,
+        if (fcmToken != null) 'fcmToken': fcmToken,
+        if (deviceType != null) 'deviceType': deviceType,
+      };
       final body = RequestWrapper.wrap(data);
 
       await _apiService.logout(body);
@@ -172,6 +195,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return Right(response.data.user);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));
-}
+    }
   }
 }

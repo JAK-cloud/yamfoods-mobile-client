@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../domain/entities/cart.dart';
 import '../providers/cart_notifier.dart';
 import '../providers/cart_loading_providers.dart';
@@ -28,8 +29,9 @@ class CartQuantityControlCard extends ConsumerWidget {
         .watch(cartQuantityUpdateLoadingProvider)
         .contains(cart.id);
 
-    // Maximum quantity allowed
-    const maxQuantity = 5;
+    // Maximum quantity allowed from app configuration
+    final appConfig = ref.watch(appConfigurationProvider).value;
+    final maxQuantity = appConfig?.maxQuantityPerItem ?? 5;
 
     return Row(
       mainAxisSize: MainAxisSize.min,

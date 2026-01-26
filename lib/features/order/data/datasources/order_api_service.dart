@@ -6,6 +6,7 @@ import '../../../../core/network/models/api_response.dart';
 import '../models/create_order_response_model.dart';
 import '../models/order_detail_model.dart';
 import '../models/order_model.dart';
+import '../models/payment_model.dart';
 
 part 'order_api_service.g.dart';
 
@@ -33,4 +34,9 @@ abstract class OrderApiService {
 
   @GET(ApiRoutes.getOutForDeliveryOrder)
   Future<ApiResponse<OrderDetailModel?>> getOutForDeliveryOrder();
+
+  @POST(ApiRoutes.queryOrder)
+  Future<ApiResponse<PaymentModel>> queryOrder(
+    @Body() Map<String, dynamic> body,
+  );
 }

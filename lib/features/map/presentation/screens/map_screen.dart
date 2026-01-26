@@ -167,14 +167,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             failure: error is Failure
                 ? error
                 : Failure.unexpected(message: error.toString()),
-            onRetry: () {
-              ref.invalidate(
-                routeProvider(
-                  widget.restaurantLocation,
-                  widget.customerLocation,
-                ),
-              );
-            },
+            onRetry: () => ref.refresh(
+              routeProvider(
+                widget.restaurantLocation,
+                widget.customerLocation,
+              ).future,
+            ),
           ),
         ),
       ),

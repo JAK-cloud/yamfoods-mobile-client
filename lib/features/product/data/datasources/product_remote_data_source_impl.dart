@@ -78,4 +78,17 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       return Left(ErrorHandler.handleException(e));
     }
   }
+
+  @override
+  Future<Either<Failure, ProductModel>> getProduct(
+    int branchId,
+    int productId,
+  ) async {
+    try {
+      final response = await _apiService.getProduct(branchId, productId);
+      return Right(response.data);
+    } catch (e) {
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
 }

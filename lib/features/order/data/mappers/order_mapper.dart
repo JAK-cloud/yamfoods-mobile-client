@@ -1,6 +1,6 @@
-
 import '../../domain/entities/order.dart';
 import '../models/order_model.dart';
+import 'order_location_mapper.dart';
 
 extension OrderMapper on OrderModel {
   Orderr toDomain() => Orderr(
@@ -25,6 +25,8 @@ extension OrderMapper on OrderModel {
     promoCodeDiscount: promoCodeDiscount,
     discountTotal: discountTotal,
     totalAmount: totalAmount,
+    branchLocation: branchLocation.toDomain(),
+    deliveryLocation: deliveryLocation.toDomain(),
     createdAt: createdAt,
     updatedAt: updatedAt,
   );

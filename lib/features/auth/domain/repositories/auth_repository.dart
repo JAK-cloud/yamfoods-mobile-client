@@ -26,6 +26,10 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<Either<Failure, ({User user, AuthToken tokens})>> googleSignIn({
+    required String idToken,
+  });
+
   Future<Either<Failure, AuthToken>> refreshTokens();
 
   Future<Either<Failure, Unit>> logout();

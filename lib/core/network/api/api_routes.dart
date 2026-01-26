@@ -14,6 +14,7 @@ class ApiRoutes {
   static const String saveUserPhone = '$_authBase/save-user-phone';
   static const String verifyPhone = '$_authBase/verify-phone';
   static const String login = '$_authBase/login';
+  static const String googleSignIn = '$_authBase/google/mobile-signin';
   static const String logout = '$_authBase/logout';
   static const String refreshToken = '$_authBase/refresh-token';
   static const String requestResetPasswordOtp =
@@ -48,6 +49,8 @@ class ApiRoutes {
       '$_productBase/get-all-category-products/{branchId}/{categoryId}';
   static const String getAllSubcategoryProducts =
       '$_productBase/get-all-sub-category-products/{branchId}/{subCategoryId}';
+  static const String getProduct =
+      '$_productBase/get-product/{branchId}/{productId}';
 
   // Address endpoints
   static const String _addressBase = '/address';
@@ -97,9 +100,28 @@ class ApiRoutes {
   static const String updateOrderStatus = '$_orderBase/update-order-status';
   static const String getOutForDeliveryOrder =
       '$_orderBase/get-out-for-delivery-order';
+  static const String queryOrder = '$_orderBase/query-order';
 
   // Promo banner endpoints
   static const String _promoBannerBase = '/promo-banner';
   static const String getActivePromoBanners =
       '$_promoBannerBase/get-active-banners';
+
+  // Notification endpoints
+  static const String _notificationBase = '/notifications';
+  static const String getNotifications = _notificationBase;
+  static const String saveOrUpdateFcmToken = '$_notificationBase/fcm-token';
+  static const String markNotificationRead = '$_notificationBase/{id}/read';
+
+  // App configuration endpoints
+  static const String _appConfigurationBase = '/app-configuration';
+  static const String getAppConfiguration = _appConfigurationBase;
+
+  // Info endpoints
+  static const String _infoBase = '/info';
+  static const String getHelpSupport = '$_infoBase/help-support';
+  static const String getFaqs = '$_infoBase/faq';
+  static const String getTermsAndConditions = '$_infoBase/terms-and-conditions';
+  static const String getPrivacyPolicy = '$_infoBase/privacy-policy';
+  static const String submitFeedback = '$_infoBase/feedback';
 }

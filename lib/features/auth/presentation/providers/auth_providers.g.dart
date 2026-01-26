@@ -367,6 +367,59 @@ final class RegisterUsecaseProvider
 
 String _$registerUsecaseHash() => r'8c1f40645711915d3e9cdc105fa850983df15949';
 
+/// Google Sign-In usecase provider (async)
+///
+/// Provides usecase for Google Sign-In authentication.
+
+@ProviderFor(googleSignInUsecase)
+const googleSignInUsecaseProvider = GoogleSignInUsecaseProvider._();
+
+/// Google Sign-In usecase provider (async)
+///
+/// Provides usecase for Google Sign-In authentication.
+
+final class GoogleSignInUsecaseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<GoogleSignInUsecase>,
+          GoogleSignInUsecase,
+          FutureOr<GoogleSignInUsecase>
+        >
+    with
+        $FutureModifier<GoogleSignInUsecase>,
+        $FutureProvider<GoogleSignInUsecase> {
+  /// Google Sign-In usecase provider (async)
+  ///
+  /// Provides usecase for Google Sign-In authentication.
+  const GoogleSignInUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'googleSignInUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$googleSignInUsecaseHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<GoogleSignInUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<GoogleSignInUsecase> create(Ref ref) {
+    return googleSignInUsecase(ref);
+  }
+}
+
+String _$googleSignInUsecaseHash() =>
+    r'c40aef8b98852663c4e698621b7ec39b79933e7b';
+
 /// Logout usecase provider (async)
 ///
 /// Provides usecase for user logout.

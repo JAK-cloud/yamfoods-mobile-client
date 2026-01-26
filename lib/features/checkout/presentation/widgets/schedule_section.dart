@@ -7,6 +7,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../providers/checkout_notifier.dart';
 
 class ScheduleSection extends ConsumerWidget {
@@ -105,11 +106,14 @@ class ScheduleSection extends ConsumerWidget {
     }
 
     // Select date first
+    final appConfig = ref.read(appConfigurationProvider).value;
+    final effectiveMaxDaysAhead =
+        appConfig?.maxOrderSchedulingDays ?? maxDaysAhead;
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: maxDaysAhead)),
+      lastDate: DateTime.now().add(Duration(days: effectiveMaxDaysAhead)),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -263,7 +267,7 @@ class ScheduleSection extends ConsumerWidget {
                         .setScheduledAt(null);
                   }
                 },
-                activeColor: AppColors.primary,
+                activeThumbColor: AppColors.primary,
               ),
             ],
           ),

@@ -496,7 +496,7 @@ final class CartItemCountFamily extends $Family
 
 /// Provider that checks if more items can be added to cart.
 ///
-/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// Returns `true` if cart has less than maxCartItems from app configuration,
 /// `false` otherwise.
 
 @ProviderFor(canAddToCart)
@@ -504,14 +504,14 @@ const canAddToCartProvider = CanAddToCartFamily._();
 
 /// Provider that checks if more items can be added to cart.
 ///
-/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// Returns `true` if cart has less than maxCartItems from app configuration,
 /// `false` otherwise.
 
 final class CanAddToCartProvider extends $FunctionalProvider<bool, bool, bool>
     with $Provider<bool> {
   /// Provider that checks if more items can be added to cart.
   ///
-  /// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+  /// Returns `true` if cart has less than maxCartItems from app configuration,
   /// `false` otherwise.
   const CanAddToCartProvider._({
     required CanAddToCartFamily super.from,
@@ -564,11 +564,11 @@ final class CanAddToCartProvider extends $FunctionalProvider<bool, bool, bool>
   }
 }
 
-String _$canAddToCartHash() => r'806c9761e55ef7b1d6605a8acf545bb9af9bbf9a';
+String _$canAddToCartHash() => r'a975ecacbbb18bf15e4ebcd308665c18eae0e434';
 
 /// Provider that checks if more items can be added to cart.
 ///
-/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// Returns `true` if cart has less than maxCartItems from app configuration,
 /// `false` otherwise.
 
 final class CanAddToCartFamily extends $Family
@@ -584,7 +584,7 @@ final class CanAddToCartFamily extends $Family
 
   /// Provider that checks if more items can be added to cart.
   ///
-  /// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+  /// Returns `true` if cart has less than maxCartItems from app configuration,
   /// `false` otherwise.
 
   CanAddToCartProvider call(int branchId) =>

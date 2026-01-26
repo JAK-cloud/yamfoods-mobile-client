@@ -10,6 +10,7 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
 import '../../../../features/cart/presentation/widgets/animated_cart_icon.dart';
 import '../../../../features/auth/presentation/providers/auth_user_state.dart';
+import '../../../../features/notification/presentation/providers/notification_providers.dart';
 
 /// Header component for home screen.
 ///
@@ -21,6 +22,13 @@ class HomeHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
+    final unreadCountAsync = user == null
+        ? const AsyncValue<int>.data(0)
+        : ref.watch(unreadNotificationsCountProvider);
+    final unreadCount = unreadCountAsync.maybeWhen(
+      data: (count) => count,
+      orElse: () => 0,
+    );
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -72,24 +80,36 @@ class HomeHeader extends ConsumerWidget {
             children: [
               // Notification icon with badge
               GestureDetector(
-                onTap: () {
-                  context.push(RouteName.notifications);
+                onTap: () async {
+                  await AuthGuardHelper.requireAuthOrShowDialog(
+                    context: context,
+                    ref: ref,
+                    onAuthenticated: () {
+                      context.push(RouteName.notifications);
+                    },
+                  );
                 },
-                child: Badge.count(
-                  count: 5, // Static count for now
-                  maxCount: 99,
-                  backgroundColor: AppColors.white,
-                  textColor: Colors.red,
-                  offset: const Offset(0, 0),
-                  child: Padding(
+                child: (() {
+                  final icon = Padding(
                     padding: EdgeInsets.all(AppSizes.sm),
                     child: Icon(
                       Icons.notifications_outlined,
                       color: AppColors.white,
                       size: AppSizes.iconSize,
                     ),
-                  ),
-                ),
+                  );
+
+                  if (unreadCount <= 0) return icon;
+
+                  return Badge.count(
+                    count: unreadCount,
+                    maxCount: 99,
+                    backgroundColor: AppColors.white,
+                    textColor: AppColors.primary,
+                    offset: const Offset(0, 0),
+                    child: icon,
+                  );
+                })(),
               ),
               // Cart icon with badge and animation
               AnimatedCartIcon(

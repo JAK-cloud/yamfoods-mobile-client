@@ -84,7 +84,7 @@ final class AuthUserStateProvider
   AuthUserState create() => AuthUserState();
 }
 
-String _$authUserStateHash() => r'2a06532a4fce6b8a5a09eff1ca2f4ac4969839ad';
+String _$authUserStateHash() => r'291296a53eb62cd7238ad2ef02aa44ab7edfc273';
 
 /// Persistent authentication state provider - Single Source of Truth
 ///
