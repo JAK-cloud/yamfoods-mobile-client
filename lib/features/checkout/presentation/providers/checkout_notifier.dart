@@ -61,15 +61,15 @@ class CheckoutNotifier extends _$CheckoutNotifier {
 
   /// Sets the number of points to use and calculates discount.
   ///
-  /// Calculates point discount: 1 point = 0.25 ETB
-  /// UI should validate minimum 100 points before calling this.
-  void setPointsToUse(int? points) {
+  /// Calculates point discount using pointConversionRate from app configuration.
+  /// UI should validate minimum points before calling this.
+  void setPointsToUse(int? points, double pointConversionRate) {
     if (points == null || points == 0) {
       state = state.copyWith(pointUsed: null, pointDiscount: null);
       return;
     }
 
-    final discount = points * 0.25; // 1 point = 0.25 ETB
+    final discount = points * pointConversionRate;
     state = state.copyWith(pointUsed: points, pointDiscount: discount);
   }
 

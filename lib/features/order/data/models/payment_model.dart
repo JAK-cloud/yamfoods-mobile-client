@@ -7,8 +7,6 @@ import '../../../../core/utils/string_to_double.dart';
 part 'payment_model.freezed.dart';
 part 'payment_model.g.dart';
 
-
-
 @freezed
 sealed class PaymentModel with _$PaymentModel {
   const PaymentModel._();
@@ -17,13 +15,16 @@ sealed class PaymentModel with _$PaymentModel {
     required int id,
     required int orderId,
     required String method,
-    String?
-    transactionId, // should not be required because the customer will order with his point
+    required String status,
+    String? transId, // should not be required because the customer will order with his point
+    String? telebirrPaymentOrderId,
     @JsonKey(fromJson: parseDouble) required double amount,
+    DateTime? transTime,
+    String? currency,
     required DateTime date,
   }) = _PaymentModel;
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) =>
       _$PaymentModelFromJson(json);
-
 }
+

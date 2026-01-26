@@ -13,5 +13,6 @@ solution
 pending
 4 and 5
 
-added 6. when user add item to cart server should check that item quantity 
+
 7. when user place order check each cart item have enough quantity but some may have low quantity but b/c they may not be premade talk this with the manager
+

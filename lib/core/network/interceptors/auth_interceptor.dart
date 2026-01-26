@@ -52,7 +52,19 @@ class AuthInterceptor extends Interceptor {
     final accessToken = await _localDataSource.getAccessToken();
 
     if (accessToken == null) {
-      handler.next(options);
+      // Protected endpoint + no access token => user is not authenticated.
+      // Don't hit the backend (would just 401 and create noise).
+      // We cancel the request and only log (no token refresh, no retries).
+      _logger.d(
+        'Skipping request to ${options.path} - not authenticated (no access token)',
+      );
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          type: DioExceptionType.cancel,
+          error: 'Not authenticated',
+        ),
+      );
       return;
     }
 
@@ -77,6 +89,20 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.statusCode == 401 &&
         !_isUnprotectedEndpoint(err.requestOptions.path) &&
         err.requestOptions.extra['authRetry'] != true) {
+      // If the original request didn't include an Authorization header, it was
+      // effectively a guest/unauthenticated request. In that case, DO NOT try to
+      // refresh tokens (guests won't have refresh tokens) — just bubble up the 401.
+      final authorizationHeader = err.requestOptions.headers['Authorization']
+          ?.toString()
+          .trim();
+      if (authorizationHeader == null || authorizationHeader.isEmpty) {
+        _logger.d(
+          '401 on unauthenticated request for ${err.requestOptions.path} - skipping token refresh',
+        );
+        handler.reject(err);
+        return;
+      }
+
       err.requestOptions.extra['authRetry'] = true;
       _logger.d('Reactive token refresh on 401 for ${err.requestOptions.path}');
 

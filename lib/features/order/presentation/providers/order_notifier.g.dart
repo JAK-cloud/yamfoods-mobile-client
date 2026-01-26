@@ -62,7 +62,7 @@ final class OrderNotifierProvider
   }
 }
 
-String _$orderNotifierHash() => r'6850bb836243c2a84f3d3cea62c5716103c32aab';
+String _$orderNotifierHash() => r'bf9ae703198da3cf752ed381d0bbfd8163bf1f5b';
 
 /// Manages order creation state and operations.
 ///

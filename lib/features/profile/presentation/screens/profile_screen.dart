@@ -51,7 +51,7 @@ class ProfileScreen extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () => ref.invalidate(userProfileProvider),
+          onRetry: () => ref.refresh(userProfileProvider.future),
         ),
       ),
     );

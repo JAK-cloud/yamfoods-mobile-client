@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/routes/route_names.dart';
@@ -9,6 +8,7 @@ import '../../../auth/domain/entities/user.dart';
 import 'logout_button.dart';
 import 'menu_item.dart';
 import 'profile_info.dart';
+import 'profile_legal_footer.dart';
 import 'profile_menu.dart';
 
 class ProfileContent extends StatelessWidget {
@@ -70,16 +70,7 @@ class ProfileContent extends StatelessWidget {
                 subtitle: 'English',
                 onTap: () {},
               ),
-              MenuItem(
-                icon: Icons.notifications_rounded,
-                title: 'Notifications',
-                subtitle: 'Manage your notification settings',
-                trailing: Switch.adaptive(
-                  value: true,
-                  onChanged: (val) {},
-                  activeThumbColor: AppColors.primary,
-                ),
-              ),
+              
             ],
           ),
 
@@ -92,11 +83,11 @@ class ProfileContent extends StatelessWidget {
                 icon: Icons.help_outline_rounded,
                 title: 'Help Center',
                 subtitle: 'Get help and support',
-                onTap: () {},
+                onTap: () => context.push(RouteName.helpSupport),
               ),
               MenuItem(
                 icon: Icons.thumb_up_alt_outlined,
-                title: 'Rate Yam Ride',
+                title: 'Rate Yam Foods',
                 subtitle: 'Love the app? Rate us!',
                 onTap: () {},
               ),
@@ -104,7 +95,7 @@ class ProfileContent extends StatelessWidget {
                 icon: Icons.feedback_outlined,
                 title: 'Send Feedback',
                 subtitle: 'Help us improve',
-                onTap: () {},
+                onTap: () => context.push(RouteName.feedback),
               ),
             ],
           ),
@@ -115,24 +106,24 @@ class ProfileContent extends StatelessWidget {
             items: [
               MenuItem(
                 icon: Icons.description_outlined,
-                title: 'Terms & Services',
-                subtitle: 'Read our terms of service',
-                onTap: () {},
+                title: 'Terms & Conditions',
+                subtitle: 'Read our terms and conditions',
+                onTap: () => context.push(RouteName.termsAndConditions),
               ),
               MenuItem(
-                icon: Icons.info_outline_rounded,
-                title: 'About Us',
-                subtitle: 'App version 1.0.0',
-                onTap: () {},
+                icon: Icons.privacy_tip_outlined,
+                title: 'Privacy Policy',
+                subtitle: 'Read our privacy policy',
+                onTap: () => context.push(RouteName.privacyPolicy),
               ),
             ],
           ),
-          const SizedBox(height: AppSizes.lg),
+          const SizedBox(height: 32),
           // Logout Button
-          LogoutButton()
-              .animate()
-              .fadeIn(duration: 400.ms, delay: 400.ms)
-              .slideY(begin: 0.1, end: 0),
+          const Center(child: LogoutButton()),
+          const SizedBox(height: 32),
+          // Footer (fuzzy legal + version)
+          const Center(child: ProfileLegalFooter()),
         ],
       ),
     );

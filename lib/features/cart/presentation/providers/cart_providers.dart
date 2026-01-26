@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/network/di/dio_client.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../data/datasources/cart_api_service.dart';
 import '../../data/datasources/cart_remote_data_source.dart';
 import '../../data/datasources/cart_remote_data_source_impl.dart';
@@ -88,10 +88,12 @@ int cartItemCount(Ref ref, int branchId) {
 
 /// Provider that checks if more items can be added to cart.
 ///
-/// Returns `true` if cart has less than [AppConstants.maxCartItems] items,
+/// Returns `true` if cart has less than maxCartItems from app configuration,
 /// `false` otherwise.
 @riverpod
 bool canAddToCart(Ref ref, int branchId) {
   final count = ref.watch(cartItemCountProvider(branchId));
-  return count < AppConstants.maxCartItems;
+  final appConfig = ref.watch(appConfigurationProvider).value;
+  if (appConfig == null) return false;
+  return count < appConfig.maxCartItems;
 }

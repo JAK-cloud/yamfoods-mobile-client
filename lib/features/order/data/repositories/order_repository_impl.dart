@@ -5,11 +5,13 @@ import '../../domain/entities/create_order_response.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_detail.dart';
 import '../../domain/entities/order_request_data.dart';
+import '../../domain/entities/payment.dart';
 import '../../domain/repositories/order_repository.dart';
 import '../datasources/order_remote_data_source.dart';
 import '../mappers/create_order_response_mapper.dart';
 import '../mappers/order_detail_mapper.dart';
 import '../mappers/order_mapper.dart';
+import '../mappers/payment_mapper.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remoteDataSource;
@@ -71,5 +73,14 @@ class OrderRepositoryImpl implements OrderRepository {
       }
       return Right(model.toDomain());
     });
+  }
+
+  @override
+  Future<Either<Failure, Payment>> queryOrderPayment(int orderId) async {
+    final result = await remoteDataSource.queryOrderPayment(orderId);
+    return result.fold(
+      (failure) => Left(failure),
+      (model) => Right(model.toDomain()),
+    );
   }
 }

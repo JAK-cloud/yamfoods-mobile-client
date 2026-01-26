@@ -71,4 +71,17 @@ class ProductRepositoryImpl implements ProductRepository {
       return Right(products);
     });
   }
+
+  @override
+  Future<Either<Failure, Product>> getProduct(
+    int branchId,
+    int productId,
+  ) async {
+    final result = await _remoteDataSource.getProduct(branchId, productId);
+
+    return result.fold(
+      (failure) => Left(failure),
+      (productModel) => Right(productModel.toDomain()),
+    );
+  }
 }

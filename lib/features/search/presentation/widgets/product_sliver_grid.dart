@@ -55,7 +55,7 @@ class ProductSliverGrid extends ConsumerWidget {
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) =>
-                  ProductCard(product: products[index], screenId: 'search'),
+                  ProductCard(product: products[index], screenId: 'search', enableCartAnimation: false,),
               childCount: products.length,
             ),
           ),
@@ -84,9 +84,8 @@ class ProductSliverGrid extends ConsumerWidget {
             failure: error is Failure
                 ? error
                 : Failure.unexpected(message: error.toString()),
-            onRetry: () {
-              ref.invalidate(searchProductsProvider(branchId, filters));
-            },
+            onRetry: () =>
+                ref.refresh(searchProductsProvider(branchId, filters).future),
           ),
         ),
       ),

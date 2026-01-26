@@ -8,6 +8,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../achievement/presentation/providers/achievement_providers.dart';
 import '../providers/checkout_notifier.dart';
 
@@ -29,11 +30,16 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
     super.dispose();
   }
 
-  void _handlePointUse() {
+  void _handlePointUse(WidgetRef ref) {
     if (_formKey.currentState!.validate()) {
+      final appConfig = ref.read(appConfigurationProvider).value;
+      final pointConversionRate = appConfig?.pointConversionRate ?? 0.0;
       ref
           .read(checkoutProvider(widget.branchId).notifier)
-          .setPointsToUse(int.parse(_pointsController.text));
+          .setPointsToUse(
+            int.parse(_pointsController.text),
+            pointConversionRate,
+          );
     }
   }
 
@@ -41,14 +47,19 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
   Widget build(BuildContext context) {
     final checkoutState = ref.watch(checkoutProvider(widget.branchId));
     final pointState = ref.watch(achievementPointProvider);
+    final appConfig = ref.watch(appConfigurationProvider).value;
+    final minimumPoints = appConfig?.minimumPointsRedemption ?? 10000;
 
     return pointState.when(
       data: (point) {
         final availablePoints = point.point;
 
-        // Show motivation card if points < 100
-        if (availablePoints < 100) {
-          return _MotivationCard(availablePoints: availablePoints);
+        // Show motivation card if points < minimumPoints
+        if (availablePoints < minimumPoints) {
+          return _MotivationCard(
+            availablePoints: availablePoints,
+            minimumPoints: minimumPoints,
+          );
         }
 
         // Show points section if points >= 100
@@ -115,8 +126,8 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
                           if (points == null) {
                             return 'Must be a number';
                           }
-                          if (points < 100) {
-                            return 'Minimum 100 points';
+                          if (points < minimumPoints) {
+                            return 'Minimum $minimumPoints points';
                           }
                           if (points > availablePoints) {
                             return 'You only have $availablePoints points';
@@ -129,7 +140,7 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
                   SizedBox(width: AppSizes.xs),
                   CustomButton(
                     text: 'Apply',
-                    onPressed: _handlePointUse,
+                    onPressed: () => _handlePointUse(ref),
                     height: 44,
                     width: 100,
                   ),
@@ -215,15 +226,19 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
   }
 }
 
-/// Motivation card shown when user has less than 100 points.
+/// Motivation card shown when user has less than minimum points.
 class _MotivationCard extends StatelessWidget {
   final int availablePoints;
+  final int minimumPoints;
 
-  const _MotivationCard({required this.availablePoints});
+  const _MotivationCard({
+    required this.availablePoints,
+    required this.minimumPoints,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final pointsNeeded = 100 - availablePoints;
+    final pointsNeeded = minimumPoints - availablePoints;
 
     return Container(
       margin: EdgeInsets.symmetric(

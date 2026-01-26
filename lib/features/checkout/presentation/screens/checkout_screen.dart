@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/widgets/custom_app_bar.dart';
 import '../../../../core/services/snackbar_service.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/domain/entities/cart.dart';
 import '../../../order/domain/entities/order_request_data.dart';
 import '../../../order/presentation/providers/order_events.dart';
@@ -94,7 +96,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         snackbar.showSuccess(next.message);
         // Navigate to success screen or order details
         if (context.mounted) {
-          context.pop(); // Or navigate to order details screen
+          context.go(RouteName.order);
         }
       } else if (next is OrderFailure) {
         // Order creation failed OR payment failed
@@ -128,11 +130,20 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     // Points Section
                     PointsSection(branchId: widget.branchId),
                     // Schedule Order Section
-                    ScheduleSection(
-                      branchId: widget.branchId,
-                      workingHourStart: const TimeOfDay(hour: 9, minute: 0),
-                      workingHourEnd: const TimeOfDay(hour: 22, minute: 0),
-                      maxDaysAhead: 7,
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final appConfig = ref
+                            .watch(appConfigurationProvider)
+                            .value;
+                        final maxDaysAhead =
+                            appConfig?.maxOrderSchedulingDays ?? 7;
+                        return ScheduleSection(
+                          branchId: widget.branchId,
+                          workingHourStart: const TimeOfDay(hour: 9, minute: 0),
+                          workingHourEnd: const TimeOfDay(hour: 22, minute: 0),
+                          maxDaysAhead: maxDaysAhead,
+                        );
+                      },
                     ),
                     // Special Instructions Section
                     SpecialInstructionsSection(branchId: widget.branchId),

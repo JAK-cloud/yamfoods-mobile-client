@@ -72,9 +72,9 @@ class SearchScreen extends ConsumerWidget {
             // Product grid
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(searchProductsProvider(branchId, filters));
-                },
+                onRefresh: () => ref.refresh(
+                  searchProductsProvider(branchId, filters).future,
+                ),
                 child: CustomScrollView(
                   slivers: [
                     ProductSliverGrid(branchId: branchId, filters: filters),

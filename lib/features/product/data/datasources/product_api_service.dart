@@ -3,6 +3,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../../../../core/network/api/api_routes.dart';
 import '../../../../core/network/models/api_response.dart';
+import '../models/product_model.dart';
 import '../models/products_response_model.dart';
 
 part 'product_api_service.g.dart';
@@ -38,5 +39,11 @@ abstract class ProductApiService {
   Future<ApiResponse<ProductsResponseModel>> getAllSubcategoryProducts(
     @Path('branchId') int branchId,
     @Path('subCategoryId') int subCategoryId,
+  );
+
+  @GET(ApiRoutes.getProduct)
+  Future<ApiResponse<ProductModel>> getProduct(
+    @Path('branchId') int branchId,
+    @Path('productId') int productId,
   );
 }

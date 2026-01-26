@@ -11,6 +11,8 @@
     <!-- Permission.photos handles backward compatibility automatically -->
     <!-- Use Permission.photos in code (not Permission.storage) for Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Android 13+ notification runtime permission -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:label="Yam Food"
         android:name="${applicationName}"

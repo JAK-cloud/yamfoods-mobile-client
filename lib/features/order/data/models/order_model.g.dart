@@ -37,6 +37,14 @@ _OrderModel _$OrderModelFromJson(
     ),
     discountTotal: $checkedConvert('discountTotal', (v) => parseDouble(v)),
     totalAmount: $checkedConvert('totalAmount', (v) => parseDouble(v)),
+    branchLocation: $checkedConvert(
+      'branchLocation',
+      (v) => OrderLocationModel.fromJson(v as Map<String, dynamic>),
+    ),
+    deliveryLocation: $checkedConvert(
+      'deliveryLocation',
+      (v) => OrderLocationModel.fromJson(v as Map<String, dynamic>),
+    ),
     createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
     updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
   );
@@ -66,6 +74,8 @@ Map<String, dynamic> _$OrderModelToJson(_OrderModel instance) =>
       'promoCodeDiscount': instance.promoCodeDiscount,
       'discountTotal': instance.discountTotal,
       'totalAmount': instance.totalAmount,
+      'branchLocation': instance.branchLocation.toJson(),
+      'deliveryLocation': instance.deliveryLocation.toJson(),
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

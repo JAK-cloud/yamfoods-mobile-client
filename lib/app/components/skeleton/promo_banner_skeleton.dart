@@ -17,10 +17,7 @@ class PromoBannerSkeleton extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.radius),
       ),
       child: Center(
-        child: CircularProgressIndicator(
-          color: AppColors.primary,
-          strokeWidth: 2,
-        ),
+        child: Text('...'),
       ),
     );
   }

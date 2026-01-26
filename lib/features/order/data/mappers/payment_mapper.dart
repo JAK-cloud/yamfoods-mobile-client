@@ -1,4 +1,4 @@
-
+import '../../../../core/enums/payment_status.dart';
 import '../../domain/entities/payment.dart';
 import '../models/payment_model.dart';
 
@@ -7,8 +7,12 @@ extension PaymentMapper on PaymentModel {
     id: id,
     orderId: orderId,
     method: method,
-    transactionId: transactionId,
+    status: status.toPaymentStatus(),
+    transId: transId,
+    telebirrPaymentOrderId: telebirrPaymentOrderId,
     amount: amount,
+    transTime: transTime,
+    currency: currency,
     date: date,
   );
 }

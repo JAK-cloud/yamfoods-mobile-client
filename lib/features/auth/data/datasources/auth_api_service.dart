@@ -33,6 +33,11 @@ abstract class AuthApiService {
   @POST(ApiRoutes.login)
   Future<ApiResponse<LoginDataModel>> login(@Body() Map<String, dynamic> body);
 
+  @POST(ApiRoutes.googleSignIn)
+  Future<ApiResponse<LoginDataModel>> googleSignIn(
+    @Body() Map<String, dynamic> body,
+  );
+
   @POST(ApiRoutes.logout)
   Future<void> logout(@Body() Map<String, dynamic> body);
 

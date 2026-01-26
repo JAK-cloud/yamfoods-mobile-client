@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/components/error_widget.dart' as app_error;
 import '../../../../app/components/skeleton/category_chip_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/errors/failure.dart';
 import '../../category/presentation/providers/category_providers.dart';
 import 'category_chip.dart';
 
@@ -46,17 +44,7 @@ class CategoryChipsList extends ConsumerWidget {
             return const CategoryChipSkeleton();
           },
         ),
-        error: (error, stackTrace) => Center(
-          child: app_error.ErrorWidgett(
-            title: 'Failed to load categories',
-            failure: error is Failure
-                ? error
-                : Failure.unexpected(message: error.toString()),
-            onRetry: () {
-              ref.invalidate(categoriesProvider(branchId));
-            },
-          ),
-        ),
+        error: (error, stackTrace) => const CategoryChipSkeleton(),
       ),
     );
   }

@@ -84,6 +84,7 @@ class ProductRelatedSection extends ConsumerWidget {
                 child: ProductCard(
                   product: relatedProducts[index],
                   screenId: 'productDetail',
+                  enableCartAnimation: false,
                 ),
               );
             },

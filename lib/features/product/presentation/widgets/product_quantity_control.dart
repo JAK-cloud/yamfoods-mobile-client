@@ -5,6 +5,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/providers/animation_providers.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/domain/entities/cart.dart';
 import '../../../cart/presentation/providers/cart_loading_providers.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
@@ -26,6 +27,7 @@ class ProductQuantityControl extends ConsumerWidget {
   final Cart cart;
   final int branchId;
   final String screenId;
+  final bool enableCartAnimation;
   final QuantityControlSize size;
   final Color? iconColor;
   final Color? textColor;
@@ -35,6 +37,7 @@ class ProductQuantityControl extends ConsumerWidget {
     required this.cart,
     required this.branchId,
     required this.screenId,
+    this.enableCartAnimation = true,
     this.size = QuantityControlSize.compact,
     this.iconColor,
     this.textColor,
@@ -46,8 +49,9 @@ class ProductQuantityControl extends ConsumerWidget {
         .watch(cartQuantityUpdateLoadingProvider)
         .contains(cart.id);
 
-    // Maximum quantity allowed
-    const maxQuantity = 5;
+    // Maximum quantity allowed from app configuration
+    final appConfig = ref.watch(appConfigurationProvider).value;
+    final maxQuantity = appConfig?.maxQuantityPerItem ?? 5;
 
     final buttonSize = size == QuantityControlSize.large ? 40.0 : 28.0;
     final iconSize = size == QuantityControlSize.large ? 22.0 : 16.0;
@@ -109,14 +113,18 @@ class ProductQuantityControl extends ConsumerWidget {
               : () {
                   // Trigger same product-to-cart animation on quantity increase
                   // Only if the tag exists (e.g., in product cards, not in bottom sheets)
-                  try {
-                    final controller = ref.read(
-                      cartAnimationControllerProvider(screenId),
-                    );
-                    controller.animateTag('product_${cart.product.id}');
-                  } catch (e) {
-                    // Animation tag doesn't exist (e.g., in bottom sheet context)
-                    // This is fine, just continue without animation
+                  if (enableCartAnimation) {
+                    try {
+                      final controller = ref.read(
+                        cartAnimationControllerProvider(screenId),
+                      );
+                      controller.animateTag(
+                        '${screenId}_product_${cart.product.id}',
+                      );
+                    } catch (e) {
+                      // Animation tag doesn't exist (e.g., in bottom sheet context)
+                      // This is fine, just continue without animation
+                    }
                   }
 
                   ref

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/components/empty_state.dart';
-import '../../../../app/components/error_widget.dart' as app_error;
 import '../../../../app/components/skeleton/product_card_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/errors/failure.dart';
 import '../../product/presentation/providers/product_providers.dart';
 import '../../product/presentation/widgets/product_card.dart';
 
@@ -67,17 +65,18 @@ class ProductSliverGrid extends ConsumerWidget {
           ),
         ),
       ),
-      error: (error, stackTrace) => SliverFillRemaining(
-        hasScrollBody: false,
-        child: Center(
-          child: app_error.ErrorWidgett(
-            title: 'Failed to load products',
-            failure: error is Failure
-                ? error
-                : Failure.unexpected(message: error.toString()),
-            onRetry: () {
-              ref.invalidate(branchProductsProvider(branchId));
-            },
+      error: (error, stackTrace) => SliverPadding(
+        padding: EdgeInsets.all(AppSizes.sm),
+        sliver: SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: AppSizes.sm,
+            mainAxisSpacing: AppSizes.sm,
+            childAspectRatio: 0.75,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) => const ProductCardSkeleton(),
+            childCount: 6,
           ),
         ),
       ),

@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../core/permissions/notification/notification_fcm_service.dart';
 import '../../domain/entities/auth_token.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -95,6 +97,24 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, ({User user, AuthToken tokens})>> googleSignIn({
+    required String idToken,
+  }) async {
+    final result = await _remoteDataSource.googleSignIn(idToken: idToken);
+
+    return result.fold((failure) => Left(failure), (loginData) async {
+      // Map to domain entities
+      final (user, tokens) = loginData.toDomain();
+
+      // Save tokens and user locally
+      await _localDataSource.saveTokens(tokens);
+      await _localDataSource.saveUser(user);
+
+      return Right((user: user, tokens: tokens));
+    });
+  }
+
+  @override
   Future<Either<Failure, AuthToken>> refreshTokens() async {
     // Get refresh token from local storage
     final refreshToken = await _localDataSource.getRefreshToken();
@@ -117,8 +137,26 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, Unit>> logout() async {
+
     // Get refresh token from local storage
     final refreshToken = await _localDataSource.getRefreshToken();
+
+    // Get FCM token and device type for logout
+    String? fcmToken;
+    String? deviceType;
+    try {
+      final fcmService = NotificationFcmService.instance;
+      fcmToken = await fcmService.getToken();
+      deviceType = NotificationFcmService.getDeviceType();
+
+      
+
+      // Unsubscribe from topics on logout
+      await fcmService.unsubscribeFromUserTopics();
+    } catch (e) {
+      // Silently handle FCM errors - don't block logout
+    }
+
     if (refreshToken == null) {
       // If no refresh token, just clear local data
       await _localDataSource.clearTokens();
@@ -126,11 +164,18 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(unit);
     }
 
-    final result = await _remoteDataSource.logout(refreshToken);
+    
+
+    final result = await _remoteDataSource.logout(
+      refreshToken: refreshToken,
+      fcmToken: fcmToken,
+      deviceType: deviceType,
+    );
 
     // Always clear local data regardless of API response
     await _localDataSource.clearTokens();
     await _localDataSource.clearUser();
+    debugPrint('✅ Local data cleared after logout request');
 
     return result.fold((failure) => Left(failure), (_) => const Right(unit));
   }

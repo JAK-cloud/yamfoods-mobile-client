@@ -77,11 +77,11 @@ class OrderPaymentSection extends StatelessWidget {
             value: payment.method.toUpperCase(),
             icon: Icons.credit_card,
           ),
-          if (payment.transactionId != null) ...[
+          if (payment.transId != null) ...[
             SizedBox(height: AppSizes.sm),
             InfoRow(
               label: 'Transaction ID',
-              value: payment.transactionId!,
+              value: payment.transId!,
               icon: Icons.receipt_long_outlined,
             ),
           ],

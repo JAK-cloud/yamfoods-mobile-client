@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../app/components/error_widget.dart' as app_error;
 import '../../../../app/components/skeleton/promo_banner_skeleton.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/errors/failure.dart';
 import '../providers/promo_banner_providers.dart';
 import 'promo_banner_item.dart';
 
@@ -128,18 +126,7 @@ class _PromoBannerSliderState extends ConsumerState<PromoBannerSlider> {
         );
       },
       loading: () => const PromoBannerSkeleton(),
-      error: (error, stackTrace) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
-        child: app_error.ErrorWidgett(
-          title: 'Failed to load promotions',
-          failure: error is Failure
-              ? error
-              : Failure.unexpected(message: error.toString()),
-          onRetry: () {
-            ref.invalidate(activePromoBannersProvider);
-          },
-        ),
-      ),
+      error: (error, stackTrace) => const PromoBannerSkeleton(),
     );
   }
 }

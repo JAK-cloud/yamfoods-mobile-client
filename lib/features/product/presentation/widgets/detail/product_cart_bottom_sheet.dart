@@ -8,6 +8,7 @@ import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
 import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/snacks/info_snack_bar.dart';
+import '../../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../../cart/domain/entities/cart.dart';
 import '../../../../cart/domain/entities/cart_request_data.dart';
 import '../../../../cart/presentation/providers/cart_notifier.dart';
@@ -88,10 +89,12 @@ class ProductCartBottomSheet extends ConsumerWidget {
               );
             }
           : () {
+              final appConfig = ref.read(appConfigurationProvider).value;
+              final maxCartItems = appConfig?.maxCartItems ?? 5;
               InfoSnackBar.show(
                 context,
                 message:
-                    'Cart limit reached. You can only add ${AppConstants.maxCartItems} items.',
+                    'Cart limit reached. You can only add $maxCartItems items.',
               );
             },
       color: AppColors.primary,
@@ -150,6 +153,7 @@ class ProductCartBottomSheet extends ConsumerWidget {
             cart: currentCartItem,
             branchId: product.branchId,
             screenId: 'productDetail',
+            enableCartAnimation: false,
             size: QuantityControlSize.large,
             iconColor: AppColors.white,
             textColor: AppColors.white,

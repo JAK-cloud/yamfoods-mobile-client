@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '772377488112',
     projectId: 'yam-foods',
     storageBucket: 'yam-foods.firebasestorage.app',
+    androidClientId: '772377488112-1dv4tiate9u7kb8817q3n4ume6ca29bt.apps.googleusercontent.com',
+    iosClientId: '772377488112-62s6tau2ms95j5e9bmdcol7mr7h7oi1q.apps.googleusercontent.com',
     iosBundleId: 'com.example.yamfoodsCustomerApp',
   );
+
 }

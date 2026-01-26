@@ -7,10 +7,12 @@ import '../../data/datasources/order_remote_data_source_impl.dart';
 import '../../data/repositories/order_repository_impl.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_detail.dart';
+import '../../domain/entities/payment.dart';
 import '../../domain/repositories/order_repository.dart';
 import '../../domain/usecases/create_order_usecase.dart';
 import '../../domain/usecases/get_all_orders_usecase.dart';
 import '../../domain/usecases/get_order_detail_usecase.dart';
+import '../../domain/usecases/query_order_payment_usecase.dart';
 
 part 'order_providers.g.dart';
 
@@ -77,6 +79,15 @@ Future<CreateOrderUseCase> createOrderUseCase(Ref ref) async {
   return CreateOrderUseCase(repository);
 }
 
+/// Query order payment usecase provider
+///
+/// Provides usecase for querying order payment information.
+@riverpod
+Future<QueryOrderPaymentUseCase> queryOrderPaymentUseCase(Ref ref) async {
+  final repository = await ref.watch(orderRepositoryProvider.future);
+  return QueryOrderPaymentUseCase(repository);
+}
+
 // ==================== Data Providers ====================
 
 /// All orders list provider
@@ -101,4 +112,16 @@ Future<OrderDetail> orderDetail(Ref ref, int orderId) async {
   final result = await usecase(orderId);
 
   return result.fold((failure) => throw failure, (orderDetail) => orderDetail);
+}
+
+/// Order payment provider
+///
+/// Fetches payment information for an order by orderId using the usecase.
+/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+@riverpod
+Future<Payment> queryOrder(Ref ref, int orderId) async {
+  final usecase = await ref.watch(queryOrderPaymentUseCaseProvider.future);
+  final result = await usecase(orderId);
+
+  return result.fold((failure) => throw failure, (payment) => payment);
 }

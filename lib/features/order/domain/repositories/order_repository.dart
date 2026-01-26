@@ -5,6 +5,7 @@ import '../entities/create_order_response.dart';
 import '../entities/order.dart';
 import '../entities/order_detail.dart';
 import '../entities/order_request_data.dart';
+import '../entities/payment.dart';
 
 abstract class OrderRepository {
   Future<Either<Failure, CreateOrderResponse>> createOrder(
@@ -18,4 +19,5 @@ abstract class OrderRepository {
     String? qrCode,
   });
   Future<Either<Failure, OrderDetail?>> getOutForDeliveryOrder();
+  Future<Either<Failure, Payment>> queryOrderPayment(int orderId);
 }

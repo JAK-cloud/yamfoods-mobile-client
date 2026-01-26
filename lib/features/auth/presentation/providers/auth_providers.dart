@@ -11,6 +11,7 @@ import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
+import '../../domain/usecases/google_sign_in_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/refresh_tokens_usecase.dart';
 import '../../domain/usecases/save_phone_number_usecase.dart';
@@ -96,6 +97,15 @@ Future<LoginUsecase> loginUsecase(Ref ref) async {
 Future<RegisterUsecase> registerUsecase(Ref ref) async {
   final repository = await ref.watch(authRepositoryProvider.future);
   return RegisterUsecase(repository);
+}
+
+/// Google Sign-In usecase provider (async)
+///
+/// Provides usecase for Google Sign-In authentication.
+@riverpod
+Future<GoogleSignInUsecase> googleSignInUsecase(Ref ref) async {
+  final repository = await ref.watch(authRepositoryProvider.future);
+  return GoogleSignInUsecase(repository);
 }
 
 /// Logout usecase provider (async)

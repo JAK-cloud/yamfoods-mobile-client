@@ -17,7 +17,7 @@ class AuthNotifier extends _$AuthNotifier {
   @override
   bool build() => false; // false = not loading
 
-//use below code when you want to keep the provider alive for the duration of the action
+  //use below code when you want to keep the provider alive for the duration of the action
   /*
    /// Prevents "Cannot use the Ref ... after it has been disposed" during async gaps.
   ///
@@ -111,6 +111,48 @@ class AuthNotifier extends _$AuthNotifier {
           ref
               .read(authEventsProvider.notifier)
               .emit(Authenticated(user: data.user));
+        },
+      );
+    } finally {
+      state = false;
+    }
+  }
+
+  Future<void> googleSignIn({
+    required String idToken,
+    bool isRegistering = false,
+  }) async {
+    state = true;
+    try {
+      final googleSignInUsecase = await ref.read(
+        googleSignInUsecaseProvider.future,
+      );
+      final result = await googleSignInUsecase(idToken: idToken);
+      result.fold(
+        (failure) {
+          if (isRegistering) {
+            ref
+                .read(registerUiEventsProvider.notifier)
+                .emit(RegisterFailure(failure: failure));
+          } else {
+            ref
+                .read(authEventsProvider.notifier)
+                .emit(AuthenticationFailure(failure: failure));
+          }
+        },
+        (data) async {
+          
+          if (isRegistering) {
+            ref
+                .read(registerUiEventsProvider.notifier)
+                .emit(RegisterSuccess(user: data.user));
+          } else {
+            // Update persistent state and emit event
+            await ref.read(authUserStateProvider.notifier).setUser(data.user);
+            ref
+                .read(authEventsProvider.notifier)
+                .emit(Authenticated(user: data.user));
+          }
         },
       );
     } finally {

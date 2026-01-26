@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_summary_provider.dart';
 import '../../models/checkout_summary.dart';
@@ -35,8 +36,10 @@ CheckoutSummary checkoutSummary(Ref ref, int branchId) {
   final pointDiscount = checkoutState.pointDiscount ?? 0.0;
   final totalDiscount = itemDiscountTotal + promoDiscount + pointDiscount;
 
-  // Delivery fee: 34 ETB for delivery, 0 for pickup
-  const deliveryFee = 34.0; // Fixed delivery fee
+  // Delivery fee from app configuration
+  final appConfig = ref.watch(appConfigurationProvider).value;
+  final deliveryFee =
+      appConfig?.deliveryFeePerKm ?? 1000.0; //default delivery fee is 1000
   final finalDeliveryFee = checkoutState.orderType == 'delivery'
       ? deliveryFee
       : 0.0;

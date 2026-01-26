@@ -323,6 +323,59 @@ final class CreateOrderUseCaseProvider
 String _$createOrderUseCaseHash() =>
     r'880c0a3cf1f8d1a0ae8830462ca2faa994d68a63';
 
+/// Query order payment usecase provider
+///
+/// Provides usecase for querying order payment information.
+
+@ProviderFor(queryOrderPaymentUseCase)
+const queryOrderPaymentUseCaseProvider = QueryOrderPaymentUseCaseProvider._();
+
+/// Query order payment usecase provider
+///
+/// Provides usecase for querying order payment information.
+
+final class QueryOrderPaymentUseCaseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<QueryOrderPaymentUseCase>,
+          QueryOrderPaymentUseCase,
+          FutureOr<QueryOrderPaymentUseCase>
+        >
+    with
+        $FutureModifier<QueryOrderPaymentUseCase>,
+        $FutureProvider<QueryOrderPaymentUseCase> {
+  /// Query order payment usecase provider
+  ///
+  /// Provides usecase for querying order payment information.
+  const QueryOrderPaymentUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'queryOrderPaymentUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$queryOrderPaymentUseCaseHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<QueryOrderPaymentUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<QueryOrderPaymentUseCase> create(Ref ref) {
+    return queryOrderPaymentUseCase(ref);
+  }
+}
+
+String _$queryOrderPaymentUseCaseHash() =>
+    r'5572ab011dbe650421f2c89905ce9dbd605a0f83';
+
 /// All orders list provider
 ///
 /// Fetches all orders using the usecase.
@@ -473,4 +526,97 @@ final class OrderDetailFamily extends $Family
 
   @override
   String toString() => r'orderDetailProvider';
+}
+
+/// Order payment provider
+///
+/// Fetches payment information for an order by orderId using the usecase.
+/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+
+@ProviderFor(queryOrder)
+const queryOrderProvider = QueryOrderFamily._();
+
+/// Order payment provider
+///
+/// Fetches payment information for an order by orderId using the usecase.
+/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+
+final class QueryOrderProvider
+    extends $FunctionalProvider<AsyncValue<Payment>, Payment, FutureOr<Payment>>
+    with $FutureModifier<Payment>, $FutureProvider<Payment> {
+  /// Order payment provider
+  ///
+  /// Fetches payment information for an order by orderId using the usecase.
+  /// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+  const QueryOrderProvider._({
+    required QueryOrderFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'queryOrderProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$queryOrderHash();
+
+  @override
+  String toString() {
+    return r'queryOrderProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Payment> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Payment> create(Ref ref) {
+    final argument = this.argument as int;
+    return queryOrder(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is QueryOrderProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$queryOrderHash() => r'f77a7ef5ed2b2e52e89b36979b8f0c700594dde2';
+
+/// Order payment provider
+///
+/// Fetches payment information for an order by orderId using the usecase.
+/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+
+final class QueryOrderFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Payment>, int> {
+  const QueryOrderFamily._()
+    : super(
+        retry: null,
+        name: r'queryOrderProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Order payment provider
+  ///
+  /// Fetches payment information for an order by orderId using the usecase.
+  /// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+
+  QueryOrderProvider call(int orderId) =>
+      QueryOrderProvider._(argument: orderId, from: this);
+
+  @override
+  String toString() => r'queryOrderProvider';
 }

@@ -6,7 +6,8 @@ import '../../../../../app/routes/auth_guard_helper.dart';
 import '../../../../../app/routes/route_names.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
-import '../../../../../features/cart/presentation/widgets/animated_cart_icon.dart';
+import '../../../../branch/presentation/providers/branch_providers.dart';
+import '../../../../cart/presentation/providers/cart_notifier.dart';
 
 /// Premium header for the product detail screen.
 ///
@@ -32,13 +33,9 @@ class ProductDetailHeader extends ConsumerWidget {
             ),
           ),
 
-          // Cart icon with badge and animation
+          // Cart icon with badge (NO animation on detail screen to avoid GlobalKey conflicts)
           _buildButton(
-            child: AnimatedCartIcon(
-              screenId: 'productDetail',
-              iconSize: 24,
-              padding: const EdgeInsets.all(AppSizes.sm),
-              badgeOffset: const Offset(10, -10),
+            child: _CartIconButton(
               onTap: () async {
                 await AuthGuardHelper.requireAuthOrShowDialog(
                   context: context,
@@ -67,6 +64,44 @@ class ProductDetailHeader extends ConsumerWidget {
         ),
       ),
       child: child,
+    );
+  }
+}
+
+class _CartIconButton extends ConsumerWidget {
+  final VoidCallback? onTap;
+
+  const _CartIconButton({this.onTap});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final branchId = ref.watch(currentBranchProvider);
+    final cartAsync = branchId == null
+        ? null
+        : ref.watch(cartProvider(branchId));
+    final cartCount = cartAsync?.value?.length ?? 0;
+
+    final icon = GestureDetector(
+      onTap: onTap,
+      child: const Padding(
+        padding: EdgeInsets.all(AppSizes.sm),
+        child: Icon(
+          Icons.shopping_basket_outlined,
+          color: AppColors.white,
+          size: 24,
+        ),
+      ),
+    );
+
+    if (cartCount <= 0) return icon;
+
+    return Badge.count(
+      count: cartCount,
+      maxCount: 99,
+      backgroundColor: AppColors.white,
+      textColor: Colors.red,
+      offset: const Offset(10, -10),
+      child: icon,
     );
   }
 }

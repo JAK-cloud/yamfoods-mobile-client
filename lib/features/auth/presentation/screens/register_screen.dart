@@ -9,8 +9,10 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_texts.dart';
+import '../../../../core/errors/failure.dart';
 import '../../../../core/services/snackbar_service.dart';
 import '../../../../core/utils/validators.dart';
+import '../../data/services/google_sign_in_service.dart';
 import '../providers/auth_notifier.dart';
 import '../providers/events/register_event.dart';
 
@@ -188,10 +190,39 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   const SizedBox(height: 15),
                   CustomButton(
-                    text: AppTexts.registerWithGoogle,
-                    onPressed: () {
-                      // TODO: Implement Google signup logic later
-                    },
+                    text: AppTexts.loginWithGoogle,
+                    onPressed: isLoading
+                        ? null
+                        : () async {
+                            String? idToken;
+                            try {
+                              // Get Firebase ID token from Google Sign-In
+                              // Only catch errors from token retrieval
+                              idToken = await GoogleSignInService.signIn();
+                            } catch (e) {
+                              // Handle Google Sign-In token retrieval errors
+                              final snackbar = ref.read(
+                                snackbarServiceProvider,
+                              );
+                              snackbar.showError(
+                                Failure.unexpected(
+                                  message:
+                                      'Something went wrong when signing in with Google. Please contact support!',
+                                ),
+                              );
+                              return; // Exit early if token retrieval fails
+                            }
+
+                            // If idToken is null, user cancelled - do nothing
+                            if (idToken == null) return;
+
+                            // Authenticate with backend
+                            // Backend errors are handled by the auth event system
+                            ref
+                                .read(authProvider.notifier)
+                                .googleSignIn(idToken: idToken, isRegistering: true);
+                          },
+                    isLoading: isLoading,
                     isSocial: true,
                     color: AppColors.btnSecondary,
                   ),

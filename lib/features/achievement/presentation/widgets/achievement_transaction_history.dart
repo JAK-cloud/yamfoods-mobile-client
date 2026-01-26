@@ -33,7 +33,7 @@ class AchievementTransactionHistory extends ConsumerWidget {
         }
 
         return Container(
-        //  margin: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+          //  margin: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
           padding: const EdgeInsets.all(AppSizes.lg),
           decoration: BoxDecoration(
             color: AppColors.background,
@@ -95,7 +95,7 @@ class AchievementTransactionHistory extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () => ref.invalidate(achievementHistoryProvider),
+          onRetry: () => ref.refresh(achievementHistoryProvider.future),
         ),
       ),
     );

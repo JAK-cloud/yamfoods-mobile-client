@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../branch/presentation/providers/branch_providers.dart';
+import '../../category/presentation/providers/category_providers.dart';
 import '../../product/presentation/providers/product_providers.dart';
+import '../../promo_banner/presentation/providers/promo_banner_providers.dart';
 import '../../promo_banner/presentation/widgets/promo_banner_slider.dart';
 import '../widgets/category_chips_list.dart';
 import '../widgets/home_header.dart';
@@ -22,6 +24,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Get current branch ID - guaranteed to exist since branch selection is enforced
     final branchId = ref.watch(currentBranchProvider)!;
+
+    Future<void> onHomePageRefresh() {
+      return Future.wait<void>([
+        ref.refresh(branchProductsProvider(branchId).future),
+        ref.refresh(categoriesProvider(branchId).future),
+        ref.refresh(activePromoBannersProvider.future),
+      ]);
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -53,9 +64,7 @@ class HomeScreen extends ConsumerWidget {
             // Scrollable content: banner, categories, and products
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(branchProductsProvider(branchId));
-                },
+                onRefresh: onHomePageRefresh,
                 child: CustomScrollView(
                   slivers: [
                     // Premium surface section (banner, categories) with gradient

@@ -12,8 +12,8 @@ import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/providers/animation_providers.dart';
 import '../../../../core/utils/image_url_builder.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/domain/entities/cart_request_data.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_providers.dart';
@@ -30,8 +30,14 @@ import 'product_quantity_control.dart';
 class ProductCard extends ConsumerWidget {
   final Product product;
   final String screenId;
+  final bool enableCartAnimation;
 
-  const ProductCard({super.key, required this.product, required this.screenId});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.screenId,
+    this.enableCartAnimation = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -164,6 +170,7 @@ class ProductCard extends ConsumerWidget {
                       cart: cartItem,
                       branchId: product.branchId,
                       screenId: screenId,
+                      enableCartAnimation: enableCartAnimation,
                     )
                   : _buildAddButton(context, ref),
             ),
@@ -174,10 +181,22 @@ class ProductCard extends ConsumerWidget {
   }
 
   Widget _buildImage(String? imageUrl, WidgetRef ref) {
-    final controller = ref.read(cartAnimationControllerProvider(screenId));
-    final imageKey = controller.tag('product_${product.id}');
-
     if (imageUrl != null) {
+      final image = CachedNetworkImage(
+        imageUrl: imageUrl,
+        width: double.infinity,
+        height: double.infinity,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => _imagePlaceholder(),
+        errorWidget: (context, url, error) => _imagePlaceholder(),
+      );
+
+      if (!enableCartAnimation) return image;
+
+      final controller = ref.read(cartAnimationControllerProvider(screenId));
+      // Tag is scoped by screenId (important for keeping animations isolated per screen)
+      final imageKey = controller.tag('${screenId}_product_${product.id}');
+
       return AnimateFrom<int>(
         key: imageKey,
         value: product.id, // Transport product ID
@@ -202,14 +221,7 @@ class ProductCard extends ConsumerWidget {
             ),
           );
         },
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => _imagePlaceholder(),
-          errorWidget: (context, url, error) => _imagePlaceholder(),
-        ),
+        child: image,
       );
     }
     return _imagePlaceholder();
@@ -267,10 +279,12 @@ class ProductCard extends ConsumerWidget {
             onAuthenticated: () {
               // User is authenticated - proceed with adding to cart
               // Trigger animation BEFORE adding to cart
-              final controller = ref.read(
-                cartAnimationControllerProvider(screenId),
-              );
-              controller.animateTag('product_${product.id}');
+              if (enableCartAnimation) {
+                final controller = ref.read(
+                  cartAnimationControllerProvider(screenId),
+                );
+                controller.animateTag('${screenId}_product_${product.id}');
+              }
 
               // Add to cart (this happens in parallel with animation)
               ref
@@ -281,10 +295,12 @@ class ProductCard extends ConsumerWidget {
             },
           );
         } else {
+          final appConfig = ref.read(appConfigurationProvider).value;
+          final maxCartItems = appConfig?.maxCartItems ?? 5;
           InfoSnackBar.show(
             context,
             message:
-                'Cart limit reached. You can only add ${AppConstants.maxCartItems} items. Remove items to add more.',
+                'Cart limit reached. You can only add $maxCartItems items. Remove items to add more.',
           );
         }
       },

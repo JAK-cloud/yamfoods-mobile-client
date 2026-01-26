@@ -15,8 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PaymentModel {
 
- int get id; int get orderId; String get method; String? get transactionId;// should not be required because the customer will order with his point
-@JsonKey(fromJson: parseDouble) double get amount; DateTime get date;
+ int get id; int get orderId; String get method; String get status; String? get transId;// should not be required because the customer will order with his point
+ String? get telebirrPaymentOrderId;@JsonKey(fromJson: parseDouble) double get amount; DateTime? get transTime; String? get currency; DateTime get date;
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $PaymentModelCopyWith<PaymentModel> get copyWith => _$PaymentModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.method, method) || other.method == method)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.date, date) || other.date == date));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.method, method) || other.method == method)&&(identical(other.status, status) || other.status == status)&&(identical(other.transId, transId) || other.transId == transId)&&(identical(other.telebirrPaymentOrderId, telebirrPaymentOrderId) || other.telebirrPaymentOrderId == telebirrPaymentOrderId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.transTime, transTime) || other.transTime == transTime)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.date, date) || other.date == date));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,method,transactionId,amount,date);
+int get hashCode => Object.hash(runtimeType,id,orderId,method,status,transId,telebirrPaymentOrderId,amount,transTime,currency,date);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, orderId: $orderId, method: $method, transactionId: $transactionId, amount: $amount, date: $date)';
+  return 'PaymentModel(id: $id, orderId: $orderId, method: $method, status: $status, transId: $transId, telebirrPaymentOrderId: $telebirrPaymentOrderId, amount: $amount, transTime: $transTime, currency: $currency, date: $date)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $PaymentModelCopyWith<$Res>  {
   factory $PaymentModelCopyWith(PaymentModel value, $Res Function(PaymentModel) _then) = _$PaymentModelCopyWithImpl;
 @useResult
 $Res call({
- int id, int orderId, String method, String? transactionId,@JsonKey(fromJson: parseDouble) double amount, DateTime date
+ int id, int orderId, String method, String status, String? transId, String? telebirrPaymentOrderId,@JsonKey(fromJson: parseDouble) double amount, DateTime? transTime, String? currency, DateTime date
 });
 
 
@@ -66,14 +66,18 @@ class _$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? method = null,Object? transactionId = freezed,Object? amount = null,Object? date = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? method = null,Object? status = null,Object? transId = freezed,Object? telebirrPaymentOrderId = freezed,Object? amount = null,Object? transTime = freezed,Object? currency = freezed,Object? date = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
 as int,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
-as String,transactionId: freezed == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,transId: freezed == transId ? _self.transId : transId // ignore: cast_nullable_to_non_nullable
+as String?,telebirrPaymentOrderId: freezed == telebirrPaymentOrderId ? _self.telebirrPaymentOrderId : telebirrPaymentOrderId // ignore: cast_nullable_to_non_nullable
 as String?,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as double,transTime: freezed == transTime ? _self.transTime : transTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -156,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String method,  String? transactionId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime date)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String method,  String status,  String? transId,  String? telebirrPaymentOrderId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime? transTime,  String? currency,  DateTime date)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.amount,_that.date);case _:
+return $default(_that.id,_that.orderId,_that.method,_that.status,_that.transId,_that.telebirrPaymentOrderId,_that.amount,_that.transTime,_that.currency,_that.date);case _:
   return orElse();
 
 }
@@ -177,10 +181,10 @@ return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.am
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String method,  String? transactionId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime date)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String method,  String status,  String? transId,  String? telebirrPaymentOrderId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime? transTime,  String? currency,  DateTime date)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel():
-return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.amount,_that.date);}
+return $default(_that.id,_that.orderId,_that.method,_that.status,_that.transId,_that.telebirrPaymentOrderId,_that.amount,_that.transTime,_that.currency,_that.date);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -194,10 +198,10 @@ return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.am
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String method,  String? transactionId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime date)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String method,  String status,  String? transId,  String? telebirrPaymentOrderId, @JsonKey(fromJson: parseDouble)  double amount,  DateTime? transTime,  String? currency,  DateTime date)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentModel() when $default != null:
-return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.amount,_that.date);case _:
+return $default(_that.id,_that.orderId,_that.method,_that.status,_that.transId,_that.telebirrPaymentOrderId,_that.amount,_that.transTime,_that.currency,_that.date);case _:
   return null;
 
 }
@@ -209,15 +213,19 @@ return $default(_that.id,_that.orderId,_that.method,_that.transactionId,_that.am
 @JsonSerializable()
 
 class _PaymentModel extends PaymentModel {
-  const _PaymentModel({required this.id, required this.orderId, required this.method, this.transactionId, @JsonKey(fromJson: parseDouble) required this.amount, required this.date}): super._();
+  const _PaymentModel({required this.id, required this.orderId, required this.method, required this.status, this.transId, this.telebirrPaymentOrderId, @JsonKey(fromJson: parseDouble) required this.amount, this.transTime, this.currency, required this.date}): super._();
   factory _PaymentModel.fromJson(Map<String, dynamic> json) => _$PaymentModelFromJson(json);
 
 @override final  int id;
 @override final  int orderId;
 @override final  String method;
-@override final  String? transactionId;
+@override final  String status;
+@override final  String? transId;
 // should not be required because the customer will order with his point
+@override final  String? telebirrPaymentOrderId;
 @override@JsonKey(fromJson: parseDouble) final  double amount;
+@override final  DateTime? transTime;
+@override final  String? currency;
 @override final  DateTime date;
 
 /// Create a copy of PaymentModel
@@ -233,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.method, method) || other.method == method)&&(identical(other.transactionId, transactionId) || other.transactionId == transactionId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.date, date) || other.date == date));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PaymentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.method, method) || other.method == method)&&(identical(other.status, status) || other.status == status)&&(identical(other.transId, transId) || other.transId == transId)&&(identical(other.telebirrPaymentOrderId, telebirrPaymentOrderId) || other.telebirrPaymentOrderId == telebirrPaymentOrderId)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.transTime, transTime) || other.transTime == transTime)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.date, date) || other.date == date));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,method,transactionId,amount,date);
+int get hashCode => Object.hash(runtimeType,id,orderId,method,status,transId,telebirrPaymentOrderId,amount,transTime,currency,date);
 
 @override
 String toString() {
-  return 'PaymentModel(id: $id, orderId: $orderId, method: $method, transactionId: $transactionId, amount: $amount, date: $date)';
+  return 'PaymentModel(id: $id, orderId: $orderId, method: $method, status: $status, transId: $transId, telebirrPaymentOrderId: $telebirrPaymentOrderId, amount: $amount, transTime: $transTime, currency: $currency, date: $date)';
 }
 
 
@@ -253,7 +261,7 @@ abstract mixin class _$PaymentModelCopyWith<$Res> implements $PaymentModelCopyWi
   factory _$PaymentModelCopyWith(_PaymentModel value, $Res Function(_PaymentModel) _then) = __$PaymentModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int orderId, String method, String? transactionId,@JsonKey(fromJson: parseDouble) double amount, DateTime date
+ int id, int orderId, String method, String status, String? transId, String? telebirrPaymentOrderId,@JsonKey(fromJson: parseDouble) double amount, DateTime? transTime, String? currency, DateTime date
 });
 
 
@@ -270,14 +278,18 @@ class __$PaymentModelCopyWithImpl<$Res>
 
 /// Create a copy of PaymentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? method = null,Object? transactionId = freezed,Object? amount = null,Object? date = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? method = null,Object? status = null,Object? transId = freezed,Object? telebirrPaymentOrderId = freezed,Object? amount = null,Object? transTime = freezed,Object? currency = freezed,Object? date = null,}) {
   return _then(_PaymentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
 as int,method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
-as String,transactionId: freezed == transactionId ? _self.transactionId : transactionId // ignore: cast_nullable_to_non_nullable
+as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,transId: freezed == transId ? _self.transId : transId // ignore: cast_nullable_to_non_nullable
+as String?,telebirrPaymentOrderId: freezed == telebirrPaymentOrderId ? _self.telebirrPaymentOrderId : telebirrPaymentOrderId // ignore: cast_nullable_to_non_nullable
 as String?,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
-as double,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as double,transTime: freezed == transTime ? _self.transTime : transTime // ignore: cast_nullable_to_non_nullable
+as DateTime?,currency: freezed == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as String?,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }

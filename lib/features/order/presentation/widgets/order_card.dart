@@ -106,7 +106,7 @@ class OrderCard extends StatelessWidget {
               // Track button for out for delivery status
               if (status == OrderStatus.outForDelivery) ...[
                 SizedBox(height: AppSizes.md),
-              //  OrderTrackButton(status: status),
+                OrderTrackButton(status: status, order: order),
               ],
             ],
           ),

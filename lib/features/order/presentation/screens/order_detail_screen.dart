@@ -41,9 +41,7 @@ class OrderDetailScreen extends ConsumerWidget {
               status == OrderStatus.outForDelivery;
 
           return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(orderDetailProvider(orderId));
-            },
+            onRefresh: () => ref.refresh(orderDetailProvider(orderId).future),
             color: AppColors.primary,
             child: SingleChildScrollView(
               padding: EdgeInsets.all(AppSizes.lg),
@@ -57,7 +55,7 @@ class OrderDetailScreen extends ConsumerWidget {
                   // Order Status Timeline
                   //display only if not pickup order
                   if (orderDetail.order.type.toOrderType() != OrderType.pickup)
-                  OrderStatusTimeline(order: orderDetail.order),
+                    OrderStatusTimeline(order: orderDetail.order),
                   SizedBox(height: AppSizes.lg),
                   // Order Items Section
                   OrderItemsSection(items: orderDetail.items),
@@ -76,7 +74,7 @@ class OrderDetailScreen extends ConsumerWidget {
                   // Track Button (if outForDelivery)
                   if (status == OrderStatus.outForDelivery) ...[
                     SizedBox(height: AppSizes.lg),
-                    OrderTrackButton(status: status, orderDetail: orderDetail),
+                    OrderTrackButton(status: status, order: orderDetail.order),
                   ],
                   SizedBox(height: AppSizes.xl),
                 ],
@@ -90,9 +88,7 @@ class OrderDetailScreen extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () {
-            ref.invalidate(orderDetailProvider(orderId));
-          },
+          onRetry: () => ref.refresh(orderDetailProvider(orderId).future),
         ),
         loading: () => const Center(
           child: CircularProgressIndicator(color: AppColors.primary),

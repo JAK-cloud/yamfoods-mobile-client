@@ -14,10 +14,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Notification {
 
- int get id; String get eventKey;// 'ORDER_CONFIRMED', 'ORDER_READY', 'ORDER_OUT_FOR_DELIVERY', etc.
- String get source;// 'SYSTEM' or 'ADMIN'
- String get audience;// 'USER', 'DRIVER', or 'BROADCAST'
- String get title; String get body; int? get orderId; String? get path; int? get productId; DateTime get createdAt; DateTime get updatedAt;
+ int get id; String get type;// "user_specific" or "company"
+ String get title; String get body; bool? get isRead; int? get orderId; int? get productId; DateTime get createdAt;
 /// Create a copy of Notification
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +26,16 @@ $NotificationCopyWith<Notification> get copyWith => _$NotificationCopyWithImpl<N
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.eventKey, eventKey) || other.eventKey == eventKey)&&(identical(other.source, source) || other.source == source)&&(identical(other.audience, audience) || other.audience == audience)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.path, path) || other.path == path)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.isRead, isRead) || other.isRead == isRead)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,eventKey,source,audience,title,body,orderId,path,productId,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,type,title,body,isRead,orderId,productId,createdAt);
 
 @override
 String toString() {
-  return 'Notification(id: $id, eventKey: $eventKey, source: $source, audience: $audience, title: $title, body: $body, orderId: $orderId, path: $path, productId: $productId, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Notification(id: $id, type: $type, title: $title, body: $body, isRead: $isRead, orderId: $orderId, productId: $productId, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +46,7 @@ abstract mixin class $NotificationCopyWith<$Res>  {
   factory $NotificationCopyWith(Notification value, $Res Function(Notification) _then) = _$NotificationCopyWithImpl;
 @useResult
 $Res call({
- int id, String eventKey, String source, String audience, String title, String body, int? orderId, String? path, int? productId, DateTime createdAt, DateTime updatedAt
+ int id, String type, String title, String body, bool? isRead, int? orderId, int? productId, DateTime createdAt
 });
 
 
@@ -65,19 +63,16 @@ class _$NotificationCopyWithImpl<$Res>
 
 /// Create a copy of Notification
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? eventKey = null,Object? source = null,Object? audience = null,Object? title = null,Object? body = null,Object? orderId = freezed,Object? path = freezed,Object? productId = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? title = null,Object? body = null,Object? isRead = freezed,Object? orderId = freezed,Object? productId = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,eventKey: null == eventKey ? _self.eventKey : eventKey // ignore: cast_nullable_to_non_nullable
-as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as String,audience: null == audience ? _self.audience : audience // ignore: cast_nullable_to_non_nullable
+as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as String,orderId: freezed == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
-as int?,path: freezed == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
+as bool?,orderId: freezed == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
+as int?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -160,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String eventKey,  String source,  String audience,  String title,  String body,  int? orderId,  String? path,  int? productId,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String type,  String title,  String body,  bool? isRead,  int? orderId,  int? productId,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Notification() when $default != null:
-return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,_that.body,_that.orderId,_that.path,_that.productId,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.type,_that.title,_that.body,_that.isRead,_that.orderId,_that.productId,_that.createdAt);case _:
   return orElse();
 
 }
@@ -181,10 +176,10 @@ return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String eventKey,  String source,  String audience,  String title,  String body,  int? orderId,  String? path,  int? productId,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String type,  String title,  String body,  bool? isRead,  int? orderId,  int? productId,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Notification():
-return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,_that.body,_that.orderId,_that.path,_that.productId,_that.createdAt,_that.updatedAt);}
+return $default(_that.id,_that.type,_that.title,_that.body,_that.isRead,_that.orderId,_that.productId,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -198,10 +193,10 @@ return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String eventKey,  String source,  String audience,  String title,  String body,  int? orderId,  String? path,  int? productId,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String type,  String title,  String body,  bool? isRead,  int? orderId,  int? productId,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Notification() when $default != null:
-return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,_that.body,_that.orderId,_that.path,_that.productId,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.type,_that.title,_that.body,_that.isRead,_that.orderId,_that.productId,_that.createdAt);case _:
   return null;
 
 }
@@ -213,23 +208,18 @@ return $default(_that.id,_that.eventKey,_that.source,_that.audience,_that.title,
 
 
 class _Notification implements Notification {
-  const _Notification({required this.id, required this.eventKey, required this.source, required this.audience, required this.title, required this.body, this.orderId, this.path, this.productId, required this.createdAt, required this.updatedAt});
+  const _Notification({required this.id, required this.type, required this.title, required this.body, this.isRead, this.orderId, this.productId, required this.createdAt});
   
 
 @override final  int id;
-@override final  String eventKey;
-// 'ORDER_CONFIRMED', 'ORDER_READY', 'ORDER_OUT_FOR_DELIVERY', etc.
-@override final  String source;
-// 'SYSTEM' or 'ADMIN'
-@override final  String audience;
-// 'USER', 'DRIVER', or 'BROADCAST'
+@override final  String type;
+// "user_specific" or "company"
 @override final  String title;
 @override final  String body;
+@override final  bool? isRead;
 @override final  int? orderId;
-@override final  String? path;
 @override final  int? productId;
 @override final  DateTime createdAt;
-@override final  DateTime updatedAt;
 
 /// Create a copy of Notification
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +231,16 @@ _$NotificationCopyWith<_Notification> get copyWith => __$NotificationCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.eventKey, eventKey) || other.eventKey == eventKey)&&(identical(other.source, source) || other.source == source)&&(identical(other.audience, audience) || other.audience == audience)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.path, path) || other.path == path)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Notification&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.isRead, isRead) || other.isRead == isRead)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,eventKey,source,audience,title,body,orderId,path,productId,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,type,title,body,isRead,orderId,productId,createdAt);
 
 @override
 String toString() {
-  return 'Notification(id: $id, eventKey: $eventKey, source: $source, audience: $audience, title: $title, body: $body, orderId: $orderId, path: $path, productId: $productId, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'Notification(id: $id, type: $type, title: $title, body: $body, isRead: $isRead, orderId: $orderId, productId: $productId, createdAt: $createdAt)';
 }
 
 
@@ -261,7 +251,7 @@ abstract mixin class _$NotificationCopyWith<$Res> implements $NotificationCopyWi
   factory _$NotificationCopyWith(_Notification value, $Res Function(_Notification) _then) = __$NotificationCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String eventKey, String source, String audience, String title, String body, int? orderId, String? path, int? productId, DateTime createdAt, DateTime updatedAt
+ int id, String type, String title, String body, bool? isRead, int? orderId, int? productId, DateTime createdAt
 });
 
 
@@ -278,19 +268,16 @@ class __$NotificationCopyWithImpl<$Res>
 
 /// Create a copy of Notification
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? eventKey = null,Object? source = null,Object? audience = null,Object? title = null,Object? body = null,Object? orderId = freezed,Object? path = freezed,Object? productId = freezed,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? title = null,Object? body = null,Object? isRead = freezed,Object? orderId = freezed,Object? productId = freezed,Object? createdAt = null,}) {
   return _then(_Notification(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int,eventKey: null == eventKey ? _self.eventKey : eventKey // ignore: cast_nullable_to_non_nullable
-as String,source: null == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
-as String,audience: null == audience ? _self.audience : audience // ignore: cast_nullable_to_non_nullable
+as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as String,orderId: freezed == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
-as int?,path: freezed == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
-as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
+as bool?,orderId: freezed == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
+as int?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as int?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }

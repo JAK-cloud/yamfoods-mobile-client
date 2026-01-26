@@ -12,7 +12,20 @@
           "package_name": "com.example.yamfoods_customer_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "772377488112-1dv4tiate9u7kb8817q3n4ume6ca29bt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.yamfoods_customer_app",
+            "certificate_hash": "1029583402553f96bdf3fd440476ee64c08b7ac3"
+          }
+        },
+        {
+          "client_id": "772377488112-8vmfiuhumtm80empqki0asl1kcf8kqd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAh6o6aqPvsjYArIXFVVgQgj8ElXKEhTSU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772377488112-8vmfiuhumtm80empqki0asl1kcf8kqd4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "772377488112-62s6tau2ms95j5e9bmdcol7mr7h7oi1q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yamfoodsCustomerApp"
+              }
+            }
+          ]
         }
       }
     }

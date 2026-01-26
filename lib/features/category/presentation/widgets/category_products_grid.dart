@@ -75,15 +75,16 @@ class CategoryProductsGrid extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () {
-            if (selectedSubcategory == null) {
-              ref.invalidate(categoryProductsProvider(branchId, categoryId));
-            } else {
-              ref.invalidate(
-                subcategoryProductsProvider(branchId, selectedSubcategory!.id),
-              );
-            }
-          },
+          onRetry: () => selectedSubcategory == null
+              ? ref.refresh(
+                  categoryProductsProvider(branchId, categoryId).future,
+                )
+              : ref.refresh(
+                  subcategoryProductsProvider(
+                    branchId,
+                    selectedSubcategory!.id,
+                  ).future,
+                ),
         ),
       ),
     );

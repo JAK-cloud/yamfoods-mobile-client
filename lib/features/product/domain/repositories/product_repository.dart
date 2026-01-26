@@ -21,4 +21,6 @@ abstract class ProductRepository {
     int branchId,
     int subCategoryId,
   );
+
+  Future<Either<Failure, Product>> getProduct(int branchId, int productId);
 }

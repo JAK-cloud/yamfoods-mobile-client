@@ -1,36 +1,40 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'order_location.dart';
+
 part 'order.freezed.dart';
 
 @freezed
-sealed class Orderr with _$Orderr {  //we do Orderr as double rr because dartz package have class called Order to avoid bug we do this
+sealed class Orderr with _$Orderr {
+  //we do Orderr as double rr because dartz package have class called Order to avoid bug we do this
   const factory Orderr({
-    required int id,  
+    required int id,
     int? userId, //this field is not needed but it does not affect
-    required String userPhone,  
+    required String userPhone,
     required int branchId,
     required String qrCode,
     required String status,
     required String type,
-     int? delivererId,  // here it is nullable because this order class intended for customer not for deliverer. for deliverer it should be required, there value is known after the order is assigned to a deliverer
-     String? delivererPhone,
+    int?
+    delivererId, // here it is nullable because this order class intended for customer not for deliverer. for deliverer it should be required, there value is known after the order is assigned to a deliverer
+    String? delivererPhone,
     DateTime? scheduledAt,
     String? note,
     required int quantity,
-    required double subtotal,                           
-     double? vatTotal,
+    required double subtotal,
+    double? vatTotal,
     required double deliveryFee,
-     int? pointUsed,
-     double? pointDiscount,
+    int? pointUsed,
+    double? pointDiscount,
     String? promoCode,
-     double? promoCodeDiscount,
-     double? discountTotal,
+    double? promoCodeDiscount,
+    double? discountTotal,
     required double totalAmount,
+    required OrderLocation branchLocation,
+    required OrderLocation deliveryLocation,
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _Orderr;
-
-  
 }
 
 

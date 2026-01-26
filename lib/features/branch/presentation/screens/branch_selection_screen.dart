@@ -14,9 +14,13 @@ import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
+import '../../../../core/services/app_info_service.dart';
+import '../../../app_configuration/domain/entities/app_version.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../domain/entities/branch.dart';
 import '../../domain/extensions/branch_extensions.dart';
 import '../providers/branch_providers.dart';
+import '../widgets/app_update_bottom_sheet.dart';
 import '../widgets/branch_details_section.dart';
 import '../widgets/branch_info_row.dart';
 import '../widgets/branch_rings_list.dart';
@@ -36,10 +40,13 @@ class BranchSelectionScreen extends ConsumerStatefulWidget {
 
 class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
   int _selectedIndex = 0;
+  bool _hasShownAppUpdateSheet = false;
 
   @override
   Widget build(BuildContext context) {
+    final appConfigAsync = ref.watch(appConfigurationProvider);
     final branchesAsync = ref.watch(branchesProvider);
+    final appInfoAsync = ref.watch(appInfoProvider);
 
     // Wrap with GPS guard - ensures GPS is enabled before showing branch selection
     return LocationGpsGuardPerscreen(
@@ -80,21 +87,59 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                   opacity: 0.04,
                   duration: 4,
                 ),
-                // Main content
-                branchesAsync.when(
-                  data: (branches) {
-                    if (branches.isEmpty) {
-                      return EmptyState(
-                        icon: Icons.store_outlined,
-                        title: 'No Branches Available',
-                        subtitle:
-                            'There are no branches available at the moment.',
-                      );
-                    }
+                appConfigAsync.when(
+                  data: (config) => appInfoAsync.when(
+                    data: (appInfo) => branchesAsync.when(
+                      data: (branches) {
+                        _maybeShowAppUpdateSheet(
+                          context: context,
+                          backend: config.appVersion,
+                          current: appInfo,
+                        );
 
-                    final selectedBranch = branches[_selectedIndex];
-                    return _buildContent(branches, selectedBranch);
-                  },
+                        if (branches.isEmpty) {
+                          return EmptyState(
+                            icon: Icons.store_outlined,
+                            title: 'No Branches Available',
+                            subtitle:
+                                'There are no branches available at the moment.',
+                          );
+                        }
+
+                        final selectedBranch = branches[_selectedIndex];
+                        return _buildContent(branches, selectedBranch);
+                      },
+                      loading: () => const Center(
+                        child:
+                            CircularProgressIndicator(color: AppColors.white),
+                      ),
+                      error: (error, stackTrace) {
+                        final failure = error is Failure
+                            ? error
+                            : Failure.unexpected(message: error.toString());
+
+                        return ErrorWidgett(
+                          title: 'Failed to Load Branches',
+                          failure: failure,
+                          onRetry: () => ref.refresh(branchesProvider.future),
+                        );
+                      },
+                    ),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: AppColors.white),
+                    ),
+                    error: (error, stackTrace) {
+                      final failure = error is Failure
+                          ? error
+                          : Failure.unexpected(message: error.toString());
+
+                      return ErrorWidgett(
+                        title: 'Failed to Load App Info',
+                        failure: failure,
+                        onRetry: () => ref.refresh(appInfoProvider.future),
+                      );
+                    },
+                  ),
                   loading: () => const Center(
                     child: CircularProgressIndicator(color: AppColors.white),
                   ),
@@ -104,9 +149,9 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                         : Failure.unexpected(message: error.toString());
 
                     return ErrorWidgett(
-                      title: 'Failed to Load Branches',
+                      title: 'Oops! Something went wrong, Please try again later or contact support. ERRORCODE = GIF#1eNOC',
                       failure: failure,
-                      onRetry: () => ref.invalidate(branchesProvider),
+                      onRetry: () => ref.refresh(appConfigurationProvider.future),
                     );
                   },
                 ),
@@ -116,6 +161,47 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
         ),
       ),
     );
+  }
+
+  void _maybeShowAppUpdateSheet({
+    required BuildContext context,
+    required AppVersion backend,
+    required AppInfo current,
+  }) {
+    if (_hasShownAppUpdateSheet) return;
+
+    final shouldShow =
+        backend.version != current.version ||
+        backend.buildNumber != current.buildNumber;
+    if (!shouldShow) return;
+
+    _hasShownAppUpdateSheet = true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      final isBlocking = backend.mustBeBlocking;
+
+      await showModalBottomSheet<void>(
+        context: context,
+        isDismissible: !isBlocking,
+        enableDrag: !isBlocking,
+        isScrollControlled: true,
+        barrierColor: isBlocking ? Colors.black54 : Colors.transparent,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) {
+          final height = MediaQuery.sizeOf(ctx).height;
+          return SizedBox(
+            height: isBlocking ? height : null,
+            child: AppUpdateBottomSheet(
+              backend: backend,
+              current: current,
+              isBlocking: isBlocking,
+            ),
+          );
+        },
+      );
+    });
   }
 
   Widget _buildAnimatedCircle({

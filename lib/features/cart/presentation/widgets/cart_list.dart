@@ -70,9 +70,8 @@ class CartList extends ConsumerWidget {
           failure: error is Failure
               ? error
               : Failure.unexpected(message: error.toString()),
-          onRetry: () {
-            ref.read(cartProvider(branchId).notifier).load(branchId);
-          },
+          onRetry: () =>
+              ref.read(cartProvider(branchId).notifier).load(branchId),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
