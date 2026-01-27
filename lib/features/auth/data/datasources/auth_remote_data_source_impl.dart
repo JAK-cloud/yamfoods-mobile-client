@@ -69,7 +69,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, UserModel>> verifyPhone({
+  Future<Either<Failure, LoginDataModel>> verifyPhone({
     required String otp,
     required String phone,
   }) async {
@@ -78,7 +78,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final body = RequestWrapper.wrap(data);
 
       final response = await _apiService.verifyPhone(body);
-      return Right(response.data.user);
+      return Right(response.data);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));
     }

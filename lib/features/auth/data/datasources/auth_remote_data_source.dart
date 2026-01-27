@@ -22,7 +22,7 @@ abstract class AuthRemoteDataSource {
     required String phone,
   });
 
-  Future<Either<Failure, UserModel>> verifyPhone({
+  Future<Either<Failure, LoginDataModel>> verifyPhone({
     required String otp,
     required String phone,
   });

@@ -73,7 +73,7 @@ class _VerifyPhoneScreenState extends ConsumerState<VerifyPhoneScreen> {
 
       if (next is VerifyPhoneSuccess) {
         snackbar.showSuccess('Phone verified successfully');
-        context.pushReplacement(RouteName.login);
+        context.go(RouteName.branches);
       } else if (next is VerifyPhoneFailure) {
         snackbar.showError(next.failure);
       }

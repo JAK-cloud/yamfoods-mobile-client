@@ -26,7 +26,7 @@ abstract class AuthApiService {
   );
 
   @POST(ApiRoutes.verifyPhone)
-  Future<ApiResponse<UserResponseModel>> verifyPhone(
+  Future<ApiResponse<LoginDataModel>> verifyPhone(
     @Body() Map<String, dynamic> body,
   );
 

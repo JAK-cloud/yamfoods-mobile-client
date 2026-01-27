@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
+import '../../../../../core/enums/payment_status.dart';
 import '../../../../../features/order/domain/entities/order_detail.dart';
-import 'info_row.dart';
 import 'payment_row.dart';
 
 /// Section displaying payment information with complete price breakdown.
@@ -71,49 +71,170 @@ class OrderPaymentSection extends StatelessWidget {
             isTotal: true,
           ),
           SizedBox(height: AppSizes.lg),
-          // Payment info
-          InfoRow(
-            label: 'Payment Method',
-            value: payment.method.toUpperCase(),
-            icon: Icons.credit_card,
-          ),
-          if (payment.transId != null) ...[
-            SizedBox(height: AppSizes.sm),
-            InfoRow(
-              label: 'Transaction ID',
-              value: payment.transId!,
-              icon: Icons.receipt_long_outlined,
+          // Payment receipt - compact design
+          Container(
+            padding: EdgeInsets.all(AppSizes.md),
+            decoration: BoxDecoration(
+              color: AppColors.grey.withValues(alpha: 0.03),
+              borderRadius: BorderRadius.circular(AppSizes.radius),
+              border: Border.all(
+                color: AppColors.grey.withValues(alpha: 0.1),
+                width: 1,
+              ),
             ),
-          ],
-          SizedBox(height: AppSizes.sm),
-          InfoRow(
-            label: 'Payment Date',
-            value: _formatPaymentDate(payment.date),
-            icon: Icons.calendar_today_outlined,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Status badge and payment method row
+                Row(
+                  children: [
+                    // Status badge
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSizes.sm,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: payment.status.color.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            payment.status.icon,
+                            size: 14,
+                            color: payment.status.color,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            payment.status.name,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: payment.status.color,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    // Payment method
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.credit_card,
+                          size: 14,
+                          color: AppColors.txtSecondary,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          payment.method.toUpperCase(),
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.txtSecondary,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+               
+                SizedBox(height: AppSizes.sm),
+                Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.1)),
+                SizedBox(height: AppSizes.sm),
+                // Transaction details - compact grid
+                Wrap(
+                  spacing: AppSizes.md,
+                  runSpacing: AppSizes.xs,
+                  children: [
+                    // Payment Date
+                    _buildCompactInfoItem(
+                      icon: Icons.calendar_today_outlined,
+                      label: 'Date',
+                      value: _formatCompactDate(payment.date),
+                    ),
+                    // Transaction Time (if available)
+                    if (payment.transTime != null)
+                      _buildCompactInfoItem(
+                        icon: Icons.access_time,
+                        label: 'Time',
+                        value: _formatCompactTime(payment.transTime!),
+                      ),
+                    // Transaction ID (if available)
+                    if (payment.transId != null)
+                      _buildCompactInfoItem(
+                        icon: Icons.receipt_long_outlined,
+                        label: 'Txn ID',
+                        value: _truncateText(payment.transId!, 12),
+                      ),
+                    // Telebirr Order ID (if available)
+                    if (payment.telebirrPaymentOrderId != null)
+                      _buildCompactInfoItem(
+                        icon: Icons.payment,
+                        label: 'Telebirr ID',
+                        value: _truncateText(payment.telebirrPaymentOrderId!, 12),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  String _formatPaymentDate(DateTime date) {
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    final month = months[date.month - 1];
+  String _formatCompactDate(DateTime date) {
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  String _formatCompactTime(DateTime date) {
     final hour = date.hour.toString().padLeft(2, '0');
     final minute = date.minute.toString().padLeft(2, '0');
-    return '$month ${date.day}, ${date.year} at $hour:$minute';
+    return '$hour:$minute';
+  }
+
+  String _truncateText(String text, int maxLength) {
+    if (text.length <= maxLength) return text;
+    return '${text.substring(0, maxLength)}...';
+  }
+
+  Widget _buildCompactInfoItem({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 12, color: AppColors.txtSecondary),
+        SizedBox(width: 4),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.txtSecondary.withValues(alpha: 0.7),
+                fontSize: 9,
+              ),
+            ),
+            Text(
+              value,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.txtPrimary,
+                fontWeight: FontWeight.w600,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

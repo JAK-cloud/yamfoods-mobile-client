@@ -125,7 +125,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ref.read(targetScreenProvider.notifier).clear();
           } else {
             // No target screen - navigate to home
-            context.go(RouteName.home);
+            context.go(RouteName.branches);
           }
 
           // Show success snackbar AFTER navigation completes
