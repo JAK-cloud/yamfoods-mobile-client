@@ -2,6 +2,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/errors/failure.dart';
+import '../../../domain/entities/auth_token.dart';
 import '../../../domain/entities/user.dart';
 
 
@@ -11,7 +12,8 @@ sealed class VerifyPhoneEvent {}
 
 class VerifyPhoneSuccess extends VerifyPhoneEvent {
   final User user;
-  VerifyPhoneSuccess({required this.user});
+  final AuthToken tokens;
+  VerifyPhoneSuccess({required this.user, required this.tokens});
 }
 
 class VerifyPhoneFailure extends VerifyPhoneEvent {

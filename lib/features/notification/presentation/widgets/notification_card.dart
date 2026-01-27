@@ -73,80 +73,89 @@ class _NotificationCardState extends ConsumerState<NotificationCard> {
       }
     }
 
-    return Material(
-      color: isRead
-          ? AppColors.white
-          : AppColors.primary.withValues(alpha: 0.02),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSizes.md,
-            vertical: AppSizes.md,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: AppSizes.md),
+        decoration: BoxDecoration(
+          color: isRead
+              ? AppColors.white
+              : AppColors.primary.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+          border: Border.all(
+            color: isRead
+                ? AppColors.grey.withValues(alpha: 0.1)
+                : AppColors.primary.withValues(alpha: 0.2),
+            width: 1,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Left indicator for unread notifications
-              if (!isRead)
-                Container(
-                  width: 3,
-                  margin: EdgeInsets.only(right: AppSizes.sm),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(2),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(AppSizes.md),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Left indicator for unread notifications
+                if (!isRead)
+                  Container(
+                    width: 4,
+                    margin: EdgeInsets.only(right: AppSizes.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                // Content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Title
+                      Text(
+                        widget.notification.title,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          fontWeight: isRead ? FontWeight.w500 : FontWeight.w600,
+                          color: AppColors.txtPrimary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: AppSizes.xs),
+                      // Body
+                      Text(
+                        widget.notification.body,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: AppColors.txtSecondary,
+                          height: 1.4,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: AppSizes.xs),
+                      // Timestamp
+                      Text(
+                        DateFormatter.formatTimeAgo(
+                          widget.notification.createdAt,
+                        ),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.txtSecondary.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              // Content
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Title
-                    Text(
-                      widget.notification.title,
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        fontWeight: isRead ? FontWeight.w400 : FontWeight.w600,
-                        color: AppColors.txtPrimary,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: AppSizes.xs),
-                    // Body
-                    Text(
-                      widget.notification.body,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.txtSecondary,
-                      ),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: AppSizes.xs),
-                    // Timestamp
-                    Text(
-                      DateFormatter.formatTimeAgo(
-                        widget.notification.createdAt,
-                      ),
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.txtSecondary.withValues(alpha: 0.7),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Navigation indicator
-              if (hasNavigation)
-                Padding(
-                  padding: EdgeInsets.only(left: AppSizes.sm),
-                  child: Icon(
-                    Icons.chevron_right,
+                // Navigation indicator
+                if (hasNavigation) ...[
+                  SizedBox(width: AppSizes.sm),
+                  Icon(
+                    Icons.chevron_right_rounded,
                     size: 20,
                     color: AppColors.txtSecondary.withValues(alpha: 0.5),
                   ),
-                ),
-            ],
+                ],
+              ],
+            ),
           ),
         ),
       ),

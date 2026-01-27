@@ -86,7 +86,7 @@ class _AuthApiService implements AuthApiService {
   }
 
   @override
-  Future<ApiResponse<UserResponseModel>> verifyPhone(
+  Future<ApiResponse<LoginDataModel>> verifyPhone(
     Map<String, dynamic> body,
   ) async {
     final _extra = <String, dynamic>{};
@@ -94,7 +94,7 @@ class _AuthApiService implements AuthApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<UserResponseModel>>(
+    final _options = _setStreamType<ApiResponse<LoginDataModel>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -105,11 +105,11 @@ class _AuthApiService implements AuthApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<UserResponseModel> _value;
+    late ApiResponse<LoginDataModel> _value;
     try {
-      _value = ApiResponse<UserResponseModel>.fromJson(
+      _value = ApiResponse<LoginDataModel>.fromJson(
         _result.data!,
-        (json) => UserResponseModel.fromJson(json as Map<String, dynamic>),
+        (json) => LoginDataModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

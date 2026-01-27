@@ -141,8 +141,11 @@ class AuthNotifier extends _$AuthNotifier {
           }
         },
         (data) async {
-          
           if (isRegistering) {
+            if (data.user.phone != null && data.user.phoneVerified == true) {
+              // Update persistent state and emit event
+              await ref.read(authUserStateProvider.notifier).setUser(data.user);
+            }
             ref
                 .read(registerUiEventsProvider.notifier)
                 .emit(RegisterSuccess(user: data.user));
@@ -214,9 +217,16 @@ class AuthNotifier extends _$AuthNotifier {
         (failure) => ref
             .read(verifyPhoneEventsProvider.notifier)
             .emit(VerifyPhoneFailure(failure: failure)),
-        (user) => ref
-            .read(verifyPhoneEventsProvider.notifier)
-            .emit(VerifyPhoneSuccess(user: user)),
+        (data) async {
+          // Update persistent state and emit event
+          await ref.read(authUserStateProvider.notifier).setUser(data.user);
+          ref
+              .read(verifyPhoneEventsProvider.notifier)
+              .emit(VerifyPhoneSuccess(user: data.user, tokens: data.tokens));
+          ref
+              .read(authEventsProvider.notifier)
+              .emit(Authenticated(user: data.user));
+        },
       );
     } finally {
       state = false;

@@ -16,7 +16,7 @@ abstract class AuthRepository {
     required String phone,
   });
 
-  Future<Either<Failure, User>> verifyPhone({
+  Future<Either<Failure, ({User user, AuthToken tokens})>> verifyPhone({
     required String otp,
     required String phone,
   });

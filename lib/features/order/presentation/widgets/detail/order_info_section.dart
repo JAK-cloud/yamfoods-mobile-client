@@ -5,17 +5,20 @@ import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
 import '../../../../../core/enums/order_status.dart';
 import '../../../../../core/enums/order_type.dart';
+import '../../../../../core/enums/payment_status.dart';
 import '../../../../../core/utils/date_formatter.dart';
-import '../../../../../features/order/domain/entities/order.dart';
+import '../../../../../features/order/domain/entities/order_detail.dart';
 
 /// Section displaying order information (ID, status, type, etc.)
 class OrderInfoSection extends StatelessWidget {
-  final Orderr order;
+  final OrderDetail orderDetail;
 
-  const OrderInfoSection({super.key, required this.order});
+  const OrderInfoSection({super.key, required this.orderDetail});
 
   @override
   Widget build(BuildContext context) {
+    final order = orderDetail.order;
+    final payment = orderDetail.payment;
     final status = order.status.toOrderStatus();
     final type = order.type.toOrderType();
 
@@ -64,6 +67,14 @@ class OrderInfoSection extends StatelessWidget {
             label: 'Type',
             value: type.name,
             color: type.color,
+          ),
+          SizedBox(height: AppSizes.md),
+          // Payment Status
+          _buildInfoRow(
+            icon: payment.status.icon,
+            label: 'Payment',
+            value: payment.status.name,
+            color: payment.status.color,
           ),
           SizedBox(height: AppSizes.md),
           // Quantity
@@ -209,8 +220,8 @@ class OrderInfoSection extends StatelessWidget {
   ///
   /// Format: #YAM{actualId}-{createdAtSeconds}
   String _getFabricatedOrderId() {
-    final actualId = order.id;
-    final createdAtSeconds = order.createdAt.second;
+    final actualId = orderDetail.order.id;
+    final createdAtSeconds = orderDetail.order.createdAt.second;
     return '#YAM$actualId-$createdAtSeconds';
   }
 }

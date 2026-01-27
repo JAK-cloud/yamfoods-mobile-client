@@ -64,6 +64,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         if (next.user.phone == null) {
           context.push(RouteName.savePhone, extra: next.user.id);
         }
+        //These below are checked because user will try toregister with existing email through google sign in
+        //since we allow that existing user can register through google if provider is google
+        else if (next.user.phone != null && next.user.phoneVerified == true) {
+          context.go(RouteName.branches);
+        }else if (next.user.phone != null && next.user.phoneVerified == false) {
+          context.push(RouteName.verifyPhone, extra: next.user);
+        }
+
       } else if (next is RegisterFailure) {
         snackbar.showError(next.failure);
       }
@@ -190,7 +198,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   const SizedBox(height: 15),
                   CustomButton(
-                    text: AppTexts.loginWithGoogle,
+                    text: 'Register with Google',
                     onPressed: isLoading
                         ? null
                         : () async {

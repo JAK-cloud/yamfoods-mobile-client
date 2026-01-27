@@ -44,36 +44,37 @@ class OrderDetailScreen extends ConsumerWidget {
             onRefresh: () => ref.refresh(orderDetailProvider(orderId).future),
             color: AppColors.primary,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(AppSizes.lg),
+              padding: EdgeInsets.all(AppSizes.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Order Info Section
-                  OrderInfoSection(order: orderDetail.order),
-                  SizedBox(height: AppSizes.lg),
+                  OrderInfoSection(orderDetail: orderDetail),
+                  SizedBox(height: AppSizes.sm),
 
                   // Order Status Timeline
                   //display only if not pickup order
-                  if (orderDetail.order.type.toOrderType() != OrderType.pickup)
+                  if (orderDetail.order.type.toOrderType() != OrderType.pickup)...[
                     OrderStatusTimeline(order: orderDetail.order),
-                  SizedBox(height: AppSizes.lg),
+                  SizedBox(height: AppSizes.sm),
+                  ],
                   // Order Items Section
                   OrderItemsSection(items: orderDetail.items),
-                  SizedBox(height: AppSizes.lg),
+                  SizedBox(height: AppSizes.sm),
                   // Address Section (if delivery)
                   OrderAddressSection(orderDetail: orderDetail),
                   if (orderDetail.address != null)
-                    SizedBox(height: AppSizes.lg),
+                    SizedBox(height: AppSizes.sm),
                   // Payment Section
                   OrderPaymentSection(orderDetail: orderDetail),
                   // QR Code Section (if ready or outForDelivery)
                   if (showQrCode) ...[
-                    SizedBox(height: AppSizes.lg),
+                    SizedBox(height: AppSizes.sm),
                     OrderQrSection(qrCode: orderDetail.order.qrCode),
                   ],
                   // Track Button (if outForDelivery)
                   if (status == OrderStatus.outForDelivery) ...[
-                    SizedBox(height: AppSizes.lg),
+                    SizedBox(height: AppSizes.sm),
                     OrderTrackButton(status: status, order: orderDetail.order),
                   ],
                   SizedBox(height: AppSizes.xl),
