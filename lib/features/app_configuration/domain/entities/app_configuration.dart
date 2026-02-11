@@ -13,6 +13,7 @@ sealed class AppConfiguration with _$AppConfiguration {
     required int maxCartItems,
     required int maxQuantityPerItem,
     required double deliveryFeePerKm,
+    required double deliveryStartFee,
     required int maxOrderSchedulingDays,
     required DateTime createdAt,
     required DateTime updatedAt,

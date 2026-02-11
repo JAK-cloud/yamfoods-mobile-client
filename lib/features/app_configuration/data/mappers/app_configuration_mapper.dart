@@ -11,6 +11,7 @@ extension AppConfigurationMapper on AppConfigurationModel {
       maxCartItems: maxCartItems,
       maxQuantityPerItem: maxQuantityPerItem,
       deliveryFeePerKm: deliveryFeePerKm,
+      deliveryStartFee: deliveryStartFee,
       maxOrderSchedulingDays: maxOrderSchedulingDays,
       createdAt: createdAt,
       updatedAt: updatedAt,

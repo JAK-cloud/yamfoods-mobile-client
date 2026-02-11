@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/payment_method.dart';
 import '../../../address/domain/entities/address.dart';
 import '../../models/checkout_state.dart';
 
@@ -15,7 +16,7 @@ part 'checkout_notifier.g.dart';
 class CheckoutNotifier extends _$CheckoutNotifier {
   @override
   CheckoutState build(int branchId) {
-    // Initialize with default values
+    // Initialize with default values (Telebirr as default payment method)
     return CheckoutState(
       branchId: branchId,
       orderType: 'pickup',
@@ -26,7 +27,7 @@ class CheckoutNotifier extends _$CheckoutNotifier {
       pointDiscount: null,
       scheduledAt: null,
       note: null,
-      paymentMethod: 'telebirr',
+      paymentMethod: PaymentMethod.telebirr.value,
     );
   }
 

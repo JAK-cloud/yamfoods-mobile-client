@@ -7,6 +7,7 @@ import '../models/create_order_response_model.dart';
 import '../models/order_detail_model.dart';
 import '../models/order_model.dart';
 import '../models/payment_model.dart';
+import '../models/query_order_payment_response.dart';
 
 part 'order_api_service.g.dart';
 
@@ -36,7 +37,7 @@ abstract class OrderApiService {
   Future<ApiResponse<OrderDetailModel?>> getOutForDeliveryOrder();
 
   @POST(ApiRoutes.queryOrder)
-  Future<ApiResponse<PaymentModel>> queryOrder(
+  Future<ApiResponse<QueryOrderPaymentResponse>> queryOrder(
     @Body() Map<String, dynamic> body,
   );
 }

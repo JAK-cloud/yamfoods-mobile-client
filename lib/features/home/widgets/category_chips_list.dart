@@ -36,16 +36,20 @@ class CategoryChipsList extends ConsumerWidget {
             },
           );
         },
-        loading: () => ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return const CategoryChipSkeleton();
-          },
-        ),
-        error: (error, stackTrace) => const CategoryChipSkeleton(),
+        loading: () => categorySkeleton(),
+        error: (error, stackTrace) => categorySkeleton(),
       ),
     );
+  }
+
+  ListView categorySkeleton() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return const CategoryChipSkeleton();
+        },
+      );
   }
 }

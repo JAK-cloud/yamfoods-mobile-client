@@ -253,7 +253,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                // TODO: Navigate to Terms of Use screen
+                                context.push(RouteName.termsAndConditions);
                               },
                           ),
                           const TextSpan(text: ' and '),
@@ -265,7 +265,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                // TODO: Navigate to Privacy Policy screen
+                                context.push(RouteName.privacyPolicy);
                               },
                           ),
                         ],

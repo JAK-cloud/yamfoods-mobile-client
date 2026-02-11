@@ -1,11 +1,9 @@
 class AppImages {
   AppImages._();
 
-  
   static const String googleLogo = 'assets/images/google_logo.png';
   static const String offerImage = 'assets/images/offer_image.png';
   static const String rewardProgress = 'assets/images/reward_progress.png';
-
 
   //onboarding images
   static const String onboardingImg1 = 'assets/onboarding/onboarding_img_1.png';
@@ -15,6 +13,10 @@ class AppImages {
   //splash screen image
   static const String splashScreenImage = 'assets/images/splash_image.png';
   static const String deviceImage = 'assets/images/device_image.png';
-  
 
+  // payment method logos
+  static const String paymentTelebirr = 'assets/payment/telebirr.png';
+  static const String paymentCbe = 'assets/payment/cbe.png';
+  static const String paymentEbirr = 'assets/payment/ebirr.png';
+  static const String paymentMpesa = 'assets/payment/mpesa.png';
 }

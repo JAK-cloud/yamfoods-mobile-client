@@ -16,6 +16,6 @@ sealed class CheckoutState with _$CheckoutState {
     double? pointDiscount,
     DateTime? scheduledAt,
     String? note,
-    required String paymentMethod, // "telebirr" | "cash" | "card"
+    String? paymentMethod, // "telebirr" | "chapa" when set; null = no selection
   }) = _CheckoutState;
 }

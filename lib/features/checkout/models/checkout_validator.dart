@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'checkout_validator.freezed.dart';
+
 /// Validation result for checkout state.
 @freezed
 sealed class CheckoutValidation with _$CheckoutValidation {
@@ -10,6 +11,7 @@ sealed class CheckoutValidation with _$CheckoutValidation {
     String? promoCodeError,
     String? pointsError,
     String? scheduleError,
+    String? paymentError,
     String? generalError,
   }) = _CheckoutValidation;
 }

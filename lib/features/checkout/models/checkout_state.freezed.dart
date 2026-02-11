@@ -18,7 +18,7 @@ mixin _$CheckoutState {
  Address? get selectedAddress;// null for pickup
  String? get promoCode; double? get promoCodeDiscount;// Changed from String to double
  int? get pointUsed;// Renamed from points for consistency
- double? get pointDiscount; DateTime? get scheduledAt; String? get note; String get paymentMethod;
+ double? get pointDiscount; DateTime? get scheduledAt; String? get note; String? get paymentMethod;
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $CheckoutStateCopyWith<$Res>  {
   factory $CheckoutStateCopyWith(CheckoutState value, $Res Function(CheckoutState) _then) = _$CheckoutStateCopyWithImpl;
 @useResult
 $Res call({
- int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String paymentMethod
+ int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
 });
 
 
@@ -66,7 +66,7 @@ class _$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
   return _then(_self.copyWith(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
@@ -77,8 +77,8 @@ as double?,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // igno
 as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable
 as double?,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String?,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,
+as String?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of CheckoutState
@@ -172,7 +172,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String paymentMethod)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
 return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
@@ -193,7 +193,7 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String paymentMethod)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState():
 return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);}
@@ -210,7 +210,7 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String paymentMethod)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
 return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
@@ -225,7 +225,7 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 
 
 class _CheckoutState implements CheckoutState {
-  const _CheckoutState({required this.branchId, required this.orderType, this.selectedAddress, this.promoCode, this.promoCodeDiscount, this.pointUsed, this.pointDiscount, this.scheduledAt, this.note, required this.paymentMethod});
+  const _CheckoutState({required this.branchId, required this.orderType, this.selectedAddress, this.promoCode, this.promoCodeDiscount, this.pointUsed, this.pointDiscount, this.scheduledAt, this.note, this.paymentMethod});
   
 
 @override final  int branchId;
@@ -241,7 +241,7 @@ class _CheckoutState implements CheckoutState {
 @override final  double? pointDiscount;
 @override final  DateTime? scheduledAt;
 @override final  String? note;
-@override final  String paymentMethod;
+@override final  String? paymentMethod;
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
@@ -273,7 +273,7 @@ abstract mixin class _$CheckoutStateCopyWith<$Res> implements $CheckoutStateCopy
   factory _$CheckoutStateCopyWith(_CheckoutState value, $Res Function(_CheckoutState) _then) = __$CheckoutStateCopyWithImpl;
 @override @useResult
 $Res call({
- int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String paymentMethod
+ int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
 });
 
 
@@ -290,7 +290,7 @@ class __$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
   return _then(_CheckoutState(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
@@ -301,8 +301,8 @@ as double?,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // igno
 as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable
 as double?,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
-as String?,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,
+as String?,paymentMethod: freezed == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

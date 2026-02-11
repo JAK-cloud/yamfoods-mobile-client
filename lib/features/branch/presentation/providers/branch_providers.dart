@@ -1,10 +1,10 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/permissions/location/location_permission_service.dart';
 import '../../../../core/providers/core_providers.dart';
 import '../../../../core/network/di/dio_client.dart';
 import '../../data/datasources/branch_api_service.dart';
-import '../../data/datasources/branch_local_data_source.dart';
-import '../../data/datasources/branch_local_data_source_impl.dart';
 import '../../data/datasources/branch_remote_data_source.dart';
 import '../../data/datasources/branch_remote_data_source_impl.dart';
 import '../../data/repositories/branch_repository_impl.dart';
@@ -35,38 +35,23 @@ BranchRemoteDataSource branchRemoteDataSource(Ref ref) {
   return BranchRemoteDataSourceImpl(apiService);
 }
 
-/// Branch local data source provider (async)
-///
-/// Provides implementation for local caching of branch data.
-/// This is async because SharedPreferences initialization is async.
-@riverpod
-Future<BranchLocalDataSource> branchLocalDataSource(Ref ref) async {
-  final prefs = await ref.watch(sharedPreferencesProvider.future);
-  return BranchLocalDataSourceImpl(prefs);
-}
-
 // ==================== Repository ====================
 
-/// Branch repository provider (async)
+/// Branch repository provider.
 ///
-/// Provides the main repository for branch operations.
-/// This is async because it depends on async branchLocalDataSource.
+/// Provides the main repository for branch operations (remote only).
 @riverpod
-Future<BranchRepository> branchRepository(Ref ref) async {
+BranchRepository branchRepository(Ref ref) {
   final remoteDataSource = ref.watch(branchRemoteDataSourceProvider);
-  final localDataSource = await ref.watch(branchLocalDataSourceProvider.future);
-  final logger = ref.watch(loggerProvider);
-  return BranchRepositoryImpl(remoteDataSource, localDataSource, logger);
+  return BranchRepositoryImpl(remoteDataSource);
 }
 
 // ==================== UseCase ====================
 
-/// Get all branches usecase provider (async)
-///
-/// Provides usecase for fetching all branches.
+/// Get all branches usecase provider.
 @riverpod
-Future<GetAllBranchesUsecase> getAllBranchesUsecase(Ref ref) async {
-  final repository = await ref.watch(branchRepositoryProvider.future);
+GetAllBranchesUsecase getAllBranchesUsecase(Ref ref) {
+  final repository = ref.watch(branchRepositoryProvider);
   return GetAllBranchesUsecase(repository);
 }
 
@@ -74,13 +59,10 @@ Future<GetAllBranchesUsecase> getAllBranchesUsecase(Ref ref) async {
 
 /// Branches list provider
 ///
-/// Fetches all branches using the usecase.
-/// Returns [AsyncValue<List<Branch>>] which handles loading, error, and data states.
-/// This provider automatically handles caching (returns cached data immediately,
-/// refreshes in background).
+/// Fetches all branches from the API.
 @riverpod
 Future<List<Branch>> branches(Ref ref) async {
-  final usecase = await ref.watch(getAllBranchesUsecaseProvider.future);
+  final usecase = ref.watch(getAllBranchesUsecaseProvider);
   final result = await usecase();
 
   return result.fold((failure) => throw failure, (branches) => branches);
@@ -143,5 +125,43 @@ class CurrentBranch extends _$CurrentBranch {
   /// Clears the current branch ID.
   void clear() {
     state = null;
+  }
+}
+
+// ==================== Current Branch Distance Provider ====================
+
+/// Current selected branch distance (km) from user at selection time.
+///
+/// - `null` when no branch selected or when user position was unavailable.
+/// - Set together with [currentBranchProvider]; clear when branch is cleared.
+@Riverpod(keepAlive: true)
+class CurrentBranchDistance extends _$CurrentBranchDistance {
+  @override
+  double? build() => null;
+
+  bool set(double? distanceKm) {
+    if (distanceKm != null && (distanceKm < 0 || distanceKm.isNaN)) {
+      return false;
+    }
+    try {
+      state = distanceKm;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void clear() {
+    state = null;
+  }
+}
+
+@riverpod
+Future<Position?> userPositionForBranch(Ref ref) async {
+  try {
+    final position = await LocationPermissionService.requestCurrentLocation();
+    return position;
+  } catch (_) {
+    return null;
   }
 }

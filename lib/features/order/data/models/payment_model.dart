@@ -21,6 +21,7 @@ sealed class PaymentModel with _$PaymentModel {
     @JsonKey(fromJson: parseDouble) required double amount,
     DateTime? transTime,
     String? currency,
+    String? chapaTxnRef,
     required DateTime date,
   }) = _PaymentModel;
 

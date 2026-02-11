@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateOrderResponse {
 
- String get receiveCode; Orderr get order;
+ String? get receiveCode; Orderr get order;
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CreateOrderResponseCopyWith<$Res>  {
   factory $CreateOrderResponseCopyWith(CreateOrderResponse value, $Res Function(CreateOrderResponse) _then) = _$CreateOrderResponseCopyWithImpl;
 @useResult
 $Res call({
- String receiveCode, Orderr order
+ String? receiveCode, Orderr order
 });
 
 
@@ -62,10 +62,10 @@ class _$CreateOrderResponseCopyWithImpl<$Res>
 
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? receiveCode = null,Object? order = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? receiveCode = freezed,Object? order = null,}) {
   return _then(_self.copyWith(
-receiveCode: null == receiveCode ? _self.receiveCode : receiveCode // ignore: cast_nullable_to_non_nullable
-as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
+receiveCode: freezed == receiveCode ? _self.receiveCode : receiveCode // ignore: cast_nullable_to_non_nullable
+as String?,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as Orderr,
   ));
 }
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String receiveCode,  Orderr order)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? receiveCode,  Orderr order)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse() when $default != null:
 return $default(_that.receiveCode,_that.order);case _:
@@ -178,7 +178,7 @@ return $default(_that.receiveCode,_that.order);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String receiveCode,  Orderr order)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? receiveCode,  Orderr order)  $default,) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse():
 return $default(_that.receiveCode,_that.order);}
@@ -195,7 +195,7 @@ return $default(_that.receiveCode,_that.order);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String receiveCode,  Orderr order)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? receiveCode,  Orderr order)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateOrderResponse() when $default != null:
 return $default(_that.receiveCode,_that.order);case _:
@@ -210,10 +210,10 @@ return $default(_that.receiveCode,_that.order);case _:
 
 
 class _CreateOrderResponse implements CreateOrderResponse {
-  const _CreateOrderResponse({required this.receiveCode, required this.order});
+  const _CreateOrderResponse({this.receiveCode, required this.order});
   
 
-@override final  String receiveCode;
+@override final  String? receiveCode;
 @override final  Orderr order;
 
 /// Create a copy of CreateOrderResponse
@@ -246,7 +246,7 @@ abstract mixin class _$CreateOrderResponseCopyWith<$Res> implements $CreateOrder
   factory _$CreateOrderResponseCopyWith(_CreateOrderResponse value, $Res Function(_CreateOrderResponse) _then) = __$CreateOrderResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String receiveCode, Orderr order
+ String? receiveCode, Orderr order
 });
 
 
@@ -263,10 +263,10 @@ class __$CreateOrderResponseCopyWithImpl<$Res>
 
 /// Create a copy of CreateOrderResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? receiveCode = null,Object? order = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? receiveCode = freezed,Object? order = null,}) {
   return _then(_CreateOrderResponse(
-receiveCode: null == receiveCode ? _self.receiveCode : receiveCode // ignore: cast_nullable_to_non_nullable
-as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
+receiveCode: freezed == receiveCode ? _self.receiveCode : receiveCode // ignore: cast_nullable_to_non_nullable
+as String?,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as Orderr,
   ));
 }

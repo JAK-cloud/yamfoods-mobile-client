@@ -8,15 +8,18 @@ import 'branch_ring_selector.dart';
 /// Horizontal scrollable list of branch ring selectors.
 ///
 /// Displays all branches as circular rings that can be selected.
+/// Distance is shown only when [userPosition] is non-null.
 class BranchRingsList extends StatelessWidget {
   final List<Branch> branches;
   final int selectedIndex;
+  final ({double lat, double lng})? userPosition;
   final ValueChanged<int> onBranchSelected;
 
   const BranchRingsList({
     super.key,
     required this.branches,
     required this.selectedIndex,
+    this.userPosition,
     required this.onBranchSelected,
   });
 
@@ -31,11 +34,12 @@ class BranchRingsList extends StatelessWidget {
         separatorBuilder: (_, __) => const SizedBox(width: AppSizes.lg),
         itemBuilder: (context, index) {
           final branch = branches[index];
-          final formattedDistance =
-              DistanceCalculator.calculateDistanceInMeters(
-                defaultCustomerPosition,
-                branch.location,
-              );
+          final formattedDistance = userPosition != null
+              ? DistanceCalculator.calculateDistanceInMeters(
+                  userPosition!,
+                  branch.location,
+                )
+              : null;
 
           return BranchRingSelector(
             name: branch.name,

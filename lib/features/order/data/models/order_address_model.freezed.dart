@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderAddressModel {
 
- int get id; int get orderId; String? get subcity; String? get street; String? get building; String? get houseNo; String? get note;@JsonKey(fromJson: parseDouble) double? get lat;@JsonKey(fromJson: parseDouble) double? get lng; AddressLocationModel? get location; DateTime get createdAt;
+ int get id; int get orderId; String? get subcity; String? get street; String? get building; String? get houseNo; String? get note;@JsonKey(fromJson: parseDoubleNullable) double? get lat;@JsonKey(fromJson: parseDoubleNullable) double? get lng; AddressLocationModel? get location; DateTime get createdAt;
 /// Create a copy of OrderAddressModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $OrderAddressModelCopyWith<$Res>  {
   factory $OrderAddressModelCopyWith(OrderAddressModel value, $Res Function(OrderAddressModel) _then) = _$OrderAddressModelCopyWithImpl;
 @useResult
 $Res call({
- int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note,@JsonKey(fromJson: parseDouble) double? lat,@JsonKey(fromJson: parseDouble) double? lng, AddressLocationModel? location, DateTime createdAt
+ int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note,@JsonKey(fromJson: parseDoubleNullable) double? lat,@JsonKey(fromJson: parseDoubleNullable) double? lng, AddressLocationModel? location, DateTime createdAt
 });
 
 
@@ -172,7 +172,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDouble)  double? lat, @JsonKey(fromJson: parseDouble)  double? lng,  AddressLocationModel? location,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng,  AddressLocationModel? location,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderAddressModel() when $default != null:
 return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);case _:
@@ -193,7 +193,7 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDouble)  double? lat, @JsonKey(fromJson: parseDouble)  double? lng,  AddressLocationModel? location,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng,  AddressLocationModel? location,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _OrderAddressModel():
 return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);}
@@ -210,7 +210,7 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDouble)  double? lat, @JsonKey(fromJson: parseDouble)  double? lng,  AddressLocationModel? location,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note, @JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng,  AddressLocationModel? location,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderAddressModel() when $default != null:
 return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);case _:
@@ -225,7 +225,7 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 @JsonSerializable()
 
 class _OrderAddressModel extends OrderAddressModel {
-  const _OrderAddressModel({required this.id, required this.orderId, this.subcity, this.street, this.building, this.houseNo, this.note, @JsonKey(fromJson: parseDouble) this.lat, @JsonKey(fromJson: parseDouble) this.lng, this.location, required this.createdAt}): super._();
+  const _OrderAddressModel({required this.id, required this.orderId, this.subcity, this.street, this.building, this.houseNo, this.note, @JsonKey(fromJson: parseDoubleNullable) this.lat, @JsonKey(fromJson: parseDoubleNullable) this.lng, this.location, required this.createdAt}): super._();
   factory _OrderAddressModel.fromJson(Map<String, dynamic> json) => _$OrderAddressModelFromJson(json);
 
 @override final  int id;
@@ -235,8 +235,8 @@ class _OrderAddressModel extends OrderAddressModel {
 @override final  String? building;
 @override final  String? houseNo;
 @override final  String? note;
-@override@JsonKey(fromJson: parseDouble) final  double? lat;
-@override@JsonKey(fromJson: parseDouble) final  double? lng;
+@override@JsonKey(fromJson: parseDoubleNullable) final  double? lat;
+@override@JsonKey(fromJson: parseDoubleNullable) final  double? lng;
 @override final  AddressLocationModel? location;
 @override final  DateTime createdAt;
 
@@ -273,7 +273,7 @@ abstract mixin class _$OrderAddressModelCopyWith<$Res> implements $OrderAddressM
   factory _$OrderAddressModelCopyWith(_OrderAddressModel value, $Res Function(_OrderAddressModel) _then) = __$OrderAddressModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note,@JsonKey(fromJson: parseDouble) double? lat,@JsonKey(fromJson: parseDouble) double? lng, AddressLocationModel? location, DateTime createdAt
+ int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note,@JsonKey(fromJson: parseDoubleNullable) double? lat,@JsonKey(fromJson: parseDoubleNullable) double? lng, AddressLocationModel? location, DateTime createdAt
 });
 
 

@@ -6,16 +6,17 @@ import '../../../../app/theme/app_text_styles.dart';
 /// A circular ring widget for branch selection.
 ///
 /// Selected state shows golden ring and text, unselected shows white outline.
+/// Distance is shown only when [distance] is non-null.
 class BranchRingSelector extends StatelessWidget {
   final String name;
-  final String distance;
+  final String? distance;
   final bool isSelected;
   final VoidCallback onTap;
 
   const BranchRingSelector({
     super.key,
     required this.name,
-    required this.distance,
+    this.distance,
     required this.isSelected,
     required this.onTap,
   });
@@ -57,14 +58,15 @@ class BranchRingSelector extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          // Distance text
-          Text(
-            distance,
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.white.withValues(alpha: 0.7),
+          if (distance != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              distance!,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.white.withValues(alpha: 0.7),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

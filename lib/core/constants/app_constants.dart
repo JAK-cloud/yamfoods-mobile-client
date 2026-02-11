@@ -4,7 +4,4 @@ class AppConstants {
 
   /// Currency symbol/code used throughout the app
   static const String currency = 'ETB';
-
-  /// Maximum number of items allowed in cart
-  static const int maxCartItems = 5;
 }

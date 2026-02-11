@@ -19,6 +19,7 @@ sealed class AppConfigurationModel with _$AppConfigurationModel {
     required int maxCartItems,
     required int maxQuantityPerItem,
     @JsonKey(fromJson: parseDouble) required double deliveryFeePerKm,
+    @JsonKey(fromJson: parseDouble) required double deliveryStartFee,
     required int maxOrderSchedulingDays,
     required DateTime createdAt,
     required DateTime updatedAt,

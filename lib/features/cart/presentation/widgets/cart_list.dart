@@ -5,6 +5,7 @@ import 'package:yamfoods_customer_app/app/routes/route_names.dart';
 
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart';
+import '../../../../app/components/skeleton/cart_card_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../core/errors/failure.dart';
 import '../../domain/entities/cart.dart';
@@ -21,7 +22,7 @@ class CartList extends ConsumerWidget {
   ///
   /// Accounts for:
   /// - Bottom sheet content height (~280px)
-  /// - SafeArea bottom padding
+  /// - System bottom inset
   /// - Extra spacing for comfort
   double _calculateBottomPadding(BuildContext context) {
     final safeAreaBottom = MediaQuery.of(context).padding.bottom;
@@ -73,7 +74,21 @@ class CartList extends ConsumerWidget {
           onRetry: () =>
               ref.read(cartProvider(branchId).notifier).load(branchId),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => ListView.builder(
+          padding: EdgeInsets.only(
+            left: AppSizes.sm,
+            right: AppSizes.sm,
+            top: AppSizes.sm,
+            bottom: _calculateBottomPadding(context),
+          ),
+          itemCount: 4,
+          itemBuilder: (context, index) => Padding(
+            padding: EdgeInsets.only(
+              bottom: index < 3 ? AppSizes.sm : AppSizes.lg,
+            ),
+            child: const CartCardSkeleton(),
+          ),
+        ),
       ),
     );
   }

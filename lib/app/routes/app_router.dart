@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/services/snackbar_service.dart';
@@ -44,6 +45,13 @@ import '../../features/info/presentation/screens/help_support_screen.dart';
 import '../../features/info/presentation/screens/faq_screen.dart';
 import '../../features/info/presentation/screens/feedback_screen.dart';
 
+// Thanks future self: CheckoutScreen uses RouteAware to know when the user
+// returns from the Chapa payment screen (Chapa SDK pushes a route; when it
+// pops we get didPopNext). This observer must be passed to GoRouter so that
+// RouteAware.didPopNext is actually called. Used only by [CheckoutScreen].
+final RouteObserver<ModalRoute<void>> checkoutRouteObserver =
+    RouteObserver<ModalRoute<void>>();
+
 /// Global app router configuration using go_router.
 ///
 /// For now this is a minimal setup with placeholder screens.
@@ -57,6 +65,7 @@ final GoRouter appRouter = GoRouter(
   // that appear on top of the entire navigation stack, regardless of the current route.
   navigatorKey: SnackbarService.rootNavigatorKey,
   initialLocation: RouteName.splash,
+  observers: [checkoutRouteObserver], // Required for CheckoutScreen RouteAware (Chapa)
   routes: [
     GoRoute(
       path: RouteName.splash,

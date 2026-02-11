@@ -20,13 +20,12 @@ sealed class OrderAddressModel with _$OrderAddressModel {
     String? building,
     String? houseNo,
     String? note,
-    @JsonKey(fromJson: parseDouble)  double? lat,
-    @JsonKey(fromJson: parseDouble) double? lng,
+    @JsonKey(fromJson: parseDoubleNullable) double? lat,
+    @JsonKey(fromJson: parseDoubleNullable) double? lng,
     AddressLocationModel? location,
     required DateTime createdAt,
   }) = _OrderAddressModel;
 
   factory OrderAddressModel.fromJson(Map<String, dynamic> json) =>
       _$OrderAddressModelFromJson(json);
-
 }

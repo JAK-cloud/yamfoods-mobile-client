@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderLocationModel {
 
- double? get lat; double? get lng;
+@JsonKey(fromJson: parseDoubleNullable) double? get lat;@JsonKey(fromJson: parseDoubleNullable) double? get lng;
 /// Create a copy of OrderLocationModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $OrderLocationModelCopyWith<$Res>  {
   factory $OrderLocationModelCopyWith(OrderLocationModel value, $Res Function(OrderLocationModel) _then) = _$OrderLocationModelCopyWithImpl;
 @useResult
 $Res call({
- double? lat, double? lng
+@JsonKey(fromJson: parseDoubleNullable) double? lat,@JsonKey(fromJson: parseDoubleNullable) double? lng
 });
 
 
@@ -151,7 +151,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? lat,  double? lng)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderLocationModel() when $default != null:
 return $default(_that.lat,_that.lng);case _:
@@ -172,7 +172,7 @@ return $default(_that.lat,_that.lng);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? lat,  double? lng)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng)  $default,) {final _that = this;
 switch (_that) {
 case _OrderLocationModel():
 return $default(_that.lat,_that.lng);}
@@ -189,7 +189,7 @@ return $default(_that.lat,_that.lng);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? lat,  double? lng)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: parseDoubleNullable)  double? lat, @JsonKey(fromJson: parseDoubleNullable)  double? lng)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderLocationModel() when $default != null:
 return $default(_that.lat,_that.lng);case _:
@@ -204,11 +204,11 @@ return $default(_that.lat,_that.lng);case _:
 @JsonSerializable()
 
 class _OrderLocationModel implements OrderLocationModel {
-  const _OrderLocationModel({this.lat, this.lng});
+  const _OrderLocationModel({@JsonKey(fromJson: parseDoubleNullable) this.lat, @JsonKey(fromJson: parseDoubleNullable) this.lng});
   factory _OrderLocationModel.fromJson(Map<String, dynamic> json) => _$OrderLocationModelFromJson(json);
 
-@override final  double? lat;
-@override final  double? lng;
+@override@JsonKey(fromJson: parseDoubleNullable) final  double? lat;
+@override@JsonKey(fromJson: parseDoubleNullable) final  double? lng;
 
 /// Create a copy of OrderLocationModel
 /// with the given fields replaced by the non-null parameter values.
@@ -243,7 +243,7 @@ abstract mixin class _$OrderLocationModelCopyWith<$Res> implements $OrderLocatio
   factory _$OrderLocationModelCopyWith(_OrderLocationModel value, $Res Function(_OrderLocationModel) _then) = __$OrderLocationModelCopyWithImpl;
 @override @useResult
 $Res call({
- double? lat, double? lng
+@JsonKey(fromJson: parseDoubleNullable) double? lat,@JsonKey(fromJson: parseDoubleNullable) double? lng
 });
 
 

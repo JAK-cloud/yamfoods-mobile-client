@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CheckoutValidation {
 
- bool get isValid; String? get addressError; String? get promoCodeError; String? get pointsError; String? get scheduleError; String? get generalError;
+ bool get isValid; String? get addressError; String? get promoCodeError; String? get pointsError; String? get scheduleError; String? get paymentError; String? get generalError;
 /// Create a copy of CheckoutValidation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CheckoutValidationCopyWith<CheckoutValidation> get copyWith => _$CheckoutValida
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutValidation&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.addressError, addressError) || other.addressError == addressError)&&(identical(other.promoCodeError, promoCodeError) || other.promoCodeError == promoCodeError)&&(identical(other.pointsError, pointsError) || other.pointsError == pointsError)&&(identical(other.scheduleError, scheduleError) || other.scheduleError == scheduleError)&&(identical(other.generalError, generalError) || other.generalError == generalError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutValidation&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.addressError, addressError) || other.addressError == addressError)&&(identical(other.promoCodeError, promoCodeError) || other.promoCodeError == promoCodeError)&&(identical(other.pointsError, pointsError) || other.pointsError == pointsError)&&(identical(other.scheduleError, scheduleError) || other.scheduleError == scheduleError)&&(identical(other.paymentError, paymentError) || other.paymentError == paymentError)&&(identical(other.generalError, generalError) || other.generalError == generalError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isValid,addressError,promoCodeError,pointsError,scheduleError,generalError);
+int get hashCode => Object.hash(runtimeType,isValid,addressError,promoCodeError,pointsError,scheduleError,paymentError,generalError);
 
 @override
 String toString() {
-  return 'CheckoutValidation(isValid: $isValid, addressError: $addressError, promoCodeError: $promoCodeError, pointsError: $pointsError, scheduleError: $scheduleError, generalError: $generalError)';
+  return 'CheckoutValidation(isValid: $isValid, addressError: $addressError, promoCodeError: $promoCodeError, pointsError: $pointsError, scheduleError: $scheduleError, paymentError: $paymentError, generalError: $generalError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CheckoutValidationCopyWith<$Res>  {
   factory $CheckoutValidationCopyWith(CheckoutValidation value, $Res Function(CheckoutValidation) _then) = _$CheckoutValidationCopyWithImpl;
 @useResult
 $Res call({
- bool isValid, String? addressError, String? promoCodeError, String? pointsError, String? scheduleError, String? generalError
+ bool isValid, String? addressError, String? promoCodeError, String? pointsError, String? scheduleError, String? paymentError, String? generalError
 });
 
 
@@ -62,13 +62,14 @@ class _$CheckoutValidationCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutValidation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isValid = null,Object? addressError = freezed,Object? promoCodeError = freezed,Object? pointsError = freezed,Object? scheduleError = freezed,Object? generalError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isValid = null,Object? addressError = freezed,Object? promoCodeError = freezed,Object? pointsError = freezed,Object? scheduleError = freezed,Object? paymentError = freezed,Object? generalError = freezed,}) {
   return _then(_self.copyWith(
 isValid: null == isValid ? _self.isValid : isValid // ignore: cast_nullable_to_non_nullable
 as bool,addressError: freezed == addressError ? _self.addressError : addressError // ignore: cast_nullable_to_non_nullable
 as String?,promoCodeError: freezed == promoCodeError ? _self.promoCodeError : promoCodeError // ignore: cast_nullable_to_non_nullable
 as String?,pointsError: freezed == pointsError ? _self.pointsError : pointsError // ignore: cast_nullable_to_non_nullable
 as String?,scheduleError: freezed == scheduleError ? _self.scheduleError : scheduleError // ignore: cast_nullable_to_non_nullable
+as String?,paymentError: freezed == paymentError ? _self.paymentError : paymentError // ignore: cast_nullable_to_non_nullable
 as String?,generalError: freezed == generalError ? _self.generalError : generalError // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? generalError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? paymentError,  String? generalError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CheckoutValidation() when $default != null:
-return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.generalError);case _:
+return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.paymentError,_that.generalError);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? generalError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? paymentError,  String? generalError)  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutValidation():
-return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.generalError);}
+return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.paymentError,_that.generalError);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? generalError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isValid,  String? addressError,  String? promoCodeError,  String? pointsError,  String? scheduleError,  String? paymentError,  String? generalError)?  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutValidation() when $default != null:
-return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.generalError);case _:
+return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.pointsError,_that.scheduleError,_that.paymentError,_that.generalError);case _:
   return null;
 
 }
@@ -205,7 +206,7 @@ return $default(_that.isValid,_that.addressError,_that.promoCodeError,_that.poin
 
 
 class _CheckoutValidation implements CheckoutValidation {
-  const _CheckoutValidation({required this.isValid, this.addressError, this.promoCodeError, this.pointsError, this.scheduleError, this.generalError});
+  const _CheckoutValidation({required this.isValid, this.addressError, this.promoCodeError, this.pointsError, this.scheduleError, this.paymentError, this.generalError});
   
 
 @override final  bool isValid;
@@ -213,6 +214,7 @@ class _CheckoutValidation implements CheckoutValidation {
 @override final  String? promoCodeError;
 @override final  String? pointsError;
 @override final  String? scheduleError;
+@override final  String? paymentError;
 @override final  String? generalError;
 
 /// Create a copy of CheckoutValidation
@@ -225,16 +227,16 @@ _$CheckoutValidationCopyWith<_CheckoutValidation> get copyWith => __$CheckoutVal
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutValidation&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.addressError, addressError) || other.addressError == addressError)&&(identical(other.promoCodeError, promoCodeError) || other.promoCodeError == promoCodeError)&&(identical(other.pointsError, pointsError) || other.pointsError == pointsError)&&(identical(other.scheduleError, scheduleError) || other.scheduleError == scheduleError)&&(identical(other.generalError, generalError) || other.generalError == generalError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutValidation&&(identical(other.isValid, isValid) || other.isValid == isValid)&&(identical(other.addressError, addressError) || other.addressError == addressError)&&(identical(other.promoCodeError, promoCodeError) || other.promoCodeError == promoCodeError)&&(identical(other.pointsError, pointsError) || other.pointsError == pointsError)&&(identical(other.scheduleError, scheduleError) || other.scheduleError == scheduleError)&&(identical(other.paymentError, paymentError) || other.paymentError == paymentError)&&(identical(other.generalError, generalError) || other.generalError == generalError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isValid,addressError,promoCodeError,pointsError,scheduleError,generalError);
+int get hashCode => Object.hash(runtimeType,isValid,addressError,promoCodeError,pointsError,scheduleError,paymentError,generalError);
 
 @override
 String toString() {
-  return 'CheckoutValidation(isValid: $isValid, addressError: $addressError, promoCodeError: $promoCodeError, pointsError: $pointsError, scheduleError: $scheduleError, generalError: $generalError)';
+  return 'CheckoutValidation(isValid: $isValid, addressError: $addressError, promoCodeError: $promoCodeError, pointsError: $pointsError, scheduleError: $scheduleError, paymentError: $paymentError, generalError: $generalError)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$CheckoutValidationCopyWith<$Res> implements $CheckoutVali
   factory _$CheckoutValidationCopyWith(_CheckoutValidation value, $Res Function(_CheckoutValidation) _then) = __$CheckoutValidationCopyWithImpl;
 @override @useResult
 $Res call({
- bool isValid, String? addressError, String? promoCodeError, String? pointsError, String? scheduleError, String? generalError
+ bool isValid, String? addressError, String? promoCodeError, String? pointsError, String? scheduleError, String? paymentError, String? generalError
 });
 
 
@@ -262,13 +264,14 @@ class __$CheckoutValidationCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutValidation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isValid = null,Object? addressError = freezed,Object? promoCodeError = freezed,Object? pointsError = freezed,Object? scheduleError = freezed,Object? generalError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isValid = null,Object? addressError = freezed,Object? promoCodeError = freezed,Object? pointsError = freezed,Object? scheduleError = freezed,Object? paymentError = freezed,Object? generalError = freezed,}) {
   return _then(_CheckoutValidation(
 isValid: null == isValid ? _self.isValid : isValid // ignore: cast_nullable_to_non_nullable
 as bool,addressError: freezed == addressError ? _self.addressError : addressError // ignore: cast_nullable_to_non_nullable
 as String?,promoCodeError: freezed == promoCodeError ? _self.promoCodeError : promoCodeError // ignore: cast_nullable_to_non_nullable
 as String?,pointsError: freezed == pointsError ? _self.pointsError : pointsError // ignore: cast_nullable_to_non_nullable
 as String?,scheduleError: freezed == scheduleError ? _self.scheduleError : scheduleError // ignore: cast_nullable_to_non_nullable
+as String?,paymentError: freezed == paymentError ? _self.paymentError : paymentError // ignore: cast_nullable_to_non_nullable
 as String?,generalError: freezed == generalError ? _self.generalError : generalError // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

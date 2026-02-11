@@ -9,10 +9,7 @@ import '../entities/branch.dart';
 /// (remote API, local cache, etc.). All methods return [Either<Failure, T>]
 /// for proper error handling.
 abstract class BranchRepository {
-  /// Gets all branches.
-  ///
-  /// Returns cached branches immediately if available, then refreshes from
-  /// backend in the background. If no cache exists, fetches from backend.
+  /// Gets all branches from the remote API.
   ///
   /// Returns [Either] containing:
   /// - [Right] with list of branches on success

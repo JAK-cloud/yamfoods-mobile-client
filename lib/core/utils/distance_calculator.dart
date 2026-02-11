@@ -1,14 +1,5 @@
 import 'package:latlong2/latlong.dart';
 
-/// Default customer position (hardcoded for now).
-///
-/// This matches the customer location used in order tracking.
-/// TODO: Replace with actual user location from GPS or saved address.
-const ({double lat, double lng}) defaultCustomerPosition = (
-  lat: 9.011046,
-  lng: 38.761295,
-);
-
 /// Utility class for calculating distances between geographic positions.
 class DistanceCalculator {
   /// Singleton instance of Distance for calculating distances.
@@ -30,21 +21,29 @@ class DistanceCalculator {
   /// );
   /// print('Distance: $distance'); // "5.2km" or "500m"
   /// ```
-  static String calculateDistanceInMeters(
+  ///
+  /// Returns distance in kilometers (km) for storage or API.
+  static double distanceInKm(
     ({double lat, double lng}) position1,
     ({double lat, double lng}) position2,
   ) {
     final point1 = LatLng(position1.lat, position1.lng);
     final point2 = LatLng(position2.lat, position2.lng);
+    final meters = _distance(point1, point2);
+    return meters / 1000;
+  }
 
-    // The Distance instance is callable and returns distance in meters
-    final distanceInMeters = _distance(point1, point2).round();
+  static String calculateDistanceInMeters(
+    ({double lat, double lng}) position1,
+    ({double lat, double lng}) position2,
+  ) {
+    final meters = (distanceInKm(position1, position2) * 1000).round();
 
     // Format the distance
-    if (distanceInMeters < 1000) {
-      return '${distanceInMeters}m';
+    if (meters < 1000) {
+      return '${meters}m';
     } else {
-      final kilometers = distanceInMeters / 1000;
+      final kilometers = meters / 1000;
       return '${kilometers.toStringAsFixed(1)}km';
     }
   }

@@ -10,7 +10,7 @@ part 'create_order_response.freezed.dart';
 @freezed
 sealed class CreateOrderResponse with _$CreateOrderResponse {
   const factory CreateOrderResponse({
-    required String receiveCode,
+    String? receiveCode,
     required Orderr order,
   }) = _CreateOrderResponse;
 }

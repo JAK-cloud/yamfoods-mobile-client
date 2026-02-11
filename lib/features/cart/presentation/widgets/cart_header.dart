@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/confirmation_dialog.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -9,7 +10,7 @@ import '../../../app_configuration/presentation/providers/app_configuration_prov
 import '../providers/cart_notifier.dart';
 import '../providers/cart_loading_providers.dart';
 
-/// Header component for cart screen.
+/// App bar for cart screen.
 ///
 /// Displays back button, "Your Cart" title, item count,
 /// and clear all button (when items > 0).
@@ -31,27 +32,31 @@ class CartHeader extends ConsumerWidget {
 
     return Container(
       padding: EdgeInsets.fromLTRB(
-        AppSizes.lg,
-        AppSizes.md,
+        AppSizes.xs,
+        MediaQuery.paddingOf(context).top + AppSizes.sm,
         AppSizes.lg,
         AppSizes.md,
       ),
       decoration: const BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(AppSizes.radiusSm),
-          bottomRight: Radius.circular(AppSizes.radiusSm),
-        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Back button
+          IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.white, size: 20),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+          ),
           // Title and item count
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
               Text(
                 'Your Cart',
                 style: AppTextStyles.h3.copyWith(color: AppColors.white),
@@ -92,6 +97,7 @@ class CartHeader extends ConsumerWidget {
                 ),
               ],
             ],
+            ),
           ),
           // Right side: Clear all button (only visible when items > 0)
           if (itemCount > 0)

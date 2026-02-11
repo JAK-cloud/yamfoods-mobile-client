@@ -17,7 +17,9 @@ sealed class CheckoutSummary with _$CheckoutSummary {
     vatTotal, // sum of per-item VAT calculated on discounted prices
     required double deliveryFee, // 0 for pickup, calculated for delivery
     required double
-    totalAmount, // subtotal + vatTotal + deliveryFee (matches OrderRequestData)
+    transactionFee, // Chapa 2.5% fee when payment method is chapa
+    required double
+    totalAmount, // subtotal + vatTotal + deliveryFee + transactionFee
     required int quantity, // Total quantity of items
   }) = _CheckoutSummary;
 }
