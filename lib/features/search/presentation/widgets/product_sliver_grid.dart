@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart' as app_error;
-import '../../../../app/components/skeleton/product_card_skeleton.dart';
+import '../../../../app/components/skeleton/product_grid_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../product/data/models/product_filter_request_model.dart';
@@ -54,28 +54,17 @@ class ProductSliverGrid extends ConsumerWidget {
               childAspectRatio: 0.75,
             ),
             delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-                  ProductCard(product: products[index], screenId: 'search', enableCartAnimation: false,),
+              (context, index) => ProductCard(
+                product: products[index],
+                screenId: 'search',
+                enableCartAnimation: false,
+              ),
               childCount: products.length,
             ),
           ),
         );
       },
-      loading: () => SliverPadding(
-        padding: EdgeInsets.all(AppSizes.sm),
-        sliver: SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: AppSizes.sm,
-            mainAxisSpacing: AppSizes.sm,
-            childAspectRatio: 0.75,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => const ProductCardSkeleton(),
-            childCount: 6,
-          ),
-        ),
-      ),
+      loading: () => productGridSkeletonSliver(),
       error: (error, stackTrace) => SliverFillRemaining(
         hasScrollBody: false,
         child: Center(

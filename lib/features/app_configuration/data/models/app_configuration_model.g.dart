@@ -28,6 +28,10 @@ _AppConfigurationModel _$AppConfigurationModelFromJson(
       'deliveryFeePerKm',
       (v) => parseDouble(v),
     ),
+    deliveryStartFee: $checkedConvert(
+      'deliveryStartFee',
+      (v) => parseDouble(v),
+    ),
     maxOrderSchedulingDays: $checkedConvert(
       'maxOrderSchedulingDays',
       (v) => (v as num).toInt(),
@@ -51,6 +55,7 @@ Map<String, dynamic> _$AppConfigurationModelToJson(
   'maxCartItems': instance.maxCartItems,
   'maxQuantityPerItem': instance.maxQuantityPerItem,
   'deliveryFeePerKm': instance.deliveryFeePerKm,
+  'deliveryStartFee': instance.deliveryStartFee,
   'maxOrderSchedulingDays': instance.maxOrderSchedulingDays,
   'createdAt': instance.createdAt.toIso8601String(),
   'updatedAt': instance.updatedAt.toIso8601String(),

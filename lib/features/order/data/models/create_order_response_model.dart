@@ -13,7 +13,7 @@ part 'create_order_response_model.g.dart';
 @freezed
 sealed class CreateOrderResponseModel with _$CreateOrderResponseModel {
   const factory CreateOrderResponseModel({
-    required String receiveCode,
+     String? receiveCode,  //chapa does not need receive code
     required OrderModel order,
   }) = _CreateOrderResponseModel;
 

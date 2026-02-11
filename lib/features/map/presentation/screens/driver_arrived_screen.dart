@@ -15,72 +15,70 @@ class DriverArrivedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.xl),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Success icon
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: AppColors.success.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.check_circle,
-                  size: 80,
-                  color: AppColors.success,
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSizes.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Success icon
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: AppColors.success.withOpacity(0.1),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: AppSizes.xxl),
-
-              // Congratulations text
-              const Text(
-                'Congratulations!',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.txtPrimary,
-                ),
-                textAlign: TextAlign.center,
+              child: const Icon(
+                Icons.check_circle,
+                size: 80,
+                color: AppColors.success,
               ),
-              const SizedBox(height: AppSizes.lg),
+            ),
+            const SizedBox(height: AppSizes.xxl),
 
-              // Message
-              const Text(
-                'Your driver has arrived!',
-                style: TextStyle(fontSize: 18, color: AppColors.txtSecondary),
-                textAlign: TextAlign.center,
+            // Congratulations text
+            const Text(
+              'Congratulations!',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: AppColors.txtPrimary,
               ),
-              const SizedBox(height: AppSizes.xxl),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSizes.lg),
 
-              // Action button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Navigate to order detail screen
-                    context.go(RouteName.orderDetail, extra: orderId);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.btnPrimary,
-                    foregroundColor: AppColors.white,
-                    padding: const EdgeInsets.symmetric(vertical: AppSizes.lg),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppSizes.radius),
-                    ),
-                  ),
-                  child: const Text(
-                    'View Order Details',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            // Message
+            const Text(
+              'Your driver has arrived!',
+              style: TextStyle(fontSize: 18, color: AppColors.txtSecondary),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSizes.xxl),
+
+            // Action button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to order detail screen
+                  context.go(RouteName.orderDetail, extra: orderId);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.btnPrimary,
+                  foregroundColor: AppColors.white,
+                  padding: const EdgeInsets.symmetric(vertical: AppSizes.lg),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.radius),
                   ),
                 ),
+                child: const Text(
+                  'View Order Details',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -21,13 +21,12 @@ class EnvConfig {
   /// or if dotenv is not initialized.
   factory EnvConfig.fromEnv({bool isDevelopment = false}) {
     // Check if dotenv is initialized before accessing it
-    
-      // Return defaults if dotenv is not initialized
-      return EnvConfig(
-        baseUrl: ApiUrls.getBaseUrl(isDevelopment: isDevelopment),
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
-      );
-    
+
+    // Return defaults if dotenv is not initialized
+    return EnvConfig(
+      baseUrl: ApiUrls.getBaseUrl(isDevelopment: isDevelopment),
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    );
   }
 }

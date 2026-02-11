@@ -528,29 +528,36 @@ final class OrderDetailFamily extends $Family
   String toString() => r'orderDetailProvider';
 }
 
-/// Order payment provider
+/// Order payment status provider
 ///
-/// Fetches payment information for an order by orderId using the usecase.
-/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+/// Fetches payment status for an order using the usecase.
+/// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
 
 @ProviderFor(queryOrder)
 const queryOrderProvider = QueryOrderFamily._();
 
-/// Order payment provider
+/// Order payment status provider
 ///
-/// Fetches payment information for an order by orderId using the usecase.
-/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+/// Fetches payment status for an order using the usecase.
+/// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
 
 final class QueryOrderProvider
-    extends $FunctionalProvider<AsyncValue<Payment>, Payment, FutureOr<Payment>>
-    with $FutureModifier<Payment>, $FutureProvider<Payment> {
-  /// Order payment provider
+    extends
+        $FunctionalProvider<
+          AsyncValue<OrderPaymentQueryResult>,
+          OrderPaymentQueryResult,
+          FutureOr<OrderPaymentQueryResult>
+        >
+    with
+        $FutureModifier<OrderPaymentQueryResult>,
+        $FutureProvider<OrderPaymentQueryResult> {
+  /// Order payment status provider
   ///
-  /// Fetches payment information for an order by orderId using the usecase.
-  /// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+  /// Fetches payment status for an order using the usecase.
+  /// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
   const QueryOrderProvider._({
     required QueryOrderFamily super.from,
-    required int super.argument,
+    required QueryOrderRequest super.argument,
   }) : super(
          retry: null,
          name: r'queryOrderProvider',
@@ -571,12 +578,13 @@ final class QueryOrderProvider
 
   @$internal
   @override
-  $FutureProviderElement<Payment> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<OrderPaymentQueryResult> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<Payment> create(Ref ref) {
-    final argument = this.argument as int;
+  FutureOr<OrderPaymentQueryResult> create(Ref ref) {
+    final argument = this.argument as QueryOrderRequest;
     return queryOrder(ref, argument);
   }
 
@@ -591,15 +599,19 @@ final class QueryOrderProvider
   }
 }
 
-String _$queryOrderHash() => r'f77a7ef5ed2b2e52e89b36979b8f0c700594dde2';
+String _$queryOrderHash() => r'24847a4b50d90ce7713084ad5cce5e3e90bd0710';
 
-/// Order payment provider
+/// Order payment status provider
 ///
-/// Fetches payment information for an order by orderId using the usecase.
-/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+/// Fetches payment status for an order using the usecase.
+/// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
 
 final class QueryOrderFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<Payment>, int> {
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<OrderPaymentQueryResult>,
+          QueryOrderRequest
+        > {
   const QueryOrderFamily._()
     : super(
         retry: null,
@@ -609,13 +621,13 @@ final class QueryOrderFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Order payment provider
+  /// Order payment status provider
   ///
-  /// Fetches payment information for an order by orderId using the usecase.
-  /// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+  /// Fetches payment status for an order using the usecase.
+  /// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
 
-  QueryOrderProvider call(int orderId) =>
-      QueryOrderProvider._(argument: orderId, from: this);
+  QueryOrderProvider call(QueryOrderRequest request) =>
+      QueryOrderProvider._(argument: request, from: this);
 
   @override
   String toString() => r'queryOrderProvider';

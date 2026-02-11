@@ -51,108 +51,112 @@ class CheckoutSummaryCard extends ConsumerWidget {
           ),
         ],
       ),
-      child: SafeArea(
-        top: false,
-        child: Container(
-          padding: EdgeInsets.only(
-            top: AppSizes.sm,
-            left: AppSizes.sm,
-            right: AppSizes.sm,
+      child: Container(
+        padding: EdgeInsets.only(
+          top: AppSizes.xs,
+          left: AppSizes.sm,
+          right: AppSizes.sm,
+        ),
+        margin: EdgeInsets.all(AppSizes.sm),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          borderRadius: BorderRadius.circular(AppSizes.radius),
+          border: Border.all(
+            color: AppColors.grey.withValues(alpha: 0.1),
+            width: 1,
           ),
-          margin: EdgeInsets.all(AppSizes.sm),
-          decoration: BoxDecoration(
-            color: AppColors.background,
-            borderRadius: BorderRadius.circular(AppSizes.radius),
-            border: Border.all(
-              color: AppColors.grey.withValues(alpha: 0.1),
-              width: 1,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Price Total
+            _PriceRow(
+              label: 'Price Total',
+              value: summary.priceTotal,
+              isTotal: false,
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Price Total
+            // Item Discount
+            if (summary.itemDiscountTotal > 0) ...[
+              SizedBox(height: AppSizes.xs),
               _PriceRow(
-                label: 'Price Total',
-                value: summary.priceTotal,
+                label: 'Item Discount',
+                value: -summary.itemDiscountTotal,
                 isTotal: false,
-              ),
-              // Item Discount
-              if (summary.itemDiscountTotal > 0) ...[
-                SizedBox(height: AppSizes.sm),
-                _PriceRow(
-                  label: 'Item Discount',
-                  value: -summary.itemDiscountTotal,
-                  isTotal: false,
-                  isDiscount: true,
-                ),
-              ],
-              // Promo Discount
-              if (summary.promoDiscount > 0) ...[
-                SizedBox(height: AppSizes.sm),
-                _PriceRow(
-                  label: 'Promo Discount',
-                  value: -summary.promoDiscount,
-                  isTotal: false,
-                  isDiscount: true,
-                ),
-              ],
-              // Point Discount
-              if (summary.pointDiscount > 0) ...[
-                SizedBox(height: AppSizes.sm),
-                _PriceRow(
-                  label: 'Points Discount',
-                  value: -summary.pointDiscount,
-                  isTotal: false,
-                  isDiscount: true,
-                ),
-              ],
-              SizedBox(height: AppSizes.sm),
-              // Subtotal
-              _PriceRow(
-                label: 'Subtotal',
-                value: summary.subtotal,
-                isTotal: false,
-              ),
-              SizedBox(height: AppSizes.sm),
-              // VAT
-              _PriceRow(label: 'VAT', value: summary.vatTotal, isTotal: false),
-              // Delivery Fee
-              if (summary.deliveryFee > 0) ...[
-                SizedBox(height: AppSizes.sm),
-                _PriceRow(
-                  label: 'Delivery Fee',
-                  value: summary.deliveryFee,
-                  isTotal: false,
-                ),
-              ],
-              Divider(
-                height: AppSizes.xl,
-                thickness: 1,
-                color: AppColors.grey.withValues(alpha: 0.5),
-              ),
-              // Total Amount
-              _PriceRow(
-                label: 'Total',
-                value: summary.totalAmount,
-                isTotal: true,
-              ),
-              SizedBox(height: AppSizes.lg),
-              // Proceed to Payment button
-              CustomButton(
-                text: 'Proceed to Payment',
-                isLoading: isLoading,
-                onPressed:
-                    (summary.totalAmount > 0 &&
-                        validation.isValid &&
-                        !isLoading)
-                    ? onPlaceOrder
-                    : null,
-                height: AppSizes.btnHeight,
+                isDiscount: true,
               ),
             ],
-          ),
+            // Promo Discount
+            if (summary.promoDiscount > 0) ...[
+              SizedBox(height: AppSizes.xs),
+              _PriceRow(
+                label: 'Promo Discount',
+                value: -summary.promoDiscount,
+                isTotal: false,
+                isDiscount: true,
+              ),
+            ],
+            // Point Discount
+            if (summary.pointDiscount > 0) ...[
+              SizedBox(height: AppSizes.xs),
+              _PriceRow(
+                label: 'Points Discount',
+                value: -summary.pointDiscount,
+                isTotal: false,
+                isDiscount: true,
+              ),
+            ],
+            SizedBox(height: AppSizes.xs),
+            // Subtotal
+            _PriceRow(
+              label: 'Subtotal',
+              value: summary.subtotal,
+              isTotal: false,
+            ),
+            SizedBox(height: AppSizes.xs),
+            // VAT
+            _PriceRow(label: 'VAT', value: summary.vatTotal, isTotal: false),
+            // Delivery Fee
+            if (summary.deliveryFee > 0) ...[
+              SizedBox(height: AppSizes.xs),
+              _PriceRow(
+                label: 'Delivery Fee',
+                value: summary.deliveryFee,
+                isTotal: false,
+              ),
+            ],
+            // Transaction fee (Chapa 2.5%)
+            if (summary.transactionFee > 0) ...[
+              SizedBox(height: AppSizes.xs),
+              _PriceRow(
+                label: 'Transaction fee (2.5%)',
+                value: summary.transactionFee,
+                isTotal: false,
+              ),
+            ],
+            Divider(
+              height: AppSizes.md,
+              thickness: 1,
+              color: AppColors.grey.withValues(alpha: 0.5),
+            ),
+            // Total Amount
+            _PriceRow(
+              label: 'Total',
+              value: summary.totalAmount,
+              isTotal: true,
+            ),
+            SizedBox(height: AppSizes.sm),
+            // Proceed to Payment button
+            CustomButton(
+              text: 'Proceed to Payment',
+              isLoading: isLoading,
+              onPressed:
+                  (summary.totalAmount > 0 && validation.isValid && !isLoading)
+                  ? onPlaceOrder
+                  : null,
+              height: AppSizes.btnHeight,
+            ),
+          ],
         ),
       ),
     );
@@ -182,11 +186,12 @@ class _PriceRow extends StatelessWidget {
         Text(
           label,
           style: isTotal
-              ? AppTextStyles.h5.copyWith(
+              ? AppTextStyles.labelLarge.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
+                  fontSize: 13,
                 )
-              : AppTextStyles.bodyMedium.copyWith(
+              : AppTextStyles.bodySmall.copyWith(
                   color: AppColors.txtSecondary,
                 ),
         ),
@@ -195,11 +200,12 @@ class _PriceRow extends StatelessWidget {
               ? '-${value.abs().toStringAsFixed(2)} ${AppConstants.currency}'
               : '${value.toStringAsFixed(2)} ${AppConstants.currency}',
           style: isTotal
-              ? AppTextStyles.h4.copyWith(
+              ? AppTextStyles.h6.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.primary,
+                  fontSize: 15,
                 )
-              : AppTextStyles.bodyLarge.copyWith(
+              : AppTextStyles.bodySmall.copyWith(
                   fontWeight: FontWeight.w600,
                   color: isDiscount ? AppColors.success : AppColors.txtPrimary,
                 ),

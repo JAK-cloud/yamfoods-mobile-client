@@ -35,83 +35,80 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            // Fixed header
-            Container(
-              decoration: const BoxDecoration(color: AppColors.primary),
-              child: const HomeHeader(),
-            ),
+      body: Column(
+        children: [
+          // Fixed header
+          Container(
+            decoration: const BoxDecoration(color: AppColors.primary),
+            child: const HomeHeader(),
+          ),
 
-            // Fixed search bar with gradient continuation
-            Container(
-              padding: EdgeInsets.only(bottom: AppSizes.sm),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    AppColors.primary,
-                    AppColors.primary.withValues(alpha: 0.9),
-                  ],
-                ),
+          // Fixed search bar with gradient continuation
+          Container(
+            padding: EdgeInsets.only(bottom: AppSizes.sm),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.primary,
+                  AppColors.primary.withValues(alpha: 0.9),
+                ],
               ),
-              child: const HomeSearchBar(),
             ),
+            child: const HomeSearchBar(),
+          ),
 
-            // Scrollable content: banner, categories, and products
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: onHomePageRefresh,
-                child: CustomScrollView(
-                  slivers: [
-                    // Premium surface section (banner, categories) with gradient
-                    SliverToBoxAdapter(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AppColors.primary.withValues(alpha: 0.9),
-                              AppColors.background,
-                            ],
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(height: 2),
-                            // Promo banner slider
-                            const PromoBannerSlider(),
-
-                            SizedBox(height: AppSizes.lg),
-
-                            // Category chips list
-                            CategoryChipsList(branchId: branchId),
+          // Scrollable content: banner, categories, and products
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: onHomePageRefresh,
+              child: CustomScrollView(
+                slivers: [
+                  // Premium surface section (banner, categories) with gradient
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppColors.primary.withValues(alpha: 0.9),
+                            AppColors.background,
                           ],
                         ),
                       ),
-                    ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SizedBox(height: 2),
+                          // Promo banner slider
+                          const PromoBannerSlider(),
 
-                    // Product grid - scrolls with content
-                    ProductSliverGrid(branchId: branchId),
+                          SizedBox(height: AppSizes.lg),
 
-                    // Bottom padding for safe area
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height:
-                            MediaQuery.of(context).padding.bottom + AppSizes.lg,
+                          // Category chips list
+                          CategoryChipsList(branchId: branchId),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+
+                  // Product grid - scrolls with content
+                  ProductSliverGrid(branchId: branchId),
+
+                  // Bottom padding for safe area
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height:
+                          MediaQuery.of(context).padding.bottom + AppSizes.lg,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

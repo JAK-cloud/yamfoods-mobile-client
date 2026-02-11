@@ -16,6 +16,7 @@ sealed class Payment with _$Payment {
     String? telebirrPaymentOrderId,
     required double amount,
     DateTime? transTime,
+    String? chapaTxnRef,
     String? currency,
     required DateTime date,
   }) = _Payment;

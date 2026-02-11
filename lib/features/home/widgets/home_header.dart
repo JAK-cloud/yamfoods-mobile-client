@@ -51,8 +51,8 @@ class HomeHeader extends ConsumerWidget {
                 Text(
                   AppTexts.appName,
                   style: TextStyle(
-                    fontFamily: 'Griffin',
-                    fontSize: 24,
+                    fontFamily: 'Cera Pro',
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.white,
                     letterSpacing: 0.5,

@@ -185,7 +185,7 @@ class _OrderApiService implements OrderApiService {
   }
 
   @override
-  Future<ApiResponse<PaymentModel>> queryOrder(
+  Future<ApiResponse<QueryOrderPaymentResponse>> queryOrder(
     Map<String, dynamic> body,
   ) async {
     final _extra = <String, dynamic>{};
@@ -193,7 +193,7 @@ class _OrderApiService implements OrderApiService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<ApiResponse<PaymentModel>>(
+    final _options = _setStreamType<ApiResponse<QueryOrderPaymentResponse>>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -204,11 +204,12 @@ class _OrderApiService implements OrderApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ApiResponse<PaymentModel> _value;
+    late ApiResponse<QueryOrderPaymentResponse> _value;
     try {
-      _value = ApiResponse<PaymentModel>.fromJson(
+      _value = ApiResponse<QueryOrderPaymentResponse>.fromJson(
         _result.data!,
-        (json) => PaymentModel.fromJson(json as Map<String, dynamic>),
+        (json) =>
+            QueryOrderPaymentResponse.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);

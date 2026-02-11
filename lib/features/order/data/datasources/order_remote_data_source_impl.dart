@@ -4,12 +4,13 @@ import '../../../../core/errors/error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/api/request_wrapper.dart';
 import '../../domain/entities/order_request_data.dart';
+import '../../domain/entities/query_order_request.dart';
 import 'order_api_service.dart';
 import 'order_remote_data_source.dart';
 import '../models/create_order_response_model.dart';
 import '../models/order_detail_model.dart';
 import '../models/order_model.dart';
-import '../models/payment_model.dart';
+import '../models/query_order_payment_response.dart';
 
 /// Handles API calls and error transformation.
 ///
@@ -44,6 +45,13 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         'deliveryFee': data.deliveryFee,
         if (data.discountTotal > 0) 'discountTotal': data.discountTotal,
         'totalAmount': data.totalAmount,
+        if (data.transactionFee != null) 'transactionFee': data.transactionFee,
+        if (data.pointUsed != null) 'pointUsed': data.pointUsed,
+        if (data.pointDiscount != null) 'pointDiscount': data.pointDiscount,
+        if (data.promoCode != null) 'promoCode': data.promoCode,
+        if (data.promoCodeDiscount != null)
+          'promoCodeDiscount': data.promoCodeDiscount,
+        if (data.distanceKm != null) 'distanceKm': data.distanceKm,
       };
       final body = RequestWrapper.wrap(requestData);
       final response = await _apiService.createOrder(body);
@@ -103,10 +111,11 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, PaymentModel>> queryOrderPayment(int orderId) async {
+  Future<Either<Failure, QueryOrderPaymentResponse>> queryOrderPayment(
+    QueryOrderRequest request,
+  ) async {
     try {
-      final requestData = {'order_id': orderId};
-      final body = RequestWrapper.wrap(requestData);
+      final body = RequestWrapper.wrap(request.toJson());
       final response = await _apiService.queryOrder(body);
       return Right(response.data);
     } catch (e) {

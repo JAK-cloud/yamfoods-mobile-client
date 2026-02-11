@@ -166,7 +166,9 @@ class AuthInterceptor extends Interceptor {
       // Review endpoints - getAllReviews is unprotected (guests can view)
       // create, update, delete are protected and require authentication
       // Check base path without {productId} placeholder
-      '/review/get-all-reviews',
+      ApiRoutes.getAllReviews,
+      ApiRoutes.getTermsAndConditions,
+      ApiRoutes.getPrivacyPolicy,
     ];
 
     return unprotectedPaths.any((route) => path.contains(route));

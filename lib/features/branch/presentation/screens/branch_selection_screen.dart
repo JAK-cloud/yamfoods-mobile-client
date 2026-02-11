@@ -3,16 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../app/components/custom_button.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/components/empty_state.dart';
-import '../../../../app/components/error_widget.dart';
+import '../../../../core/utils/distance_calculator.dart';
+import '../../../../app/components/skeleton/branch_selection_skeleton.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
-import '../../../../core/errors/failure.dart';
 import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
 import '../../../../core/services/app_info_service.dart';
 import '../../../app_configuration/domain/entities/app_version.dart';
@@ -47,6 +48,11 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
     final appConfigAsync = ref.watch(appConfigurationProvider);
     final branchesAsync = ref.watch(branchesProvider);
     final appInfoAsync = ref.watch(appInfoProvider);
+    final userPositionAsync = ref.watch(userPositionForBranchProvider);
+    final position = userPositionAsync.value;
+    final userPosition = position != null
+        ? (lat: position.latitude, lng: position.longitude)
+        : null;
 
     // Wrap with GPS guard - ensures GPS is enabled before showing branch selection
     return LocationGpsGuardPerscreen(
@@ -107,52 +113,40 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                         }
 
                         final selectedBranch = branches[_selectedIndex];
-                        return _buildContent(branches, selectedBranch);
-                      },
-                      loading: () => const Center(
-                        child:
-                            CircularProgressIndicator(color: AppColors.white),
-                      ),
-                      error: (error, stackTrace) {
-                        final failure = error is Failure
-                            ? error
-                            : Failure.unexpected(message: error.toString());
-
-                        return ErrorWidgett(
-                          title: 'Failed to Load Branches',
-                          failure: failure,
-                          onRetry: () => ref.refresh(branchesProvider.future),
+                        return _buildContent(
+                          branches,
+                          selectedBranch,
+                          userPosition,
                         );
                       },
+                      loading: () => const BranchSelectionSkeleton(),
+                      error: (error, stackTrace) {
+                        Logger().e(
+                          'Branch selection: branches load failed',
+                          error: error,
+                          stackTrace: stackTrace,
+                        );
+                        return const BranchSelectionSkeleton();
+                      },
                     ),
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(color: AppColors.white),
-                    ),
+                    loading: () => const BranchSelectionSkeleton(),
                     error: (error, stackTrace) {
-                      final failure = error is Failure
-                          ? error
-                          : Failure.unexpected(message: error.toString());
-
-                      return ErrorWidgett(
-                        title: 'Failed to Load App Info',
-                        failure: failure,
-                        onRetry: () => ref.refresh(appInfoProvider.future),
+                      Logger().e(
+                        'Branch selection: app info failed',
+                        error: error,
+                        stackTrace: stackTrace,
                       );
+                      return const BranchSelectionSkeleton();
                     },
                   ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppColors.white),
-                  ),
+                  loading: () => const BranchSelectionSkeleton(),
                   error: (error, stackTrace) {
-                    final failure = error is Failure
-                        ? error
-                        : Failure.unexpected(message: error.toString());
-
-                    return ErrorWidgett(
-                      title: 'Oops! Something went wrong, Please try again later or contact support. ERRORCODE = GIF#1eNOC',
-                      failure: failure,
-                      onRetry: () => ref.refresh(appConfigurationProvider.future),
+                    Logger().e(
+                      'Branch selection: app config failed',
+                      error: error,
+                      stackTrace: stackTrace,
                     );
+                    return const BranchSelectionSkeleton();
                   },
                 ),
               ],
@@ -242,89 +236,109 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
     );
   }
 
-  Widget _buildContent(List<Branch> branches, Branch selectedBranch) {
-    return SafeArea(
-      top: false,
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
+  Widget _buildContent(
+    List<Branch> branches,
+    Branch selectedBranch,
+    ({double lat, double lng})? userPosition,
+  ) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          const SizedBox(height: 60),
 
-            // Description text - centered
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
-              child: Text(
-                AppTexts.selectBranchDescription,
-                style: AppTextStyles.h5.copyWith(
-                  color: AppColors.white,
-                  fontWeight: FontWeight.normal,
-                ),
-                textAlign: TextAlign.center,
+          // Description text - centered
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+            child: Text(
+              AppTexts.selectBranchDescription,
+              style: AppTextStyles.h5.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.normal,
               ),
+              textAlign: TextAlign.center,
             ),
+          ),
 
-            const SizedBox(height: AppSizes.xl),
-            BranchStatusBadge(isOpen: selectedBranch.isCurrentlyOpen),
-            const SizedBox(height: AppSizes.lg),
+          const SizedBox(height: AppSizes.xl),
+          BranchStatusBadge(isOpen: selectedBranch.isCurrentlyOpen),
+          const SizedBox(height: AppSizes.lg),
 
-            // Phone and Working Hours
-            BranchInfoRow(
-              phone: selectedBranch.contactPhone,
-              openingHour: selectedBranch.openingHour,
-              closingHour: selectedBranch.closingHour,
-            ),
+          // Phone and Working Hours
+          BranchInfoRow(
+            phone: selectedBranch.contactPhone,
+            openingHour: selectedBranch.openingHour,
+            closingHour: selectedBranch.closingHour,
+          ),
 
-            const SizedBox(height: AppSizes.xxl),
+          const SizedBox(height: AppSizes.xxl),
 
-            // Branch rings - horizontal scroll
-            BranchRingsList(
-              branches: branches,
-              selectedIndex: _selectedIndex,
-              onBranchSelected: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-            ),
+          // Branch rings - horizontal scroll
+          BranchRingsList(
+            branches: branches,
+            selectedIndex: _selectedIndex,
+            userPosition: userPosition,
+            onBranchSelected: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
 
-            const SizedBox(height: AppSizes.xxl),
+          const SizedBox(height: AppSizes.xxl),
 
-            // Selected branch details - natural height
-            BranchDetailsSection(branch: selectedBranch),
+          // Selected branch details - natural height
+          BranchDetailsSection(
+            branch: selectedBranch,
+            userPosition: userPosition,
+          ),
 
-            const SizedBox(height: AppSizes.lg),
+          const SizedBox(height: AppSizes.lg),
 
-            // Open button
-            _buildOpenButton(selectedBranch),
+          // Open button
+          _buildOpenButton(selectedBranch, userPosition),
 
-            const SizedBox(height: AppSizes.xl),
-          ],
-        ),
+          const SizedBox(height: AppSizes.xl),
+        ],
       ),
     );
   }
 
-  Widget _buildOpenButton(Branch branch) {
+  Widget _buildOpenButton(
+    Branch branch,
+    ({double lat, double lng})? userPosition,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
       child: CustomButton(
         text: 'CONTINUE >>>',
         textColor: AppColors.white,
         onPressed: () {
-          //first clear the branch id if exist
+          // First clear the branch id and distance if they exist
           ref.read(currentBranchProvider.notifier).clear();
+          ref.read(currentBranchDistanceProvider.notifier).clear();
+
           // Store the selected branch ID and check if successful
-          final success = ref
+          final branchSuccess = ref
               .read(currentBranchProvider.notifier)
               .set(branch.id);
+          if (!branchSuccess) return;
 
-          // Only navigate if branch ID was successfully stored
-          if (success && mounted) {
-            // IMPORTANT: Use `go()` (not `push()`) when entering the tab shell routes (Home/Cart/Order/Profile).
-            // `push()` can create an inconsistent stack across nested navigators and later cause navigation/layout issues.
-            context.go(RouteName.home);
-          }
+          // We must set actual distance to navigate (GPS required)
+          if (userPosition == null) return;
+
+          final distanceKm = DistanceCalculator.distanceInKm(
+            userPosition,
+            branch.location,
+          );
+          final distanceSuccess = ref
+              .read(currentBranchDistanceProvider.notifier)
+              .set(distanceKm);
+          if (!distanceSuccess || !mounted) return;
+
+          // IMPORTANT: Use `go()` (not `push()`) when entering the tab shell routes (Home/Cart/Order/Profile).
+          // `push()` can create an inconsistent stack across nested navigators and later cause navigation/layout issues.
+          context.go(RouteName.home);
           // If setting failed, the user stays on the branch selection screen
           // This is a safety measure - in practice, this should rarely fail
         },

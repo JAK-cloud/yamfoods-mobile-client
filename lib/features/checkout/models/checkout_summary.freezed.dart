@@ -22,7 +22,8 @@ mixin _$CheckoutSummary {
  double get subtotal;// priceTotal - discountTotal (matches OrderRequestData)
  double get vatTotal;// sum of per-item VAT calculated on discounted prices
  double get deliveryFee;// 0 for pickup, calculated for delivery
- double get totalAmount;// subtotal + vatTotal + deliveryFee (matches OrderRequestData)
+ double get transactionFee;// Chapa 2.5% fee when payment method is chapa
+ double get totalAmount;// subtotal + vatTotal + deliveryFee + transactionFee
  int get quantity;
 /// Create a copy of CheckoutSummary
 /// with the given fields replaced by the non-null parameter values.
@@ -34,16 +35,16 @@ $CheckoutSummaryCopyWith<CheckoutSummary> get copyWith => _$CheckoutSummaryCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutSummary&&(identical(other.priceTotal, priceTotal) || other.priceTotal == priceTotal)&&(identical(other.itemDiscountTotal, itemDiscountTotal) || other.itemDiscountTotal == itemDiscountTotal)&&(identical(other.promoDiscount, promoDiscount) || other.promoDiscount == promoDiscount)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutSummary&&(identical(other.priceTotal, priceTotal) || other.priceTotal == priceTotal)&&(identical(other.itemDiscountTotal, itemDiscountTotal) || other.itemDiscountTotal == itemDiscountTotal)&&(identical(other.promoDiscount, promoDiscount) || other.promoDiscount == promoDiscount)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.transactionFee, transactionFee) || other.transactionFee == transactionFee)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.quantity, quantity) || other.quantity == quantity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,priceTotal,itemDiscountTotal,promoDiscount,pointDiscount,discountTotal,subtotal,vatTotal,deliveryFee,totalAmount,quantity);
+int get hashCode => Object.hash(runtimeType,priceTotal,itemDiscountTotal,promoDiscount,pointDiscount,discountTotal,subtotal,vatTotal,deliveryFee,transactionFee,totalAmount,quantity);
 
 @override
 String toString() {
-  return 'CheckoutSummary(priceTotal: $priceTotal, itemDiscountTotal: $itemDiscountTotal, promoDiscount: $promoDiscount, pointDiscount: $pointDiscount, discountTotal: $discountTotal, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, totalAmount: $totalAmount, quantity: $quantity)';
+  return 'CheckoutSummary(priceTotal: $priceTotal, itemDiscountTotal: $itemDiscountTotal, promoDiscount: $promoDiscount, pointDiscount: $pointDiscount, discountTotal: $discountTotal, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, transactionFee: $transactionFee, totalAmount: $totalAmount, quantity: $quantity)';
 }
 
 
@@ -54,7 +55,7 @@ abstract mixin class $CheckoutSummaryCopyWith<$Res>  {
   factory $CheckoutSummaryCopyWith(CheckoutSummary value, $Res Function(CheckoutSummary) _then) = _$CheckoutSummaryCopyWithImpl;
 @useResult
 $Res call({
- double priceTotal, double itemDiscountTotal, double promoDiscount, double pointDiscount, double discountTotal, double subtotal, double vatTotal, double deliveryFee, double totalAmount, int quantity
+ double priceTotal, double itemDiscountTotal, double promoDiscount, double pointDiscount, double discountTotal, double subtotal, double vatTotal, double deliveryFee, double transactionFee, double totalAmount, int quantity
 });
 
 
@@ -71,7 +72,7 @@ class _$CheckoutSummaryCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutSummary
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? priceTotal = null,Object? itemDiscountTotal = null,Object? promoDiscount = null,Object? pointDiscount = null,Object? discountTotal = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? totalAmount = null,Object? quantity = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? priceTotal = null,Object? itemDiscountTotal = null,Object? promoDiscount = null,Object? pointDiscount = null,Object? discountTotal = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? transactionFee = null,Object? totalAmount = null,Object? quantity = null,}) {
   return _then(_self.copyWith(
 priceTotal: null == priceTotal ? _self.priceTotal : priceTotal // ignore: cast_nullable_to_non_nullable
 as double,itemDiscountTotal: null == itemDiscountTotal ? _self.itemDiscountTotal : itemDiscountTotal // ignore: cast_nullable_to_non_nullable
@@ -81,6 +82,7 @@ as double,discountTotal: null == discountTotal ? _self.discountTotal : discountT
 as double,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
 as double,vatTotal: null == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
 as double,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
+as double,transactionFee: null == transactionFee ? _self.transactionFee : transactionFee // ignore: cast_nullable_to_non_nullable
 as double,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as double,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,
@@ -165,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double totalAmount,  int quantity)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double transactionFee,  double totalAmount,  int quantity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CheckoutSummary() when $default != null:
-return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.totalAmount,_that.quantity);case _:
+return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.transactionFee,_that.totalAmount,_that.quantity);case _:
   return orElse();
 
 }
@@ -186,10 +188,10 @@ return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double totalAmount,  int quantity)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double transactionFee,  double totalAmount,  int quantity)  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutSummary():
-return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.totalAmount,_that.quantity);}
+return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.transactionFee,_that.totalAmount,_that.quantity);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -203,10 +205,10 @@ return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double totalAmount,  int quantity)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double priceTotal,  double itemDiscountTotal,  double promoDiscount,  double pointDiscount,  double discountTotal,  double subtotal,  double vatTotal,  double deliveryFee,  double transactionFee,  double totalAmount,  int quantity)?  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutSummary() when $default != null:
-return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.totalAmount,_that.quantity);case _:
+return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_that.pointDiscount,_that.discountTotal,_that.subtotal,_that.vatTotal,_that.deliveryFee,_that.transactionFee,_that.totalAmount,_that.quantity);case _:
   return null;
 
 }
@@ -218,7 +220,7 @@ return $default(_that.priceTotal,_that.itemDiscountTotal,_that.promoDiscount,_th
 
 
 class _CheckoutSummary implements CheckoutSummary {
-  const _CheckoutSummary({required this.priceTotal, required this.itemDiscountTotal, required this.promoDiscount, required this.pointDiscount, required this.discountTotal, required this.subtotal, required this.vatTotal, required this.deliveryFee, required this.totalAmount, required this.quantity});
+  const _CheckoutSummary({required this.priceTotal, required this.itemDiscountTotal, required this.promoDiscount, required this.pointDiscount, required this.discountTotal, required this.subtotal, required this.vatTotal, required this.deliveryFee, required this.transactionFee, required this.totalAmount, required this.quantity});
   
 
 @override final  double priceTotal;
@@ -237,8 +239,10 @@ class _CheckoutSummary implements CheckoutSummary {
 // sum of per-item VAT calculated on discounted prices
 @override final  double deliveryFee;
 // 0 for pickup, calculated for delivery
+@override final  double transactionFee;
+// Chapa 2.5% fee when payment method is chapa
 @override final  double totalAmount;
-// subtotal + vatTotal + deliveryFee (matches OrderRequestData)
+// subtotal + vatTotal + deliveryFee + transactionFee
 @override final  int quantity;
 
 /// Create a copy of CheckoutSummary
@@ -251,16 +255,16 @@ _$CheckoutSummaryCopyWith<_CheckoutSummary> get copyWith => __$CheckoutSummaryCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutSummary&&(identical(other.priceTotal, priceTotal) || other.priceTotal == priceTotal)&&(identical(other.itemDiscountTotal, itemDiscountTotal) || other.itemDiscountTotal == itemDiscountTotal)&&(identical(other.promoDiscount, promoDiscount) || other.promoDiscount == promoDiscount)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutSummary&&(identical(other.priceTotal, priceTotal) || other.priceTotal == priceTotal)&&(identical(other.itemDiscountTotal, itemDiscountTotal) || other.itemDiscountTotal == itemDiscountTotal)&&(identical(other.promoDiscount, promoDiscount) || other.promoDiscount == promoDiscount)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.discountTotal, discountTotal) || other.discountTotal == discountTotal)&&(identical(other.subtotal, subtotal) || other.subtotal == subtotal)&&(identical(other.vatTotal, vatTotal) || other.vatTotal == vatTotal)&&(identical(other.deliveryFee, deliveryFee) || other.deliveryFee == deliveryFee)&&(identical(other.transactionFee, transactionFee) || other.transactionFee == transactionFee)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.quantity, quantity) || other.quantity == quantity));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,priceTotal,itemDiscountTotal,promoDiscount,pointDiscount,discountTotal,subtotal,vatTotal,deliveryFee,totalAmount,quantity);
+int get hashCode => Object.hash(runtimeType,priceTotal,itemDiscountTotal,promoDiscount,pointDiscount,discountTotal,subtotal,vatTotal,deliveryFee,transactionFee,totalAmount,quantity);
 
 @override
 String toString() {
-  return 'CheckoutSummary(priceTotal: $priceTotal, itemDiscountTotal: $itemDiscountTotal, promoDiscount: $promoDiscount, pointDiscount: $pointDiscount, discountTotal: $discountTotal, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, totalAmount: $totalAmount, quantity: $quantity)';
+  return 'CheckoutSummary(priceTotal: $priceTotal, itemDiscountTotal: $itemDiscountTotal, promoDiscount: $promoDiscount, pointDiscount: $pointDiscount, discountTotal: $discountTotal, subtotal: $subtotal, vatTotal: $vatTotal, deliveryFee: $deliveryFee, transactionFee: $transactionFee, totalAmount: $totalAmount, quantity: $quantity)';
 }
 
 
@@ -271,7 +275,7 @@ abstract mixin class _$CheckoutSummaryCopyWith<$Res> implements $CheckoutSummary
   factory _$CheckoutSummaryCopyWith(_CheckoutSummary value, $Res Function(_CheckoutSummary) _then) = __$CheckoutSummaryCopyWithImpl;
 @override @useResult
 $Res call({
- double priceTotal, double itemDiscountTotal, double promoDiscount, double pointDiscount, double discountTotal, double subtotal, double vatTotal, double deliveryFee, double totalAmount, int quantity
+ double priceTotal, double itemDiscountTotal, double promoDiscount, double pointDiscount, double discountTotal, double subtotal, double vatTotal, double deliveryFee, double transactionFee, double totalAmount, int quantity
 });
 
 
@@ -288,7 +292,7 @@ class __$CheckoutSummaryCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutSummary
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? priceTotal = null,Object? itemDiscountTotal = null,Object? promoDiscount = null,Object? pointDiscount = null,Object? discountTotal = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? totalAmount = null,Object? quantity = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? priceTotal = null,Object? itemDiscountTotal = null,Object? promoDiscount = null,Object? pointDiscount = null,Object? discountTotal = null,Object? subtotal = null,Object? vatTotal = null,Object? deliveryFee = null,Object? transactionFee = null,Object? totalAmount = null,Object? quantity = null,}) {
   return _then(_CheckoutSummary(
 priceTotal: null == priceTotal ? _self.priceTotal : priceTotal // ignore: cast_nullable_to_non_nullable
 as double,itemDiscountTotal: null == itemDiscountTotal ? _self.itemDiscountTotal : itemDiscountTotal // ignore: cast_nullable_to_non_nullable
@@ -298,6 +302,7 @@ as double,discountTotal: null == discountTotal ? _self.discountTotal : discountT
 as double,subtotal: null == subtotal ? _self.subtotal : subtotal // ignore: cast_nullable_to_non_nullable
 as double,vatTotal: null == vatTotal ? _self.vatTotal : vatTotal // ignore: cast_nullable_to_non_nullable
 as double,deliveryFee: null == deliveryFee ? _self.deliveryFee : deliveryFee // ignore: cast_nullable_to_non_nullable
+as double,transactionFee: null == transactionFee ? _self.transactionFee : transactionFee // ignore: cast_nullable_to_non_nullable
 as double,totalAmount: null == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
 as double,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,

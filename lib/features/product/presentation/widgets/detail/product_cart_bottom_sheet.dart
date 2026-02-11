@@ -54,12 +54,9 @@ class ProductCartBottomSheet extends ConsumerWidget {
           ),
         ],
       ),
-      child: SafeArea(
-        top: false,
-        child: cartItem == null
-            ? _buildAddToCartButton(context, ref, isAdding)
-            : _buildQuantityControls(context, ref, cartItem),
-      ),
+      child: cartItem == null
+          ? _buildAddToCartButton(context, ref, isAdding)
+          : _buildQuantityControls(context, ref, cartItem),
     );
   }
 
@@ -84,6 +81,7 @@ class ProductCartBottomSheet extends ConsumerWidget {
                       .read(cartProvider(product.branchId).notifier)
                       .addToCart(
                         CartRequestData(productId: product.id, quantity: 1),
+                        productForOptimistic: product,
                       );
                 },
               );

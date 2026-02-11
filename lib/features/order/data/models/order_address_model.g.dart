@@ -16,8 +16,8 @@ _OrderAddressModel _$OrderAddressModelFromJson(Map<String, dynamic> json) =>
         building: $checkedConvert('building', (v) => v as String?),
         houseNo: $checkedConvert('houseNo', (v) => v as String?),
         note: $checkedConvert('note', (v) => v as String?),
-        lat: $checkedConvert('lat', (v) => parseDouble(v)),
-        lng: $checkedConvert('lng', (v) => parseDouble(v)),
+        lat: $checkedConvert('lat', (v) => parseDoubleNullable(v)),
+        lng: $checkedConvert('lng', (v) => parseDoubleNullable(v)),
         location: $checkedConvert(
           'location',
           (v) => v == null

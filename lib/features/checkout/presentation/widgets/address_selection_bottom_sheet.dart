@@ -44,79 +44,77 @@ class AddressSelectionBottomSheet extends ConsumerWidget {
           topRight: Radius.circular(AppSizes.radiusLg),
         ),
       ),
-      child: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Handle bar
-            Container(
-              margin: EdgeInsets.symmetric(vertical: AppSizes.sm),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: AppColors.grey.withValues(alpha: 0.3),
-                borderRadius: BorderRadius.circular(2),
-              ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Handle bar
+          Container(
+            margin: EdgeInsets.symmetric(vertical: AppSizes.sm),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: AppColors.grey.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
             ),
-            // Header
-            Padding(
+          ),
+          // Header
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
+            child: Row(
+              children: [
+                Text(
+                  'Select Delivery Address',
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSizes.xs),
+          // Address list
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
               padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
-              child: Row(
-                children: [
-                  Text(
-                    'Select Delivery Address',
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: AppSizes.xs),
-            // Address list
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
-                itemCount: addresses.length,
-                itemBuilder: (context, index) {
-                  final address = addresses[index];
-                  final isSelected = selectedAddress?.id == address.id;
+              itemCount: addresses.length,
+              itemBuilder: (context, index) {
+                final address = addresses[index];
+                final isSelected = selectedAddress?.id == address.id;
 
-                  return _SelectableAddressCard(
-                    address: address,
-                    isSelected: isSelected,
-                    onTap: () {
-                      ref
-                          .read(checkoutProvider(branchId).notifier)
-                          .selectAddress(address);
-                      context.pop();
-                    },
-                  );
-                },
-              ),
+                return _SelectableAddressCard(
+                  address: address,
+                  isSelected: isSelected,
+                  onTap: () {
+                    ref
+                        .read(checkoutProvider(branchId).notifier)
+                        .selectAddress(address);
+                    context.pop();
+                  },
+                );
+              },
             ),
-            // Add Address button
-            Padding(
-              padding: EdgeInsets.all(AppSizes.sm),
-              child: CustomButton(
-                text: 'Add New Address',
-                width: 200,
-                onPressed: () {
-                  context.pop();
-                  context.push(RouteName.createOrUpdateAddress);
-                },
-                height: 44,
-              ),
+          ),
+          // Add Address button
+          Padding(
+            padding: EdgeInsets.all(AppSizes.sm),
+            child: CustomButton(
+              text: 'Add New Address',
+              width: 200,
+              onPressed: () {
+                context.pop();
+                context.push(RouteName.createOrUpdateAddress);
+              },
+              height: 44,
             ),
-            SizedBox(height: MediaQuery.of(context).padding.bottom),
-          ],
-        ),
+          ),
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
+        ],
       ),
     );
   }

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/components/empty_state.dart';
-import '../../../../app/components/error_widget.dart' as app_error;
-import '../../../../app/components/skeleton/product_card_skeleton.dart';
+import '../../../../app/components/skeleton/product_grid_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/errors/failure.dart';
 import '../../../product/presentation/providers/product_providers.dart';
 import '../../../product/presentation/widgets/product_card.dart';
 import '../../../subcategory/domain/entities/subcategory.dart';
@@ -56,37 +54,8 @@ class CategoryProductsGrid extends ConsumerWidget {
           },
         );
       },
-      loading: () => GridView.builder(
-        padding: EdgeInsets.all(AppSizes.sm),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: AppSizes.sm,
-          mainAxisSpacing: AppSizes.sm,
-          childAspectRatio: 0.75,
-        ),
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return const ProductCardSkeleton();
-        },
-      ),
-      error: (error, stackTrace) => Center(
-        child: app_error.ErrorWidgett(
-          title: 'Failed to load products',
-          failure: error is Failure
-              ? error
-              : Failure.unexpected(message: error.toString()),
-          onRetry: () => selectedSubcategory == null
-              ? ref.refresh(
-                  categoryProductsProvider(branchId, categoryId).future,
-                )
-              : ref.refresh(
-                  subcategoryProductsProvider(
-                    branchId,
-                    selectedSubcategory!.id,
-                  ).future,
-                ),
-        ),
-      ),
+      loading: () => const ProductGridSkeleton(),
+      error: (error, stackTrace) => const ProductGridSkeleton(),
     );
   }
 }

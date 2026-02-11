@@ -31,25 +31,24 @@ class AppUpdateBottomSheet extends StatelessWidget {
 
     return PopScope(
       canPop: !isBlocking,
-      child: SafeArea(
-        top: false,
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(AppSizes.lg),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: isBlocking
-                ? BorderRadius.zero
-                : const BorderRadius.only(
-                    topLeft: Radius.circular(AppSizes.radiusLg),
-                    topRight: Radius.circular(AppSizes.radiusLg),
-                  ),
-          ),
-          child: Column(
-            mainAxisSize: isBlocking ? MainAxisSize.max : MainAxisSize.min,
-            mainAxisAlignment:
-                isBlocking ? MainAxisAlignment.center : MainAxisAlignment.start,
-            children: [
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(AppSizes.lg),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: isBlocking
+              ? BorderRadius.zero
+              : const BorderRadius.only(
+                  topLeft: Radius.circular(AppSizes.radiusLg),
+                  topRight: Radius.circular(AppSizes.radiusLg),
+                ),
+        ),
+        child: Column(
+          mainAxisSize: isBlocking ? MainAxisSize.max : MainAxisSize.min,
+          mainAxisAlignment: isBlocking
+              ? MainAxisAlignment.center
+              : MainAxisAlignment.start,
+          children: [
             if (!isBlocking) ...[
               Container(
                 width: 44,
@@ -62,7 +61,9 @@ class AppUpdateBottomSheet extends StatelessWidget {
               SizedBox(height: AppSizes.lg),
             ],
             Icon(
-              isBlocking ? Icons.system_update_alt : Icons.new_releases_outlined,
+              isBlocking
+                  ? Icons.system_update_alt
+                  : Icons.new_releases_outlined,
               size: isBlocking ? 56 : 44,
               color: isBlocking ? AppColors.error : AppColors.primary,
             ),
@@ -174,16 +175,16 @@ class AppUpdateBottomSheet extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );
   }
 
   Future<void> _handleUpdate(BuildContext context) async {
-    final link =
-        Platform.isAndroid ? backend.playstoreLink : backend.appstoreLink;
+    final link = Platform.isAndroid
+        ? backend.playstoreLink
+        : backend.appstoreLink;
     final normalized = link?.trim();
 
     if (normalized == null || normalized.isEmpty) {

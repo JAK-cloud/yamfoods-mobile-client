@@ -1,0 +1,13 @@
+# Native splash screen config – single source for Android & iOS.
+# Regenerate after changes: dart run flutter_native_splash:create
+
+flutter_native_splash:
+  # Background color for pre-Flutter native splash (all platforms except Android 12+)
+  color: "#64390C"
+
+  fullscreen: true
+
+  # Android 12+ uses a separate API (window background + center icon, clipped to circle)
+  android_12:
+    color: "#64390C"
+    icon_background_color: "#64390C"

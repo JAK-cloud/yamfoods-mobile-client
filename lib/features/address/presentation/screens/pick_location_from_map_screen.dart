@@ -86,10 +86,7 @@ class _PickLocationFromMapScreenState
       return;
     }
 
-    context.pop(<String, double>{
-      'lat': _selectedLat!,
-      'lng': _selectedLng!,
-    });
+    context.pop(<String, double>{'lat': _selectedLat!, 'lng': _selectedLng!});
   }
 
   @override
@@ -97,110 +94,106 @@ class _PickLocationFromMapScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: CustomAppBar(title: 'Pick Location'),
-      body: SafeArea(
-        top: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSizes.md),
-                child: _isLoadingInitial
-                    ? _buildLoadingState()
-                    : _selectedLat != null && _selectedLng != null
-                        ? LocationMapPicker(
-                            initialLat: _selectedLat!,
-                            initialLng: _selectedLng!,
-                            onLocationSelected: _onLocationSelected,
-                          )
-                        : _buildErrorState(),
-              ),
-            ),
-            // Bottom section with coordinates and button
-            Container(
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
               padding: const EdgeInsets.all(AppSizes.md),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Selected location display
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(AppSizes.sm),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.radiusSm),
-                        ),
-                        child: Icon(
-                          Icons.location_on_rounded,
-                          color: AppColors.primary,
-                          size: 20,
-                        ),
+              child: _isLoadingInitial
+                  ? _buildLoadingState()
+                  : _selectedLat != null && _selectedLng != null
+                  ? LocationMapPicker(
+                      initialLat: _selectedLat!,
+                      initialLng: _selectedLng!,
+                      onLocationSelected: _onLocationSelected,
+                    )
+                  : _buildErrorState(),
+            ),
+          ),
+          // Bottom section with coordinates and button
+          Container(
+            padding: const EdgeInsets.all(AppSizes.md),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, -2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Selected location display
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(AppSizes.sm),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(AppSizes.radiusSm),
                       ),
-                      const SizedBox(width: AppSizes.sm),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                      child: Icon(
+                        Icons.location_on_rounded,
+                        color: AppColors.primary,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: AppSizes.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Selected Location',
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: AppColors.txtSecondary,
+                            ),
+                          ),
+                          if (_selectedLat != null && _selectedLng != null)
                             Text(
-                              'Selected Location',
-                              style: AppTextStyles.bodySmall.copyWith(
+                              'Lat: ${_selectedLat!.toStringAsFixed(6)}, Lng: ${_selectedLng!.toStringAsFixed(6)}',
+                              style: AppTextStyles.bodyMedium.copyWith(
+                                color: AppColors.txtPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          else
+                            Text(
+                              'Tap on map to select',
+                              style: AppTextStyles.bodyMedium.copyWith(
                                 color: AppColors.txtSecondary,
+                                fontStyle: FontStyle.italic,
                               ),
                             ),
-                            if (_selectedLat != null && _selectedLng != null)
-                              Text(
-                                'Lat: ${_selectedLat!.toStringAsFixed(6)}, Lng: ${_selectedLng!.toStringAsFixed(6)}',
-                                style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.txtPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            else
-                              Text(
-                                'Tap on map to select',
-                                style: AppTextStyles.bodyMedium.copyWith(
-                                  color: AppColors.txtSecondary,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_errorMessage != null) ...[
-                    const SizedBox(height: AppSizes.sm),
-                    Text(
-                      _errorMessage!,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.error,
+                        ],
                       ),
                     ),
                   ],
-                  const SizedBox(height: AppSizes.md),
-                  // Pick button
-                  CustomButton(
-                    text: 'Pick this location',
-                    onPressed: _onPickPressed,
-                    isLoading: false,
+                ),
+                if (_errorMessage != null) ...[
+                  const SizedBox(height: AppSizes.sm),
+                  Text(
+                    _errorMessage!,
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.error,
+                    ),
                   ),
                 ],
-              ),
+                const SizedBox(height: AppSizes.md),
+                // Pick button
+                CustomButton(
+                  text: 'Pick this location',
+                  onPressed: _onPickPressed,
+                  isLoading: false,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

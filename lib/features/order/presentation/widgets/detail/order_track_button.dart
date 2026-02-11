@@ -9,6 +9,7 @@ import '../../../../../core/enums/order_status.dart';
 import '../../../../../shared/entities/address_location.dart';
 import '../../../../map/presentation/models/map_screen_args.dart';
 import '../../../domain/entities/order.dart';
+import '../../../domain/entities/order_extensions.dart';
 
 /// Track order button displayed when order status is outForDelivery.
 ///
@@ -30,17 +31,20 @@ class OrderTrackButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final branchLat = order.branchLocation.lat;
-    final branchLng = order.branchLocation.lng;
-    final deliveryLat = order.deliveryLocation.lat;
-    final deliveryLng = order.deliveryLocation.lng;
-
-    if (branchLat == null ||
-        branchLng == null ||
-        deliveryLat == null ||
-        deliveryLng == null) {
+    if (!order.hasValidTrackingCoordinates) {
       return const SizedBox.shrink();
     }
+
+    final branchLat = order.branchLocation.lat!;
+    final branchLng = order.branchLocation.lng!;
+    final deliveryLat = order.deliveryLocation.lat!;
+    final deliveryLng = order.deliveryLocation.lng!;
+
+    // print the coordinates
+    print('branchLat: $branchLat');
+    print('branchLng: $branchLng');
+    print('deliveryLat: $deliveryLat');
+    print('deliveryLng: $deliveryLng');
 
     return SizedBox(
       width: double.infinity,

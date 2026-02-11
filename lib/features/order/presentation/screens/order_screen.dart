@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/empty_state.dart';
 import '../../../../app/components/error_widget.dart';
+import '../../../../app/components/skeleton/order_card_skeleton.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
@@ -25,60 +26,58 @@ class OrderScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            // Fixed header
-            const OrderHeader(),
-            // Scrollable content
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.md),
-                child: ordersAsync.when(
-                  data: (orders) {
-                    if (orders.isEmpty) {
-                      return EmptyState(
-                        icon: Icons.shopping_bag_outlined,
-                        title: 'No orders yet',
-                        subtitle:
-                            'Your order history will appear here once you place an order',
-                        actionText: 'Browse Menu',
-                        onAction: () => context.pushReplacement(RouteName.home),
-                      );
-                    }
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(56),
+        child: OrderHeader(),
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.md),
+        child: ordersAsync.when(
+          data: (orders) {
+            if (orders.isEmpty) {
+              return EmptyState(
+                icon: Icons.shopping_bag_outlined,
+                title: 'No orders yet',
+                subtitle:
+                    'Your order history will appear here once you place an order',
+                actionText: 'Browse Menu',
+                onAction: () => context.pushReplacement(RouteName.home),
+              );
+            }
 
-                    return RefreshIndicator(
-                      onRefresh: () => ref.refresh(allOrdersProvider.future),
-                      color: AppColors.primary,
-                      child: ListView.separated(
-                        itemCount: orders.length,
-                        separatorBuilder: (context, index) => Divider(
-                          height: 1,
-                          thickness: 1,
-                          color: AppColors.grey.withValues(alpha: 0.2),
-                        ),
-                        itemBuilder: (context, index) {
-                          return OrderCard(order: orders[index]);
-                        },
-                      ),
-                    );
-                  },
-                  error: (error, stackTrace) => ErrorWidgett(
-                    icon: Icons.error_outline,
-                    title: 'Error loading orders',
-                    failure: error is Failure
-                        ? error
-                        : Failure.unexpected(message: error.toString()),
-                    onRetry: () => ref.refresh(allOrdersProvider.future),
-                  ),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: AppColors.primary),
-                  ),
+            return RefreshIndicator(
+              onRefresh: () => ref.refresh(allOrdersProvider.future),
+              color: AppColors.primary,
+              child: ListView.separated(
+                itemCount: orders.length,
+                separatorBuilder: (context, index) => Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: AppColors.grey.withValues(alpha: 0.2),
                 ),
+                itemBuilder: (context, index) {
+                  return OrderCard(order: orders[index]);
+                },
               ),
+            );
+          },
+          error: (error, stackTrace) => ErrorWidgett(
+            icon: Icons.error_outline,
+            title: 'Error loading orders',
+            failure: error is Failure
+                ? error
+                : Failure.unexpected(message: error.toString()),
+            onRetry: () => ref.refresh(allOrdersProvider.future),
+          ),
+          loading: () => ListView.separated(
+            itemCount: 4,
+            separatorBuilder: (context, index) => Divider(
+              height: 1,
+              thickness: 1,
+              color: AppColors.grey.withValues(alpha: 0.2),
             ),
-          ],
+            itemBuilder: (context, index) => const OrderCardSkeleton(),
+          ),
         ),
       ),
     );

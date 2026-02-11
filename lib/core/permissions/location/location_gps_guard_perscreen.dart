@@ -25,7 +25,8 @@ class LocationGpsGuardPerscreen extends StatefulWidget {
   final Widget child;
 
   @override
-  State<LocationGpsGuardPerscreen> createState() => _LocationGpsGuardPerscreenState();
+  State<LocationGpsGuardPerscreen> createState() =>
+      _LocationGpsGuardPerscreenState();
 }
 
 class _LocationGpsGuardPerscreenState extends State<LocationGpsGuardPerscreen>
@@ -149,49 +150,47 @@ class _LocationGpsGuardPerscreenState extends State<LocationGpsGuardPerscreen>
       canPop: false, // Prevent back button from bypassing GPS requirement
       child: Scaffold(
         backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSizes.xl),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Icon
-                Container(
-                  padding: const EdgeInsets.all(AppSizes.lg),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.gps_fixed,
-                    size: 48,
-                    color: AppColors.primary,
-                  ),
+        body: Padding(
+          padding: const EdgeInsets.all(AppSizes.xl),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Icon
+              Container(
+                padding: const EdgeInsets.all(AppSizes.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(height: AppSizes.xl),
-
-                // Title
-                Text(
-                  'GPS Required',
-                  style: AppTextStyles.h4,
-                  textAlign: TextAlign.center,
+                child: Icon(
+                  Icons.gps_fixed,
+                  size: 48,
+                  color: AppColors.primary,
                 ),
-                const SizedBox(height: AppSizes.md),
+              ),
+              const SizedBox(height: AppSizes.xl),
 
-                // Message
-                Text(
-                  'This screen requires high-accuracy location (GPS) to function properly. Please enable GPS when prompted.',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.txtSecondary,
-                  ),
-                  textAlign: TextAlign.center,
+              // Title
+              Text(
+                'GPS Required',
+                style: AppTextStyles.h4,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSizes.md),
+
+              // Message
+              Text(
+                'This screen requires high-accuracy location (GPS) to function properly. Please enable GPS when prompted.',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.txtSecondary,
                 ),
-                const SizedBox(height: AppSizes.xl),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSizes.xl),
 
-                // Loading indicator
-                const CircularProgressIndicator(),
-              ],
-            ),
+              // Loading indicator
+              const CircularProgressIndicator(),
+            ],
           ),
         ),
       ),

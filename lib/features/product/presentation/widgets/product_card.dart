@@ -291,6 +291,7 @@ class ProductCard extends ConsumerWidget {
                   .read(cartProvider(product.branchId).notifier)
                   .addToCart(
                     CartRequestData(productId: product.id, quantity: 1),
+                    productForOptimistic: product,
                   );
             },
           );

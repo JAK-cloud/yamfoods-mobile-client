@@ -10,7 +10,7 @@ _CreateOrderResponseModel _$CreateOrderResponseModelFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('_CreateOrderResponseModel', json, ($checkedConvert) {
   final val = _CreateOrderResponseModel(
-    receiveCode: $checkedConvert('receiveCode', (v) => v as String),
+    receiveCode: $checkedConvert('receiveCode', (v) => v as String?),
     order: $checkedConvert(
       'order',
       (v) => OrderModel.fromJson(v as Map<String, dynamic>),

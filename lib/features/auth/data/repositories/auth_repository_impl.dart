@@ -143,7 +143,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, Unit>> logout() async {
-
     // Get refresh token from local storage
     final refreshToken = await _localDataSource.getRefreshToken();
 
@@ -154,8 +153,6 @@ class AuthRepositoryImpl implements AuthRepository {
       final fcmService = NotificationFcmService.instance;
       fcmToken = await fcmService.getToken();
       deviceType = NotificationFcmService.getDeviceType();
-
-      
 
       // Unsubscribe from topics on logout
       await fcmService.unsubscribeFromUserTopics();
@@ -169,8 +166,6 @@ class AuthRepositoryImpl implements AuthRepository {
       await _localDataSource.clearUser();
       return const Right(unit);
     }
-
-    
 
     final result = await _remoteDataSource.logout(
       refreshToken: refreshToken,

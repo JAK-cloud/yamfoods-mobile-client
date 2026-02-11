@@ -76,7 +76,7 @@ final class CheckoutNotifierProvider
   }
 }
 
-String _$checkoutNotifierHash() => r'c3cde3ac8e06851982fb2d4595b1640be56ef4ff';
+String _$checkoutNotifierHash() => r'b9bb9f7653f4380a5c5d8be136e0b8ae88f3eedc';
 
 /// Manages checkout state and user interactions.
 ///

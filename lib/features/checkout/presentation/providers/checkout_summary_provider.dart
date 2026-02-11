@@ -1,6 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/payment_method.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
+import '../../../branch/presentation/providers/branch_providers.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_summary_provider.dart';
 import '../../models/checkout_summary.dart';
@@ -36,19 +38,25 @@ CheckoutSummary checkoutSummary(Ref ref, int branchId) {
   final pointDiscount = checkoutState.pointDiscount ?? 0.0;
   final totalDiscount = itemDiscountTotal + promoDiscount + pointDiscount;
 
-  // Delivery fee from app configuration
+  // Delivery fee: deliveryStartFee + (deliveryFeePerKm * distanceKm)
   final appConfig = ref.watch(appConfigurationProvider).value;
-  final deliveryFee =
-      appConfig?.deliveryFeePerKm ?? 1000.0; //default delivery fee is 1000
+  final distanceKm = ref.watch(currentBranchDistanceProvider) ?? 0.0;
+  final startFee = appConfig?.deliveryStartFee ?? 0.0;
+  final perKm = appConfig?.deliveryFeePerKm ?? 0.0;
   final finalDeliveryFee = checkoutState.orderType == 'delivery'
-      ? deliveryFee
+      ? startFee + (perKm * distanceKm)
       : 0.0;
 
   // Calculate subtotal (priceTotal - all discounts)
   final subtotal = priceTotal - totalDiscount;
 
-  // Calculate total amount
-  final totalAmount = subtotal + vatTotal + finalDeliveryFee;
+  // Total before transaction fee
+  final totalBeforeFee = subtotal + vatTotal + finalDeliveryFee;
+
+  // Chapa 2.5% transaction fee when payment method is chapa
+  final isChapa = checkoutState.paymentMethod == PaymentMethod.chapa.value;
+  final transactionFee = isChapa ? totalBeforeFee * 0.025 : 0.0;
+  final totalAmount = totalBeforeFee + transactionFee;
 
   return CheckoutSummary(
     priceTotal: priceTotal,
@@ -59,6 +67,7 @@ CheckoutSummary checkoutSummary(Ref ref, int branchId) {
     subtotal: subtotal,
     vatTotal: vatTotal,
     deliveryFee: finalDeliveryFee,
+    transactionFee: transactionFee,
     totalAmount: totalAmount,
     quantity: quantity,
   );

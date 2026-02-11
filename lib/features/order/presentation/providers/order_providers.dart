@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import '../../../../core/network/di/dio_client.dart';
 import '../../data/datasources/order_api_service.dart';
 import '../../data/datasources/order_remote_data_source.dart';
@@ -12,6 +11,8 @@ import '../../domain/repositories/order_repository.dart';
 import '../../domain/usecases/create_order_usecase.dart';
 import '../../domain/usecases/get_all_orders_usecase.dart';
 import '../../domain/usecases/get_order_detail_usecase.dart';
+import '../../domain/entities/order_payment_query_result.dart';
+import '../../domain/entities/query_order_request.dart';
 import '../../domain/usecases/query_order_payment_usecase.dart';
 
 part 'order_providers.g.dart';
@@ -114,14 +115,17 @@ Future<OrderDetail> orderDetail(Ref ref, int orderId) async {
   return result.fold((failure) => throw failure, (orderDetail) => orderDetail);
 }
 
-/// Order payment provider
+/// Order payment status provider
 ///
-/// Fetches payment information for an order by orderId using the usecase.
-/// Returns [AsyncValue<Payment>] which handles loading, error, and data states.
+/// Fetches payment status for an order using the usecase.
+/// Returns [AsyncValue<OrderPaymentQueryResult>] which handles loading, error, and data states.
 @riverpod
-Future<Payment> queryOrder(Ref ref, int orderId) async {
+Future<OrderPaymentQueryResult> queryOrder(
+  Ref ref,
+  QueryOrderRequest request,
+) async {
   final usecase = await ref.watch(queryOrderPaymentUseCaseProvider.future);
-  final result = await usecase(orderId);
+  final result = await usecase(request);
 
-  return result.fold((failure) => throw failure, (payment) => payment);
+  return result.fold((failure) => throw failure, (status) => status);
 }

@@ -1,4 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../../product/domain/entities/product.dart';
 import '../../domain/entities/cart.dart';
 import '../../domain/entities/cart_request_data.dart';
 import 'cart_providers.dart';
@@ -25,20 +27,49 @@ class CartNotifier extends _$CartNotifier {
     state = await AsyncValue.guard(() => _load(branchId));
   }
 
-  Future<void> addToCart(CartRequestData data) async {
+  /// Adds an item to the cart. Optimistic when [productForOptimistic] is
+  /// provided: updates UI immediately and restores state on API failure.
+  Future<void> addToCart(
+    CartRequestData data, {
+    Product? productForOptimistic,
+  }) async {
     final addLoading = ref.read(cartAddLoadingProvider.notifier);
     addLoading.setLoading(true);
 
     try {
+      // Save current state as reserve before optimistic update
+      final current = state.value ?? const <Cart>[];
+      final reserveState = List<Cart>.from(current);
+
+      // Optimistic update: append new item locally when product is provided
+      if (productForOptimistic != null) {
+        final now = DateTime.now();
+        const tempId = -1;
+        final tempCart = Cart(
+          id: tempId,
+          userId: 0,
+          productId: data.productId,
+          quantity: data.quantity,
+          createdAt: now,
+          updatedAt: now,
+          product: productForOptimistic,
+        );
+        final list = List<Cart>.from(current)..add(tempCart);
+        state = AsyncValue.data(list);
+      }
+
       final useCase = await ref.read(addToCartUseCaseProvider.future);
       final result = await useCase.call(data);
 
       result.fold(
         (failure) {
+          if (productForOptimistic != null) {
+            state = AsyncValue.data(reserveState);
+          }
           ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
         },
         (_) {
-          // Reload carts to get the latest state after adding item
+          // Reload carts to get the latest state (real ids from server)
           load(branchId);
           ref
               .read(cartUiEventsProvider.notifier)

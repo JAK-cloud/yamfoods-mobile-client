@@ -31,67 +31,64 @@ class SearchScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const CustomAppBar(title: 'Search Products'),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Search field and filter button
-            Padding(
-              padding: const EdgeInsets.all(AppSizes.lg),
-              child: Row(
-                children: [
-                  Expanded(child: const SearchField()),
-                  const SizedBox(width: AppSizes.md),
-                  IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) =>
-                            FilterBottomSheet(branchId: branchId),
-                      );
-                    },
-                    icon: const Icon(Icons.tune_rounded),
-                    style: IconButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.white,
-                      padding: const EdgeInsets.all(AppSizes.md),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSizes.radius),
-                      ),
+      body: Column(
+        children: [
+          // Search field and filter button
+          Padding(
+            padding: const EdgeInsets.all(AppSizes.lg),
+            child: Row(
+              children: [
+                Expanded(child: const SearchField()),
+                const SizedBox(width: AppSizes.md),
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) =>
+                          FilterBottomSheet(branchId: branchId),
+                    );
+                  },
+                  icon: const Icon(Icons.tune_rounded),
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.white,
+                    padding: const EdgeInsets.all(AppSizes.md),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppSizes.radius),
                     ),
-                    tooltip: 'Filters',
+                  ),
+                  tooltip: 'Filters',
+                ),
+              ],
+            ),
+          ),
+
+          // Active filters section
+          FilterSection(branchId: branchId),
+
+          // Product grid
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () =>
+                  ref.refresh(searchProductsProvider(branchId, filters).future),
+              child: CustomScrollView(
+                slivers: [
+                  ProductSliverGrid(branchId: branchId, filters: filters),
+
+                  // Bottom padding for safe area
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height:
+                          MediaQuery.of(context).padding.bottom + AppSizes.lg,
+                    ),
                   ),
                 ],
               ),
             ),
-
-            // Active filters section
-            FilterSection(branchId: branchId),
-
-            // Product grid
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () => ref.refresh(
-                  searchProductsProvider(branchId, filters).future,
-                ),
-                child: CustomScrollView(
-                  slivers: [
-                    ProductSliverGrid(branchId: branchId, filters: filters),
-
-                    // Bottom padding for safe area
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height:
-                            MediaQuery.of(context).padding.bottom + AppSizes.lg,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

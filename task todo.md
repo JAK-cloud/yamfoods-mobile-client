@@ -44,5 +44,29 @@ address
 = done
 
 15. add skeleton in error and loading when no data available where needed
+= done
+
 16. update order detail screen to show payment status 
 = done
+
+17. add starting fee for delivery
+= done
+
+18. calculate distance then send it to backend then delivery fee = start fee + (distance * feePerKm)
+= done
+
+19. when user has no enough order amount promo code says invalid make it to show exact error/why
+20. add sekeleton everyhwre needed
+= done
+
+
+21. Areas that need skeleton = done
+a. home screen
+b. cart screen
+c. order screen
+d. profile screen
+e. branch screee
+
+#. Necessary
+22. rename chappa to chapa here in the frontend, also in the table too
+23. in the abckend when u fetch order detail it always verify paymment from tele handle when chapa

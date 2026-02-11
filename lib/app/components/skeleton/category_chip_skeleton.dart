@@ -1,43 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../theme/app_colors.dart';
 import '../../theme/app_sizes.dart';
+import 'app_skeletonizer_zone.dart';
 
-/// Skeleton loader for category chip.
+/// Skeleton loader for category chip with Skeletonizer shimmer animation.
 ///
 /// Displays a placeholder chip matching the category chip layout.
-/// Styled for premium surface with white/semi-transparent colors.
+/// Uses [kAppSkeletonEffectOnDark] so shimmer is visible on primary gradient.
 class CategoryChipSkeleton extends StatelessWidget {
   const CategoryChipSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 70,
-      margin: EdgeInsets.only(right: AppSizes.md),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.white.withValues(alpha: 0.3),
-            ),
-          ),
-          SizedBox(height: AppSizes.xs),
-          Container(
-            width: 50,
-            height: 12,
-            decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(AppSizes.radiusSm),
-            ),
-          ),
-        ],
+    return AppSkeletonizerZone(
+      effect: kAppSkeletonEffectOnDark,
+      child: Container(
+        width: 70,
+        margin: EdgeInsets.only(right: AppSizes.md),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Bone.circle(size: 56),
+            SizedBox(height: AppSizes.xs),
+            Bone(width: 50, height: 12),
+          ],
+        ),
       ),
     );
   }
 }
-

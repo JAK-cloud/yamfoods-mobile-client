@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../app/components/error_widget.dart' as app_error;
-import '../../../../app/theme/app_colors.dart';
+import '../../../../app/components/skeleton/subcategory_chip_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/errors/failure.dart';
 import '../../../subcategory/domain/entities/subcategory.dart';
 import '../../../subcategory/presentation/providers/subcategory_providers.dart';
 import 'subcategory_chip.dart';
@@ -84,39 +81,22 @@ class _SubcategoryChipsListState extends ConsumerState<SubcategoryChipsList> {
           ),
         );
       },
-      loading: () => SizedBox(
-        height: 48,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
-          itemCount: 5,
-          separatorBuilder: (_, __) => SizedBox(width: AppSizes.md),
-          itemBuilder: (context, index) {
-            return Container(
-              width: 80,
-              height: 36,
-              decoration: BoxDecoration(
-                color: AppColors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppSizes.radiusLg),
-              ),
-            );
-          },
-        ),
-      ),
-      error: (error, stackTrace) => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSizes.lg,
-          vertical: AppSizes.md,
-        ),
-        child: app_error.ErrorWidgett(
-          title: 'Failed to load subcategories',
-          failure: error is Failure
-              ? error
-              : Failure.unexpected(message: error.toString()),
-          onRetry: () => ref.refresh(
-            subcategoriesProvider(widget.branchId, widget.categoryId).future,
-          ),
-        ),
+      loading: () => subCatSkeleton(),
+      error: (error, stackTrace) => subCatSkeleton(),
+    );
+  }
+
+  SizedBox subCatSkeleton() {
+    return SizedBox(
+      height: 48,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
+        itemCount: 5,
+        separatorBuilder: (_, _) => SizedBox(width: AppSizes.md),
+        itemBuilder: (context, index) {
+          return const SubcategoryChipSkeleton();
+        },
       ),
     );
   }

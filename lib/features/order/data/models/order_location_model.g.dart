@@ -9,8 +9,8 @@ part of 'order_location_model.dart';
 _OrderLocationModel _$OrderLocationModelFromJson(Map<String, dynamic> json) =>
     $checkedCreate('_OrderLocationModel', json, ($checkedConvert) {
       final val = _OrderLocationModel(
-        lat: $checkedConvert('lat', (v) => (v as num?)?.toDouble()),
-        lng: $checkedConvert('lng', (v) => (v as num?)?.toDouble()),
+        lat: $checkedConvert('lat', (v) => parseDoubleNullable(v)),
+        lng: $checkedConvert('lng', (v) => parseDoubleNullable(v)),
       );
       return val;
     });

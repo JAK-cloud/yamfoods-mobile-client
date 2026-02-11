@@ -10,11 +10,16 @@ import 'working_days_row.dart';
 
 /// Widget displaying selected branch details.
 ///
-/// Shows working days, address, and distance information.
+/// Shows working days, address, and distance (only when [userPosition] is non-null).
 class BranchDetailsSection extends StatelessWidget {
   final Branch branch;
+  final ({double lat, double lng})? userPosition;
 
-  const BranchDetailsSection({super.key, required this.branch});
+  const BranchDetailsSection({
+    super.key,
+    required this.branch,
+    this.userPosition,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,35 +71,34 @@ class BranchDetailsSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSizes.sm),
-
-          // Distance
-          Builder(
-            builder: (context) {
-              final formattedDistance =
-                  DistanceCalculator.calculateDistanceInMeters(
-                    defaultCustomerPosition,
-                    branch.location,
-                  );
-
-              return Row(
-                children: [
-                  Icon(
-                    Icons.directions_car_outlined,
-                    size: 18,
-                    color: AppColors.white.withValues(alpha: 0.7),
-                  ),
-                  const SizedBox(width: AppSizes.sm),
-                  Text(
-                    '$formattedDistance ${AppTexts.awayFromYou}',
-                    style: AppTextStyles.bodyMedium.copyWith(
+          if (userPosition != null) ...[
+            const SizedBox(height: AppSizes.sm),
+            Builder(
+              builder: (context) {
+                final formattedDistance =
+                    DistanceCalculator.calculateDistanceInMeters(
+                      userPosition!,
+                      branch.location,
+                    );
+                return Row(
+                  children: [
+                    Icon(
+                      Icons.directions_car_outlined,
+                      size: 18,
                       color: AppColors.white.withValues(alpha: 0.7),
                     ),
-                  ),
-                ],
-              );
-            },
-          ),
+                    const SizedBox(width: AppSizes.sm),
+                    Text(
+                      '$formattedDistance ${AppTexts.awayFromYou}',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.white.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ],
       ),
     );

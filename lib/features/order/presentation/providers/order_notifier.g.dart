@@ -8,40 +8,19 @@ part of 'order_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Manages order creation state and operations.
-///
-/// **State Management:**
-/// - Manages order creation result state
-/// - Emits UI events for success/failure
-/// - Tracks loading state for order creation
-/// - Handles payment automatically after order creation
 
 @ProviderFor(OrderNotifier)
 const orderProvider = OrderNotifierProvider._();
 
-/// Manages order creation state and operations.
-///
-/// **State Management:**
-/// - Manages order creation result state
-/// - Emits UI events for success/failure
-/// - Tracks loading state for order creation
-/// - Handles payment automatically after order creation
 final class OrderNotifierProvider
     extends $NotifierProvider<OrderNotifier, CreateOrderResponse?> {
-  /// Manages order creation state and operations.
-  ///
-  /// **State Management:**
-  /// - Manages order creation result state
-  /// - Emits UI events for success/failure
-  /// - Tracks loading state for order creation
-  /// - Handles payment automatically after order creation
   const OrderNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'orderProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -62,15 +41,7 @@ final class OrderNotifierProvider
   }
 }
 
-String _$orderNotifierHash() => r'bf9ae703198da3cf752ed381d0bbfd8163bf1f5b';
-
-/// Manages order creation state and operations.
-///
-/// **State Management:**
-/// - Manages order creation result state
-/// - Emits UI events for success/failure
-/// - Tracks loading state for order creation
-/// - Handles payment automatically after order creation
+String _$orderNotifierHash() => r'757d3e79ebc33e51a121987655c7e2c5c568e219';
 
 abstract class _$OrderNotifier extends $Notifier<CreateOrderResponse?> {
   CreateOrderResponse? build();

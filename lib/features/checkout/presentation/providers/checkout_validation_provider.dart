@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/payment_method.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../achievement/presentation/providers/achievement_providers.dart';
 import '../../models/checkout_validator.dart';
@@ -103,6 +104,12 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
     }
   }
 
+  // Payment method validation (use enum: valid only if string parses to PaymentMethod)
+  final method = checkoutState.paymentMethod;
+  if (method == null || method.isEmpty || method.toPaymentMethod() == null) {
+    errors.add('Please select a payment method');
+  }
+
   return CheckoutValidation(
     isValid: errors.isEmpty,
     addressError:
@@ -133,6 +140,12 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
         checkoutState.scheduledAt != null &&
             checkoutState.scheduledAt!.isBefore(DateTime.now())
         ? 'Scheduled time must be in the future'
+        : null,
+    paymentError:
+        (method == null ||
+            method.isEmpty ||
+            (method.toPaymentMethod() == null))
+        ? 'Please select a payment method'
         : null,
     generalError: errors.isNotEmpty ? errors.first : null,
   );

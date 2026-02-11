@@ -30,67 +30,64 @@ class ProfileHeader extends ConsumerWidget {
         color: AppColors.primary,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(15)),
       ),
-      child: SafeArea(
-        bottom: false,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Main content (centered)
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Avatar
-                _Avatar(imageUrl: imageUrl)
-                    .animate()
-                    .scale(duration: 500.ms, curve: Curves.elasticOut)
-                    .fadeIn(),
-                const SizedBox(height: AppSizes.md),
-                // Name with badge
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        user.name,
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.white,
-                          letterSpacing: 0.5,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Main content (centered)
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Avatar
+              _Avatar(imageUrl: imageUrl)
+                  .animate()
+                  .scale(duration: 500.ms, curve: Curves.elasticOut)
+                  .fadeIn(),
+              const SizedBox(height: AppSizes.md),
+              // Name with badge
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      user.name,
+                      style: AppTextStyles.h3.copyWith(
+                        color: AppColors.white,
+                        letterSpacing: 0.5,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(width: AppSizes.xs),
-                    const _VerifiedBadge(),
-                  ],
-                ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
-              ],
-            ),
-            // Edit button (top right)
-            Positioned(
-              top: 0,
-              right: AppSizes.md,
-              child: IconButton(
-                onPressed: () =>
-                    context.push(RouteName.updateProfile, extra: user),
-                icon: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
-                    Icons.edit_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  const SizedBox(width: AppSizes.xs),
+                  const _VerifiedBadge(),
+                ],
+              ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
+            ],
+          ),
+          // Edit button (top right)
+          Positioned(
+            top: 0,
+            right: AppSizes.md,
+            child: IconButton(
+              onPressed: () =>
+                  context.push(RouteName.updateProfile, extra: user),
+              icon: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.edit_rounded,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppConfiguration {
 
- int get id; double get pointConversionRate; int get minimumPointsRedemption; int get maxCartItems; int get maxQuantityPerItem; double get deliveryFeePerKm; int get maxOrderSchedulingDays; DateTime get createdAt; DateTime get updatedAt; AppVersion get appVersion;
+ int get id; double get pointConversionRate; int get minimumPointsRedemption; int get maxCartItems; int get maxQuantityPerItem; double get deliveryFeePerKm; double get deliveryStartFee; int get maxOrderSchedulingDays; DateTime get createdAt; DateTime get updatedAt; AppVersion get appVersion;
 /// Create a copy of AppConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AppConfigurationCopyWith<AppConfiguration> get copyWith => _$AppConfigurationCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppConfiguration&&(identical(other.id, id) || other.id == id)&&(identical(other.pointConversionRate, pointConversionRate) || other.pointConversionRate == pointConversionRate)&&(identical(other.minimumPointsRedemption, minimumPointsRedemption) || other.minimumPointsRedemption == minimumPointsRedemption)&&(identical(other.maxCartItems, maxCartItems) || other.maxCartItems == maxCartItems)&&(identical(other.maxQuantityPerItem, maxQuantityPerItem) || other.maxQuantityPerItem == maxQuantityPerItem)&&(identical(other.deliveryFeePerKm, deliveryFeePerKm) || other.deliveryFeePerKm == deliveryFeePerKm)&&(identical(other.maxOrderSchedulingDays, maxOrderSchedulingDays) || other.maxOrderSchedulingDays == maxOrderSchedulingDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppConfiguration&&(identical(other.id, id) || other.id == id)&&(identical(other.pointConversionRate, pointConversionRate) || other.pointConversionRate == pointConversionRate)&&(identical(other.minimumPointsRedemption, minimumPointsRedemption) || other.minimumPointsRedemption == minimumPointsRedemption)&&(identical(other.maxCartItems, maxCartItems) || other.maxCartItems == maxCartItems)&&(identical(other.maxQuantityPerItem, maxQuantityPerItem) || other.maxQuantityPerItem == maxQuantityPerItem)&&(identical(other.deliveryFeePerKm, deliveryFeePerKm) || other.deliveryFeePerKm == deliveryFeePerKm)&&(identical(other.deliveryStartFee, deliveryStartFee) || other.deliveryStartFee == deliveryStartFee)&&(identical(other.maxOrderSchedulingDays, maxOrderSchedulingDays) || other.maxOrderSchedulingDays == maxOrderSchedulingDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,pointConversionRate,minimumPointsRedemption,maxCartItems,maxQuantityPerItem,deliveryFeePerKm,maxOrderSchedulingDays,createdAt,updatedAt,appVersion);
+int get hashCode => Object.hash(runtimeType,id,pointConversionRate,minimumPointsRedemption,maxCartItems,maxQuantityPerItem,deliveryFeePerKm,deliveryStartFee,maxOrderSchedulingDays,createdAt,updatedAt,appVersion);
 
 @override
 String toString() {
-  return 'AppConfiguration(id: $id, pointConversionRate: $pointConversionRate, minimumPointsRedemption: $minimumPointsRedemption, maxCartItems: $maxCartItems, maxQuantityPerItem: $maxQuantityPerItem, deliveryFeePerKm: $deliveryFeePerKm, maxOrderSchedulingDays: $maxOrderSchedulingDays, createdAt: $createdAt, updatedAt: $updatedAt, appVersion: $appVersion)';
+  return 'AppConfiguration(id: $id, pointConversionRate: $pointConversionRate, minimumPointsRedemption: $minimumPointsRedemption, maxCartItems: $maxCartItems, maxQuantityPerItem: $maxQuantityPerItem, deliveryFeePerKm: $deliveryFeePerKm, deliveryStartFee: $deliveryStartFee, maxOrderSchedulingDays: $maxOrderSchedulingDays, createdAt: $createdAt, updatedAt: $updatedAt, appVersion: $appVersion)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AppConfigurationCopyWith<$Res>  {
   factory $AppConfigurationCopyWith(AppConfiguration value, $Res Function(AppConfiguration) _then) = _$AppConfigurationCopyWithImpl;
 @useResult
 $Res call({
- int id, double pointConversionRate, int minimumPointsRedemption, int maxCartItems, int maxQuantityPerItem, double deliveryFeePerKm, int maxOrderSchedulingDays, DateTime createdAt, DateTime updatedAt, AppVersion appVersion
+ int id, double pointConversionRate, int minimumPointsRedemption, int maxCartItems, int maxQuantityPerItem, double deliveryFeePerKm, double deliveryStartFee, int maxOrderSchedulingDays, DateTime createdAt, DateTime updatedAt, AppVersion appVersion
 });
 
 
@@ -62,7 +62,7 @@ class _$AppConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of AppConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? pointConversionRate = null,Object? minimumPointsRedemption = null,Object? maxCartItems = null,Object? maxQuantityPerItem = null,Object? deliveryFeePerKm = null,Object? maxOrderSchedulingDays = null,Object? createdAt = null,Object? updatedAt = null,Object? appVersion = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? pointConversionRate = null,Object? minimumPointsRedemption = null,Object? maxCartItems = null,Object? maxQuantityPerItem = null,Object? deliveryFeePerKm = null,Object? deliveryStartFee = null,Object? maxOrderSchedulingDays = null,Object? createdAt = null,Object? updatedAt = null,Object? appVersion = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,pointConversionRate: null == pointConversionRate ? _self.pointConversionRate : pointConversionRate // ignore: cast_nullable_to_non_nullable
@@ -70,6 +70,7 @@ as double,minimumPointsRedemption: null == minimumPointsRedemption ? _self.minim
 as int,maxCartItems: null == maxCartItems ? _self.maxCartItems : maxCartItems // ignore: cast_nullable_to_non_nullable
 as int,maxQuantityPerItem: null == maxQuantityPerItem ? _self.maxQuantityPerItem : maxQuantityPerItem // ignore: cast_nullable_to_non_nullable
 as int,deliveryFeePerKm: null == deliveryFeePerKm ? _self.deliveryFeePerKm : deliveryFeePerKm // ignore: cast_nullable_to_non_nullable
+as double,deliveryStartFee: null == deliveryStartFee ? _self.deliveryStartFee : deliveryStartFee // ignore: cast_nullable_to_non_nullable
 as double,maxOrderSchedulingDays: null == maxOrderSchedulingDays ? _self.maxOrderSchedulingDays : maxOrderSchedulingDays // ignore: cast_nullable_to_non_nullable
 as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  double deliveryStartFee,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppConfiguration() when $default != null:
-return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);case _:
+return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.deliveryStartFee,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  double deliveryStartFee,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)  $default,) {final _that = this;
 switch (_that) {
 case _AppConfiguration():
-return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);}
+return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.deliveryStartFee,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -203,10 +204,10 @@ return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  double pointConversionRate,  int minimumPointsRedemption,  int maxCartItems,  int maxQuantityPerItem,  double deliveryFeePerKm,  double deliveryStartFee,  int maxOrderSchedulingDays,  DateTime createdAt,  DateTime updatedAt,  AppVersion appVersion)?  $default,) {final _that = this;
 switch (_that) {
 case _AppConfiguration() when $default != null:
-return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);case _:
+return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption,_that.maxCartItems,_that.maxQuantityPerItem,_that.deliveryFeePerKm,_that.deliveryStartFee,_that.maxOrderSchedulingDays,_that.createdAt,_that.updatedAt,_that.appVersion);case _:
   return null;
 
 }
@@ -218,7 +219,7 @@ return $default(_that.id,_that.pointConversionRate,_that.minimumPointsRedemption
 
 
 class _AppConfiguration implements AppConfiguration {
-  const _AppConfiguration({required this.id, required this.pointConversionRate, required this.minimumPointsRedemption, required this.maxCartItems, required this.maxQuantityPerItem, required this.deliveryFeePerKm, required this.maxOrderSchedulingDays, required this.createdAt, required this.updatedAt, required this.appVersion});
+  const _AppConfiguration({required this.id, required this.pointConversionRate, required this.minimumPointsRedemption, required this.maxCartItems, required this.maxQuantityPerItem, required this.deliveryFeePerKm, required this.deliveryStartFee, required this.maxOrderSchedulingDays, required this.createdAt, required this.updatedAt, required this.appVersion});
   
 
 @override final  int id;
@@ -227,6 +228,7 @@ class _AppConfiguration implements AppConfiguration {
 @override final  int maxCartItems;
 @override final  int maxQuantityPerItem;
 @override final  double deliveryFeePerKm;
+@override final  double deliveryStartFee;
 @override final  int maxOrderSchedulingDays;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
@@ -242,16 +244,16 @@ _$AppConfigurationCopyWith<_AppConfiguration> get copyWith => __$AppConfiguratio
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppConfiguration&&(identical(other.id, id) || other.id == id)&&(identical(other.pointConversionRate, pointConversionRate) || other.pointConversionRate == pointConversionRate)&&(identical(other.minimumPointsRedemption, minimumPointsRedemption) || other.minimumPointsRedemption == minimumPointsRedemption)&&(identical(other.maxCartItems, maxCartItems) || other.maxCartItems == maxCartItems)&&(identical(other.maxQuantityPerItem, maxQuantityPerItem) || other.maxQuantityPerItem == maxQuantityPerItem)&&(identical(other.deliveryFeePerKm, deliveryFeePerKm) || other.deliveryFeePerKm == deliveryFeePerKm)&&(identical(other.maxOrderSchedulingDays, maxOrderSchedulingDays) || other.maxOrderSchedulingDays == maxOrderSchedulingDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppConfiguration&&(identical(other.id, id) || other.id == id)&&(identical(other.pointConversionRate, pointConversionRate) || other.pointConversionRate == pointConversionRate)&&(identical(other.minimumPointsRedemption, minimumPointsRedemption) || other.minimumPointsRedemption == minimumPointsRedemption)&&(identical(other.maxCartItems, maxCartItems) || other.maxCartItems == maxCartItems)&&(identical(other.maxQuantityPerItem, maxQuantityPerItem) || other.maxQuantityPerItem == maxQuantityPerItem)&&(identical(other.deliveryFeePerKm, deliveryFeePerKm) || other.deliveryFeePerKm == deliveryFeePerKm)&&(identical(other.deliveryStartFee, deliveryStartFee) || other.deliveryStartFee == deliveryStartFee)&&(identical(other.maxOrderSchedulingDays, maxOrderSchedulingDays) || other.maxOrderSchedulingDays == maxOrderSchedulingDays)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.appVersion, appVersion) || other.appVersion == appVersion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,pointConversionRate,minimumPointsRedemption,maxCartItems,maxQuantityPerItem,deliveryFeePerKm,maxOrderSchedulingDays,createdAt,updatedAt,appVersion);
+int get hashCode => Object.hash(runtimeType,id,pointConversionRate,minimumPointsRedemption,maxCartItems,maxQuantityPerItem,deliveryFeePerKm,deliveryStartFee,maxOrderSchedulingDays,createdAt,updatedAt,appVersion);
 
 @override
 String toString() {
-  return 'AppConfiguration(id: $id, pointConversionRate: $pointConversionRate, minimumPointsRedemption: $minimumPointsRedemption, maxCartItems: $maxCartItems, maxQuantityPerItem: $maxQuantityPerItem, deliveryFeePerKm: $deliveryFeePerKm, maxOrderSchedulingDays: $maxOrderSchedulingDays, createdAt: $createdAt, updatedAt: $updatedAt, appVersion: $appVersion)';
+  return 'AppConfiguration(id: $id, pointConversionRate: $pointConversionRate, minimumPointsRedemption: $minimumPointsRedemption, maxCartItems: $maxCartItems, maxQuantityPerItem: $maxQuantityPerItem, deliveryFeePerKm: $deliveryFeePerKm, deliveryStartFee: $deliveryStartFee, maxOrderSchedulingDays: $maxOrderSchedulingDays, createdAt: $createdAt, updatedAt: $updatedAt, appVersion: $appVersion)';
 }
 
 
@@ -262,7 +264,7 @@ abstract mixin class _$AppConfigurationCopyWith<$Res> implements $AppConfigurati
   factory _$AppConfigurationCopyWith(_AppConfiguration value, $Res Function(_AppConfiguration) _then) = __$AppConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- int id, double pointConversionRate, int minimumPointsRedemption, int maxCartItems, int maxQuantityPerItem, double deliveryFeePerKm, int maxOrderSchedulingDays, DateTime createdAt, DateTime updatedAt, AppVersion appVersion
+ int id, double pointConversionRate, int minimumPointsRedemption, int maxCartItems, int maxQuantityPerItem, double deliveryFeePerKm, double deliveryStartFee, int maxOrderSchedulingDays, DateTime createdAt, DateTime updatedAt, AppVersion appVersion
 });
 
 
@@ -279,7 +281,7 @@ class __$AppConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of AppConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? pointConversionRate = null,Object? minimumPointsRedemption = null,Object? maxCartItems = null,Object? maxQuantityPerItem = null,Object? deliveryFeePerKm = null,Object? maxOrderSchedulingDays = null,Object? createdAt = null,Object? updatedAt = null,Object? appVersion = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? pointConversionRate = null,Object? minimumPointsRedemption = null,Object? maxCartItems = null,Object? maxQuantityPerItem = null,Object? deliveryFeePerKm = null,Object? deliveryStartFee = null,Object? maxOrderSchedulingDays = null,Object? createdAt = null,Object? updatedAt = null,Object? appVersion = null,}) {
   return _then(_AppConfiguration(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,pointConversionRate: null == pointConversionRate ? _self.pointConversionRate : pointConversionRate // ignore: cast_nullable_to_non_nullable
@@ -287,6 +289,7 @@ as double,minimumPointsRedemption: null == minimumPointsRedemption ? _self.minim
 as int,maxCartItems: null == maxCartItems ? _self.maxCartItems : maxCartItems // ignore: cast_nullable_to_non_nullable
 as int,maxQuantityPerItem: null == maxQuantityPerItem ? _self.maxQuantityPerItem : maxQuantityPerItem // ignore: cast_nullable_to_non_nullable
 as int,deliveryFeePerKm: null == deliveryFeePerKm ? _self.deliveryFeePerKm : deliveryFeePerKm // ignore: cast_nullable_to_non_nullable
+as double,deliveryStartFee: null == deliveryStartFee ? _self.deliveryStartFee : deliveryStartFee // ignore: cast_nullable_to_non_nullable
 as double,maxOrderSchedulingDays: null == maxOrderSchedulingDays ? _self.maxOrderSchedulingDays : maxOrderSchedulingDays // ignore: cast_nullable_to_non_nullable
 as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable

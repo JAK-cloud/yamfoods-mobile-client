@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/components/empty_state.dart';
-import '../../../../app/components/skeleton/product_card_skeleton.dart';
+import '../../../../app/components/skeleton/product_grid_skeleton.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../product/presentation/providers/product_providers.dart';
 import '../../product/presentation/widgets/product_card.dart';
@@ -50,36 +50,8 @@ class ProductSliverGrid extends ConsumerWidget {
           ),
         );
       },
-      loading: () => SliverPadding(
-        padding: EdgeInsets.all(AppSizes.sm),
-        sliver: SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: AppSizes.sm,
-            mainAxisSpacing: AppSizes.sm,
-            childAspectRatio: 0.75,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => const ProductCardSkeleton(),
-            childCount: 6,
-          ),
-        ),
-      ),
-      error: (error, stackTrace) => SliverPadding(
-        padding: EdgeInsets.all(AppSizes.sm),
-        sliver: SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: AppSizes.sm,
-            mainAxisSpacing: AppSizes.sm,
-            childAspectRatio: 0.75,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => const ProductCardSkeleton(),
-            childCount: 6,
-          ),
-        ),
-      ),
+      loading: () => productGridSkeletonSliver(),
+      error: (error, stackTrace) => productGridSkeletonSliver(),
     );
   }
 }

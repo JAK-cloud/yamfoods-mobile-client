@@ -82,7 +82,7 @@ class _BottomNavScreenState extends ConsumerState<BottomNavScreen> {
         }
       },
       child: Scaffold(
-        body: SafeArea(child: widget.navigationShell),
+        body: widget.navigationShell,
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
             splashFactory: NoSplash.splashFactory, // remove ripple

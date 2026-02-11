@@ -1,0 +1,206 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_images.dart';
+import '../../../../app/theme/app_sizes.dart';
+import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/enums/payment_method.dart';
+import '../providers/checkout_notifier.dart';
+
+/// Payment method selection: Telebirr or Chapa.
+class PaymentMethodSection extends ConsumerWidget {
+  final int branchId;
+
+  const PaymentMethodSection({super.key, required this.branchId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final checkoutState = ref.watch(checkoutProvider(branchId));
+    final paymentMethod = checkoutState.paymentMethod;
+
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AppSizes.sm,
+        vertical: AppSizes.xs,
+      ),
+      padding: EdgeInsets.all(AppSizes.sm),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppSizes.radius),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.grey.withValues(alpha: 0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Payment Method',
+            style: AppTextStyles.bodyLarge.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.txtPrimary,
+            ),
+          ),
+          SizedBox(height: AppSizes.sm),
+          _PaymentOption(
+            label: 'Telebirr (0% fee)',
+            isSelected: paymentMethod == PaymentMethod.telebirr.value,
+            onTap: () {
+              ref
+                  .read(checkoutProvider(branchId).notifier)
+                  .setPaymentMethod(PaymentMethod.telebirr.value);
+            },
+            imageRow: _PaymentLogo(
+              imagePath: AppImages.paymentTelebirr,
+              size: 64,
+            ),
+          ),
+          //add divider with primary color
+          Divider(
+            color: AppColors.background,
+            thickness: AppSizes.xs,
+            height: AppSizes.sm,
+          ),
+          _PaymentOption(
+            label: 'Chapa (2.5% fee)',
+            isSelected: paymentMethod == PaymentMethod.chapa.value,
+            onTap: () {
+              ref
+                  .read(checkoutProvider(branchId).notifier)
+                  .setPaymentMethod(PaymentMethod.chapa.value);
+            },
+            imageRow: Row(
+              children: [
+                Expanded(
+                    child: _PaymentLogo(imagePath: AppImages.paymentCbe)),
+                SizedBox(width: AppSizes.sm),
+                Expanded(
+                    child: _PaymentLogo(imagePath: AppImages.paymentMpesa)),
+                SizedBox(width: AppSizes.sm),
+                Expanded(
+                    child: _PaymentLogo(imagePath: AppImages.paymentTelebirr)),
+                SizedBox(width: AppSizes.sm),
+                Expanded(
+                    child: _PaymentLogo(imagePath: AppImages.paymentEbirr)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Rounded white container with a payment logo image.
+class _PaymentLogo extends StatelessWidget {
+  final String imagePath;
+  final double size;
+
+  const _PaymentLogo({
+    required this.imagePath,
+    this.size = 56,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppSizes.radius),
+      child: Container(
+        color: AppColors.white,
+        padding: EdgeInsets.all(AppSizes.xs),
+        child: Image.asset(
+          imagePath,
+          height: size,
+          width: size,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => Icon(Icons.payment, size: size),
+        ),
+      ),
+    );
+  }
+}
+
+class _PaymentOption extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Widget imageRow;
+
+  const _PaymentOption({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.imageRow,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(AppSizes.sm),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            width: isSelected ? 1 : 0,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Row 1: label ........... selection icon only
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    label,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      color: AppColors.txtPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                _SelectionCircle(isSelected: isSelected),
+              ],
+            ),
+            SizedBox(height: AppSizes.sm),
+            // Row 2: image(s)
+            imageRow,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SelectionCircle extends StatelessWidget {
+  final bool isSelected;
+
+  const _SelectionCircle({required this.isSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 24,
+      height: 24,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isSelected ? AppColors.primary : Colors.transparent,
+        border: Border.all(
+          color: isSelected ? AppColors.primary : AppColors.grey,
+          width: 2,
+        ),
+      ),
+      child: isSelected
+          ? const Icon(Icons.check, size: 16, color: AppColors.white)
+          : null,
+    );
+  }
+}

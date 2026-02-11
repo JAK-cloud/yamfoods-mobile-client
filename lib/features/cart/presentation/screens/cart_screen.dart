@@ -62,21 +62,14 @@ class CartScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            // Fixed header section
-            CartHeader(
-              branchId: branchId,
-              itemCount: cartAsync.value?.length ?? 0,
-            ),
-    
-            // Scrollable content area
-            CartList(cartAsync: cartAsync, branchId: branchId),
-          ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: CartHeader(
+          branchId: branchId,
+          itemCount: cartAsync.value?.length ?? 0,
         ),
       ),
+      body: CartList(cartAsync: cartAsync, branchId: branchId),
       // Bottom sheet with summary and checkout
       bottomSheet: cartAsync.value?.isNotEmpty == true
           ? CartSummaryCard(

@@ -5,13 +5,14 @@ import '../../domain/entities/create_order_response.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_detail.dart';
 import '../../domain/entities/order_request_data.dart';
-import '../../domain/entities/payment.dart';
+import '../../domain/entities/order_payment_query_result.dart';
+import '../../domain/entities/query_order_request.dart';
 import '../../domain/repositories/order_repository.dart';
 import '../datasources/order_remote_data_source.dart';
 import '../mappers/create_order_response_mapper.dart';
 import '../mappers/order_detail_mapper.dart';
 import '../mappers/order_mapper.dart';
-import '../mappers/payment_mapper.dart';
+import '../mappers/query_order_payment_response_mapper.dart';
 
 class OrderRepositoryImpl implements OrderRepository {
   final OrderRemoteDataSource remoteDataSource;
@@ -76,8 +77,10 @@ class OrderRepositoryImpl implements OrderRepository {
   }
 
   @override
-  Future<Either<Failure, Payment>> queryOrderPayment(int orderId) async {
-    final result = await remoteDataSource.queryOrderPayment(orderId);
+  Future<Either<Failure, OrderPaymentQueryResult>> queryOrderPayment(
+    QueryOrderRequest request,
+  ) async {
+    final result = await remoteDataSource.queryOrderPayment(request);
     return result.fold(
       (failure) => Left(failure),
       (model) => Right(model.toDomain()),

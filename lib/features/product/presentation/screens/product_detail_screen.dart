@@ -32,26 +32,21 @@ class ProductDetailScreen extends ConsumerWidget {
   final Product? product;
   final int? productId;
 
-  const ProductDetailScreen({
-    super.key,
-    this.product,
-    this.productId,
-  }) : assert(
-          product != null || productId != null,
-          'Either product or productId must be provided',
-        );
+  const ProductDetailScreen({super.key, this.product, this.productId})
+    : assert(
+        product != null || productId != null,
+        'Either product or productId must be provided',
+      );
 
   /// Creates screen with a Product object.
   const ProductDetailScreen.fromProduct({
     super.key,
     required Product this.product,
-  })  : productId = null;
+  }) : productId = null;
 
   /// Creates screen with a product ID (will fetch product).
-  const ProductDetailScreen.fromId({
-    super.key,
-    required int this.productId,
-  })  : product = null;
+  const ProductDetailScreen.fromId({super.key, required int this.productId})
+    : product = null;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -75,7 +70,8 @@ class ProductDetailScreen extends ConsumerWidget {
     final productAsync = ref.watch(productByIdProvider(branchId, productId!));
 
     return productAsync.when(
-      data: (fetchedProduct) => _buildProductDetail(context, ref, fetchedProduct),
+      data: (fetchedProduct) =>
+          _buildProductDetail(context, ref, fetchedProduct),
       loading: () => Scaffold(
         backgroundColor: AppColors.background,
         body: const Center(
@@ -99,7 +95,11 @@ class ProductDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProductDetail(BuildContext context, WidgetRef ref, Product product) {
+  Widget _buildProductDetail(
+    BuildContext context,
+    WidgetRef ref,
+    Product product,
+  ) {
     // Listen to review events
     ref.listen<ReviewUiEvent?>(reviewUiEventsProvider, (previous, next) {
       if (next == null) return;
@@ -123,99 +123,93 @@ class ProductDetailScreen extends ConsumerWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.background,
       extendBody: false,
-      body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            // Image Hero Section
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 280,
-                child: Stack(
-                  children: [
-                      // Curved background and carousel
-                    // Container(
-                    //   padding: const EdgeInsets.only(top: 28),
-                    //   height: 330,
-                    //   decoration: const BoxDecoration(
-                    //     color: AppColors.primary,
-                    //     borderRadius: BorderRadius.only(
-                    //       bottomLeft: Radius.circular(200),
-                    //       bottomRight: Radius.circular(200),
-                    //     ),
-                    //   ),
-                    //   child: ProductImageCarousel(images: product.imageUrls),
-                    // ),
-                    // Modern full-width image carousel with rounded bottom corners
-                    ProductImageCarouselModern(images: product.imageUrls),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          // Image Hero Section
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 280,
+              child: Stack(
+                children: [
+                  // Curved background and carousel
+                  // Container(
+                  //   padding: const EdgeInsets.only(top: 28),
+                  //   height: 330,
+                  //   decoration: const BoxDecoration(
+                  //     color: AppColors.primary,
+                  //     borderRadius: BorderRadius.only(
+                  //       bottomLeft: Radius.circular(200),
+                  //       bottomRight: Radius.circular(200),
+                  //     ),
+                  //   ),
+                  //   child: ProductImageCarousel(images: product.imageUrls),
+                  // ),
+                  // Modern full-width image carousel with rounded bottom corners
+                  ProductImageCarouselModern(images: product.imageUrls),
 
-                    // Floating Header
-                    const ProductDetailHeader(),
-                  ],
-                ),
+                  // Floating Header
+                  const ProductDetailHeader(),
+                ],
               ),
             ),
+          ),
 
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xl)),
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xl)),
 
-            // Product Info (name, rating, price)
-            SliverToBoxAdapter(child: ProductInfoSection(product: product)),
+          // Product Info (name, rating, price)
+          SliverToBoxAdapter(child: ProductInfoSection(product: product)),
 
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.lg)),
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.lg)),
 
-            // Nutrition/Calories (quick stat right after price)
-            SliverToBoxAdapter(
-              child: ProductNutritionPanel(nutrition: product.nutrition),
+          // Nutrition/Calories (quick stat right after price)
+          SliverToBoxAdapter(
+            child: ProductNutritionPanel(nutrition: product.nutrition),
+          ),
+
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
+
+          // Description
+          SliverToBoxAdapter(
+            child: ProductDescriptionSection(description: product.description),
+          ),
+
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xl)),
+
+          // Ingredients
+          SliverToBoxAdapter(
+            child: ProductIngredientsSection(ingredients: product.ingredients),
+          ),
+
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
+
+          // Related Products
+          SliverToBoxAdapter(
+            child: ProductRelatedSection(
+              productId: product.id,
+              branchId: product.branchId,
+              categoryId: product.categoryId,
+              subCategoryId: product.subCategoryId,
             ),
+          ),
 
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
 
-            // Description
-            SliverToBoxAdapter(
-              child: ProductDescriptionSection(
-                description: product.description,
-              ),
-            ),
+          // Review Form (only for authenticated users without review)
+          SliverToBoxAdapter(
+            child: ProductReviewFormSection(productId: product.id),
+          ),
 
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xl)),
+          SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
 
-            // Ingredients
-            SliverToBoxAdapter(
-              child: ProductIngredientsSection(
-                ingredients: product.ingredients,
-              ),
-            ),
+          // Reviews
+          SliverToBoxAdapter(
+            child: ProductReviewsSection(productId: product.id),
+          ),
 
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
-
-            // Related Products
-            SliverToBoxAdapter(
-              child: ProductRelatedSection(
-                productId: product.id,
-                branchId: product.branchId,
-                categoryId: product.categoryId,
-                subCategoryId: product.subCategoryId,
-              ),
-            ),
-
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
-
-            // Review Form (only for authenticated users without review)
-            SliverToBoxAdapter(
-              child: ProductReviewFormSection(productId: product.id),
-            ),
-
-            SliverToBoxAdapter(child: const SizedBox(height: AppSizes.xxl)),
-
-            // Reviews
-            SliverToBoxAdapter(
-              child: ProductReviewsSection(productId: product.id),
-            ),
-
-            // Bottom padding for scroll (space for bottom sheet)
-            const SliverToBoxAdapter(child: SizedBox(height: 100)),
-          ],
-        ),
+          // Bottom padding for scroll (space for bottom sheet)
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
       ),
       bottomSheet: ProductCartBottomSheet(product: product),
     );
