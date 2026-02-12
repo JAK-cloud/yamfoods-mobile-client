@@ -13,6 +13,7 @@ import '../../../../app/widgets/custom_app_bar.dart';
 import '../../../../core/enums/payment_method.dart';
 import '../../../../core/services/chapa_payment_service.dart';
 import '../../../../core/services/snackbar_service.dart';
+import '../../../../core/services/telebirr_payment_service.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../auth/presentation/providers/auth_user_state.dart';
 import '../../../branch/presentation/providers/branch_providers.dart';
@@ -48,11 +49,14 @@ import '../widgets/special_instructions_section.dart';
 /// - Price breakdown
 /// - Order placement
 ///
-/// Chapa flow: Place order → order created (Chapa) →
-/// we store orderId/txRef and start Chapa payment (SDK pushes its own route).
-/// When user finishes or cancels, that route pops → we get [RouteAware.didPopNext]
-/// → we show [PaymentVerificationDialog] to query payment status; on success
-/// we clear cart and navigate to orders. See [checkoutRouteObserver] in app_router.
+/// Payment verification (thanks future self):
+/// - **Chapa:** Order created → we store orderId/txRef and start Chapa (SDK
+///   pushes its own route). When that route pops we get [RouteAware.didPopNext]
+///   → show [PaymentVerificationDialog], then clear cart and go to orders.
+/// - **Telebirr:** Order created → we store orderId and start Telebirr (opens
+///   external app). When user returns to our app we get [WidgetsBindingObserver]
+///   lifecycle resumed → show [PaymentVerificationDialog], then clear cart and
+///   go to orders. See [checkoutRouteObserver] in app_router for Chapa.
 class CheckoutScreen extends ConsumerStatefulWidget {
   final int branchId;
   final List<Cart> carts;
@@ -68,17 +72,18 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
-    with RouteAware {
-  // Chapa-only: we only care about Chapa here (no Telebirr). When order is
-  // created with Chapa we store these so that when the Chapa route pops we can
-  // show the verification dialog and query the backend.
-  int? _pendingChapaOrderId;
-  String? _pendingChapaTxnRef;
-  bool _waitingForChapaPayment = false;
+    with WidgetsBindingObserver, RouteAware {
+  // Shared for both Chapa and Telebirr: when order is created we store these;
+  // when user returns (Chapa: didPopNext, Telebirr: app resumed) we show the
+  // verification dialog. _pendingPaymentMethod non-null means we're waiting.
+  int? _pendingOrderId;
+  String? _pendingChapaTxnRef; // Chapa only; Telebirr doesn't have/need txnRef
+  PaymentMethod? _pendingPaymentMethod;
 
-  @override
+  @override //This Method is only for Chapa (route pop)
   void didChangeDependencies() {
     super.didChangeDependencies();
+    
     // Subscribe to route observer so we get didPopNext when a route on top of us
     // is popped (e.g. Chapa payment screen). Unsubscribe first to avoid dupes.
     final route = ModalRoute.of(context);
@@ -88,29 +93,51 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
     }
   }
 
-  @override
-  void dispose() {
-    checkoutRouteObserver.unsubscribe(this);
-    super.dispose();
+  @override //This Method is only for Telebirr (add observer)
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this); // For Telebirr (add observer)
   }
 
-  /// Called when a route that was pushed on top of us is popped (e.g. user
-  /// returns from Chapa). We then show the verification dialog to query
-  /// payment status. This is why we use RouteAware.
-  @override
-  void didPopNext() {
-    if (_waitingForChapaPayment && _pendingChapaOrderId != null) {
-      _waitingForChapaPayment = false;
-      _showChapaVerificationDialog();
+  @override //This Method is for both Chapa and Telebirr (remove observer and unsubscribe)
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // For Telebirr (remove observer)
+    checkoutRouteObserver.unsubscribe(this); // For Chapa (route pop)
+    super.dispose();
+  }
+ 
+  /// Telebirr opens the Telebirr app (external), so we detect return via app
+  /// lifecycle. When resumed and we were waiting for Telebirr, show the
+  /// verification dialog.
+  @override //This Method is only for Telebirr (app resume)
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed &&
+        _pendingPaymentMethod == PaymentMethod.telebirr &&
+        _pendingOrderId != null) {
+      _showPaymentVerificationDialog();
     }
   }
 
-  /// Shows the payment verification dialog. Deferred to next frame so the
-  /// dialog actually appears (didPopNext runs during transition; showing in
-  /// the same frame can fail). Uses root navigator context so the dialog
-  /// is on the correct overlay.
-  void _showChapaVerificationDialog() {
-    final orderId = _pendingChapaOrderId!;
+  /// Called when a route that was pushed on top of checkout screen is popped (e.g. user
+  /// returns from Chapa). We then show the verification dialog.
+  @override //This Method is only for Chapa (route pop)
+  void didPopNext() {
+    if (_pendingPaymentMethod == PaymentMethod.chapa && _pendingOrderId != null) {
+      _showPaymentVerificationDialog();
+    }
+  }
+
+  /// Shows the payment verification dialog for the pending payment (Chapa or
+  /// Telebirr). Captures and clears pending state, then defers to next frame
+  /// so the dialog actually appears. Uses root navigator context for the overlay.
+  void _showPaymentVerificationDialog() {
+    final orderId = _pendingOrderId!;
+    final method = _pendingPaymentMethod!;
+    final txnRef = _pendingChapaTxnRef;
+    _pendingOrderId = null;
+    _pendingChapaTxnRef = null;
+    _pendingPaymentMethod = null;
     if (!mounted) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
@@ -120,9 +147,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
         PaymentVerificationDialog.show(
           dialogContext,
           request: QueryOrderRequest(
-            method: PaymentMethod.chapa,
+            method: method,
             orderId: orderId,
-            txnRef: _pendingChapaTxnRef,
+            txnRef: txnRef,
           ),
           onSuccess: _clearCartAndNavigate,
         );
@@ -167,37 +194,39 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   /// Pass [context] for Chapa native checkout; must be mounted when called.
   void _handlePlaceOrder(BuildContext context) {
     final orderData = _buildOrderRequestData();
-    ref.read(orderProvider.notifier)
-        .createOrder(orderData);
+    ref.read(orderProvider.notifier).createOrder(orderData);
   }
 
-   ChapaPaymentParams? chapaPaymentParams(OrderRequestData orderData) {
-      final user = ref.read(currentUserProvider);
-      if (user == null) {
-        ref.read(snackbarServiceProvider).showError(Failure.payment(
+  ChapaPaymentParams? chapaPaymentParams(OrderRequestData orderData) {
+    final user = ref.read(currentUserProvider);
+    if (user == null) {
+      ref
+          .read(snackbarServiceProvider)
+          .showError(
+            Failure.payment(
               message:
                   'Please complete your profile (email and phone) to use Chapa.',
-            ));
-        return null;
-      }
-      final nameParts = user.name.trim().split(RegExp(r'\s+'));
-      final firstName = nameParts.isNotEmpty ? nameParts.first : user.name;
-      final lastName =
-          nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
-      return ChapaPaymentParams(
-        amount: orderData.totalAmount.toStringAsFixed(2),
-        email: user.email,
-        phone: user.phone ?? '',
-        firstName: firstName,
-        lastName: lastName.isNotEmpty ? lastName : firstName,
-        txRef: 'yam_${const Uuid().v4()}',
-        title: 'Order Payment',
-        desc: 'Payment for your order',
-        buttonColor: AppColors.primary,
-      );
+            ),
+          );
+      return null;
     }
+    final nameParts = user.name.trim().split(RegExp(r'\s+'));
+    final firstName = nameParts.isNotEmpty ? nameParts.first : user.name;
+    final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '';
+    return ChapaPaymentParams(
+      amount: orderData.totalAmount.toStringAsFixed(2),
+      email: user.email,
+      phone: user.phone ?? '',
+      firstName: firstName,
+      lastName: lastName.isNotEmpty ? lastName : firstName,
+      txRef: 'yam_${const Uuid().v4()}',
+      title: 'Order Payment',
+      desc: 'Payment for your order',
+      buttonColor: AppColors.primary,
+    );
+  }
 
-    void _clearCartAndNavigate() {
+  void _clearCartAndNavigate() {
     ref.read(cartProvider(widget.branchId).notifier).deleteAllCartItems();
     if (mounted) {
       context.go(RouteName.order);
@@ -214,19 +243,38 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
 
       if (next is OrderCreated) {
         ref.read(orderUiEventsProvider.notifier).clear();
-        // Chapa only: store orderId/txRef and set waiting so didPopNext will
-        // show the verification dialog when user returns from Chapa.
+        // Store pending order so we can show verification dialog when user
+        // returns (Chapa: didPopNext, Telebirr: app resumed).
         if (next.method == PaymentMethod.chapa) {
           final params = chapaPaymentParams(next.orderRequestData);
           if (params != null) {
-            _pendingChapaOrderId = next.response.order.id;
+            _pendingOrderId = next.response.order.id;
             _pendingChapaTxnRef = params.txRef;
-            _waitingForChapaPayment = true;
+            _pendingPaymentMethod = PaymentMethod.chapa;
             ref.read(chapaPaymentServiceProvider).startPayment(context, params);
           } else {
-            snackbar.showError(Failure.payment(
+            snackbar.showError(
+              Failure.payment(
                 message:
-                    'Something went wrong when we initiate chapa payment, please contact support'));
+                    'Something went wrong when we initiate chapa payment, please contact support',
+              ),
+            );
+          }
+        } else if (next.method == PaymentMethod.telebirr) {
+          if (next.response.receiveCode != null) {
+            _pendingOrderId = next.response.order.id;
+            _pendingPaymentMethod = PaymentMethod.telebirr;
+            ref
+                .read(telebirrPaymentServiceProvider)
+                .startPayment(next.response.receiveCode!);
+          } else {
+            snackbar.showError(
+              Failure.payment(
+                message:
+                    'Something went wrong when we initiate telebirr payment, please contact support',
+              ),
+            );
+            return;
           }
         }
       } else if (next is OrderFailure) {
@@ -234,8 +282,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
         snackbar.showError(next.failure);
         ref.read(orderUiEventsProvider.notifier).clear();
       }
-
-      
     });
 
     return Scaffold(
