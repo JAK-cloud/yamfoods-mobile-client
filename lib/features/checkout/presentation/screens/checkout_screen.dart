@@ -226,10 +226,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
     );
   }
 
-  void _clearCartAndNavigate() {
+  void _clearCartAndNavigate(int orderId) {
     ref.read(cartProvider(widget.branchId).notifier).deleteAllCartItems();
     if (mounted) {
-      context.go(RouteName.order);
+      context.pushReplacement(RouteName.orderSuccess, extra: orderId);
     }
   }
 

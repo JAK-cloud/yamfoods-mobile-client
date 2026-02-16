@@ -78,6 +78,8 @@ dependencies:
   font_awesome_flutter: ^10.12.0
   package_info_plus: ^9.0.0
   skeletonizer: ^2.1.2
+  flutter_confetti: ^0.5.1
+  lottie: ^3.3.2
   #Fork of the official Chapa Flutter SDK to include fixes not yet released on pub.dev. This version addresses the back navigation issue after payment where users could return without a transaction reference. Intended for temporary use until the upstream SDK publishes an official update
   chapasdk:
     git:
@@ -118,6 +120,7 @@ flutter:
 
   assets:
     - .env
+    - assets/anime/
     - assets/icons/
     - assets/images/
     - assets/payment/

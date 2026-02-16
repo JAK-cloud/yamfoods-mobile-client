@@ -2,7 +2,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/permissions/location/location_permission_service.dart';
-import '../../../../core/providers/core_providers.dart';
 import '../../../../core/network/di/dio_client.dart';
 import '../../data/datasources/branch_api_service.dart';
 import '../../data/datasources/branch_remote_data_source.dart';

@@ -1,7 +1,7 @@
 /// API URL constants for different environments
 class ApiUrls {
   /// Development API base URL
-  static const String development = 'http://192.168.65.58:3000/api';
+  static const String development = 'http://192.168.177.58:3000/api';
 
   /// Production API base URL
   static const String production =
@@ -19,6 +19,6 @@ class ApiUrls {
   }
 
   static String getClientImageBaseUrl() {
-    return 'http://192.168.65.58:3000'; //'https://api.yamfoods.com';
+    return 'http://192.168.177.58:3000'; //'https://api.yamfoods.com';
   }
 }

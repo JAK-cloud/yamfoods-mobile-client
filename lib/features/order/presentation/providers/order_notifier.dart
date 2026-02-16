@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/enums/payment_method.dart';
-import '../../../../core/services/chapa_payment_service.dart';
 import '../../domain/entities/create_order_response.dart';
 import '../../domain/entities/order_request_data.dart';
 import 'order_providers.dart';

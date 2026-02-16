@@ -4,7 +4,7 @@ class AppColors {
   AppColors._();
 
   //app
-  static const Color primary = Color(0xFF64390C);
+  static const Color primary = Color(0xFF0A2447); // Color(0xFF64390C);
   static const Color primaryLight = Color(
     0xFF8B5A2B,
   ); // Lighter shade for gradient

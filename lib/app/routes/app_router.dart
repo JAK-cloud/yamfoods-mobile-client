@@ -32,6 +32,7 @@ import '../../features/product/presentation/screens/product_detail_screen.dart';
 import '../../features/achievement/presentation/screens/achievement_screen.dart';
 import '../../features/checkout/models/checkout_args.dart';
 import '../../features/checkout/presentation/screens/checkout_screen.dart';
+import '../../features/checkout/presentation/screens/order_success_screen.dart';
 import '../../features/order/presentation/screens/order_screen.dart';
 import '../../features/order/presentation/screens/order_detail_screen.dart';
 import '../../features/map/presentation/screens/map_screen.dart';
@@ -196,6 +197,13 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final args = state.extra as CheckoutArgs;
         return CheckoutScreen(branchId: args.branchId, carts: args.carts);
+      },
+    ),
+    GoRoute(
+      path: RouteName.orderSuccess,
+      builder: (context, state) {
+        final orderId = state.extra as int;
+        return OrderSuccessScreen(orderId: orderId);
       },
     ),
     GoRoute(

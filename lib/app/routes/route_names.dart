@@ -64,6 +64,9 @@ class RouteName {
   /// Checkout route.
   static const String checkout = '/checkout';
 
+  /// Order success (post-payment confirmation) route.
+  static const String orderSuccess = '/order-success';
+
   /// Order detail route.
   static const String orderDetail = '/order-detail';
 
