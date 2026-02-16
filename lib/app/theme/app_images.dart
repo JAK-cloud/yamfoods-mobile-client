@@ -19,4 +19,11 @@ class AppImages {
   static const String paymentCbe = 'assets/payment/cbe.png';
   static const String paymentEbirr = 'assets/payment/ebirr.png';
   static const String paymentMpesa = 'assets/payment/mpesa.png';
+
+  // icons
+  static const String orderSuccessIcon = 'assets/icons/order_success_icon.png';
+
+  // lottie animations
+  static const String processPaymentAnime =
+      'assets/anime/process_payment_anime.json';
 }

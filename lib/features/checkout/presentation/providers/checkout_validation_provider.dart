@@ -106,7 +106,7 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
 
   // Payment method validation (use enum: valid only if string parses to PaymentMethod)
   final method = checkoutState.paymentMethod;
-  if (method == null || method.isEmpty || method.toPaymentMethod() == null) {
+  if (method == null || method.isEmpty || method.toPaymentMethod().value.isEmpty) {
     errors.add('Please select a payment method');
   }
 
@@ -144,7 +144,7 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
     paymentError:
         (method == null ||
             method.isEmpty ||
-            (method.toPaymentMethod() == null))
+            method.toPaymentMethod().value.isEmpty)
         ? 'Please select a payment method'
         : null,
     generalError: errors.isNotEmpty ? errors.first : null,

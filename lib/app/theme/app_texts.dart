@@ -1,7 +1,7 @@
 class AppTexts {
   AppTexts._();
 
-  static const String appName = 'Yam Foods';
+  static const String appName = 'Noodo Bakers';
   static const String loginAccount = 'Login Account';
   static const String welcomeBack = 'Welcome back to your account';
   static const String enterPhone = 'Enter Phone';

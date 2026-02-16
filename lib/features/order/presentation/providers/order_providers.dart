@@ -6,7 +6,6 @@ import '../../data/datasources/order_remote_data_source_impl.dart';
 import '../../data/repositories/order_repository_impl.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/entities/order_detail.dart';
-import '../../domain/entities/payment.dart';
 import '../../domain/repositories/order_repository.dart';
 import '../../domain/usecases/create_order_usecase.dart';
 import '../../domain/usecases/get_all_orders_usecase.dart';

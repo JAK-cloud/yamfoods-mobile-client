@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../app/routes/auth_guard_helper.dart';
 import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -65,7 +64,6 @@ class HomeHeader extends ConsumerWidget {
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.white.withValues(alpha: 0.85),
                     fontStyle: FontStyle.italic,
-                    fontFamily: 'Griffin',
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
