@@ -61,7 +61,7 @@ class _SubcategoryChipsListState extends ConsumerState<SubcategoryChipsList> {
             physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
             itemCount: subcategories.length + 1,
-            separatorBuilder: (_, __) => SizedBox(width: AppSizes.md),
+            separatorBuilder: (_, _) => SizedBox(width: AppSizes.md),
             itemBuilder: (context, index) {
               if (index == 0) {
                 return SubcategoryChip(

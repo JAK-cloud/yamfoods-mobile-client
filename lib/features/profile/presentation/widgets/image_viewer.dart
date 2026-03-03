@@ -17,7 +17,7 @@ class ImageViewer extends StatelessWidget {
           // Zoomable Image with Hero
           PhotoView(
             imageProvider: CachedNetworkImageProvider(imageUrl),
-            errorBuilder: (_, __, ___) => const Center(
+            errorBuilder: (_, _, _) => const Center(
               child: Icon(
                 Icons.error_outline_rounded,
                 color: Colors.white,

@@ -1,4 +1,3 @@
-import 'package:animate_to/animate_to.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +9,6 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import '../../../../core/providers/animation_providers.dart';
 import '../../../../core/utils/image_url_builder.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
@@ -24,20 +22,10 @@ import '../providers/product_providers.dart';
 import 'product_quantity_control.dart';
 
 /// Product card widget for displaying product information.
-///
-/// **screenId**: Unique identifier for the screen (e.g., 'home', 'productDetail', 'category').
-/// This ensures the animation controller matches the screen's cart icon.
 class ProductCard extends ConsumerWidget {
   final Product product;
-  final String screenId;
-  final bool enableCartAnimation;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    required this.screenId,
-    this.enableCartAnimation = true,
-  });
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -169,8 +157,6 @@ class ProductCard extends ConsumerWidget {
                   ? ProductQuantityControl(
                       cart: cartItem,
                       branchId: product.branchId,
-                      screenId: screenId,
-                      enableCartAnimation: enableCartAnimation,
                     )
                   : _buildAddButton(context, ref),
             ),
@@ -182,46 +168,13 @@ class ProductCard extends ConsumerWidget {
 
   Widget _buildImage(String? imageUrl, WidgetRef ref) {
     if (imageUrl != null) {
-      final image = CachedNetworkImage(
+      return CachedNetworkImage(
         imageUrl: imageUrl,
         width: double.infinity,
         height: double.infinity,
         fit: BoxFit.cover,
         placeholder: (context, url) => _imagePlaceholder(),
         errorWidget: (context, url, error) => _imagePlaceholder(),
-      );
-
-      if (!enableCartAnimation) return image;
-
-      final controller = ref.read(cartAnimationControllerProvider(screenId));
-      // Tag is scoped by screenId (important for keeping animations isolated per screen)
-      final imageKey = controller.tag('${screenId}_product_${product.id}');
-
-      return AnimateFrom<int>(
-        key: imageKey,
-        value: product.id, // Transport product ID
-        builder: (context, child, animation) {
-          // Scale and fade animation during transport with circular shape
-          return Opacity(
-            opacity: 0.85,
-            child: ScaleTransition(
-              scale: TweenSequence<double>([
-                TweenSequenceItem(
-                  tween: Tween(begin: 1.0, end: 1.2),
-                  weight: 50,
-                ),
-                TweenSequenceItem(
-                  tween: Tween(begin: 1.2, end: 0.3),
-                  weight: 50,
-                ),
-              ]).animate(animation),
-              child: ClipOval(
-                child: SizedBox(width: 120, height: 120, child: child),
-              ),
-            ),
-          );
-        },
-        child: image,
       );
     }
     return _imagePlaceholder();
@@ -278,15 +231,6 @@ class ProductCard extends ConsumerWidget {
             ref: ref,
             onAuthenticated: () {
               // User is authenticated - proceed with adding to cart
-              // Trigger animation BEFORE adding to cart
-              if (enableCartAnimation) {
-                final controller = ref.read(
-                  cartAnimationControllerProvider(screenId),
-                );
-                controller.animateTag('${screenId}_product_${product.id}');
-              }
-
-              // Add to cart (this happens in parallel with animation)
               ref
                   .read(cartProvider(product.branchId).notifier)
                   .addToCart(

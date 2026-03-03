@@ -33,15 +33,15 @@ class CategoryChip extends StatelessWidget {
         context.push(RouteName.categoryScreen, extra: category);
       },
       child: Container(
-        width: 70,
+        width: 80,
         margin: EdgeInsets.only(right: AppSizes.md),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Category image - white background for premium surface
             Container(
-              width: 56,
-              height: 56,
+              width: 70,
+              height: 70,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.white,

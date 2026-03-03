@@ -7,6 +7,8 @@ enum OrderStatus {
   ready,
   outForDelivery,
   delivered,
+  completed,
+  served,
   cancelled,
   failed,
 }
@@ -19,6 +21,8 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.ready => 'Ready',
     OrderStatus.outForDelivery => 'Out for Delivery',
     OrderStatus.delivered => 'Delivered',
+    OrderStatus.completed => 'Completed',
+    OrderStatus.served => 'Served',
     OrderStatus.cancelled => 'Cancelled',
     OrderStatus.failed => 'Failed',
   };
@@ -30,6 +34,8 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.ready => Colors.blue,
     OrderStatus.outForDelivery => Colors.indigo,
     OrderStatus.delivered => Colors.green,
+    OrderStatus.completed => Colors.green,
+    OrderStatus.served => Colors.green,
     OrderStatus.cancelled => Colors.red,
     OrderStatus.failed => Colors.red,
   };
@@ -41,10 +47,16 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.ready => Icons.check_circle,
     OrderStatus.outForDelivery => Icons.local_shipping,
     OrderStatus.delivered => Icons.check_circle,
+    OrderStatus.completed => Icons.check_circle,
+    OrderStatus.served => Icons.restaurant,
     OrderStatus.cancelled => Icons.cancel,
     OrderStatus.failed => Icons.cancel,
   };
 
+  /// ready: order ready for handover (deliverer not yet started).
+  /// delivered: delivery order reached customer.
+  /// completed: pickup order collected by customer.
+  /// served: dining order received at table.
   String get description => switch (this) {
     OrderStatus.pending => 'Your order is pending confirmation',
     OrderStatus.confirmed => 'Your order has been confirmed',
@@ -52,6 +64,8 @@ extension OrderStatusX on OrderStatus {
     OrderStatus.ready => 'Your order is ready for delivery',
     OrderStatus.outForDelivery => 'Your order is out for delivery',
     OrderStatus.delivered => 'Your order has been delivered',
+    OrderStatus.completed => 'You have collected your order',
+    OrderStatus.served => 'Your order has been served',
     OrderStatus.cancelled => 'Your order has been cancelled',
     OrderStatus.failed => 'Your order has failed',
   };
@@ -81,6 +95,10 @@ extension OrderStatusStringExtension on String {
         return OrderStatus.outForDelivery;
       case 'delivered':
         return OrderStatus.delivered;
+      case 'completed':
+        return OrderStatus.completed;
+      case 'served':
+        return OrderStatus.served;
       case 'cancelled':
         return OrderStatus.cancelled;
       case 'failed':

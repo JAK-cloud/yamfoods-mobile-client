@@ -150,8 +150,6 @@ class ProductCartBottomSheet extends ConsumerWidget {
             ),
             cart: currentCartItem,
             branchId: product.branchId,
-            screenId: 'productDetail',
-            enableCartAnimation: false,
             size: QuantityControlSize.large,
             iconColor: AppColors.white,
             textColor: AppColors.white,

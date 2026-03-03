@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
+import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/enums/payment_status.dart';
+import '../../../../../core/services/snackbar_service.dart';
 import '../../../../../features/order/domain/entities/order_detail.dart';
 import 'payment_row.dart';
 
 /// Section displaying payment information with complete price breakdown.
-class OrderPaymentSection extends StatelessWidget {
+class OrderPaymentSection extends ConsumerWidget {
   final OrderDetail orderDetail;
 
   const OrderPaymentSection({super.key, required this.orderDetail});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final order = orderDetail.order;
     final payment = orderDetail.payment;
+    final snackbar = ref.read(snackbarServiceProvider);
 
     return Container(
       padding: EdgeInsets.all(AppSizes.lg),
@@ -145,37 +150,51 @@ class OrderPaymentSection extends StatelessWidget {
                 SizedBox(height: AppSizes.sm),
                 Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.1)),
                 SizedBox(height: AppSizes.sm),
-                // Transaction details - compact grid
+                // Transaction details - all payment fields (no payment id / order id)
                 Wrap(
                   spacing: AppSizes.md,
                   runSpacing: AppSizes.xs,
                   children: [
-                    // Payment Date
+                    _buildCompactInfoItem(
+                      icon: Icons.attach_money,
+                      label: 'Amount',
+                      value: '${payment.amount.toStringAsFixed(2)} ${payment.currency ?? AppConstants.currency}',
+                    ),
                     _buildCompactInfoItem(
                       icon: Icons.calendar_today_outlined,
                       label: 'Date',
                       value: _formatCompactDate(payment.date),
                     ),
-                    // Transaction Time (if available)
                     if (payment.transTime != null)
                       _buildCompactInfoItem(
                         icon: Icons.access_time,
                         label: 'Time',
                         value: _formatCompactTime(payment.transTime!),
                       ),
-                    // Transaction ID (if available)
                     if (payment.transId != null)
                       _buildCompactInfoItem(
                         icon: Icons.receipt_long_outlined,
                         label: 'Txn ID',
-                        value: _truncateText(payment.transId!, 12),
+                        value: payment.transId!,
                       ),
-                    // Telebirr Order ID (if available)
                     if (payment.telebirrPaymentOrderId != null)
                       _buildCompactInfoItem(
                         icon: Icons.payment,
                         label: 'Telebirr ID',
-                        value: _truncateText(payment.telebirrPaymentOrderId!, 12),
+                        value: payment.telebirrPaymentOrderId!,
+                      ),
+                    if (payment.chapaTxnRef != null)
+                      _buildCopyableInfoItem(
+                        snackbar: snackbar,
+                        icon: Icons.link,
+                        label: 'Chapa Ref',
+                        value: payment.chapaTxnRef!,
+                      ),
+                    if (payment.chapaMethod != null)
+                      _buildCompactInfoItem(
+                        icon: Icons.credit_card,
+                        label: 'Chapa Method',
+                        value: payment.chapaMethod!,
                       ),
                   ],
                 ),
@@ -198,9 +217,57 @@ class OrderPaymentSection extends StatelessWidget {
     return '$hour:$minute';
   }
 
-  String _truncateText(String text, int maxLength) {
-    if (text.length <= maxLength) return text;
-    return '${text.substring(0, maxLength)}...';
+  Widget _buildCopyableInfoItem({
+    required SnackbarService snackbar,
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
+    return InkWell(
+      onTap: () async {
+        await Clipboard.setData(ClipboardData(text: value));
+        snackbar.showSuccess('Chapa Ref copied to clipboard');
+      },
+      borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 12, color: AppColors.txtSecondary),
+            SizedBox(width: 4),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  label,
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.txtSecondary.withValues(alpha: 0.7),
+                    fontSize: 9,
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      value,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.txtPrimary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10,
+                      ),
+                    ),
+                    SizedBox(width: 4),
+                    Icon(Icons.copy, size: 12, color: AppColors.primary),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildCompactInfoItem({

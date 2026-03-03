@@ -25,6 +25,7 @@ _PaymentModel _$PaymentModelFromJson(Map<String, dynamic> json) =>
         ),
         currency: $checkedConvert('currency', (v) => v as String?),
         chapaTxnRef: $checkedConvert('chapaTxnRef', (v) => v as String?),
+        chapaMethod: $checkedConvert('chapaMethod', (v) => v as String?),
         date: $checkedConvert('date', (v) => DateTime.parse(v as String)),
       );
       return val;
@@ -42,5 +43,6 @@ Map<String, dynamic> _$PaymentModelToJson(_PaymentModel instance) =>
       'transTime': instance.transTime?.toIso8601String(),
       'currency': instance.currency,
       'chapaTxnRef': instance.chapaTxnRef,
+      'chapaMethod': instance.chapaMethod,
       'date': instance.date.toIso8601String(),
     };

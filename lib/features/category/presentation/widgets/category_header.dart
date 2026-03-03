@@ -61,9 +61,8 @@ class CategoryHeader extends ConsumerWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Cart icon with badge and animation
+              // Cart icon with badge
               AnimatedCartIcon(
-                screenId: 'category',
                 iconSize: AppSizes.iconSize,
                 padding: EdgeInsets.all(AppSizes.sm),
                 onTap: () async {

@@ -35,11 +35,10 @@ class AddressRemoteDataSourceImpl implements AddressRemoteDataSource {
     try {
       // Only include non-null optional fields in request
       final requestData = {
-        if (data.subcity != null) 'subcity': data.subcity,
-        if (data.street != null) 'street': data.street,
-        if (data.building != null) 'building': data.building,
-        if (data.houseNo != null) 'houseNo': data.houseNo,
-        if (data.note != null) 'note': data.note,
+        'address': data.address,
+        if (data.receiverPhone != null) 'receiverPhone': data.receiverPhone,
+        if (data.receiverName != null) 'receiverName': data.receiverName,
+        if (data.label != null) 'label': data.label,
         'lat': data.lat,
         'lng': data.lng,
       };
@@ -60,11 +59,10 @@ class AddressRemoteDataSourceImpl implements AddressRemoteDataSource {
     try {
       // Only include non-null optional fields in request
       final requestData = {
-        if (data.subcity != null) 'subcity': data.subcity,
-        if (data.street != null) 'street': data.street,
-        if (data.building != null) 'building': data.building,
-        if (data.houseNo != null) 'houseNo': data.houseNo,
-        if (data.note != null) 'note': data.note,
+        'address': data.address,
+        if (data.receiverPhone != null) 'receiverPhone': data.receiverPhone,
+        if (data.receiverName != null) 'receiverName': data.receiverName,
+        if (data.label != null) 'label': data.label,
         'lat': data.lat,
         'lng': data.lng,
       };

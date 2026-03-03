@@ -7,6 +7,7 @@ import '../../data/datasources/map_data_source_impl.dart';
 import '../../data/repositories/map_repository_impl.dart';
 import '../../domain/entities/route.dart';
 import '../../domain/repositories/map_repository.dart';
+import '../../domain/usecases/get_reverse_geocoding_usecase.dart';
 import '../../domain/usecases/get_route_usecase.dart';
 import '../../../../shared/entities/address_location.dart';
 
@@ -57,6 +58,15 @@ GetRouteUsecase getRouteUsecase(Ref ref) {
   return GetRouteUsecase(repository);
 }
 
+/// Get reverse geocoding usecase provider
+///
+/// Provides usecase for fetching address information from coordinates.
+@riverpod
+GetReverseGeocodingUsecase getReverseGeocodingUsecase(Ref ref) {
+  final repository = ref.watch(mapRepositoryProvider);
+  return GetReverseGeocodingUsecase(repository);
+}
+
 // ==================== Data Providers ====================
 
 /// Route provider
@@ -76,6 +86,18 @@ Future<Route> route(
   final result = await usecase(origin, destination);
 
   return result.fold((failure) => throw failure, (route) => route);
+}
+
+@riverpod
+Future<String> reverseGeocode(
+  Ref ref,
+  double latitude,
+  double longitude,
+) async {
+  final usecase = ref.watch(getReverseGeocodingUsecaseProvider);
+  final result = await usecase(latitude, longitude);
+
+  return result.fold((failure) => throw failure, (address) => address);
 }
 
 // ==================== Socket Integration ====================

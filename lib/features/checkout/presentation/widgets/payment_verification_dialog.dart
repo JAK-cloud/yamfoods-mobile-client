@@ -27,7 +27,7 @@ import '../../../order/presentation/providers/order_providers.dart';
 /// loading whenever [async.isLoading] is true so that refetch shows the loading UI.
 ///
 /// Use [PaymentVerificationDialog.show] to display with correct barrier options.
-class PaymentVerificationDialog extends ConsumerWidget {
+class PaymentVerificationDialog extends ConsumerStatefulWidget {
   const PaymentVerificationDialog({
     super.key,
     required this.request,
@@ -52,8 +52,38 @@ class PaymentVerificationDialog extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(queryOrderProvider(request));
+  ConsumerState<PaymentVerificationDialog> createState() =>
+      _PaymentVerificationDialogState();
+}
+
+class _PaymentVerificationDialogState
+    extends ConsumerState<PaymentVerificationDialog> {
+  bool _hasHandledSuccess = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(queryOrderProvider(widget.request));
+
+    // Handle success case using ref.listen to avoid duplicate calls
+    ref.listen<AsyncValue<OrderPaymentQueryResult>>(
+      queryOrderProvider(widget.request),
+      (previous, next) {
+        if (_hasHandledSuccess) return;
+
+        next.whenData((result) {
+          if (result.status == PaymentStatus.completed) {
+            _hasHandledSuccess = true;
+            // Defer navigation operations until after build phase completes
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                Navigator.of(context).pop();
+                widget.onSuccess(widget.request.orderId);
+              }
+            });
+          }
+        });
+      },
+    );
 
     return PopScope(
       canPop: false,
@@ -64,9 +94,9 @@ class PaymentVerificationDialog extends ConsumerWidget {
         child: async.isLoading
             ? _buildLoadingContent(context)
             : async.when(
-                data: (result) => _buildResultContent(context, ref, result),
+                data: (result) => _buildResultContent(context, result),
                 loading: () => _buildLoadingContent(context),
-                error: (error, _) => _buildErrorContent(context, ref),
+                error: (error, _) => _buildErrorContent(context),
               ),
       ),
     );
@@ -99,22 +129,18 @@ class PaymentVerificationDialog extends ConsumerWidget {
 
   Widget _buildResultContent(
     BuildContext context,
-    WidgetRef ref,
     OrderPaymentQueryResult result,
   ) {
     if (result.status == PaymentStatus.completed) {
-      Navigator.of(context).pop();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        onSuccess(request.orderId);
-      });
       // Keep showing loading so we don't flash white before pop takes effect
+      // Navigation is handled in ref.listen above to prevent duplicate calls
       return _buildLoadingContent(context);
     }
 
-    return _buildErrorContent(context, ref);
+    return _buildErrorContent(context);
   }
 
-  Widget _buildErrorContent(BuildContext context, WidgetRef ref) {
+  Widget _buildErrorContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppSizes.lg),
       child: Column(
@@ -147,7 +173,8 @@ class PaymentVerificationDialog extends ConsumerWidget {
               Expanded(
                 child: CustomButton(
                   text: 'Retry',
-                  onPressed: () => ref.invalidate(queryOrderProvider(request)),
+                  onPressed: () =>
+                      ref.invalidate(queryOrderProvider(widget.request)),
                   icon: Icons.refresh,
                 ),
               ),
@@ -162,7 +189,6 @@ class PaymentVerificationDialog extends ConsumerWidget {
               ),
             ],
           ),
-         
         ],
       ),
     );

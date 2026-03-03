@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/material.dart';
 
 import 'notification_local_service.dart';
 import 'notification_permission_service.dart';
@@ -29,8 +30,7 @@ class NotificationFcmService {
     if (_initialized) return;
 
     final permissionService = NotificationPermissionService(_messaging);
-    final settings = await permissionService.requestPermission();
-    print('Notification permission: ${settings.authorizationStatus}');
+    await permissionService.requestPermission();
 
     await NotificationLocalService.initialize(
       onTapPayload: NotificationRouter.routeFromPayload,
@@ -86,9 +86,9 @@ class NotificationFcmService {
         _messaging.subscribeToTopic('users'),
         _messaging.subscribeToTopic('broadcast'),
       ]);
-      print('Subscribed to topics: users, broadcast');
+      debugPrint('Subscribed to topics: users, broadcast');
     } catch (e) {
-      print('Error subscribing to topics: $e');
+      debugPrint('Error subscribing to topics: $e');
     }
   }
 
@@ -99,9 +99,9 @@ class NotificationFcmService {
         _messaging.unsubscribeFromTopic('users'),
         _messaging.unsubscribeFromTopic('broadcast'),
       ]);
-      print('Unsubscribed from topics: users, broadcast');
+      debugPrint('Unsubscribed from topics: users, broadcast');
     } catch (e) {
-      print('Error unsubscribing from topics: $e');
+      debugPrint('Error unsubscribing from topics: $e');
     }
   }
 

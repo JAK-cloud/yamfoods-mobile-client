@@ -205,7 +205,7 @@ class CartNotifier extends _$CartNotifier {
     }
   }
 
-  Future<void> deleteAllCartItems() async {
+  Future<void> deleteAllCartItems({bool shouldShowSnackBar = true}) async {
     final deleteAllLoading = ref.read(cartDeleteAllLoadingProvider.notifier);
     deleteAllLoading.setLoading(true);
 
@@ -227,9 +227,11 @@ class CartNotifier extends _$CartNotifier {
           ref.read(cartUiEventsProvider.notifier).emit(CartFailure(failure));
         },
         (_) {
-          ref
-              .read(cartUiEventsProvider.notifier)
-              .emit(AllCartItemsDeleted('All items removed from cart'));
+          if (shouldShowSnackBar) {
+            ref
+                .read(cartUiEventsProvider.notifier)
+                .emit(AllCartItemsDeleted('All items removed from cart'));
+          }
         },
       );
     } finally {
@@ -245,4 +247,6 @@ class CartNotifier extends _$CartNotifier {
       throw failure;
     }, (carts) => carts);
   }
+ 
+
 }

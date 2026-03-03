@@ -17,6 +17,7 @@ sealed class Payment with _$Payment {
     required double amount,
     DateTime? transTime,
     String? chapaTxnRef,
+    String? chapaMethod,
     String? currency,
     required DateTime date,
   }) = _Payment;

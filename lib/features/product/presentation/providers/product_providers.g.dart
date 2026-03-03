@@ -302,6 +302,108 @@ final class GetAllSubcategoryProductsUsecaseProvider
 String _$getAllSubcategoryProductsUsecaseHash() =>
     r'b704aee7a254e20be177a681c21fc5988fc279c0';
 
+@ProviderFor(getAllDiscountedProductsUsecase)
+const getAllDiscountedProductsUsecaseProvider =
+    GetAllDiscountedProductsUsecaseProvider._();
+
+final class GetAllDiscountedProductsUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetAllDiscountedProductsUsecase,
+          GetAllDiscountedProductsUsecase,
+          GetAllDiscountedProductsUsecase
+        >
+    with $Provider<GetAllDiscountedProductsUsecase> {
+  const GetAllDiscountedProductsUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAllDiscountedProductsUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAllDiscountedProductsUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAllDiscountedProductsUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAllDiscountedProductsUsecase create(Ref ref) {
+    return getAllDiscountedProductsUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAllDiscountedProductsUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAllDiscountedProductsUsecase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getAllDiscountedProductsUsecaseHash() =>
+    r'5ef7a57fce078cbc7f4c937958fa9ffe3ea29c9a';
+
+@ProviderFor(getAllFeaturedProductsUsecase)
+const getAllFeaturedProductsUsecaseProvider =
+    GetAllFeaturedProductsUsecaseProvider._();
+
+final class GetAllFeaturedProductsUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetAllFeaturedProductsUsecase,
+          GetAllFeaturedProductsUsecase,
+          GetAllFeaturedProductsUsecase
+        >
+    with $Provider<GetAllFeaturedProductsUsecase> {
+  const GetAllFeaturedProductsUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAllFeaturedProductsUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAllFeaturedProductsUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAllFeaturedProductsUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAllFeaturedProductsUsecase create(Ref ref) {
+    return getAllFeaturedProductsUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAllFeaturedProductsUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAllFeaturedProductsUsecase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getAllFeaturedProductsUsecaseHash() =>
+    r'a063cbe9e28df8dc240548cfba037a39528863a8';
+
 @ProviderFor(searchProductsUsecase)
 const searchProductsUsecaseProvider = SearchProductsUsecaseProvider._();
 
@@ -624,6 +726,157 @@ final class SubcategoryProductsFamily extends $Family
 
   @override
   String toString() => r'subcategoryProductsProvider';
+}
+
+@ProviderFor(discountedProducts)
+const discountedProductsProvider = DiscountedProductsFamily._();
+
+final class DiscountedProductsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Product>>,
+          List<Product>,
+          FutureOr<List<Product>>
+        >
+    with $FutureModifier<List<Product>>, $FutureProvider<List<Product>> {
+  const DiscountedProductsProvider._({
+    required DiscountedProductsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'discountedProductsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$discountedProductsHash();
+
+  @override
+  String toString() {
+    return r'discountedProductsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Product>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Product>> create(Ref ref) {
+    final argument = this.argument as int;
+    return discountedProducts(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DiscountedProductsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$discountedProductsHash() =>
+    r'0563ad4ba63f4f65d8763badba7a38151901c9e1';
+
+final class DiscountedProductsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Product>>, int> {
+  const DiscountedProductsFamily._()
+    : super(
+        retry: null,
+        name: r'discountedProductsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  DiscountedProductsProvider call(int branchId) =>
+      DiscountedProductsProvider._(argument: branchId, from: this);
+
+  @override
+  String toString() => r'discountedProductsProvider';
+}
+
+@ProviderFor(featuredProducts)
+const featuredProductsProvider = FeaturedProductsFamily._();
+
+final class FeaturedProductsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Product>>,
+          List<Product>,
+          FutureOr<List<Product>>
+        >
+    with $FutureModifier<List<Product>>, $FutureProvider<List<Product>> {
+  const FeaturedProductsProvider._({
+    required FeaturedProductsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'featuredProductsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$featuredProductsHash();
+
+  @override
+  String toString() {
+    return r'featuredProductsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Product>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Product>> create(Ref ref) {
+    final argument = this.argument as int;
+    return featuredProducts(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FeaturedProductsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$featuredProductsHash() => r'fec116095a62880664972e18bc23859af6fdd403';
+
+final class FeaturedProductsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Product>>, int> {
+  const FeaturedProductsFamily._()
+    : super(
+        retry: null,
+        name: r'featuredProductsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  FeaturedProductsProvider call(int branchId) =>
+      FeaturedProductsProvider._(argument: branchId, from: this);
+
+  @override
+  String toString() => r'featuredProductsProvider';
 }
 
 /// Provider that returns related products based on category and subcategory matching.

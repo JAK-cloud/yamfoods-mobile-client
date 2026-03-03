@@ -3,7 +3,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/utils/string_to_double.dart';
-import '../../../../shared/models/address_location_model.dart';
 
 part 'order_address_model.freezed.dart';
 part 'order_address_model.g.dart';
@@ -15,14 +14,11 @@ sealed class OrderAddressModel with _$OrderAddressModel {
   const factory OrderAddressModel({
     required int id,
     required int orderId,
-    String? subcity,
-    String? street,
+    String? address,
     String? building,
     String? houseNo,
-    String? note,
     @JsonKey(fromJson: parseDoubleNullable) double? lat,
     @JsonKey(fromJson: parseDoubleNullable) double? lng,
-    AddressLocationModel? location,
     required DateTime createdAt,
   }) = _OrderAddressModel;
 

@@ -1,30 +1,21 @@
-import 'dart:math' as math;
-
-import 'package:animate_to/animate_to.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
-import '../../../../core/providers/animation_providers.dart';
 import '../../../branch/presentation/providers/branch_providers.dart';
 import '../providers/cart_notifier.dart';
 
-/// Reusable cart icon with badge wrapped in AnimateTo for add-to-cart animations.
+/// Reusable cart icon with badge.
 ///
 /// This widget automatically watches the cart provider to get the cart count.
 /// It handles:
 /// - Fetching cart count from the cart provider
 /// - Visualizing the cart icon + badge in a consistent style
-/// - Applying the "arrival" bounce animation when items animate to the cart
-///
-/// **screenId**: Unique identifier for the screen (e.g., 'home', 'productDetail', 'category').
-/// This ensures each screen has its own animation controller instance.
 ///
 /// Uses the current branch ID from `currentBranchProvider` - guaranteed to exist
 /// since branch selection is enforced before navigation.
 class AnimatedCartIcon extends ConsumerWidget {
-  final String screenId;
   final VoidCallback? onTap;
   final double iconSize;
   final EdgeInsets padding;
@@ -32,7 +23,6 @@ class AnimatedCartIcon extends ConsumerWidget {
 
   const AnimatedCartIcon({
     super.key,
-    required this.screenId,
     this.onTap,
     this.iconSize = AppSizes.iconSize,
     this.padding = const EdgeInsets.all(AppSizes.sm),
@@ -41,10 +31,10 @@ class AnimatedCartIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-      // Get current branch ID - guaranteed to exist since branch selection is enforced
-      final branchId = ref.watch(currentBranchProvider)!;
-      // Watch cart provider to get cart count
-      final cartAsync = ref.watch(cartProvider(branchId));
+    // Get current branch ID - guaranteed to exist since branch selection is enforced
+    final branchId = ref.watch(currentBranchProvider)!;
+    // Watch cart provider to get cart count
+    final cartAsync = ref.watch(cartProvider(branchId));
     final cartCount = cartAsync.value?.length ?? 0;
 
     final cartIcon = Padding(
@@ -61,26 +51,16 @@ class AnimatedCartIcon extends ConsumerWidget {
       child: SizedBox(
         width: iconSize + padding.horizontal,
         height: iconSize + padding.vertical,
-        child: AnimateTo<int>(
-          controller: ref.watch(cartAnimationControllerProvider(screenId)),
-          builder: (context, child, animation) {
-            // Bounce animation when an item arrives to the cart.
-            return Transform.translate(
-              offset: Offset(math.sin(animation.value * 3 * math.pi) * 3, 0),
-              child: child,
-            );
-          },
-          child: cartCount > 0
-              ? Badge.count(
-                  count: cartCount,
-                  maxCount: 99,
-                  backgroundColor: AppColors.white,
-                  textColor: Colors.red,
-                  offset: badgeOffset,
-                  child: cartIcon,
-                )
-              : cartIcon,
-        ),
+        child: cartCount > 0
+            ? Badge.count(
+                count: cartCount,
+                maxCount: 99,
+                backgroundColor: AppColors.white,
+                textColor: Colors.red,
+                offset: badgeOffset,
+                child: cartIcon,
+              )
+            : cartIcon,
       ),
     );
   }

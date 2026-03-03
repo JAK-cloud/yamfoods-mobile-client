@@ -6,6 +6,7 @@ import '../../../../core/constants/gebeta_map_config.dart';
 import '../../../../core/errors/error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/entities/address_location.dart';
+import '../models/reverse_geocoding_model.dart';
 import '../models/route_model.dart';
 import 'map_api_service.dart';
 import 'map_data_source.dart';
@@ -48,6 +49,32 @@ class MapDataSourceImpl implements MapDataSource {
     } catch (e) {
       // All errors (DioException, parsing errors, etc.) are handled by ErrorHandler
       // ErrorHandler automatically detects map API errors and maps them to Failure.mapError
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> reverseGeocode(
+    double latitude,
+    double longitude,
+  ) async {
+    try {
+      final response = await _apiService.reverseGeocode(
+        latitude,
+        longitude,
+        'json',
+        GebetaMapConfig.geoapifyApiKey,
+      );
+
+      // Return the first formatted address, or empty string if no results
+      if (response.formattedAddresses.isEmpty) {
+        return const Left(
+          Failure.mapError('No address found for the given coordinates'),
+        );
+      }
+
+      return Right(response.formattedAddresses.first);
+    } catch (e) {
       return Left(ErrorHandler.handleException(e));
     }
   }

@@ -40,7 +40,6 @@ class _PromoCodeSectionState extends ConsumerState<PromoCodeSection> {
       // Clear any previous error when user tries again
       final currentEvent = ref.read(promoCodeUiEventsProvider);
       if (currentEvent is PromoCodeFailure) {
-        print('Error qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq: ${currentEvent.failure}');
         ref.read(promoCodeUiEventsProvider.notifier).clear();
       }
 

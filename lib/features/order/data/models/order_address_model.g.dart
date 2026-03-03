@@ -11,19 +11,11 @@ _OrderAddressModel _$OrderAddressModelFromJson(Map<String, dynamic> json) =>
       final val = _OrderAddressModel(
         id: $checkedConvert('id', (v) => (v as num).toInt()),
         orderId: $checkedConvert('orderId', (v) => (v as num).toInt()),
-        subcity: $checkedConvert('subcity', (v) => v as String?),
-        street: $checkedConvert('street', (v) => v as String?),
+        address: $checkedConvert('address', (v) => v as String?),
         building: $checkedConvert('building', (v) => v as String?),
         houseNo: $checkedConvert('houseNo', (v) => v as String?),
-        note: $checkedConvert('note', (v) => v as String?),
         lat: $checkedConvert('lat', (v) => parseDoubleNullable(v)),
         lng: $checkedConvert('lng', (v) => parseDoubleNullable(v)),
-        location: $checkedConvert(
-          'location',
-          (v) => v == null
-              ? null
-              : AddressLocationModel.fromJson(v as Map<String, dynamic>),
-        ),
         createdAt: $checkedConvert(
           'createdAt',
           (v) => DateTime.parse(v as String),
@@ -36,13 +28,10 @@ Map<String, dynamic> _$OrderAddressModelToJson(_OrderAddressModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'orderId': instance.orderId,
-      'subcity': instance.subcity,
-      'street': instance.street,
+      'address': instance.address,
       'building': instance.building,
       'houseNo': instance.houseNo,
-      'note': instance.note,
       'lat': instance.lat,
       'lng': instance.lng,
-      'location': instance.location?.toJson(),
       'createdAt': instance.createdAt.toIso8601String(),
     };

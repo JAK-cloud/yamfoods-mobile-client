@@ -31,7 +31,7 @@ class BranchRingsList extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
         itemCount: branches.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSizes.lg),
+        separatorBuilder: (_, _) => const SizedBox(width: AppSizes.lg),
         itemBuilder: (context, index) {
           final branch = branches[index];
           final formattedDistance = userPosition != null

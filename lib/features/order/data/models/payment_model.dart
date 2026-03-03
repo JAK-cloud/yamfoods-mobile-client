@@ -22,6 +22,7 @@ sealed class PaymentModel with _$PaymentModel {
     DateTime? transTime,
     String? currency,
     String? chapaTxnRef,
+    String? chapaMethod,
     required DateTime date,
   }) = _PaymentModel;
 

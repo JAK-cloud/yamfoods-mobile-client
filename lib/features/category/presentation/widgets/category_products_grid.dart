@@ -50,7 +50,7 @@ class CategoryProductsGrid extends ConsumerWidget {
           ),
           itemCount: products.length,
           itemBuilder: (context, index) {
-            return ProductCard(product: products[index], screenId: 'category');
+            return ProductCard(product: products[index]);
           },
         );
       },

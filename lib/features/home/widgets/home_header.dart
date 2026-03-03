@@ -50,7 +50,6 @@ class HomeHeader extends ConsumerWidget {
                 Text(
                   AppTexts.appName,
                   style: TextStyle(
-                    fontFamily: 'Cera Pro',
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: AppColors.white,
@@ -63,7 +62,6 @@ class HomeHeader extends ConsumerWidget {
                   '${_getGreeting()}, ${user?.name.split(' ').first ?? AppTexts.guest}',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.white.withValues(alpha: 0.85),
-                    fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
                   ),
                   maxLines: 1,
@@ -109,9 +107,8 @@ class HomeHeader extends ConsumerWidget {
                   );
                 })(),
               ),
-              // Cart icon with badge and animation
+              // Cart icon with badge
               AnimatedCartIcon(
-                screenId: 'home',
                 onTap: () async {
                   await AuthGuardHelper.requireAuthOrShowDialog(
                     context: context,

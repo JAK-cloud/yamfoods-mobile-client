@@ -89,8 +89,8 @@ class _UpdateProfileScreenState extends ConsumerState<UpdateProfileScreen> {
       return CachedNetworkImage(
         imageUrl: imageUrl,
         fit: BoxFit.cover,
-        placeholder: (_, __) => _avatarPlaceholder(),
-        errorWidget: (_, __, ___) => _avatarPlaceholder(),
+        placeholder: (_, _) => _avatarPlaceholder(),
+        errorWidget: (_, _, _) => _avatarPlaceholder(),
       );
     }
     return _avatarPlaceholder();

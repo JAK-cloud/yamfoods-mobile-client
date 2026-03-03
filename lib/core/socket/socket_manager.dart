@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:logger/logger.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -36,7 +36,7 @@ class SocketManager {
   final Logger _logger;
   final SocketAuthHandler _authHandler;
 
-  IO.Socket? _socket;
+  io.Socket? _socket;
   SocketConnectionState _connectionState =
       const SocketConnectionState.initial();
   final _connectionStateController =
@@ -111,9 +111,9 @@ class SocketManager {
 
       // Create socket instance with authentication
       // Backend will validate the token
-      _socket = IO.io(
+      _socket = io.io(
         baseUrl,
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(SocketConfig.transports)
             .setAuth({'token': token})
             .enableAutoConnect()

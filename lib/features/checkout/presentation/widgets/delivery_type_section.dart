@@ -110,7 +110,7 @@ class _DeliveryOption extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.all(AppSizes.sm),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.1) : null,
+          color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : null,
           borderRadius: BorderRadius.circular(AppSizes.radius),
           border: Border.all(
             color: isSelected ? AppColors.primary : Colors.transparent,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
 import '../../theme/app_sizes.dart';
+import '../../theme/app_text_styles.dart';
 import 'product_card_skeleton.dart';
 
 /// Reusable product grid skeleton as a [Sliver] for [CustomScrollView].
@@ -20,6 +22,36 @@ SliverPadding productGridSkeletonSliver({int itemCount = 6}) {
         (context, index) => const ProductCardSkeleton(),
         childCount: itemCount,
       ),
+    ),
+  );
+}
+
+/// Product grid skeleton section with background and optional section title.
+///
+/// Use when the skeleton should match the full section layout (e.g. home grid
+/// with "All menu" title and [AppColors.background]).
+DecoratedSliver productGridSkeletonSectionSliver({
+  String sectionTitle = 'All menu',
+  TextStyle? titleStyle,
+  int itemCount = 6,
+}) {
+  return DecoratedSliver(
+    decoration: const BoxDecoration(color: AppColors.background),
+    sliver: SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppSizes.sm,
+              0,
+              AppSizes.sm,
+              AppSizes.md,
+            ),
+            child: Text(sectionTitle, style: titleStyle ?? AppTextStyles.h4),
+          ),
+        ),
+        productGridSkeletonSliver(itemCount: itemCount),
+      ],
     ),
   );
 }

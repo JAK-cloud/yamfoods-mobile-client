@@ -23,4 +23,12 @@ class MapRepositoryImpl implements MapRepository {
       (route) => Right(route.toDomain()),
     );
   }
+
+  @override
+  Future<Either<Failure, String>> reverseGeocode(
+    double latitude,
+    double longitude,
+  ) async {
+    return await mapDataSource.reverseGeocode(latitude, longitude);
+  }
 }

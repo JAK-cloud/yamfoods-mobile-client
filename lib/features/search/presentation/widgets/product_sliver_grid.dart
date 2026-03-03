@@ -54,11 +54,7 @@ class ProductSliverGrid extends ConsumerWidget {
               childAspectRatio: 0.75,
             ),
             delegate: SliverChildBuilderDelegate(
-              (context, index) => ProductCard(
-                product: products[index],
-                screenId: 'search',
-                enableCartAnimation: false,
-              ),
+              (context, index) => ProductCard(product: products[index]),
               childCount: products.length,
             ),
           ),
