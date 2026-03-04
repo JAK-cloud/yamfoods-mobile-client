@@ -127,7 +127,7 @@ class _FeedbackScreenState extends ConsumerState<FeedbackScreen> {
                 _buildLabel('Type'),
                 const SizedBox(height: AppSizes.sm),
                 DropdownButtonFormField<FeedbackType>(
-                  value: _type,
+                  initialValue: _type,
                   items: FeedbackType.values
                       .map(
                         (t) => DropdownMenuItem(

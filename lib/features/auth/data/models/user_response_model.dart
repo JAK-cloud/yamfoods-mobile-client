@@ -3,6 +3,7 @@
 /// Backend returns: `{ "user": {...} }`
 /// This model is only used for JSON parsing in the data layer.
 /// It's not exposed to the domain layer - we extract the user immediately.
+library;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'user_model.dart';

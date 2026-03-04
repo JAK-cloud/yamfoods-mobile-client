@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import '../../../../core/providers/animation_providers.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/domain/entities/cart.dart';
@@ -15,9 +14,6 @@ import '../../../cart/presentation/providers/cart_notifier.dart';
 /// Displays decrease button, quantity, and increase button
 /// with premium styling optimized for card layouts.
 ///
-/// **screenId**: Unique identifier for the screen (e.g., 'home', 'productDetail', 'category').
-/// This ensures the animation controller matches the screen's cart icon.
-///
 /// **size**: Optional size variant. Use [QuantityControlSize.large] for bottom sheets
 /// and [QuantityControlSize.compact] (default) for product cards.
 ///
@@ -26,8 +22,6 @@ import '../../../cart/presentation/providers/cart_notifier.dart';
 class ProductQuantityControl extends ConsumerWidget {
   final Cart cart;
   final int branchId;
-  final String screenId;
-  final bool enableCartAnimation;
   final QuantityControlSize size;
   final Color? iconColor;
   final Color? textColor;
@@ -36,8 +30,6 @@ class ProductQuantityControl extends ConsumerWidget {
     super.key,
     required this.cart,
     required this.branchId,
-    required this.screenId,
-    this.enableCartAnimation = true,
     this.size = QuantityControlSize.compact,
     this.iconColor,
     this.textColor,
@@ -111,22 +103,6 @@ class ProductQuantityControl extends ConsumerWidget {
                   );
                 }
               : () {
-                  // Trigger same product-to-cart animation on quantity increase
-                  // Only if the tag exists (e.g., in product cards, not in bottom sheets)
-                  if (enableCartAnimation) {
-                    try {
-                      final controller = ref.read(
-                        cartAnimationControllerProvider(screenId),
-                      );
-                      controller.animateTag(
-                        '${screenId}_product_${cart.product.id}',
-                      );
-                    } catch (e) {
-                      // Animation tag doesn't exist (e.g., in bottom sheet context)
-                      // This is fine, just continue without animation
-                    }
-                  }
-
                   ref
                       .read(cartProvider(branchId).notifier)
                       .increaseQuantity(cart.id);

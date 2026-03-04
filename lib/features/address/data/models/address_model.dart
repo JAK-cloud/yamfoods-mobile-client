@@ -9,16 +9,15 @@ part 'address_model.g.dart';
 sealed class AddressModel with _$AddressModel {
   const factory AddressModel({
     required int id,
-    @JsonKey(name: 'userId') required int userId,
-    @Default('N/A') String subcity,
-    @Default('N/A') String street,
-    @Default('N/A') String building,
-    @JsonKey(name: 'houseNo') @Default('N/A') String houseNo,
-    @Default('N/A') String note,
+    required int userId,
+    required String address,
+    String? receiverPhone,
+    String? receiverName,
+    String? label,
     required String lat,
     required String lng,
-    @JsonKey(name: 'createdAt') required DateTime createdAt,
-    @JsonKey(name: 'updatedAt') required DateTime updatedAt,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _AddressModel;
 
   factory AddressModel.fromJson(Map<String, dynamic> json) =>

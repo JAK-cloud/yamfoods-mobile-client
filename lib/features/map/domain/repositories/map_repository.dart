@@ -9,4 +9,9 @@ abstract class MapRepository {
     AddressLocation origin,
     AddressLocation destination,
   );
+
+  Future<Either<Failure, String>> reverseGeocode(
+    double latitude,
+    double longitude,
+  );
 }

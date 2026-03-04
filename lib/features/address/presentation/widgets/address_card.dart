@@ -96,10 +96,6 @@ class AddressCard extends ConsumerWidget {
                     _buildActionIcons(context, ref, isDeleting, isUpdating),
                   ],
                 ),
-                if (_hasNote) ...[
-                  SizedBox(height: AppSizes.md),
-                  _buildNoteSection(),
-                ],
               ],
             ),
           ),
@@ -137,22 +133,41 @@ class AddressCard extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (_hasSubcity)
-          _buildAddressLine(
-            address.subcity,
-            icon: Icons.location_city_rounded,
-            isPrimary: true,
+        if (_hasLabel)
+          Padding(
+            padding: EdgeInsets.only(bottom: AppSizes.xs),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: AppSizes.sm, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+              ),
+              child: Text(
+                address.label!,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
           ),
-        if (_hasStreet)
-          _buildAddressLine(address.street, icon: Icons.signpost_rounded),
-        if (_hasBuilding)
-          _buildAddressLine(address.building, icon: Icons.business_rounded),
-        if (_hasHouseNo)
+        _buildAddressLine(
+          address.address,
+          icon: Icons.location_on_rounded,
+          isPrimary: true,
+        ),
+        if (_hasReceiverName)
           _buildAddressLine(
-            address.houseNo,
-            icon: Icons.home_rounded,
+            address.receiverName!,
+            icon: Icons.person_rounded,
+          ),
+        if (_hasReceiverPhone)
+          _buildAddressLine(
+            address.receiverPhone!,
+            icon: Icons.phone_rounded,
             isSecondary: true,
-            prefix: 'House No: ',
+            prefix: 'Phone: ',
           ),
       ],
     );
@@ -290,58 +305,10 @@ class AddressCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildNoteSection() {
-    return Container(
-      padding: EdgeInsets.all(AppSizes.md),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary.withValues(alpha: 0.08),
-            AppColors.primaryLight.withValues(alpha: 0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppSizes.radius),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Icon(Icons.note_rounded, size: 16, color: AppColors.primary),
-          ),
-          SizedBox(width: AppSizes.sm),
-          Expanded(
-            child: Text(
-              address.note,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.txtSecondary,
-                fontStyle: FontStyle.italic,
-                height: 1.4,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  bool get _hasSubcity =>
-      address.subcity.isNotEmpty && address.subcity != 'N/A';
-  bool get _hasStreet => address.street.isNotEmpty && address.street != 'N/A';
-  bool get _hasBuilding =>
-      address.building.isNotEmpty && address.building != 'N/A';
-  bool get _hasHouseNo =>
-      address.houseNo.isNotEmpty && address.houseNo != 'N/A';
-  bool get _hasNote => address.note.isNotEmpty && address.note != 'N/A';
+  bool get _hasLabel =>
+      address.label != null && address.label!.trim().isNotEmpty;
+  bool get _hasReceiverName =>
+      address.receiverName != null && address.receiverName!.trim().isNotEmpty;
+  bool get _hasReceiverPhone =>
+      address.receiverPhone != null && address.receiverPhone!.trim().isNotEmpty;
 }

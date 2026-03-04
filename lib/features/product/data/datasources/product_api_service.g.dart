@@ -100,6 +100,70 @@ class _ProductApiService implements ProductApiService {
   }
 
   @override
+  Future<ApiResponse<ProductsResponseModel>> getAllDiscountedProducts(
+    int branchId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<ProductsResponseModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/product/get-all-discounted-products/${branchId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<ProductsResponseModel> _value;
+    try {
+      _value = ApiResponse<ProductsResponseModel>.fromJson(
+        _result.data!,
+        (json) => ProductsResponseModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiResponse<ProductsResponseModel>> getAllFeaturedProducts(
+    int branchId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<ApiResponse<ProductsResponseModel>>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/product/get-all-featured-products/${branchId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiResponse<ProductsResponseModel> _value;
+    try {
+      _value = ApiResponse<ProductsResponseModel>.fromJson(
+        _result.data!,
+        (json) => ProductsResponseModel.fromJson(json as Map<String, dynamic>),
+      );
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<ApiResponse<ProductsResponseModel>> getAllCategoryProducts(
     int branchId,
     int categoryId,

@@ -49,17 +49,11 @@ class OrderAddressSection extends StatelessWidget {
           ),
           SizedBox(height: AppSizes.lg),
           InfoRow(
-            label: 'Subcity',
-            value: address.subcity ?? 'N/A',
-            icon: Icons.location_city,
+            label: 'Address',
+            value: address.address ?? 'N/A',
+            icon: Icons.location_on,
           ),
-          SizedBox(height: AppSizes.sm),
-          InfoRow(
-            label: 'Street',
-            value: address.street ?? 'N/A',
-            icon: Icons.streetview,
-          ),
-          if (address.building != null) ...[
+          if (address.building != null && address.building!.isNotEmpty) ...[
             SizedBox(height: AppSizes.sm),
             InfoRow(
               label: 'Building',
@@ -73,14 +67,6 @@ class OrderAddressSection extends StatelessWidget {
             value: address.houseNo ?? 'N/A',
             icon: Icons.home,
           ),
-          if (address.note != null && address.note!.isNotEmpty) ...[
-            SizedBox(height: AppSizes.sm),
-            InfoRow(
-              label: 'Address Note',
-              value: address.note!,
-              icon: Icons.note_outlined,
-            ),
-          ],
         ],
       ),
     );

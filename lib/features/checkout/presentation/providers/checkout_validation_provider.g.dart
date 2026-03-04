@@ -239,7 +239,7 @@ final class CheckoutValidationProvider
 }
 
 String _$checkoutValidationHash() =>
-    r'ac00312b4a5f65024752cfba7992150a304085a8';
+    r'347f19c54aa05614382b7ca8e962442c9dce0043';
 
 /// Provider that validates checkout state.
 ///

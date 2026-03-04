@@ -11,6 +11,8 @@ import '../../domain/entities/product.dart';
 import '../../domain/repositories/product_repository.dart';
 import '../../domain/usecases/get_all_branch_products_usecase.dart';
 import '../../domain/usecases/get_all_category_products_usecase.dart';
+import '../../domain/usecases/get_all_discounted_products_usecase.dart';
+import '../../domain/usecases/get_all_featured_products_usecase.dart';
 import '../../domain/usecases/get_all_subcategory_products_usecase.dart';
 import '../../domain/usecases/get_product_usecase.dart';
 import '../../domain/usecases/search_products_usecase.dart';
@@ -55,6 +57,18 @@ GetAllSubcategoryProductsUsecase getAllSubcategoryProductsUsecase(Ref ref) {
 }
 
 @riverpod
+GetAllDiscountedProductsUsecase getAllDiscountedProductsUsecase(Ref ref) {
+  final repository = ref.watch(productRepositoryProvider);
+  return GetAllDiscountedProductsUsecase(repository);
+}
+
+@riverpod
+GetAllFeaturedProductsUsecase getAllFeaturedProductsUsecase(Ref ref) {
+  final repository = ref.watch(productRepositoryProvider);
+  return GetAllFeaturedProductsUsecase(repository);
+}
+
+@riverpod
 SearchProductsUsecase searchProductsUsecase(Ref ref) {
   final repository = ref.watch(productRepositoryProvider);
   return SearchProductsUsecase(repository);
@@ -94,6 +108,22 @@ Future<List<Product>> subcategoryProducts(
 ) async {
   final usecase = ref.watch(getAllSubcategoryProductsUsecaseProvider);
   final result = await usecase(branchId, subCategoryId);
+
+  return result.fold((failure) => throw failure, (products) => products);
+}
+
+@riverpod
+Future<List<Product>> discountedProducts(Ref ref, int branchId) async {
+  final usecase = ref.watch(getAllDiscountedProductsUsecaseProvider);
+  final result = await usecase(branchId);
+
+  return result.fold((failure) => throw failure, (products) => products);
+}
+
+@riverpod
+Future<List<Product>> featuredProducts(Ref ref, int branchId) async {
+  final usecase = ref.watch(getAllFeaturedProductsUsecaseProvider);
+  final result = await usecase(branchId);
 
   return result.fold((failure) => throw failure, (products) => products);
 }

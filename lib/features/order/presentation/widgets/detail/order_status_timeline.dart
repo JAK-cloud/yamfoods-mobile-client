@@ -5,20 +5,22 @@ import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
 import '../../../../../core/enums/order_status.dart';
+import '../../../../../core/enums/order_type.dart';
 import '../../../domain/entities/order.dart';
 
 /// Order status timeline widget displaying the progress of an order.
 ///
-/// Shows all stages: pending, confirmed, preparing, ready, outForDelivery, delivered.
-/// Highlights the current stage based on order status.
-/// For cancelled/failed orders, shows error state at the last completed stage.
+/// Stages depend on order type:
+/// - Delivery: pending → confirmed → preparing → ready → out_for_delivery → delivered
+/// - Pickup: pending → confirmed → preparing → ready → completed
+/// - Dining: pending → confirmed → preparing → ready → served
+/// When cancelled/failed: only Pending → Cancelled/Failed (2 steps).
 class OrderStatusTimeline extends StatelessWidget {
   final Orderr order;
 
   const OrderStatusTimeline({super.key, required this.order});
 
-  // Define the 6 active stages in order
-  static const List<OrderStatus> _activeStages = [
+  static const List<OrderStatus> _deliveryStages = [
     OrderStatus.pending,
     OrderStatus.confirmed,
     OrderStatus.preparing,
@@ -27,12 +29,42 @@ class OrderStatusTimeline extends StatelessWidget {
     OrderStatus.delivered,
   ];
 
+  static const List<OrderStatus> _pickupStages = [
+    OrderStatus.pending,
+    OrderStatus.confirmed,
+    OrderStatus.preparing,
+    OrderStatus.ready,
+    OrderStatus.completed,
+  ];
+
+  static const List<OrderStatus> _diningStages = [
+    OrderStatus.pending,
+    OrderStatus.confirmed,
+    OrderStatus.preparing,
+    OrderStatus.ready,
+    OrderStatus.served,
+  ];
+
+  List<OrderStatus> _getStages(OrderStatus currentStatus, OrderType orderType) {
+    if (currentStatus == OrderStatus.cancelled ||
+        currentStatus == OrderStatus.failed) {
+      return [OrderStatus.pending, currentStatus];
+    }
+    return switch (orderType) {
+      OrderType.delivery => _deliveryStages,
+      OrderType.pickup => _pickupStages,
+      OrderType.dining => _diningStages,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentStatus = order.status.toOrderStatus();
+    final orderType = order.type.toOrderType();
     final isTerminalState =
         currentStatus == OrderStatus.cancelled ||
         currentStatus == OrderStatus.failed;
+    final stages = _getStages(currentStatus, orderType);
 
     return Container(
       padding: EdgeInsets.all(AppSizes.lg),
@@ -72,56 +104,47 @@ class OrderStatusTimeline extends StatelessWidget {
             ),
             builder: TimelineTileBuilder.connected(
               connectionDirection: ConnectionDirection.before,
-              itemCount: isTerminalState
-                  ? 3 // Show: pending, confirmed, error for terminal states
-                  : _activeStages.length,
+              itemCount: stages.length,
               contentsAlign: ContentsAlign.alternating,
               contentsBuilder: (context, index) {
-                final stage = _activeStages[index];
-                final stageStatus = _getStageStatus(stage, currentStatus);
+                final stage = stages[index];
+                final stageStatus = _getStageStatus(stage, currentStatus, stages);
 
-                // For terminal states, show error message instead of stage info after last completed
-                if (isTerminalState) {
-                  final lastCompletedIndex = 1; // confirmed is last completed
-                  if (index == lastCompletedIndex + 1) {
-                    // Show error message here
-                    return Padding(
-                      padding: EdgeInsets.only(
-                        left: AppSizes.md,
-                        top: AppSizes.sm,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            currentStatus.name,
-                            style: AppTextStyles.bodyLarge.copyWith(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w700,
-                            ),
+                // Cancelled/failed: only 2 steps; step 1 is error content
+                if (isTerminalState && index == 1) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: AppSizes.md,
+                      top: AppSizes.sm,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          currentStatus.name,
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w700,
                           ),
-                          SizedBox(height: AppSizes.xs),
-                          Text(
-                            currentStatus.description,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: Colors.red.withValues(alpha: 0.8),
-                            ),
+                        ),
+                        SizedBox(height: AppSizes.xs),
+                        Text(
+                          currentStatus.description,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Colors.red.withValues(alpha: 0.8),
                           ),
-                        ],
-                      ),
-                    );
-                  } else if (index > lastCompletedIndex + 1) {
-                    // Hide content after error for terminal states
-                    return const SizedBox.shrink();
-                  }
+                        ),
+                      ],
+                    ),
+                  );
                 }
 
                 return Padding(
                   padding: EdgeInsets.only(
                     left: AppSizes.md,
                     top: index == 0 ? 0 : AppSizes.sm,
-                    bottom: index == _activeStages.length - 1 ? 0 : AppSizes.sm,
+                    bottom: index == stages.length - 1 ? 0 : AppSizes.sm,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,30 +177,23 @@ class OrderStatusTimeline extends StatelessWidget {
                 );
               },
               indicatorBuilder: (context, index) {
-                final stage = _activeStages[index];
-                final stageStatus = _getStageStatus(stage, currentStatus);
+                final stage = stages[index];
+                final stageStatus = _getStageStatus(stage, currentStatus, stages);
 
-                // Show error indicator after last completed stage for terminal states
-                if (isTerminalState) {
-                  final lastCompletedIndex = 1; // confirmed is last completed
-                  if (index == lastCompletedIndex + 1) {
-                    // Show error indicator here
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.red, width: 3),
-                      ),
-                      child: const Icon(
-                        Icons.cancel,
-                        color: AppColors.white,
-                        size: 16,
-                      ),
-                    );
-                  } else if (index > lastCompletedIndex + 1) {
-                    // Hide indicators after error for terminal states
-                    return const SizedBox.shrink();
-                  }
+                // Cancelled/failed: step 1 is error indicator
+                if (isTerminalState && index == 1) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.red, width: 3),
+                    ),
+                    child: const Icon(
+                      Icons.cancel,
+                      color: AppColors.white,
+                      size: 16,
+                    ),
+                  );
                 }
 
                 switch (stageStatus) {
@@ -231,25 +247,22 @@ class OrderStatusTimeline extends StatelessWidget {
                 }
               },
               connectorBuilder: (context, index, connectorType) {
-                final stage = _activeStages[index];
-                final stageStatus = _getStageStatus(stage, currentStatus);
-                final nextStageStatus = index < _activeStages.length - 1
-                    ? _getStageStatus(_activeStages[index + 1], currentStatus)
+                final stage = stages[index];
+                final stageStatus = _getStageStatus(stage, currentStatus, stages);
+                final nextStageStatus = index < stages.length - 1
+                    ? _getStageStatus(stages[index + 1], currentStatus, stages)
                     : StageStatus.upcoming;
 
-                // For terminal states, show red connector before error indicator
+                // Cancelled/failed: red connector from pending to error step.
+                // With ConnectionDirection.before, the line between step 0 and 1 is built at index 1.
                 if (isTerminalState) {
-                  final lastCompletedIndex = 1; // confirmed is last completed
-                  if (index == lastCompletedIndex) {
-                    // Red connector before error
+                  if (index == 1) {
                     return SolidLineConnector(
                       color: Colors.red.withValues(alpha: 0.3),
                       thickness: 2,
                     );
-                  } else if (index > lastCompletedIndex) {
-                    // Hide connectors after error
-                    return const SizedBox.shrink();
                   }
+                  return const SizedBox.shrink();
                 }
 
                 // Solid line for completed and active stages
@@ -272,30 +285,34 @@ class OrderStatusTimeline extends StatelessWidget {
     );
   }
 
-  /// Determines the status of a stage based on current order status.
-  StageStatus _getStageStatus(OrderStatus stage, OrderStatus currentStatus) {
+  /// Determines the status of a stage based on current order status and the active stages list.
+  StageStatus _getStageStatus(
+    OrderStatus stage,
+    OrderStatus currentStatus,
+    List<OrderStatus> stages,
+  ) {
     final isTerminalState =
         currentStatus == OrderStatus.cancelled ||
         currentStatus == OrderStatus.failed;
 
-    // For terminal states, we can't know exactly which stage was reached
-    // So we'll show all stages up to confirmed as completed (reasonable default)
-    // and show error at the end
+    // Cancelled/failed: only 2 steps — pending (completed), then error (active)
     if (isTerminalState) {
-      final stageIndex = _activeStages.indexOf(stage);
-      // Show first 2 stages (pending, confirmed) as completed for terminal orders
-      // This is a reasonable assumption - cancelled orders usually at least reached confirmed
-      if (stageIndex <= 1) {
-        return StageStatus.completed;
-      }
+      final stageIndex = stages.indexOf(stage);
+      if (stageIndex == 0) return StageStatus.completed;
+      if (stageIndex == 1) return StageStatus.active;
       return StageStatus.upcoming;
     }
 
-    final currentIndex = _activeStages.indexOf(currentStatus);
-    final stageIndex = _activeStages.indexOf(stage);
+    final stageIndex = stages.indexOf(stage);
+    var currentIndex = stages.indexOf(currentStatus);
+    // completed/served are terminal success for pickup/dining; show as last stage done
+    if (currentIndex == -1 &&
+        (currentStatus == OrderStatus.completed ||
+            currentStatus == OrderStatus.served)) {
+      currentIndex = stages.length - 1;
+    }
 
     if (currentIndex == -1 || stageIndex == -1) {
-      // Status not in active stages, treat as upcoming
       return StageStatus.upcoming;
     }
 

@@ -12,6 +12,8 @@ extension PaymentMapper on PaymentModel {
     telebirrPaymentOrderId: telebirrPaymentOrderId,
     amount: amount,
     transTime: transTime,
+    chapaMethod: chapaMethod,
+    chapaTxnRef: chapaTxnRef,
     currency: currency,
     date: date,
   );

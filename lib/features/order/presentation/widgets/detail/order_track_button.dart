@@ -40,12 +40,7 @@ class OrderTrackButton extends StatelessWidget {
     final deliveryLat = order.deliveryLocation.lat!;
     final deliveryLng = order.deliveryLocation.lng!;
 
-    // print the coordinates
-    print('branchLat: $branchLat');
-    print('branchLng: $branchLng');
-    print('deliveryLat: $deliveryLat');
-    print('deliveryLng: $deliveryLng');
-
+  
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton.icon(

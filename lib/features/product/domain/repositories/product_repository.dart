@@ -12,6 +12,10 @@ abstract class ProductRepository {
     ProductFilterRequestModel filters,
   );
 
+  Future<Either<Failure, List<Product>>> getAllDiscountedProducts(int branchId);
+
+  Future<Either<Failure, List<Product>>> getAllFeaturedProducts(int branchId);
+
   Future<Either<Failure, List<Product>>> getAllCategoryProducts(
     int branchId,
     int categoryId,

@@ -34,60 +34,57 @@ class CartList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-      child: cartAsync.when(
-        data: (carts) {
-          if (carts.isEmpty) {
-            return EmptyState(
-              icon: Icons.shopping_cart_outlined,
-              title: 'Your cart is empty',
-              subtitle: 'Start adding delicious items to your cart',
-              actionText: 'Browse Menu',
-              onAction: () => context.go(RouteName.home),
-            );
-          }
-          return ListView.builder(
-            padding: EdgeInsets.only(
-              left: AppSizes.sm,
-              right: AppSizes.sm,
-              top: AppSizes.sm,
-              bottom: _calculateBottomPadding(
-                context,
-              ), // Dynamic padding for bottom sheet
-            ),
-            itemCount: carts.length,
-            itemBuilder: (context, index) => Padding(
-              padding: EdgeInsets.only(
-                bottom: index < carts.length - 1
-                    ? AppSizes.sm
-                    : AppSizes.lg, // Extra space after last item
-              ),
-              child: CartCard(cart: carts[index], branchId: branchId),
-            ),
+    return cartAsync.when(
+      data: (carts) {
+        if (carts.isEmpty) {
+          return EmptyState(
+            icon: Icons.shopping_cart_outlined,
+            title: 'Your cart is empty',
+            subtitle: 'Start adding delicious items to your cart',
+            actionText: 'Browse Menu',
+            onAction: () => context.go(RouteName.home),
           );
-        },
-        error: (error, stack) => ErrorWidgett(
-          title: 'Failed to load cart',
-          failure: error is Failure
-              ? error
-              : Failure.unexpected(message: error.toString()),
-          onRetry: () =>
-              ref.read(cartProvider(branchId).notifier).load(branchId),
-        ),
-        loading: () => ListView.builder(
+        }
+        return ListView.builder(
           padding: EdgeInsets.only(
             left: AppSizes.sm,
             right: AppSizes.sm,
             top: AppSizes.sm,
-            bottom: _calculateBottomPadding(context),
+            bottom: _calculateBottomPadding(
+              context,
+            ), // Dynamic padding for bottom sheet
           ),
-          itemCount: 4,
+          itemCount: carts.length,
           itemBuilder: (context, index) => Padding(
             padding: EdgeInsets.only(
-              bottom: index < 3 ? AppSizes.sm : AppSizes.lg,
+              bottom: index < carts.length - 1
+                  ? AppSizes.sm
+                  : AppSizes.lg, // Extra space after last item
             ),
-            child: const CartCardSkeleton(),
+            child: CartCard(cart: carts[index], branchId: branchId),
           ),
+        );
+      },
+      error: (error, stack) => ErrorWidgett(
+        title: 'Failed to load cart',
+        failure: error is Failure
+            ? error
+            : Failure.unexpected(message: error.toString()),
+        onRetry: () => ref.read(cartProvider(branchId).notifier).load(branchId),
+      ),
+      loading: () => ListView.builder(
+        padding: EdgeInsets.only(
+          left: AppSizes.sm,
+          right: AppSizes.sm,
+          top: AppSizes.sm,
+          bottom: _calculateBottomPadding(context),
+        ),
+        itemCount: 4,
+        itemBuilder: (context, index) => Padding(
+          padding: EdgeInsets.only(
+            bottom: index < 3 ? AppSizes.sm : AppSizes.lg,
+          ),
+          child: const CartCardSkeleton(),
         ),
       ),
     );

@@ -179,88 +179,19 @@ class _SelectableAddressCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: AppSizes.xs),
-            // Address content - same layout as CheckoutAddressCard
+            // Address content
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // First row
-                  Row(
-                    children: [
-                      if (_hasSubcity)
-                        Flexible(
-                          child: Text(
-                            address.subcity,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      if (_hasSubcity && _hasStreet) ...[
-                        Text(
-                          ', ',
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                      if (_hasStreet)
-                        Flexible(
-                          child: Text(
-                            address.street,
-                            style: AppTextStyles.bodyMedium.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 2),
-                  // Second row
-                  Row(
-                    children: [
-                      if (_hasBuilding)
-                        Flexible(
-                          child: Text(
-                            address.building,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.txtSecondary,
-                              fontSize: 12,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      if (_hasBuilding && _hasHouseNo) ...[
-                        Text(
-                          ', ',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.txtSecondary,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                      if (_hasHouseNo)
-                        Text(
-                          'House No: ${address.houseNo}',
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.txtSecondary,
-                            fontSize: 12,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                    ],
-                  ),
-                ],
-              ),
+              child: _hasAddress
+                  ? Text(
+                      address.address,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),
@@ -268,11 +199,6 @@ class _SelectableAddressCard extends StatelessWidget {
     );
   }
 
-  bool get _hasSubcity =>
-      address.subcity.isNotEmpty && address.subcity != 'N/A';
-  bool get _hasStreet => address.street.isNotEmpty && address.street != 'N/A';
-  bool get _hasBuilding =>
-      address.building.isNotEmpty && address.building != 'N/A';
-  bool get _hasHouseNo =>
-      address.houseNo.isNotEmpty && address.houseNo != 'N/A';
+  bool get _hasAddress =>
+      address.address.isNotEmpty && address.address != 'N/A';
 }

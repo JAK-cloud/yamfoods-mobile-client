@@ -16,9 +16,15 @@ import '../../domain/entities/promo_banner.dart';
 /// Individual promo banner item widget.
 ///
 /// Displays banner image with overlay content including:
-/// - Title and subtitle
+/// - Title and subtitle (fully visible, never cropped)
 /// - "Order Now" button (if productId exists)
 /// - Date range (if productId exists)
+///
+/// Features:
+/// - Flexible layout that adapts to content size
+/// - Text never gets cropped - shows full title and subtitle
+/// - Modern gradient overlay for optimal text readability
+/// - Responsive design that works with varying content lengths
 class PromoBannerItem extends ConsumerWidget {
   final PromoBanner banner;
 
@@ -37,10 +43,14 @@ class PromoBannerItem extends ConsumerWidget {
       }
     }
 
+    final hasAction = banner.productId != null;
+    final hasSubtitle = banner.subtitle != null && banner.subtitle!.isNotEmpty;
+
     return GestureDetector(
-      onTap: banner.productId != null ? onTap : null,
+      onTap: hasAction ? onTap : null,
       child: Container(
         width: double.infinity,
+        height: AppSizes.bannerHeight,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSizes.radius),
           boxShadow: [
@@ -54,35 +64,43 @@ class PromoBannerItem extends ConsumerWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(AppSizes.radius),
           child: Stack(
-          children: [
-            // Banner image
-            Positioned.fill(
-              child: imageUrl.isNotEmpty
-                  ? CachedNetworkImage(
-                      key: ValueKey(
-                        imageUrl,
-                      ), // Ensure proper widget identity for caching
-                      imageUrl: imageUrl,
-                      fit: BoxFit.cover,
-                      memCacheWidth: (MediaQuery.of(context).size.width * 2)
-                          .round(),
-                      memCacheHeight: (AppSizes.bannerHeight * 2).round(),
-                      maxWidthDiskCache: 2000,
-                      maxHeightDiskCache: 1000,
-                      fadeInDuration: const Duration(milliseconds: 200),
-                      fadeOutDuration: const Duration(milliseconds: 100),
-                      placeholderFadeInDuration: const Duration(
-                        milliseconds: 150,
-                      ),
-                      useOldImageOnUrlChange:
-                          true, // Keep showing cached image during rebuilds
-                      placeholder: (context, url) => Container(
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        child: const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
+            children: [
+              // Banner image with proper caching - loads once and reuses cache
+              Positioned.fill(
+                child: imageUrl.isNotEmpty
+                    ? CachedNetworkImage(
+                        key: ValueKey(imageUrl),
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        memCacheWidth: (MediaQuery.of(context).size.width * 2)
+                            .round(),
+                        memCacheHeight: (AppSizes.bannerHeight * 2).round(),
+                        maxWidthDiskCache: 2000,
+                        maxHeightDiskCache: 1000,
+                        fadeInDuration: const Duration(milliseconds: 200),
+                        fadeOutDuration: const Duration(milliseconds: 100),
+                        placeholderFadeInDuration: const Duration(
+                          milliseconds: 150,
                         ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
+                        useOldImageOnUrlChange: true,
+                        placeholder: (context, url) => Container(
+                          color: AppColors.primary.withValues(alpha: 0.1),
+                          child: const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: AppColors.primary.withValues(alpha: 0.1),
+                          child: const Center(
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 48,
+                              color: AppColors.txtSecondary,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
                         color: AppColors.primary.withValues(alpha: 0.1),
                         child: const Center(
                           child: Icon(
@@ -92,102 +110,96 @@ class PromoBannerItem extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    )
-                  : Container(
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      child: const Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 48,
-                          color: AppColors.txtSecondary,
-                        ),
-                      ),
+              ),
+              // Gradient overlay for text readability
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.3),
+                        Colors.black.withValues(alpha: 0.7),
+                      ],
+                      stops: const [0.3, 0.6, 1.0],
                     ),
-            ),
-            // Gradient overlay for text readability
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.6),
-                    ],
-                    stops: const [0.4, 1.0],
                   ),
                 ),
               ),
-            ),
-            // Content overlay
-            Positioned.fill(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppSizes.md,
-                  AppSizes.md,
-                  AppSizes.md,
-                  AppSizes.sm, // Reduced bottom padding to prevent overflow
-                ),
+              // Content Column with title, subtitle, and action
+              SafeArea(
+                minimum: EdgeInsets.all(AppSizes.md),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start, // Always from top
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min, // Prevent overflow
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    // Title - with proper height calculation
-                    Flexible(
-                      child: Text(
-                        banner.title,
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                          height: 1.2, // Line height for better text rendering
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withValues(alpha: 0.5),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
+                    // Text content section - expands to show all text
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // Title - flexible to adjust and fit available space
+                          Flexible(
+                            child: Text(
+                              banner.title,
+                              style: AppTextStyles.h3.copyWith(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                                height: 1.25,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withValues(alpha: 0.7),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              maxLines: hasAction ? 3 : 4,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          // Subtitle (if available) - flexible to adjust and fit available space
+                          if (hasSubtitle) ...[
+                            SizedBox(height: AppSizes.xs),
+                            Flexible(
+                              child: Text(
+                                banner.subtitle!,
+                                style: AppTextStyles.bodyMedium.copyWith(
+                                  color: AppColors.white.withValues(
+                                    alpha: 0.95,
+                                  ),
+                                  fontSize: 12,
+                                  height: 1.4,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.7,
+                                      ),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                maxLines: hasAction ? 2 : 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        ],
                       ),
                     ),
-                    // Subtitle (if available)
-                    if (banner.subtitle != null &&
-                        banner.subtitle!.isNotEmpty) ...[
-                      SizedBox(height: AppSizes.xs / 2), // Reduced spacing
-                      Flexible(
-                        child: Text(
-                          banner.subtitle!,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.white.withValues(alpha: 0.9),
-                            fontSize: 13,
-                            height: 1.3,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withValues(alpha: 0.5),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          maxLines: 2, // Allow 2 lines
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                    // Spacer to push button/date to bottom when they exist
-                    if (banner.productId != null) const Spacer(),
-                    // Date range and Order Now button on same row
-                    if (banner.productId != null)
+                    // Bottom action section (date + button) - fixed at bottom
+                    if (hasAction) ...[
+                      SizedBox(height: AppSizes.sm),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Date range
+                          // Date range badge
                           Flexible(
                             flex: 2,
                             child: Container(
@@ -196,12 +208,12 @@ class PromoBannerItem extends ConsumerWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.white.withValues(alpha: 0.2),
+                                color: AppColors.white.withValues(alpha: 0.25),
                                 borderRadius: BorderRadius.circular(
                                   AppSizes.radiusSm,
                                 ),
                                 border: Border.all(
-                                  color: AppColors.white.withValues(alpha: 0.3),
+                                  color: AppColors.white.withValues(alpha: 0.4),
                                   width: 1,
                                 ),
                               ),
@@ -210,7 +222,7 @@ class PromoBannerItem extends ConsumerWidget {
                                 children: [
                                   Icon(
                                     Icons.calendar_today_outlined,
-                                    size: 12,
+                                    size: 11,
                                     color: AppColors.white,
                                   ),
                                   SizedBox(width: AppSizes.xs),
@@ -240,7 +252,7 @@ class PromoBannerItem extends ConsumerWidget {
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: AppSizes.md,
-                                vertical: 8,
+                                vertical: 7,
                               ),
                               decoration: BoxDecoration(
                                 color: AppColors.primary,
@@ -262,7 +274,7 @@ class PromoBannerItem extends ConsumerWidget {
                                 style: AppTextStyles.buttonMedium.copyWith(
                                   color: AppColors.white,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 13,
+                                  fontSize: 12,
                                 ),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
@@ -272,13 +284,13 @@ class PromoBannerItem extends ConsumerWidget {
                           ),
                         ],
                       ),
+                    ],
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

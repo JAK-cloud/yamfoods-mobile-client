@@ -29,6 +29,16 @@ abstract class ProductApiService {
     @Query('hasDiscount') String? hasDiscount,
   );
 
+  @GET(ApiRoutes.getAllDiscountedProducts)
+  Future<ApiResponse<ProductsResponseModel>> getAllDiscountedProducts(
+    @Path('branchId') int branchId,
+  );
+
+  @GET(ApiRoutes.getAllFeaturedProducts)
+  Future<ApiResponse<ProductsResponseModel>> getAllFeaturedProducts(
+    @Path('branchId') int branchId,
+  );
+
   @GET(ApiRoutes.getAllCategoryProducts)
   Future<ApiResponse<ProductsResponseModel>> getAllCategoryProducts(
     @Path('branchId') int branchId,

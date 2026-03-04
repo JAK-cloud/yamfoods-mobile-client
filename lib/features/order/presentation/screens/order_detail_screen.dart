@@ -8,7 +8,6 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/widgets/custom_app_bar.dart';
-import '../../../../core/enums/order_type.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/enums/order_status.dart';
 import '../providers/order_providers.dart';
@@ -88,13 +87,9 @@ class OrderDetailScreen extends ConsumerWidget {
                     OrderInfoSection(orderDetail: orderDetail),
                     SizedBox(height: AppSizes.sm),
 
-                    // Order Status Timeline
-                    //display only if not pickup order
-                    if (orderDetail.order.type.toOrderType() !=
-                        OrderType.pickup) ...[
-                      OrderStatusTimeline(order: orderDetail.order),
-                      SizedBox(height: AppSizes.sm),
-                    ],
+                    // Order Status Timeline (all types: pickup, dining, delivery)
+                    OrderStatusTimeline(order: orderDetail.order),
+                    SizedBox(height: AppSizes.sm),
                     // Order Items Section
                     OrderItemsSection(items: orderDetail.items),
                     SizedBox(height: AppSizes.sm),

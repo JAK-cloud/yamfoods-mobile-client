@@ -45,6 +45,10 @@ class ApiRoutes {
   static const String _productBase = '/product';
   static const String getAllBranchProducts =
       '$_productBase/get-all-branch-products/{branchId}';
+  static const String getAllDiscountedProducts =
+      '$_productBase/get-all-discounted-products/{branchId}';
+  static const String getAllFeaturedProducts =
+      '$_productBase/get-all-featured-products/{branchId}';
   static const String getAllCategoryProducts =
       '$_productBase/get-all-category-products/{branchId}/{categoryId}';
   static const String getAllSubcategoryProducts =

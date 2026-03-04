@@ -226,6 +226,66 @@ final class GetRouteUsecaseProvider
 
 String _$getRouteUsecaseHash() => r'b8aa81dde84f90b9579c31f1969fb4b3b503c0c7';
 
+/// Get reverse geocoding usecase provider
+///
+/// Provides usecase for fetching address information from coordinates.
+
+@ProviderFor(getReverseGeocodingUsecase)
+const getReverseGeocodingUsecaseProvider =
+    GetReverseGeocodingUsecaseProvider._();
+
+/// Get reverse geocoding usecase provider
+///
+/// Provides usecase for fetching address information from coordinates.
+
+final class GetReverseGeocodingUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetReverseGeocodingUsecase,
+          GetReverseGeocodingUsecase,
+          GetReverseGeocodingUsecase
+        >
+    with $Provider<GetReverseGeocodingUsecase> {
+  /// Get reverse geocoding usecase provider
+  ///
+  /// Provides usecase for fetching address information from coordinates.
+  const GetReverseGeocodingUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getReverseGeocodingUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getReverseGeocodingUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetReverseGeocodingUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetReverseGeocodingUsecase create(Ref ref) {
+    return getReverseGeocodingUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetReverseGeocodingUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetReverseGeocodingUsecase>(value),
+    );
+  }
+}
+
+String _$getReverseGeocodingUsecaseHash() =>
+    r'92f2cf7203cef6fe3ec691bee3003a6733015889';
+
 /// Route provider
 ///
 /// Fetches route between origin and destination using the usecase.
@@ -336,4 +396,73 @@ final class RouteFamily extends $Family
 
   @override
   String toString() => r'routeProvider';
+}
+
+@ProviderFor(reverseGeocode)
+const reverseGeocodeProvider = ReverseGeocodeFamily._();
+
+final class ReverseGeocodeProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  const ReverseGeocodeProvider._({
+    required ReverseGeocodeFamily super.from,
+    required (double, double) super.argument,
+  }) : super(
+         retry: null,
+         name: r'reverseGeocodeProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$reverseGeocodeHash();
+
+  @override
+  String toString() {
+    return r'reverseGeocodeProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    final argument = this.argument as (double, double);
+    return reverseGeocode(ref, argument.$1, argument.$2);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ReverseGeocodeProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$reverseGeocodeHash() => r'19f022d7f98c86394462c7d14c46b08b9785ca43';
+
+final class ReverseGeocodeFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<String>, (double, double)> {
+  const ReverseGeocodeFamily._()
+    : super(
+        retry: null,
+        name: r'reverseGeocodeProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  ReverseGeocodeProvider call(double latitude, double longitude) =>
+      ReverseGeocodeProvider._(argument: (latitude, longitude), from: this);
+
+  @override
+  String toString() => r'reverseGeocodeProvider';
 }

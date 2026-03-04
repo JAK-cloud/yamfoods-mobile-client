@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 
-enum OrderType { pickup, delivery }
+enum OrderType { pickup, dining, delivery }
 
 extension OrderTypeExtension on OrderType {
   String get name => switch (this) {
     OrderType.pickup => 'Pickup',
+    OrderType.dining => 'Dining',
     OrderType.delivery => 'Delivery',
   };
 
   Color get color => switch (this) {
     OrderType.pickup => Colors.amber[700]!,
+    OrderType.dining => Colors.brown,
     OrderType.delivery => Colors.green,
   };
 
   IconData get icon => switch (this) {
     OrderType.pickup => Icons.store_outlined,
+    OrderType.dining => Icons.restaurant,
     OrderType.delivery => Icons.local_shipping_outlined,
   };
 
   String get description => switch (this) {
     OrderType.pickup => 'Pickup order',
+    OrderType.dining => 'Dining order',
     OrderType.delivery => 'Delivery order',
   };
 }
@@ -30,11 +34,14 @@ extension OrderTypeStringExtension on String {
   ///
   /// Handles different string formats:
   /// - 'pickup' → [OrderType.pickup]
+  /// - 'dining' → [OrderType.dining]
   /// - 'delivery' → [OrderType.delivery]
   OrderType toOrderType() {
     switch (toLowerCase()) {
       case 'pickup':
         return OrderType.pickup;
+      case 'dining':
+        return OrderType.dining;
       case 'delivery':
         return OrderType.delivery;
       default:

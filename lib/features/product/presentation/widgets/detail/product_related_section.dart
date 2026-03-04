@@ -81,11 +81,7 @@ class ProductRelatedSection extends ConsumerWidget {
                 margin: EdgeInsets.only(
                   right: index == relatedProducts.length - 1 ? 0 : AppSizes.md,
                 ),
-                child: ProductCard(
-                  product: relatedProducts[index],
-                  screenId: 'productDetail',
-                  enableCartAnimation: false,
-                ),
+                child: ProductCard(product: relatedProducts[index]),
               );
             },
           ),

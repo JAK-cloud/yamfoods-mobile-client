@@ -48,8 +48,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   final shouldNavigate = await ref
                       .read(onboardingProvider.notifier)
                       .skipPage();
-                  if (shouldNavigate && mounted) {
-                    context.go(RouteName.branches);
+                  if (shouldNavigate) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        context.go(RouteName.branches);
+                      }
+                    });
                   }
                 },
               ),
@@ -58,8 +62,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   bool shouldNavigate = await ref
                       .read(onboardingProvider.notifier)
                       .nextPage();
-                  if (shouldNavigate && mounted) {
-                    context.go(RouteName.branches);
+                  if (shouldNavigate) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (mounted) {
+                        context.go(RouteName.branches);
+                      }
+                    });
                   }
                 },
               ),
@@ -83,7 +91,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 failure: Failure.unexpected(message: error.toString()),
               );
               context.go(RouteName.branches);
-            }
+            } 
           });
           return const Center(child: CircularProgressIndicator());
         },

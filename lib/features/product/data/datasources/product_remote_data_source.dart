@@ -14,6 +14,14 @@ abstract class ProductRemoteDataSource {
     ProductFilterRequestModel filters,
   );
 
+  Future<Either<Failure, List<ProductModel>>> getAllDiscountedProducts(
+    int branchId,
+  );
+
+  Future<Either<Failure, List<ProductModel>>> getAllFeaturedProducts(
+    int branchId,
+  );
+
   Future<Either<Failure, List<ProductModel>>> getAllCategoryProducts(
     int branchId,
     int categoryId,

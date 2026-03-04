@@ -118,7 +118,7 @@ class _PaymentLogo extends StatelessWidget {
           height: size,
           width: size,
           fit: BoxFit.contain,
-          errorBuilder: (_, __, ___) => Icon(Icons.payment, size: size),
+          errorBuilder: (_, _, _) => Icon(Icons.payment, size: size),
         ),
       ),
     );

@@ -33,7 +33,7 @@ class ProfileScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+     backgroundColor: AppColors.background,
       body: profileState.when(
         data: (user) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,

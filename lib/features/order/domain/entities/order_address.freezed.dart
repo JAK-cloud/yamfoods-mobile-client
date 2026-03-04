@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderAddress {
 
- int get id; int get orderId; String? get subcity; String? get street; String? get building; String? get houseNo; String? get note; double? get lat; double? get lng; AddressLocation? get location; DateTime get createdAt;
+ int get id; int get orderId; String? get address; String? get building; String? get houseNo; double? get lat; double? get lng; DateTime get createdAt;
 /// Create a copy of OrderAddress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $OrderAddressCopyWith<OrderAddress> get copyWith => _$OrderAddressCopyWithImpl<O
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderAddress&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.subcity, subcity) || other.subcity == subcity)&&(identical(other.street, street) || other.street == street)&&(identical(other.building, building) || other.building == building)&&(identical(other.houseNo, houseNo) || other.houseNo == houseNo)&&(identical(other.note, note) || other.note == note)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.location, location) || other.location == location)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderAddress&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.houseNo, houseNo) || other.houseNo == houseNo)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,subcity,street,building,houseNo,note,lat,lng,location,createdAt);
+int get hashCode => Object.hash(runtimeType,id,orderId,address,building,houseNo,lat,lng,createdAt);
 
 @override
 String toString() {
-  return 'OrderAddress(id: $id, orderId: $orderId, subcity: $subcity, street: $street, building: $building, houseNo: $houseNo, note: $note, lat: $lat, lng: $lng, location: $location, createdAt: $createdAt)';
+  return 'OrderAddress(id: $id, orderId: $orderId, address: $address, building: $building, houseNo: $houseNo, lat: $lat, lng: $lng, createdAt: $createdAt)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $OrderAddressCopyWith<$Res>  {
   factory $OrderAddressCopyWith(OrderAddress value, $Res Function(OrderAddress) _then) = _$OrderAddressCopyWithImpl;
 @useResult
 $Res call({
- int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note, double? lat, double? lng, AddressLocation? location, DateTime createdAt
+ int id, int orderId, String? address, String? building, String? houseNo, double? lat, double? lng, DateTime createdAt
 });
 
 
-$AddressLocationCopyWith<$Res>? get location;
+
 
 }
 /// @nodoc
@@ -62,35 +62,20 @@ class _$OrderAddressCopyWithImpl<$Res>
 
 /// Create a copy of OrderAddress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? subcity = freezed,Object? street = freezed,Object? building = freezed,Object? houseNo = freezed,Object? note = freezed,Object? lat = freezed,Object? lng = freezed,Object? location = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? orderId = null,Object? address = freezed,Object? building = freezed,Object? houseNo = freezed,Object? lat = freezed,Object? lng = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
-as int,subcity: freezed == subcity ? _self.subcity : subcity // ignore: cast_nullable_to_non_nullable
-as String?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
+as int,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,building: freezed == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
 as String?,houseNo: freezed == houseNo ? _self.houseNo : houseNo // ignore: cast_nullable_to_non_nullable
-as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
 as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
-as double?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as AddressLocation?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
-/// Create a copy of OrderAddress
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AddressLocationCopyWith<$Res>? get location {
-    if (_self.location == null) {
-    return null;
-  }
 
-  return $AddressLocationCopyWith<$Res>(_self.location!, (value) {
-    return _then(_self.copyWith(location: value));
-  });
-}
 }
 
 
@@ -169,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note,  double? lat,  double? lng,  AddressLocation? location,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int orderId,  String? address,  String? building,  String? houseNo,  double? lat,  double? lng,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderAddress() when $default != null:
-return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);case _:
+return $default(_that.id,_that.orderId,_that.address,_that.building,_that.houseNo,_that.lat,_that.lng,_that.createdAt);case _:
   return orElse();
 
 }
@@ -190,10 +175,10 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note,  double? lat,  double? lng,  AddressLocation? location,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int orderId,  String? address,  String? building,  String? houseNo,  double? lat,  double? lng,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _OrderAddress():
-return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);}
+return $default(_that.id,_that.orderId,_that.address,_that.building,_that.houseNo,_that.lat,_that.lng,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -207,10 +192,10 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String? subcity,  String? street,  String? building,  String? houseNo,  String? note,  double? lat,  double? lng,  AddressLocation? location,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int orderId,  String? address,  String? building,  String? houseNo,  double? lat,  double? lng,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderAddress() when $default != null:
-return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building,_that.houseNo,_that.note,_that.lat,_that.lng,_that.location,_that.createdAt);case _:
+return $default(_that.id,_that.orderId,_that.address,_that.building,_that.houseNo,_that.lat,_that.lng,_that.createdAt);case _:
   return null;
 
 }
@@ -222,19 +207,16 @@ return $default(_that.id,_that.orderId,_that.subcity,_that.street,_that.building
 
 
 class _OrderAddress implements OrderAddress {
-  const _OrderAddress({required this.id, required this.orderId, this.subcity, this.street, this.building, this.houseNo, this.note, this.lat, this.lng, this.location, required this.createdAt});
+  const _OrderAddress({required this.id, required this.orderId, this.address, this.building, this.houseNo, this.lat, this.lng, required this.createdAt});
   
 
 @override final  int id;
 @override final  int orderId;
-@override final  String? subcity;
-@override final  String? street;
+@override final  String? address;
 @override final  String? building;
 @override final  String? houseNo;
-@override final  String? note;
 @override final  double? lat;
 @override final  double? lng;
-@override final  AddressLocation? location;
 @override final  DateTime createdAt;
 
 /// Create a copy of OrderAddress
@@ -247,16 +229,16 @@ _$OrderAddressCopyWith<_OrderAddress> get copyWith => __$OrderAddressCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderAddress&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.subcity, subcity) || other.subcity == subcity)&&(identical(other.street, street) || other.street == street)&&(identical(other.building, building) || other.building == building)&&(identical(other.houseNo, houseNo) || other.houseNo == houseNo)&&(identical(other.note, note) || other.note == note)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.location, location) || other.location == location)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderAddress&&(identical(other.id, id) || other.id == id)&&(identical(other.orderId, orderId) || other.orderId == orderId)&&(identical(other.address, address) || other.address == address)&&(identical(other.building, building) || other.building == building)&&(identical(other.houseNo, houseNo) || other.houseNo == houseNo)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,orderId,subcity,street,building,houseNo,note,lat,lng,location,createdAt);
+int get hashCode => Object.hash(runtimeType,id,orderId,address,building,houseNo,lat,lng,createdAt);
 
 @override
 String toString() {
-  return 'OrderAddress(id: $id, orderId: $orderId, subcity: $subcity, street: $street, building: $building, houseNo: $houseNo, note: $note, lat: $lat, lng: $lng, location: $location, createdAt: $createdAt)';
+  return 'OrderAddress(id: $id, orderId: $orderId, address: $address, building: $building, houseNo: $houseNo, lat: $lat, lng: $lng, createdAt: $createdAt)';
 }
 
 
@@ -267,11 +249,11 @@ abstract mixin class _$OrderAddressCopyWith<$Res> implements $OrderAddressCopyWi
   factory _$OrderAddressCopyWith(_OrderAddress value, $Res Function(_OrderAddress) _then) = __$OrderAddressCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int orderId, String? subcity, String? street, String? building, String? houseNo, String? note, double? lat, double? lng, AddressLocation? location, DateTime createdAt
+ int id, int orderId, String? address, String? building, String? houseNo, double? lat, double? lng, DateTime createdAt
 });
 
 
-@override $AddressLocationCopyWith<$Res>? get location;
+
 
 }
 /// @nodoc
@@ -284,36 +266,21 @@ class __$OrderAddressCopyWithImpl<$Res>
 
 /// Create a copy of OrderAddress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? subcity = freezed,Object? street = freezed,Object? building = freezed,Object? houseNo = freezed,Object? note = freezed,Object? lat = freezed,Object? lng = freezed,Object? location = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? orderId = null,Object? address = freezed,Object? building = freezed,Object? houseNo = freezed,Object? lat = freezed,Object? lng = freezed,Object? createdAt = null,}) {
   return _then(_OrderAddress(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,orderId: null == orderId ? _self.orderId : orderId // ignore: cast_nullable_to_non_nullable
-as int,subcity: freezed == subcity ? _self.subcity : subcity // ignore: cast_nullable_to_non_nullable
-as String?,street: freezed == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
+as int,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as String?,building: freezed == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
 as String?,houseNo: freezed == houseNo ? _self.houseNo : houseNo // ignore: cast_nullable_to_non_nullable
-as String?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
 as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
-as double?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
-as AddressLocation?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
 
-/// Create a copy of OrderAddress
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AddressLocationCopyWith<$Res>? get location {
-    if (_self.location == null) {
-    return null;
-  }
 
-  return $AddressLocationCopyWith<$Res>(_self.location!, (value) {
-    return _then(_self.copyWith(location: value));
-  });
-}
 }
 
 // dart format on

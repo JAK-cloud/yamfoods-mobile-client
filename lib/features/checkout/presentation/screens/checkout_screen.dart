@@ -227,7 +227,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   }
 
   void _clearCartAndNavigate(int orderId) {
-    ref.read(cartProvider(widget.branchId).notifier).deleteAllCartItems();
+    ref.read(cartProvider(widget.branchId).notifier).deleteAllCartItems(shouldShowSnackBar: false);
     if (mounted) {
       context.pushReplacement(RouteName.orderSuccess, extra: orderId);
     }

@@ -6,5 +6,12 @@ import '../models/route_model.dart';
 
 abstract class MapDataSource {
   Future<Either<Failure, RouteModel>> getRoute(
-    AddressLocation origin, AddressLocation destination);
+    AddressLocation origin,
+    AddressLocation destination,
+  );
+
+  Future<Either<Failure, String>> reverseGeocode(
+    double latitude,
+    double longitude,
+  );
 }

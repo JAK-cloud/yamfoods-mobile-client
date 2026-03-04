@@ -41,6 +41,30 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
+  Future<Either<Failure, List<Product>>> getAllDiscountedProducts(
+    int branchId,
+  ) async {
+    final result = await _remoteDataSource.getAllDiscountedProducts(branchId);
+
+    return result.fold((failure) => Left(failure), (productModels) {
+      final products = productModels.map((p) => p.toDomain()).toList();
+      return Right(products);
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<Product>>> getAllFeaturedProducts(
+    int branchId,
+  ) async {
+    final result = await _remoteDataSource.getAllFeaturedProducts(branchId);
+
+    return result.fold((failure) => Left(failure), (productModels) {
+      final products = productModels.map((p) => p.toDomain()).toList();
+      return Right(products);
+    });
+  }
+
+  @override
   Future<Either<Failure, List<Product>>> getAllCategoryProducts(
     int branchId,
     int categoryId,

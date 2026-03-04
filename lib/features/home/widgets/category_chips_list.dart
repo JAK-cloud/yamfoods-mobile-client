@@ -29,7 +29,7 @@ class CategoryChipsList extends ConsumerWidget {
 
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.lg),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               return CategoryChip(category: categories[index]);

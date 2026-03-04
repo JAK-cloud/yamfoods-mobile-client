@@ -77,62 +77,30 @@ class Validators {
     return null;
   }
 
-  /// Validates subcity field (required).
-  ///
-  /// Returns error message if validation fails, otherwise returns `null`.
-  static String? validateSubcity(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'Subcity is required';
-    }
-    if (value.trim().length < 2) {
-      return 'Subcity must be at least 2 characters';
-    }
-    if (value.length > 50) {
-      return 'Subcity must not exceed 50 characters';
-    }
+  /// Validates address field (required, 5–50 characters).
+  static String? validateAddress(String? value) {
+    if (value == null || value.trim().isEmpty) return 'Address is required';
+    final len = value.trim().length;
+    if (len < 5) return 'Address must be at least 5 characters';
+    if (len > 100) return 'Address must not exceed 100 characters';
     return null;
   }
 
-  /// Validates street field (optional).
-  ///
-  /// Returns error message if validation fails, otherwise returns `null`.
-  static String? validateStreet(String? value) {
+  /// Validates receiver name field (optional).
+  static String? validateReceiverName(String? value) {
     if (value != null && value.trim().isNotEmpty) {
-      if (value.trim().length < 2) {
-        return 'Street must be at least 2 characters';
-      }
-      if (value.length > 100) {
-        return 'Street must not exceed 100 characters';
+      if (value.trim().length > 30) {
+        return 'Receiver name must not exceed 30 characters';
       }
     }
     return null;
   }
 
-  /// Validates building field (optional).
-  ///
-  /// Returns error message if validation fails, otherwise returns `null`.
-  static String? validateBuilding(String? value) {
+  /// Validates receiver phone field (optional).
+  static String? validateReceiverPhone(String? value) {
     if (value != null && value.trim().isNotEmpty) {
-      if (value.trim().length < 1) {
-        return 'Building must be at least 1 character';
-      }
-      if (value.length > 50) {
-        return 'Building must not exceed 50 characters';
-      }
-    }
-    return null;
-  }
-
-  /// Validates house number field (optional).
-  ///
-  /// Returns error message if validation fails, otherwise returns `null`.
-  static String? validateHouseNo(String? value) {
-    if (value != null && value.trim().isNotEmpty) {
-      if (value.trim().length < 1) {
-        return 'House number must be at least 1 character';
-      }
-      if (value.length > 20) {
-        return 'House number must not exceed 20 characters';
+      if (value.trim().length > 20) {
+        return 'Receiver phone must not exceed 20 characters';
       }
     }
     return null;

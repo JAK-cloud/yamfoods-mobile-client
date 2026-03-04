@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/reverse_geocoding_model.dart';
 import '../models/route_model.dart';
 
 part 'map_api_service.g.dart';
@@ -27,5 +28,26 @@ abstract class MapApiService {
     @Query('destination') String destination,
     @Query('apiKey') String apiKey,
     @Query('instruction') int instruction,
+  );
+
+  /// Gets reverse geocoding information for a given latitude and longitude.
+  ///
+  /// [lat] - Latitude coordinate
+  /// [lon] - Longitude coordinate
+  /// [format] - Response format (e.g., 'json')
+  /// [apiKey] - API key for authentication
+  /*
+  When you provide a full URL (starting with http:// or https://), Retrofit uses that URL directly and ignores the @RestApi(baseUrl: ...) for that specific method.
+  This means:
+  You can keep both endpoints in the same service class
+  The direction route endpoint uses the base URL (https://mapapi.gebeta.app/api)
+  The reverse geocoding endpoint uses the full URL (https://api.geoapify.com/v1/geocode/reverse)
+    */
+  @GET('https://api.geoapify.com/v1/geocode/reverse')
+  Future<ReverseGeocodingModel> reverseGeocode(
+    @Query('lat') double lat,
+    @Query('lon') double lon,
+    @Query('format') String format,
+    @Query('apiKey') String apiKey,
   );
 }
