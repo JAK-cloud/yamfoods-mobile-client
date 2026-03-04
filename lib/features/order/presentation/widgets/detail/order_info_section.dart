@@ -83,6 +83,15 @@ class OrderInfoSection extends StatelessWidget {
             label: 'Items',
             value: '${order.quantity}',
           ),
+          // Table number (dining)
+          if (order.tableNumber != null && order.tableNumber!.isNotEmpty) ...[
+            SizedBox(height: AppSizes.md),
+            _buildInfoRow(
+              icon: Icons.table_restaurant_outlined,
+              label: 'Table',
+              value: order.tableNumber!,
+            ),
+          ],
           // Deliverer Phone (if exists)
           if (order.delivererPhone != null) ...[
             SizedBox(height: AppSizes.md),
@@ -97,7 +106,7 @@ class OrderInfoSection extends StatelessWidget {
             SizedBox(height: AppSizes.md),
             _buildInfoRow(
               icon: Icons.calendar_today_outlined,
-              label: 'Scheduled',
+              label: 'Scheduled for',
               value: _formatScheduledDate(order.scheduledAt!),
             ),
           ],

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AddressModel {
 
- int get id;@JsonKey(name: 'userId') int get userId; String get address; String? get receiverPhone; String? get receiverName; String? get label; String get lat; String get lng;@JsonKey(name: 'createdAt') DateTime get createdAt;@JsonKey(name: 'updatedAt') DateTime get updatedAt;
+ int get id; int get userId; String get address; String? get receiverPhone; String? get receiverName; String? get label; String get lat; String get lng; DateTime get createdAt; DateTime get updatedAt;
 /// Create a copy of AddressModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AddressModelCopyWith<$Res>  {
   factory $AddressModelCopyWith(AddressModel value, $Res Function(AddressModel) _then) = _$AddressModelCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'userId') int userId, String address, String? receiverPhone, String? receiverName, String? label, String lat, String lng,@JsonKey(name: 'createdAt') DateTime createdAt,@JsonKey(name: 'updatedAt') DateTime updatedAt
+ int id, int userId, String address, String? receiverPhone, String? receiverName, String? label, String lat, String lng, DateTime createdAt, DateTime updatedAt
 });
 
 
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'userId')  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng, @JsonKey(name: 'createdAt')  DateTime createdAt, @JsonKey(name: 'updatedAt')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddressModel() when $default != null:
 return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.receiverName,_that.label,_that.lat,_that.lng,_that.createdAt,_that.updatedAt);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.re
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'userId')  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng, @JsonKey(name: 'createdAt')  DateTime createdAt, @JsonKey(name: 'updatedAt')  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AddressModel():
 return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.receiverName,_that.label,_that.lat,_that.lng,_that.createdAt,_that.updatedAt);}
@@ -197,7 +197,7 @@ return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.re
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'userId')  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng, @JsonKey(name: 'createdAt')  DateTime createdAt, @JsonKey(name: 'updatedAt')  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int userId,  String address,  String? receiverPhone,  String? receiverName,  String? label,  String lat,  String lng,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AddressModel() when $default != null:
 return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.receiverName,_that.label,_that.lat,_that.lng,_that.createdAt,_that.updatedAt);case _:
@@ -212,19 +212,19 @@ return $default(_that.id,_that.userId,_that.address,_that.receiverPhone,_that.re
 @JsonSerializable()
 
 class _AddressModel implements AddressModel {
-  const _AddressModel({required this.id, @JsonKey(name: 'userId') required this.userId, required this.address, this.receiverPhone, this.receiverName, this.label, required this.lat, required this.lng, @JsonKey(name: 'createdAt') required this.createdAt, @JsonKey(name: 'updatedAt') required this.updatedAt});
+  const _AddressModel({required this.id, required this.userId, required this.address, this.receiverPhone, this.receiverName, this.label, required this.lat, required this.lng, required this.createdAt, required this.updatedAt});
   factory _AddressModel.fromJson(Map<String, dynamic> json) => _$AddressModelFromJson(json);
 
 @override final  int id;
-@override@JsonKey(name: 'userId') final  int userId;
+@override final  int userId;
 @override final  String address;
 @override final  String? receiverPhone;
 @override final  String? receiverName;
 @override final  String? label;
 @override final  String lat;
 @override final  String lng;
-@override@JsonKey(name: 'createdAt') final  DateTime createdAt;
-@override@JsonKey(name: 'updatedAt') final  DateTime updatedAt;
+@override final  DateTime createdAt;
+@override final  DateTime updatedAt;
 
 /// Create a copy of AddressModel
 /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +259,7 @@ abstract mixin class _$AddressModelCopyWith<$Res> implements $AddressModelCopyWi
   factory _$AddressModelCopyWith(_AddressModel value, $Res Function(_AddressModel) _then) = __$AddressModelCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'userId') int userId, String address, String? receiverPhone, String? receiverName, String? label, String lat, String lng,@JsonKey(name: 'createdAt') DateTime createdAt,@JsonKey(name: 'updatedAt') DateTime updatedAt
+ int id, int userId, String address, String? receiverPhone, String? receiverName, String? label, String lat, String lng, DateTime createdAt, DateTime updatedAt
 });
 
 

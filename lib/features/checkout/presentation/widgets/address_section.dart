@@ -8,6 +8,7 @@ import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../address/domain/entities/address.dart';
 import '../../../address/presentation/providers/address_events.dart';
@@ -44,45 +45,39 @@ class AddressSection extends ConsumerWidget {
     });
 
     // Auto-select first address when delivery is selected and addresses are available
-    ref.listen<AsyncValue<List<Address>>>(
-      addressProvider,
-      (prev, next) {
-        final currentState = ref.read(checkoutProvider(branchId));
-        // Only auto-select if:
-        // 1. Delivery is selected
-        // 2. Addresses are loaded successfully
-        // 3. No address is currently selected
-        if (currentState.orderType == 'delivery' &&
-            next.hasValue &&
-            next.value != null &&
-            next.value!.isNotEmpty &&
-            currentState.selectedAddress == null) {
-          ref
-              .read(checkoutProvider(branchId).notifier)
-              .selectAddress(next.value!.first);
-        }
-      },
-    );
+    ref.listen<AsyncValue<List<Address>>>(addressProvider, (prev, next) {
+      final currentState = ref.read(checkoutProvider(branchId));
+      // Only auto-select if:
+      // 1. Delivery is selected
+      // 2. Addresses are loaded successfully
+      // 3. No address is currently selected
+      if (currentState.orderType.toOrderType() == OrderType.delivery &&
+          next.hasValue &&
+          next.value != null &&
+          next.value!.isNotEmpty &&
+          currentState.selectedAddress == null) {
+        ref
+            .read(checkoutProvider(branchId).notifier)
+            .selectAddress(next.value!.first);
+      }
+    });
 
     // Also react to order type changes (when switching to delivery)
-    ref.listen<CheckoutState>(
-      checkoutProvider(branchId),
-      (prev, next) {
-        // When switching to delivery, auto-select first address if available
-        if (next.orderType == 'delivery' &&
-            next.selectedAddress == null &&
-            addressAsync.hasValue &&
-            addressAsync.value != null &&
-            addressAsync.value!.isNotEmpty) {
-          ref
-              .read(checkoutProvider(branchId).notifier)
-              .selectAddress(addressAsync.value!.first);
-        }
-      },
-    );
+    ref.listen<CheckoutState>(checkoutProvider(branchId), (prev, next) {
+      // When switching to delivery, auto-select first address if available
+      if (next.orderType.toOrderType() == OrderType.delivery &&
+          next.selectedAddress == null &&
+          addressAsync.hasValue &&
+          addressAsync.value != null &&
+          addressAsync.value!.isNotEmpty) {
+        ref
+            .read(checkoutProvider(branchId).notifier)
+            .selectAddress(addressAsync.value!.first);
+      }
+    });
 
     // Only show when delivery is selected
-    if (checkoutState.orderType != 'delivery') {
+    if (checkoutState.orderType.toOrderType() != OrderType.delivery) {
       return const SizedBox.shrink();
     }
 

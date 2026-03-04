@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/enums/payment_method.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../branch/presentation/providers/branch_providers.dart';
@@ -43,7 +44,8 @@ CheckoutSummary checkoutSummary(Ref ref, int branchId) {
   final distanceKm = ref.watch(currentBranchDistanceProvider) ?? 0.0;
   final startFee = appConfig?.deliveryStartFee ?? 0.0;
   final perKm = appConfig?.deliveryFeePerKm ?? 0.0;
-  final finalDeliveryFee = checkoutState.orderType == 'delivery'
+  final finalDeliveryFee =
+      checkoutState.orderType.toOrderType() == OrderType.delivery
       ? startFee + (perKm * distanceKm)
       : 0.0;
 

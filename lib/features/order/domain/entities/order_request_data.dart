@@ -8,7 +8,7 @@ sealed class OrderRequestData with _$OrderRequestData {
   const factory OrderRequestData({
     required int branchId,
     int? deliveryAddressId, // only required if order type is delivery
-    required String orderType, // "delivery" or "pickup"
+    required String orderType, // "delivery" | "pickup" | "dining"
     DateTime? scheduledAt,
     required String method, // payment method like "telebirr"
     String? note,
@@ -23,6 +23,8 @@ sealed class OrderRequestData with _$OrderRequestData {
     double? pointDiscount,
     String? promoCode,
     double? promoCodeDiscount,
-    double? distanceKm, // distance from user to branch in km (set at branch selection)
+    double?
+    distanceKm, // distance from user to branch in km (set at branch selection)
+    String? tableNumber, // required when orderType is dining, max 20 chars
   }) = _OrderRequestData;
 }

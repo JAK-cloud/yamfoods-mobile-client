@@ -1,23 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../app/components/input_textfield.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/enums/order_type.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../providers/checkout_notifier.dart';
 
-/// Modern segmented control for delivery type selection
-class DeliveryTypeSection extends ConsumerWidget {
+/// Modern segmented control for delivery type selection (Pickup, Delivery, Dining).
+/// When Dining is selected, shows a table number field.
+class DeliveryTypeSection extends ConsumerStatefulWidget {
   final int branchId;
 
   const DeliveryTypeSection({super.key, required this.branchId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final checkoutState = ref.watch(checkoutProvider(branchId));
-    final orderType = checkoutState.orderType;
-    final isPickup = orderType == 'pickup';
+  ConsumerState<DeliveryTypeSection> createState() => _DeliveryTypeSectionState();
+}
 
+class _DeliveryTypeSectionState extends ConsumerState<DeliveryTypeSection> {
+  late final TextEditingController _tableNumberController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tableNumberController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _tableNumberController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final checkoutState = ref.watch(checkoutProvider(widget.branchId));
+    final orderType = checkoutState.orderType.toOrderType();
+    final isPickup = orderType == OrderType.pickup;
+    final isDelivery = orderType == OrderType.delivery;
+    final isDining = orderType == OrderType.dining;
+    
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: AppSizes.sm,
@@ -46,7 +71,7 @@ class DeliveryTypeSection extends ConsumerWidget {
             ),
           ),
           SizedBox(height: AppSizes.sm),
-          // Modern segmented control
+          // Row with Expanded so each option takes equal horizontal space
           Row(
             children: [
               Expanded(
@@ -56,32 +81,64 @@ class DeliveryTypeSection extends ConsumerWidget {
                   isSelected: isPickup,
                   onTap: () {
                     ref
-                        .read(checkoutProvider(branchId).notifier)
-                        .setOrderType('pickup');
+                        .read(checkoutProvider(widget.branchId).notifier)
+                        .setOrderType(OrderType.pickup.value);
                   },
                 ),
               ),
-              SizedBox(width: AppSizes.sm),
               Container(
                 width: 1,
                 height: 40,
                 color: AppColors.grey.withValues(alpha: 0.3),
               ),
-              SizedBox(width: AppSizes.sm),
               Expanded(
                 child: _DeliveryOption(
                   label: 'Delivery',
                   icon: Icons.local_shipping_outlined,
-                  isSelected: !isPickup,
+                  isSelected: isDelivery,
                   onTap: () {
                     ref
-                        .read(checkoutProvider(branchId).notifier)
-                        .setOrderType('delivery');
+                        .read(checkoutProvider(widget.branchId).notifier)
+                        .setOrderType(OrderType.delivery.value);
+                  },
+                ),
+              ),
+              Container(
+                width: 1,
+                height: 40,
+                color: AppColors.grey.withValues(alpha: 0.3),
+              ),
+              Expanded(
+                child: _DeliveryOption(
+                  label: 'Dining',
+                  icon: Icons.restaurant_outlined,
+                  isSelected: isDining,
+                  onTap: () {
+                    ref
+                        .read(checkoutProvider(widget.branchId).notifier)
+                        .setOrderType(OrderType.dining.value);
                   },
                 ),
               ),
             ],
           ),
+          if (isDining) ...[
+            SizedBox(height: AppSizes.sm),
+            InputTextfield(
+              controller: _tableNumberController,
+              hintText: 'Enter table number',
+              icon: Icons.table_restaurant_outlined,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(20),
+              ],
+              onChanged: (value) {
+                final trimmed = value.trim();
+                ref.read(checkoutProvider(widget.branchId).notifier).setTableNumber(
+                      trimmed.isEmpty ? null : trimmed,
+                    );
+              },
+            ),
+          ],
         ],
       ),
     );
@@ -108,6 +165,7 @@ class _DeliveryOption extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
+        margin: EdgeInsets.symmetric(horizontal: AppSizes.xs),
         padding: EdgeInsets.all(AppSizes.sm),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : null,
@@ -119,8 +177,8 @@ class _DeliveryOption extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Circular indicator when selected
             if (isSelected) ...[
               Container(
                 width: 8,
@@ -138,11 +196,14 @@ class _DeliveryOption extends StatelessWidget {
               color: isSelected ? AppColors.primary : AppColors.txtSecondary,
             ),
             SizedBox(width: AppSizes.xs),
-            Text(
-              label,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: isSelected ? AppColors.primary : AppColors.txtSecondary,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: isSelected ? AppColors.primary : AppColors.txtSecondary,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                ),
               ),
             ),
           ],

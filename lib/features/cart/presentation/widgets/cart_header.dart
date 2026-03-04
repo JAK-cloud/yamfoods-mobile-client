@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/confirmation_dialog.dart';
 import '../../../../app/theme/app_colors.dart';
@@ -12,7 +11,7 @@ import '../providers/cart_loading_providers.dart';
 
 /// App bar for cart screen.
 ///
-/// Displays back button, "Your Cart" title, item count,
+/// Displays "Your Cart" title, item count,
 /// and clear all button (when items > 0).
 class CartHeader extends ConsumerWidget {
   final int branchId;
@@ -32,7 +31,7 @@ class CartHeader extends ConsumerWidget {
 
     return Container(
       padding: EdgeInsets.fromLTRB(
-        AppSizes.xs,
+        AppSizes.lg,
         MediaQuery.paddingOf(context).top + AppSizes.sm,
         AppSizes.lg,
         AppSizes.md,
@@ -44,13 +43,6 @@ class CartHeader extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Back button
-          IconButton(
-            onPressed: () => context.pop(),
-            icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.white, size: 20),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-          ),
           // Title and item count
           Expanded(
             child: Column(

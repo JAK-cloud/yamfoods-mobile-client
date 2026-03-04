@@ -15,6 +15,7 @@ class InputTextfield extends StatefulWidget {
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
   final String? prefixText;
+  final void Function(String)? onChanged;
 
   const InputTextfield({
     super.key,
@@ -28,6 +29,7 @@ class InputTextfield extends StatefulWidget {
     this.maxLines,
     this.inputFormatters,
     this.prefixText,
+    this.onChanged,
   });
 
   @override
@@ -47,6 +49,7 @@ class _InputTextfieldState extends State<InputTextfield> {
       maxLength: widget.maxLength,
       maxLines: widget.maxLines ?? 1,
       inputFormatters: widget.inputFormatters,
+      onChanged: widget.onChanged,
       style: const TextStyle(fontSize: 15, color: AppColors.txtPrimary),
       decoration: InputDecoration(
         hintText: widget.hintText,

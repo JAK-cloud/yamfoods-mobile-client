@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/errors/error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/api/request_wrapper.dart';
@@ -52,6 +53,9 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         if (data.promoCodeDiscount != null)
           'promoCodeDiscount': data.promoCodeDiscount,
         if (data.distanceKm != null) 'distanceKm': data.distanceKm,
+        if (data.orderType.toOrderType() == OrderType.dining &&
+            data.tableNumber != null)
+          'tableNumber': data.tableNumber!.trim(),
       };
       final body = RequestWrapper.wrap(requestData);
       final response = await _apiService.createOrder(body);

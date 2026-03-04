@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../app/routes/app_router.dart';
 import '../../../../app/routes/route_names.dart';
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
@@ -83,7 +84,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   @override //This Method is only for Chapa (route pop)
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     // Subscribe to route observer so we get didPopNext when a route on top of us
     // is popped (e.g. Chapa payment screen). Unsubscribe first to avoid dupes.
     final route = ModalRoute.of(context);
@@ -101,11 +102,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
 
   @override //This Method is for both Chapa and Telebirr (remove observer and unsubscribe)
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this); // For Telebirr (remove observer)
+    WidgetsBinding.instance.removeObserver(
+      this,
+    ); // For Telebirr (remove observer)
     checkoutRouteObserver.unsubscribe(this); // For Chapa (route pop)
     super.dispose();
   }
- 
+
   /// Telebirr opens the Telebirr app (external), so we detect return via app
   /// lifecycle. When resumed and we were waiting for Telebirr, show the
   /// verification dialog.
@@ -123,7 +126,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   /// returns from Chapa). We then show the verification dialog.
   @override //This Method is only for Chapa (route pop)
   void didPopNext() {
-    if (_pendingPaymentMethod == PaymentMethod.chapa && _pendingOrderId != null) {
+    if (_pendingPaymentMethod == PaymentMethod.chapa &&
+        _pendingOrderId != null) {
       _showPaymentVerificationDialog();
     }
   }
@@ -165,7 +169,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
 
     return OrderRequestData(
       branchId: checkoutState.branchId,
-      deliveryAddressId: checkoutState.orderType == 'delivery'
+      deliveryAddressId:
+          checkoutState.orderType.toOrderType() == OrderType.delivery
           ? checkoutState.selectedAddress?.id
           : null,
       orderType: checkoutState.orderType,
@@ -186,6 +191,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
       promoCode: checkoutState.promoCode,
       promoCodeDiscount: checkoutState.promoCodeDiscount,
       distanceKm: distanceKm,
+      tableNumber: checkoutState.tableNumber,
     );
   }
 
@@ -227,7 +233,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   }
 
   void _clearCartAndNavigate(int orderId) {
-    ref.read(cartProvider(widget.branchId).notifier).deleteAllCartItems(shouldShowSnackBar: false);
+    ref
+        .read(cartProvider(widget.branchId).notifier)
+        .deleteAllCartItems(shouldShowSnackBar: false);
     if (mounted) {
       context.pushReplacement(RouteName.orderSuccess, extra: orderId);
     }

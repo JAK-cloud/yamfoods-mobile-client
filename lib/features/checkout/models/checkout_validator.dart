@@ -8,6 +8,7 @@ sealed class CheckoutValidation with _$CheckoutValidation {
   const factory CheckoutValidation({
     required bool isValid,
     String? addressError,
+    String? tableNumberError,
     String? promoCodeError,
     String? pointsError,
     String? scheduleError,

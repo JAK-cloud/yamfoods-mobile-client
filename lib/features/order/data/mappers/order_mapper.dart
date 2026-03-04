@@ -15,6 +15,7 @@ extension OrderMapper on OrderModel {
     delivererPhone: delivererPhone,
     scheduledAt: scheduledAt,
     note: note,
+    tableNumber: tableNumber,
     quantity: quantity,
     subtotal: subtotal,
     vatTotal: vatTotal,

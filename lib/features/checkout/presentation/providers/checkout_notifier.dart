@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/enums/payment_method.dart';
 import '../../../address/domain/entities/address.dart';
 import '../../models/checkout_state.dart';
@@ -19,8 +20,9 @@ class CheckoutNotifier extends _$CheckoutNotifier {
     // Initialize with default values (Telebirr as default payment method)
     return CheckoutState(
       branchId: branchId,
-      orderType: 'pickup',
+      orderType: OrderType.pickup.value,
       selectedAddress: null,
+      tableNumber: null,
       promoCode: null,
       promoCodeDiscount: null,
       pointUsed: null,
@@ -31,15 +33,27 @@ class CheckoutNotifier extends _$CheckoutNotifier {
     );
   }
 
-  /// Sets the order type (pickup or delivery).
+  /// Sets the order type (pickup, delivery, or dining).
   void setOrderType(String orderType) {
-    if (orderType != 'pickup' && orderType != 'delivery') {
+    final type = orderType.toOrderType();
+    if (type != OrderType.pickup &&
+        type != OrderType.delivery &&
+        type != OrderType.dining) {
       return;
     }
 
     state = state.copyWith(
       orderType: orderType,
-      selectedAddress: orderType == 'pickup' ? null : state.selectedAddress,
+      selectedAddress: type == OrderType.delivery
+          ? state.selectedAddress
+          : null,
+    );
+  }
+
+  /// Sets the table number (for dining).
+  void setTableNumber(String? value) {
+    state = state.copyWith(
+      tableNumber: value?.trim().isEmpty == true ? null : value?.trim(),
     );
   }
 
