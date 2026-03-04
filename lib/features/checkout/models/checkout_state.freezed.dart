@@ -14,8 +14,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CheckoutState {
 
- int get branchId; String get orderType;// "pickup" | "delivery"
- Address? get selectedAddress;// null for pickup
+ int get branchId; String get orderType;// "pickup" | "delivery" | "dining"
+ Address? get selectedAddress;// null for pickup and dining
+ String? get tableNumber;// required when orderType is dining, max 20 chars
  String? get promoCode; double? get promoCodeDiscount;// Changed from String to double
  int? get pointUsed;// Renamed from points for consistency
  double? get pointDiscount; DateTime? get scheduledAt; String? get note; String? get paymentMethod;
@@ -29,16 +30,16 @@ $CheckoutStateCopyWith<CheckoutState> get copyWith => _$CheckoutStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutState&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.selectedAddress, selectedAddress) || other.selectedAddress == selectedAddress)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutState&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.selectedAddress, selectedAddress) || other.selectedAddress == selectedAddress)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,branchId,orderType,selectedAddress,promoCode,promoCodeDiscount,pointUsed,pointDiscount,scheduledAt,note,paymentMethod);
+int get hashCode => Object.hash(runtimeType,branchId,orderType,selectedAddress,tableNumber,promoCode,promoCodeDiscount,pointUsed,pointDiscount,scheduledAt,note,paymentMethod);
 
 @override
 String toString() {
-  return 'CheckoutState(branchId: $branchId, orderType: $orderType, selectedAddress: $selectedAddress, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, scheduledAt: $scheduledAt, note: $note, paymentMethod: $paymentMethod)';
+  return 'CheckoutState(branchId: $branchId, orderType: $orderType, selectedAddress: $selectedAddress, tableNumber: $tableNumber, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, scheduledAt: $scheduledAt, note: $note, paymentMethod: $paymentMethod)';
 }
 
 
@@ -49,7 +50,7 @@ abstract mixin class $CheckoutStateCopyWith<$Res>  {
   factory $CheckoutStateCopyWith(CheckoutState value, $Res Function(CheckoutState) _then) = _$CheckoutStateCopyWithImpl;
 @useResult
 $Res call({
- int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
+ int branchId, String orderType, Address? selectedAddress, String? tableNumber, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
 });
 
 
@@ -66,12 +67,13 @@ class _$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? tableNumber = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
   return _then(_self.copyWith(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,selectedAddress: freezed == selectedAddress ? _self.selectedAddress : selectedAddress // ignore: cast_nullable_to_non_nullable
-as Address?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as Address?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
+as String?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
 as String?,promoCodeDiscount: freezed == promoCodeDiscount ? _self.promoCodeDiscount : promoCodeDiscount // ignore: cast_nullable_to_non_nullable
 as double?,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // ignore: cast_nullable_to_non_nullable
 as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable
@@ -172,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? tableNumber,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
-return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
+return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.tableNumber,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
   return orElse();
 
 }
@@ -193,10 +195,10 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int branchId,  String orderType,  Address? selectedAddress,  String? tableNumber,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState():
-return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);}
+return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.tableNumber,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -210,10 +212,10 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  String orderType,  Address? selectedAddress,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int branchId,  String orderType,  Address? selectedAddress,  String? tableNumber,  String? promoCode,  double? promoCodeDiscount,  int? pointUsed,  double? pointDiscount,  DateTime? scheduledAt,  String? note,  String? paymentMethod)?  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
-return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
+return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.tableNumber,_that.promoCode,_that.promoCodeDiscount,_that.pointUsed,_that.pointDiscount,_that.scheduledAt,_that.note,_that.paymentMethod);case _:
   return null;
 
 }
@@ -225,14 +227,16 @@ return $default(_that.branchId,_that.orderType,_that.selectedAddress,_that.promo
 
 
 class _CheckoutState implements CheckoutState {
-  const _CheckoutState({required this.branchId, required this.orderType, this.selectedAddress, this.promoCode, this.promoCodeDiscount, this.pointUsed, this.pointDiscount, this.scheduledAt, this.note, this.paymentMethod});
+  const _CheckoutState({required this.branchId, required this.orderType, this.selectedAddress, this.tableNumber, this.promoCode, this.promoCodeDiscount, this.pointUsed, this.pointDiscount, this.scheduledAt, this.note, this.paymentMethod});
   
 
 @override final  int branchId;
 @override final  String orderType;
-// "pickup" | "delivery"
+// "pickup" | "delivery" | "dining"
 @override final  Address? selectedAddress;
-// null for pickup
+// null for pickup and dining
+@override final  String? tableNumber;
+// required when orderType is dining, max 20 chars
 @override final  String? promoCode;
 @override final  double? promoCodeDiscount;
 // Changed from String to double
@@ -253,16 +257,16 @@ _$CheckoutStateCopyWith<_CheckoutState> get copyWith => __$CheckoutStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutState&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.selectedAddress, selectedAddress) || other.selectedAddress == selectedAddress)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutState&&(identical(other.branchId, branchId) || other.branchId == branchId)&&(identical(other.orderType, orderType) || other.orderType == orderType)&&(identical(other.selectedAddress, selectedAddress) || other.selectedAddress == selectedAddress)&&(identical(other.tableNumber, tableNumber) || other.tableNumber == tableNumber)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.promoCodeDiscount, promoCodeDiscount) || other.promoCodeDiscount == promoCodeDiscount)&&(identical(other.pointUsed, pointUsed) || other.pointUsed == pointUsed)&&(identical(other.pointDiscount, pointDiscount) || other.pointDiscount == pointDiscount)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.note, note) || other.note == note)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,branchId,orderType,selectedAddress,promoCode,promoCodeDiscount,pointUsed,pointDiscount,scheduledAt,note,paymentMethod);
+int get hashCode => Object.hash(runtimeType,branchId,orderType,selectedAddress,tableNumber,promoCode,promoCodeDiscount,pointUsed,pointDiscount,scheduledAt,note,paymentMethod);
 
 @override
 String toString() {
-  return 'CheckoutState(branchId: $branchId, orderType: $orderType, selectedAddress: $selectedAddress, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, scheduledAt: $scheduledAt, note: $note, paymentMethod: $paymentMethod)';
+  return 'CheckoutState(branchId: $branchId, orderType: $orderType, selectedAddress: $selectedAddress, tableNumber: $tableNumber, promoCode: $promoCode, promoCodeDiscount: $promoCodeDiscount, pointUsed: $pointUsed, pointDiscount: $pointDiscount, scheduledAt: $scheduledAt, note: $note, paymentMethod: $paymentMethod)';
 }
 
 
@@ -273,7 +277,7 @@ abstract mixin class _$CheckoutStateCopyWith<$Res> implements $CheckoutStateCopy
   factory _$CheckoutStateCopyWith(_CheckoutState value, $Res Function(_CheckoutState) _then) = __$CheckoutStateCopyWithImpl;
 @override @useResult
 $Res call({
- int branchId, String orderType, Address? selectedAddress, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
+ int branchId, String orderType, Address? selectedAddress, String? tableNumber, String? promoCode, double? promoCodeDiscount, int? pointUsed, double? pointDiscount, DateTime? scheduledAt, String? note, String? paymentMethod
 });
 
 
@@ -290,12 +294,13 @@ class __$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? branchId = null,Object? orderType = null,Object? selectedAddress = freezed,Object? tableNumber = freezed,Object? promoCode = freezed,Object? promoCodeDiscount = freezed,Object? pointUsed = freezed,Object? pointDiscount = freezed,Object? scheduledAt = freezed,Object? note = freezed,Object? paymentMethod = freezed,}) {
   return _then(_CheckoutState(
 branchId: null == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int,orderType: null == orderType ? _self.orderType : orderType // ignore: cast_nullable_to_non_nullable
 as String,selectedAddress: freezed == selectedAddress ? _self.selectedAddress : selectedAddress // ignore: cast_nullable_to_non_nullable
-as Address?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as Address?,tableNumber: freezed == tableNumber ? _self.tableNumber : tableNumber // ignore: cast_nullable_to_non_nullable
+as String?,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
 as String?,promoCodeDiscount: freezed == promoCodeDiscount ? _self.promoCodeDiscount : promoCodeDiscount // ignore: cast_nullable_to_non_nullable
 as double?,pointUsed: freezed == pointUsed ? _self.pointUsed : pointUsed // ignore: cast_nullable_to_non_nullable
 as int?,pointDiscount: freezed == pointDiscount ? _self.pointDiscount : pointDiscount // ignore: cast_nullable_to_non_nullable

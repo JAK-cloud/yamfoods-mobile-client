@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/enums/order_type.dart';
 import '../../../../core/enums/payment_method.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../achievement/presentation/providers/achievement_providers.dart';
@@ -70,9 +71,19 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
   final errors = <String>[];
 
   // Address validation
-  if (checkoutState.orderType == 'delivery' &&
+  if (checkoutState.orderType.toOrderType() == OrderType.delivery &&
       checkoutState.selectedAddress == null) {
     errors.add('Please select a delivery address');
+  }
+
+  // Table number validation (dining)
+  if (checkoutState.orderType.toOrderType() == OrderType.dining) {
+    final table = checkoutState.tableNumber?.trim() ?? '';
+    if (table.isEmpty) {
+      errors.add('Table number is required for dining orders');
+    } else if (table.length > 20) {
+      errors.add('Table number must be at most 20 characters');
+    }
   }
 
   // Promo code validation
@@ -106,17 +117,32 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
 
   // Payment method validation (use enum: valid only if string parses to PaymentMethod)
   final method = checkoutState.paymentMethod;
-  if (method == null || method.isEmpty || method.toPaymentMethod().value.isEmpty) {
+  if (method == null ||
+      method.isEmpty ||
+      method.toPaymentMethod().value.isEmpty) {
     errors.add('Please select a payment method');
   }
+
+  final tableNumberError =
+      checkoutState.orderType.toOrderType() == OrderType.dining
+      ? (() {
+          final table = checkoutState.tableNumber?.trim() ?? '';
+          if (table.isEmpty)
+            return 'Table number is required for dining orders';
+          if (table.length > 20)
+            return 'Table number must be at most 20 characters';
+          return null;
+        }())
+      : null;
 
   return CheckoutValidation(
     isValid: errors.isEmpty,
     addressError:
-        checkoutState.orderType == 'delivery' &&
+        checkoutState.orderType.toOrderType() == OrderType.delivery &&
             checkoutState.selectedAddress == null
         ? 'Please select a delivery address'
         : null,
+    tableNumberError: tableNumberError,
     promoCodeError:
         checkoutState.promoCode != null &&
             checkoutState.promoCodeDiscount == null

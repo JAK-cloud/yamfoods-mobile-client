@@ -21,15 +21,15 @@ class PopularSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsync = ref.watch(featuredProductsProvider(branchId));
 
-    return SizedBox(
-      height: kHorizontalProductSectionTotalHeight,
-      child: productsAsync.when(
-        data: (products) {
-          if (products.isEmpty) {
-            return const SizedBox.shrink();
-          }
+    return productsAsync.when(
+      data: (products) {
+        if (products.isEmpty) {
+          return const SizedBox.shrink();
+        }
 
-          return Column(
+        return SizedBox(
+          height: kHorizontalProductSectionTotalHeight,
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -68,11 +68,11 @@ class PopularSection extends ConsumerWidget {
                 ),
               ),
             ],
-          );
-        },
-        loading: () => const HorizontalProductSectionSkeleton(),
-        error: (_, _) => const HorizontalProductSectionSkeleton(),
-      ),
+          ),
+        );
+      },
+      loading: () => const HorizontalProductSectionSkeleton(),
+      error: (_, _) => const HorizontalProductSectionSkeleton(),
     );
   }
 }

@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 enum OrderType { pickup, dining, delivery }
 
 extension OrderTypeExtension on OrderType {
+  /// API/state value: 'pickup', 'dining', 'delivery'.
+  String get value => switch (this) {
+    OrderType.pickup => 'pickup',
+    OrderType.dining => 'dining',
+    OrderType.delivery => 'delivery',
+  };
+
+  /// Display name: 'Pickup', 'Dining', 'Delivery'.
   String get name => switch (this) {
     OrderType.pickup => 'Pickup',
     OrderType.dining => 'Dining',

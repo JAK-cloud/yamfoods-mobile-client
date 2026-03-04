@@ -20,6 +20,7 @@ sealed class Orderr with _$Orderr {
     String? delivererPhone,
     DateTime? scheduledAt,
     String? note,
+    String? tableNumber,
     required int quantity,
     required double subtotal,
     double? vatTotal,

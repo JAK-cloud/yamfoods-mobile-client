@@ -25,6 +25,7 @@ sealed class OrderModel with _$OrderModel {
     String? delivererPhone,
     DateTime? scheduledAt,
     String? note,
+    String? tableNumber,
     required int quantity,
     @JsonKey(fromJson: parseDouble) required double subtotal,
     @JsonKey(fromJson: parseDouble) double? vatTotal,

@@ -48,27 +48,43 @@ class OrderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _getFabricatedOrderId(),
-                          style: AppTextStyles.bodyLarge.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.txtPrimary,
-                          ),
-                        ),
-                        SizedBox(height: AppSizes.xs),
-                        Text(
-                          DateFormatter.formatTimeAgo(order.createdAt),
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.txtSecondary,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      _getFabricatedOrderId(),
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.txtPrimary,
+                      ),
                     ),
                   ),
                   _buildStatusBadge(status),
+                ],
+              ),
+              // Time (left) and Table number (right end, like price)
+              SizedBox(height: AppSizes.xs),
+              Row(
+                children: [
+                  Text(
+                    DateFormatter.formatTimeAgo(order.createdAt),
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.txtSecondary,
+                    ),
+                  ),
+                  if (order.tableNumber != null &&
+                      order.tableNumber!.isNotEmpty) ...[
+                    const Spacer(),
+                    Icon(
+                      Icons.table_restaurant_outlined,
+                      size: 16,
+                      color: AppColors.txtSecondary,
+                    ),
+                    SizedBox(width: AppSizes.xs),
+                    Text(
+                      'Table ${order.tableNumber}',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.txtSecondary,
+                      ),
+                    ),
+                  ],
                 ],
               ),
               SizedBox(height: AppSizes.sm),

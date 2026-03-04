@@ -49,7 +49,7 @@ class ProductSliverGrid extends ConsumerWidget {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
                     AppSizes.sm,
-                    0,
+                    AppSizes.sm,
                     AppSizes.sm,
                     AppSizes.md,
                   ),
