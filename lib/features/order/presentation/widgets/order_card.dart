@@ -113,7 +113,7 @@ class OrderCard extends StatelessWidget {
               if (order.scheduledAt != null) ...[
                 SizedBox(height: AppSizes.xs),
                 Text(
-                  'Scheduled: ${_formatScheduledDate(order.scheduledAt!)}',
+                  'Scheduled for: ${_formatScheduledDate(order.scheduledAt!)}',
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.txtSecondary,
                   ),

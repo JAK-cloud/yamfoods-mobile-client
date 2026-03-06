@@ -30,53 +30,70 @@ class OrderScreen extends ConsumerWidget {
         preferredSize: Size.fromHeight(56),
         child: OrderHeader(),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.md),
-        child: ordersAsync.when(
-          data: (orders) {
-            if (orders.isEmpty) {
-              return EmptyState(
-                icon: Icons.shopping_bag_outlined,
-                title: 'No orders yet',
-                subtitle:
-                    'Your order history will appear here once you place an order',
-                actionText: 'Browse Menu',
-                onAction: () => context.pushReplacement(RouteName.home),
-              );
-            }
-
-            return RefreshIndicator(
-              onRefresh: () => ref.refresh(allOrdersProvider.future),
-              color: AppColors.primary,
-              child: ListView.separated(
-                itemCount: orders.length,
-                separatorBuilder: (context, index) => Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: AppColors.grey.withValues(alpha: 0.2),
-                ),
-                itemBuilder: (context, index) {
-                  return OrderCard(order: orders[index]);
-                },
-              ),
-            );
-          },
-          error: (error, stackTrace) => ErrorWidgett(
-            icon: Icons.error_outline,
-            title: 'Error loading orders',
-            failure: error is Failure
-                ? error
-                : Failure.unexpected(message: error.toString()),
-            onRetry: () => ref.refresh(allOrdersProvider.future),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+            colors: [
+              AppColors.primary.withValues(alpha: 0.9),
+              AppColors.primary.withValues(alpha: 0.7),
+              AppColors.primary.withValues(alpha: 0.4),
+              AppColors.primary.withValues(alpha: 0.1),
+              AppColors.primary.withValues(alpha: 0.05),
+              AppColors.background,
+            ],
           ),
-          loading: () => ListView.separated(
-            itemCount: 4,
-            separatorBuilder: (context, index) => Divider(
-              height: 1,
-              thickness: 1,
-              color: AppColors.grey.withValues(alpha: 0.2),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSizes.xs),
+          child: ordersAsync.when(
+            data: (orders) {
+              if (orders.isEmpty) {
+                return EmptyState(
+                  icon: Icons.shopping_bag_outlined,
+                  title: 'No orders yet',
+                  subtitle:
+                      'Your order history will appear here once you place an order',
+                  actionText: 'Browse Menu',
+                  onAction: () => context.pushReplacement(RouteName.home),
+                );
+              }
+        
+              return RefreshIndicator(
+                onRefresh: () => ref.refresh(allOrdersProvider.future),
+                color: AppColors.primary,
+                child: ListView.separated(
+                  itemCount: orders.length,
+                  separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: AppColors.grey.withValues(alpha: 0.2),
+                  ),
+                  itemBuilder: (context, index) {
+                    return OrderCard(order: orders[index]);
+                  },
+                ),
+              );
+            },
+            error: (error, stackTrace) => ErrorWidgett(
+              icon: Icons.error_outline,
+              title: 'Error loading orders',
+              failure: error is Failure
+                  ? error
+                  : Failure.unexpected(message: error.toString()),
+              onRetry: () => ref.refresh(allOrdersProvider.future),
             ),
-            itemBuilder: (context, index) => const OrderCardSkeleton(),
+            loading: () => ListView.separated(
+              itemCount: 4,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                thickness: 1,
+                color: AppColors.grey.withValues(alpha: 0.2),
+              ),
+              itemBuilder: (context, index) => const OrderCardSkeleton(),
+            ),
           ),
         ),
       ),

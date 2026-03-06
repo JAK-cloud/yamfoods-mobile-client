@@ -14,7 +14,7 @@
     <!-- Android 13+ notification runtime permission -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
-        android:label="Yam Food"
+        android:label="Noodo Bakers"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

@@ -27,8 +27,14 @@ class ProfileHeader extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: AppSizes.xl),
       decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(15)),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppColors.primary,
+            AppColors.primary.withValues(alpha: 0.9),
+          ],
+        ),
       ),
       child: Stack(
         alignment: Alignment.center,
