@@ -19,8 +19,15 @@ class OrderHeader extends StatelessWidget {
         AppSizes.lg,
         AppSizes.md,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppColors.primary,
+            AppColors.primary.withValues(alpha: 0.9),
+          ],
+        ),
       ),
       alignment: Alignment.centerLeft,
       child: Text(

@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../app/routes/route_names.dart';
 import '../../app/theme/app_colors.dart';
+import '../../app/theme/app_images.dart';
 import '../../core/permissions/location/location_permission_blocking_dialog.dart';
 import '../../core/permissions/location/location_permission_service.dart';
 import '../auth/presentation/providers/auth_user_state.dart';
@@ -82,12 +84,58 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [const CircularProgressIndicator(color: AppColors.primary)],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.primary,
+              AppColors.primary,
+              AppColors.primary.withValues(alpha: 0.9),
+              AppColors.primary.withValues(alpha: 0.8),
+              AppColors.primary.withValues(alpha: 0.7),
+            ],
+          ),
         ),
+        child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Image.asset(
+              AppImages.appIcon,
+              height: 300,
+              width: 300,
+              fit: BoxFit.contain,
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 55),
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  ColorizeAnimatedText(
+                    'Noodo Bakers',
+                    textAlign: TextAlign.center,
+                    textStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    colors: [
+                      const Color(0xFFffaa00),
+                      AppColors.primary,
+                    ],
+                    speed: const Duration(milliseconds: 350),
+                  ),
+                ],
+                isRepeatingAnimation: true,
+                repeatForever: true,
+              ),
+            ),
+          ],
+        ),
+      ),
       ),
     );
   }

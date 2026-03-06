@@ -36,8 +36,15 @@ class CartHeader extends ConsumerWidget {
         AppSizes.lg,
         AppSizes.md,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
+       decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            AppColors.primary,
+            AppColors.primary.withValues(alpha: 0.9),
+          ],
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

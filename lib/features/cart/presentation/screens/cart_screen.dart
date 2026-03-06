@@ -69,7 +69,23 @@ class CartScreen extends ConsumerWidget {
           itemCount: cartAsync.value?.length ?? 0,
         ),
       ),
-      body: CartList(cartAsync: cartAsync, branchId: branchId),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+            colors: [
+              AppColors.primary.withValues(alpha: 0.9),
+              AppColors.primary.withValues(alpha: 0.7),
+              AppColors.primary.withValues(alpha: 0.4),
+              AppColors.primary.withValues(alpha: 0.1),
+              AppColors.primary.withValues(alpha: 0.05),
+              AppColors.background,
+            ],
+          ),
+        ),
+        child: CartList(cartAsync: cartAsync, branchId: branchId)),
       // Bottom sheet with summary and checkout
       bottomSheet: cartAsync.value?.isNotEmpty == true
           ? CartSummaryCard(
