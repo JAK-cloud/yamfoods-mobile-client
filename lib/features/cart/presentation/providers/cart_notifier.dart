@@ -33,8 +33,12 @@ class CartNotifier extends _$CartNotifier {
     CartRequestData data, {
     Product? productForOptimistic,
   }) async {
+
     final addLoading = ref.read(cartAddLoadingProvider.notifier);
+    final operationLoading = ref.read(cartOperationLoadingProvider.notifier);
+    operationLoading.setLoading(true);
     addLoading.setLoading(true);
+    
 
     try {
       // Save current state as reserve before optimistic update
@@ -77,13 +81,18 @@ class CartNotifier extends _$CartNotifier {
         },
       );
     } finally {
+      operationLoading.setLoading(false);
       addLoading.setLoading(false);
+      
     }
   }
 
   Future<void> increaseQuantity(int cartId) async {
+
     final updating = ref.read(cartQuantityUpdateLoadingProvider.notifier);
+    final operationLoading = ref.read(cartOperationLoadingProvider.notifier);
     updating.start(cartId);
+    operationLoading.setLoading(true);
 
     try {
       // Save current state as reserve before optimistic update
@@ -120,12 +129,16 @@ class CartNotifier extends _$CartNotifier {
       }
     } finally {
       updating.stop(cartId);
+      operationLoading.setLoading(false);
     }
   }
 
   Future<void> decreaseQuantity(int cartId) async {
+
     final updating = ref.read(cartQuantityUpdateLoadingProvider.notifier);
+    final operationLoading = ref.read(cartOperationLoadingProvider.notifier);
     updating.start(cartId);
+    operationLoading.setLoading(true);
 
     try {
       // Save current state as reserve before optimistic update
@@ -165,6 +178,7 @@ class CartNotifier extends _$CartNotifier {
       }
     } finally {
       updating.stop(cartId);
+      operationLoading.setLoading(false);
     }
   }
 

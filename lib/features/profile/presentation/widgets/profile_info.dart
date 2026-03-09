@@ -7,15 +7,16 @@ import '../../../../app/theme/app_sizes.dart';
 /// card showing user information
 class ProfileInfo extends StatelessWidget {
   final User user;
+  final String? sectionTitle;
 
-  const ProfileInfo({super.key, required this.user});
+  const ProfileInfo({super.key, required this.user, this.sectionTitle});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppSizes.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSizes.radiusLg),
         boxShadow: [
           BoxShadow(
@@ -28,19 +29,39 @@ class ProfileInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (sectionTitle != null) ...[
+            Padding(
+              padding: const EdgeInsets.only(left: 6, bottom: AppSizes.sm),
+              child: Text(
+                sectionTitle!,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+            Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.15)),
+            const SizedBox(height: AppSizes.sm),
+          ],
           _buildInfoRow(
             icon: Icons.phone_rounded,
             label: 'Phone',
             value: user.phone ?? '',
             verified: user.phoneVerified,
           ),
-          const Divider(height: AppSizes.xl),
+          const SizedBox(height: AppSizes.sm),
+          Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.15)),
+          const SizedBox(height: AppSizes.sm),
           _buildInfoRow(
             icon: Icons.email_rounded,
             label: 'Email',
             value: user.email,
           ),
-          const Divider(height: AppSizes.xl),
+          const SizedBox(height: AppSizes.sm),
+          Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.15)),
+          const SizedBox(height: AppSizes.sm),
           _buildInfoRow(
             icon: Icons.calendar_today_rounded,
             label: 'Member Since',

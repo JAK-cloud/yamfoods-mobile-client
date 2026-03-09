@@ -8,8 +8,9 @@ import '../../../../app/theme/app_sizes.dart';
 /// Menu section with title and list of menu items
 class ProfileMenu extends StatelessWidget {
   final List<MenuItem> items;
+  final String? sectionTitle;
 
-  const ProfileMenu({super.key, required this.items});
+  const ProfileMenu({super.key, required this.items, this.sectionTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,24 @@ class ProfileMenu extends StatelessWidget {
             ],
           ),
           child: Column(
-            children: items.asMap().entries.map((entry) {
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (sectionTitle != null) ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSizes.lg, AppSizes.lg, AppSizes.lg, AppSizes.xs),
+                  child: Text(
+                    sectionTitle!,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ),
+                Divider(height: 1, color: AppColors.grey.withValues(alpha: 0.15)),
+              ],
+              ...items.asMap().entries.map((entry) {
               final isLast = entry.key == items.length - 1;
               return Column(
                 children: [
@@ -41,6 +59,7 @@ class ProfileMenu extends StatelessWidget {
                 ],
               );
             }).toList(),
+            ],
           ),
         )
         .animate()

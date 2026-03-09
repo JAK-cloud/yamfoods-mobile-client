@@ -11,14 +11,27 @@ import '../../domain/entities/address.dart';
 import '../providers/address_loading_providers.dart';
 import '../providers/address_notifier.dart';
 
-/// Premium address card widget with modern, eye-catching design.
-///
-/// Features gradient accents, refined shadows, and elegant typography.
-/// Excludes technical fields (id, userId, lat, lng) from display.
+/// Clean address card — simple, modern, no clutter.
 class AddressCard extends ConsumerWidget {
   final Address address;
 
   const AddressCard({super.key, required this.address});
+
+  static const double _labelBgOpacity = 0.12;
+
+  /// Same hue for leading bar and label; Home / Work / anything else use different colors.
+  Color _colorForLabel(String? label) {
+    if (label == null || label.trim().isEmpty) return AppColors.primary;
+    final normalized = label.trim().toLowerCase();
+    switch (normalized) {
+      case 'home':
+        return AppColors.primary;
+      case 'work':
+        return AppColors.info;
+      default:
+        return AppColors.primaryLight; // any other label (not home/work)
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,147 +41,150 @@ class AddressCard extends ConsumerWidget {
     final isUpdating = ref
         .watch(addressUpdateLoadingProvider)
         .contains(address.id);
+    final accentColor = _colorForLabel(address.label);
 
-    return Container(
-      margin: EdgeInsets.only(bottom: AppSizes.md),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.white,
-            AppColors.background.withValues(alpha: 0.3),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppSizes.radiusLg),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.15),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.12),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.grey.withValues(alpha: 0.06),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // Decorative gradient accent
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: 4,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.primaryLight],
-                ),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(AppSizes.radiusLg),
-                  topRight: Radius.circular(AppSizes.radiusLg),
+    return Padding(
+      padding: EdgeInsets.only(bottom: AppSizes.md),
+      child: Material(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(AppSizes.radius),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Leading bar — same color as label (Home / Work / Other)
+              Container(
+                width: 3,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(AppSizes.radius),
+                  ),
                 ),
               ),
-            ),
-          ),
-          // Main content
-          Padding(
-            padding: EdgeInsets.all(AppSizes.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildLocationIcon(),
-                    SizedBox(width: AppSizes.md),
-                    Expanded(child: _buildAddressContent()),
-                    SizedBox(width: AppSizes.sm),
-                    _buildActionIcons(context, ref, isDeleting, isUpdating),
-                  ],
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.lg,
+                    vertical: AppSizes.md,
+                  ),
+                  child: _buildAddressContent(
+                    context,
+                    ref,
+                    isDeleting,
+                    isUpdating,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLocationIcon() {
-    return Container(
-      width: 56,
-      height: 56,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryLight],
         ),
-        borderRadius: BorderRadius.circular(AppSizes.radius),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-        ],
       ),
-      child: Icon(Icons.location_on_rounded, color: AppColors.white, size: 28),
     );
   }
 
-  Widget _buildAddressContent() {
+  Widget _buildAddressContent(
+    BuildContext context,
+    WidgetRef ref,
+    bool isDeleting,
+    bool isUpdating,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (_hasLabel)
-          Padding(
-            padding: EdgeInsets.only(bottom: AppSizes.xs),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.sm, vertical: 2),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(AppSizes.radiusSm),
-              ),
-              child: Text(
-                address.label!,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
-          ),
-        _buildAddressLine(
-          address.address,
-          icon: Icons.location_on_rounded,
+        // Label and action icons on same row so address fields stretch full width
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (_hasLabel)
+              () {
+                final color = _colorForLabel(address.label);
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.sm,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: _labelBgOpacity),
+                    borderRadius:
+                        BorderRadius.circular(AppSizes.radiusSm),
+                  ),
+                  child: Text(
+                    address.label!,
+                    style: AppTextStyles.labelMedium.copyWith(
+                      color: color,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                );
+              }(),
+            const Spacer(),
+            _buildActionIcons(context, ref, isDeleting, isUpdating),
+          ],
+        ),
+        SizedBox(height: AppSizes.xs),
+        _buildInfoRow(
+          icon: Icons.location_on_outlined,
+          text: address.address,
           isPrimary: true,
         ),
-        if (_hasReceiverName)
-          _buildAddressLine(
-            address.receiverName!,
-            icon: Icons.person_rounded,
+        if (_hasReceiverName) ...[
+          SizedBox(height: AppSizes.xs),
+          _buildInfoRow(
+            icon: Icons.person_outline_rounded,
+            text: 'Name: ${address.receiverName!}',
           ),
-        if (_hasReceiverPhone)
-          _buildAddressLine(
-            address.receiverPhone!,
-            icon: Icons.phone_rounded,
+        ],
+        if (_hasReceiverPhone) ...[
+          SizedBox(height: AppSizes.xs),
+          _buildInfoRow(
+            icon: Icons.phone_outlined,
+            text: 'Phone: ${address.receiverPhone!}',
             isSecondary: true,
-            prefix: 'Phone: ',
           ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildInfoRow({
+    required IconData icon,
+    required String text,
+    bool isPrimary = false,
+    bool isSecondary = false,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(
+          icon,
+          size: 18,
+          color: isPrimary
+              ? AppColors.primary
+              : (isSecondary
+                  ? AppColors.txtSecondary
+                  : AppColors.primary.withValues(alpha: 0.8)),
+        ),
+        SizedBox(width: AppSizes.sm),
+        Expanded(
+          child: Text(
+            text,
+            style: isPrimary
+                ? AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.txtPrimary,
+                    fontWeight: FontWeight.w500,
+                    height: 1.35,
+                  )
+                : AppTextStyles.bodyMedium.copyWith(
+                    color: isSecondary
+                        ? AppColors.txtSecondary
+                        : AppColors.txtPrimary,
+                    height: 1.4,
+                    fontWeight: isSecondary ? FontWeight.w400 : FontWeight.w500,
+                  ),
+          ),
+        ),
       ],
     );
   }
@@ -179,19 +195,18 @@ class AddressCard extends ConsumerWidget {
     bool isDeleting,
     bool isUpdating,
   ) {
-    return Column(
+    return Row(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         _buildActionIcon(
-          icon: Icons.edit_rounded,
+          icon: Icons.edit_outlined,
           onTap: isUpdating ? null : () => _handleEdit(context, ref),
           color: AppColors.primary,
           isLoading: isUpdating,
         ),
-        SizedBox(height: AppSizes.sm),
+        SizedBox(width: AppSizes.xs),
         _buildActionIcon(
-          icon: Icons.delete_rounded,
+          icon: Icons.delete_outlined,
           onTap: isDeleting ? null : () => _handleDelete(context, ref),
           color: AppColors.error,
           isLoading: isDeleting,
@@ -206,33 +221,26 @@ class AddressCard extends ConsumerWidget {
     required Color color,
     bool isLoading = false,
   }) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppSizes.radius),
-        child: Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: isLoading
-                ? color.withValues(alpha: 0.3)
-                : color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(AppSizes.radius),
-            border: Border.all(color: color.withValues(alpha: 0.2), width: 1),
-          ),
-          child: Center(
-            child: isLoading
-                ? SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(color),
-                    ),
-                  )
-                : Icon(icon, color: color, size: 18),
-          ),
+    return SizedBox(
+      width: 40,
+      height: 40,
+      child: IconButton(
+        onPressed: onTap,
+        icon: isLoading
+            ? SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ),
+              )
+            : Icon(icon, color: color, size: 20),
+        style: IconButton.styleFrom(
+          foregroundColor: color,
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
       ),
     );
@@ -256,53 +264,6 @@ class AddressCard extends ConsumerWidget {
         ref.read(addressProvider.notifier).delete(id: address.id);
       }
     });
-  }
-
-  Widget _buildAddressLine(
-    String text, {
-    required IconData icon,
-    bool isPrimary = false,
-    bool isSecondary = false,
-    String? prefix,
-  }) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: isPrimary ? AppSizes.xs : AppSizes.xs / 2,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            size: 18,
-            color: isPrimary
-                ? AppColors.primary
-                : AppColors.primary.withValues(alpha: 0.7),
-          ),
-          SizedBox(width: AppSizes.sm),
-          Expanded(
-            child: Text(
-              prefix != null ? '$prefix$text' : text,
-              style: isPrimary
-                  ? AppTextStyles.h6.copyWith(
-                      color: AppColors.txtPrimary,
-                      fontWeight: FontWeight.w600,
-                      height: 1.3,
-                    )
-                  : AppTextStyles.bodyMedium.copyWith(
-                      color: isSecondary
-                          ? AppColors.txtSecondary
-                          : AppColors.txtPrimary,
-                      height: 1.4,
-                      fontWeight: isSecondary
-                          ? FontWeight.w400
-                          : FontWeight.w500,
-                    ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   bool get _hasLabel =>

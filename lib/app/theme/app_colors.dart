@@ -35,4 +35,7 @@ class AppColors {
   static const cardTextWhite = white;
   static const cardTextWhiteDimmed = Color(0xFFFFFFFF); // white with alpha
   static const cardBackgroundCircle = Color(0xFFFFFFFF); // white with alpha
+
+
+  static const Color orangeTest = Color(0xFFffaa00);
 }

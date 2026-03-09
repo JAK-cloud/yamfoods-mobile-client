@@ -65,11 +65,14 @@ class ProductCartBottomSheet extends ConsumerWidget {
     WidgetRef ref,
     bool isLoading,
   ) {
+    final hasActiveCartOperation = ref.watch(cartOperationLoadingProvider);
     final canAdd = ref.read(canAddToCartProvider(product.branchId));
 
     return CustomButton(
       text: 'Add to Cart',
-      onPressed: canAdd
+      onPressed: hasActiveCartOperation
+          ? null
+          : canAdd
           ? () async {
               // Check authentication before adding to cart
               await AuthGuardHelper.requireAuthOrShowDialog(

@@ -3,6 +3,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'cart_loading_providers.g.dart';
 
 @riverpod
+class CartOperationLoading extends _$CartOperationLoading {
+  @override
+  bool build() => false;
+
+  void setLoading(bool value) {
+    state = value;
+  }
+}
+
+@riverpod
 class CartAddLoading extends _$CartAddLoading {
   @override
   bool build() => false;

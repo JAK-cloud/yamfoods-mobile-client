@@ -13,6 +13,7 @@ import '../../../../core/utils/image_url_builder.dart';
 import '../../../../core/snacks/info_snack_bar.dart';
 import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../cart/domain/entities/cart_request_data.dart';
+import '../../../cart/presentation/providers/cart_loading_providers.dart';
 import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_providers.dart';
 import '../../domain/entities/product.dart';
@@ -221,8 +222,12 @@ class ProductCard extends ConsumerWidget {
   }
 
   Widget _buildAddButton(BuildContext context, WidgetRef ref) {
+    final hasActiveCartOperation = ref.watch(cartOperationLoadingProvider);
+
     return GestureDetector(
-      onTap: () async {
+      onTap: hasActiveCartOperation
+          ? null
+          : () async {
         final canAdd = ref.read(canAddToCartProvider(product.branchId));
         if (canAdd) {
           // Check authentication before adding to cart

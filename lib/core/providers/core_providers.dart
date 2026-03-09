@@ -39,7 +39,14 @@ Logger logger(Ref ref) {
 /// like authentication tokens.
 @Riverpod(keepAlive: true)
 FlutterSecureStorage secureStorage(Ref ref) {
-  return const FlutterSecureStorage();
+  return const FlutterSecureStorage(
+     aOptions: AndroidOptions(
+      keyCipherAlgorithm:
+          KeyCipherAlgorithm.RSA_ECB_OAEPwithSHA_256andMGF1Padding,
+      storageCipherAlgorithm: StorageCipherAlgorithm.AES_GCM_NoPadding,
+      migrateOnAlgorithmChange: true,
+    ),
+  );
 }
 
 /// SharedPreferences provider (async, singleton)
