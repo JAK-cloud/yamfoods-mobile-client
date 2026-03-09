@@ -41,19 +41,17 @@ class ProfileContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _sectionTitle('Profile Information'),
-              const SizedBox(height: AppSizes.sm),
-              ProfileInfo(user: user),
-              const SizedBox(height: AppSizes.lg),
-              _sectionTitle('Account'),
+              ProfileInfo(user: user, sectionTitle: 'Profile Information'),
               const SizedBox(height: AppSizes.sm),
               ProfileMenu(
+                sectionTitle: 'Account',
                 items: [
                   MenuItem(
                     icon: Icons.person_outline_rounded,
                     title: 'Edit Profile',
                     subtitle: 'Update your personal information',
-                    onTap: () => context.push(RouteName.updateProfile, extra: user),
+                    onTap: () =>
+                        context.push(RouteName.updateProfile, extra: user),
                   ),
                   MenuItem(
                     icon: Icons.lock_outline_rounded,
@@ -75,10 +73,9 @@ class ProfileContent extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSizes.lg),
-              _sectionTitle('Preferences'),
               const SizedBox(height: AppSizes.sm),
               ProfileMenu(
+                sectionTitle: 'Preferences',
                 items: [
                   MenuItem(
                     icon: Icons.language_rounded,
@@ -86,14 +83,11 @@ class ProfileContent extends StatelessWidget {
                     subtitle: 'English',
                     onTap: () {},
                   ),
-                  
                 ],
               ),
-          
-              const SizedBox(height: AppSizes.lg),
-              _sectionTitle('Support & Feedback'),
               const SizedBox(height: AppSizes.sm),
               ProfileMenu(
+                sectionTitle: 'Support & Feedback',
                 items: [
                   MenuItem(
                     icon: Icons.help_outline_rounded,
@@ -115,10 +109,9 @@ class ProfileContent extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSizes.lg),
-              _sectionTitle('Legal & Information'),
               const SizedBox(height: AppSizes.sm),
               ProfileMenu(
+                sectionTitle: 'Legal & Information',
                 items: [
                   MenuItem(
                     icon: Icons.description_outlined,
@@ -142,21 +135,6 @@ class ProfileContent extends StatelessWidget {
               const Center(child: ProfileLegalFooter()),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _sectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: AppColors.primary,
-          letterSpacing: 0.5,
         ),
       ),
     );

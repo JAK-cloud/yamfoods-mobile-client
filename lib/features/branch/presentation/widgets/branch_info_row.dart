@@ -4,6 +4,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
+import '../../../../core/utils/link_launcher.dart';
 
 /// Widget displaying phone number and working hours side by side.
 ///
@@ -28,6 +29,8 @@ class BranchInfoRow extends StatelessWidget {
     return time;
   }
 
+  String _tel(String phone) => 'tel:${phone.trim()}';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,29 +45,39 @@ class BranchInfoRow extends StatelessWidget {
           children: [
             // Phone
             Expanded(
-              child: Column(
-                children: [
-                  Icon(
-                    Icons.phone_outlined,
-                    color: AppColors.white.withValues(alpha: 0.8),
-                    size: 24,
-                  ),
-                  const SizedBox(height: AppSizes.xs),
-                  Text(
-                    phone,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w600,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => LinkLauncher.launchUrl(url: _tel(phone)),
+                  borderRadius: BorderRadius.circular(AppSizes.radius),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: AppSizes.xs),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.phone_outlined,
+                          color: AppColors.white.withValues(alpha: 0.8),
+                          size: 24,
+                        ),
+                        const SizedBox(height: AppSizes.xs),
+                        Text(
+                          phone,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          AppTexts.phone,
+                          style: AppTextStyles.caption.copyWith(
+                            color: AppColors.white.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    AppTexts.phone,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.white.withValues(alpha: 0.7),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             // Divider

@@ -37,9 +37,11 @@ class ProductQuantityControl extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final hasActiveCartOperation = ref.watch(cartOperationLoadingProvider);
     final isUpdating = ref
         .watch(cartQuantityUpdateLoadingProvider)
         .contains(cart.id);
+    final isInteractionDisabled = hasActiveCartOperation || isUpdating;
 
     // Maximum quantity allowed from app configuration
     final appConfig = ref.watch(appConfigurationProvider).value;
@@ -58,7 +60,7 @@ class ProductQuantityControl extends ConsumerWidget {
         // Decrease button
         _QuantityButton(
           icon: Icons.remove,
-          onTap: isUpdating || cart.quantity <= 1
+          onTap: isInteractionDisabled || cart.quantity <= 1
               ? null
               : () => ref
                     .read(cartProvider(branchId).notifier)
@@ -93,7 +95,7 @@ class ProductQuantityControl extends ConsumerWidget {
         // Increase button
         _QuantityButton(
           icon: Icons.add,
-          onTap: isUpdating
+          onTap: isInteractionDisabled
               ? null
               : cart.quantity >= maxQuantity
               ? () {
@@ -107,7 +109,7 @@ class ProductQuantityControl extends ConsumerWidget {
                       .read(cartProvider(branchId).notifier)
                       .increaseQuantity(cart.id);
                 },
-          isDisabled: isUpdating || cart.quantity >= maxQuantity,
+          isDisabled: isInteractionDisabled || cart.quantity >= maxQuantity,
           buttonSize: buttonSize,
           iconSize: iconSize,
           iconColor: effectiveIconColor,

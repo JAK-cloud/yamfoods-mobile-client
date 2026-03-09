@@ -9,6 +9,60 @@ part of 'cart_loading_providers.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(CartOperationLoading)
+const cartOperationLoadingProvider = CartOperationLoadingProvider._();
+
+final class CartOperationLoadingProvider
+    extends $NotifierProvider<CartOperationLoading, bool> {
+  const CartOperationLoadingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cartOperationLoadingProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cartOperationLoadingHash();
+
+  @$internal
+  @override
+  CartOperationLoading create() => CartOperationLoading();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$cartOperationLoadingHash() =>
+    r'80303ab8a4af5a3b484ceb085625e863d8fc1ebf';
+
+abstract class _$CartOperationLoading extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
 @ProviderFor(CartAddLoading)
 const cartAddLoadingProvider = CartAddLoadingProvider._();
 
