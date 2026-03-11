@@ -34,7 +34,7 @@ class CategoryChip extends StatelessWidget {
       },
       child: Container(
         width: 80,
-        margin: EdgeInsets.only(right: AppSizes.md),
+        margin: EdgeInsets.only(right: AppSizes.sm),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -82,16 +82,18 @@ class CategoryChip extends StatelessWidget {
                     ),
             ),
             SizedBox(height: AppSizes.xs),
-            // Category name - white for premium surface
-            Text(
-              category.name,
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.txtPrimary,
-                fontWeight: FontWeight.w500,
+            // Category name - max 2 lines, ellipsis if longer
+            Expanded(
+              child: Text(
+                category.name,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.txtPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
             ),
           ],
         ),

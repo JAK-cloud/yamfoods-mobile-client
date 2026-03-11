@@ -11,6 +11,7 @@ _OrderModel _$OrderModelFromJson(
 ) => $checkedCreate('_OrderModel', json, ($checkedConvert) {
   final val = _OrderModel(
     id: $checkedConvert('id', (v) => (v as num).toInt()),
+    orderReference: $checkedConvert('orderReference', (v) => v as String),
     userId: $checkedConvert('userId', (v) => (v as num?)?.toInt()),
     userPhone: $checkedConvert('userPhone', (v) => v as String),
     branchId: $checkedConvert('branchId', (v) => (v as num).toInt()),
@@ -55,6 +56,7 @@ _OrderModel _$OrderModelFromJson(
 Map<String, dynamic> _$OrderModelToJson(_OrderModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'orderReference': instance.orderReference,
       'userId': instance.userId,
       'userPhone': instance.userPhone,
       'branchId': instance.branchId,

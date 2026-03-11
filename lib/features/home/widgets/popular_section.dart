@@ -33,22 +33,31 @@ class PopularSection extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.all(AppSizes.sm),
-                child: Row(
-                  children: [
-                    Text('Popular picks', style: AppTextStyles.h4),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: AppColors.primary,
-                        size: AppSizes.lg,
+              Row(
+                children: [
+                  const SizedBox(width: AppSizes.sm),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: AppSizes.sm),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Popular picks',
+                          style: AppTextStyles.h4,
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: AppColors.primary,
+                      size: AppSizes.lg,
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.builder(
@@ -60,7 +69,7 @@ class PopularSection extends ConsumerWidget {
                       width: kHorizontalProductCardWidth,
                       height: kHorizontalProductSectionRowHeight,
                       child: Padding(
-                        padding: EdgeInsets.only(right: AppSizes.md),
+                        padding: EdgeInsets.only(right: AppSizes.sm),
                         child: ProductCard(product: products[index]),
                       ),
                     );

@@ -199,20 +199,11 @@ class OrderCard extends StatelessWidget {
 
   /// Generates a fabricated order ID to avoid exposing the actual database ID.
   ///
-  /// Format: #YAM{actualId}-{createdAtSeconds}
-  ///
-  /// Example:
-  /// - Actual ID: 123
-  /// - CreatedAt seconds: 45
-  /// - Result: #YAM123-45
-  ///
-  /// This obfuscates the real database ID while still allowing
-  /// traceability when needed. The combination of actual ID and
-  /// timestamp seconds ensures uniqueness while hiding direct
-  /// database structure from users. The hyphen improves readability.
+  /// Format: #YAM{actualId}-{first 5 chars of orderReference}
   String _getFabricatedOrderId() {
     final actualId = order.id;
-    final createdAtSeconds = order.createdAt.second;
-    return '#YAM$actualId-$createdAtSeconds';
+    final ref = order.orderReference;
+    final suffix = ref.length >= 5 ? ref.substring(0, 5) : ref;
+    return '#YAM$actualId$suffix';
   }
 }

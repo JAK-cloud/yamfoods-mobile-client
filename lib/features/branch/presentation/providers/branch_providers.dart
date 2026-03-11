@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -148,6 +149,45 @@ class CurrentBranchDistance extends _$CurrentBranchDistance {
     } catch (e) {
       return false;
     }
+  }
+
+  void clear() {
+    state = null;
+  }
+}
+
+// ==================== Current Branch Working Hours Provider ====================
+
+/// Opening and closing hours for the currently selected branch.
+typedef BranchWorkingHours = ({TimeOfDay? opening, TimeOfDay? closing});
+
+/// Parses "HH:mm" or "HH:mm:ss" string to [TimeOfDay]. Returns null if invalid.
+TimeOfDay? _parseTimeOfDay(String s) {
+  if (s.isEmpty) return null;
+  final parts = s.trim().split(':');
+  if (parts.length >= 2) {
+    final h = int.tryParse(parts[0]);
+    final m = int.tryParse(parts[1]);
+    if (h != null && m != null && h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+      return TimeOfDay(hour: h, minute: m);
+    }
+  }
+  return null;
+}
+
+/// Current selected branch working hours (opening and closing).
+/// - `null` when no branch selected; otherwise holds opening/closing (or null if parsing failed).
+@Riverpod(keepAlive: true)
+class CurrentBranchWorkingHours extends _$CurrentBranchWorkingHours {
+  @override
+  BranchWorkingHours? build() => null;
+
+  /// Sets from branch opening/closing hour strings (e.g. "09:00", "22:00").
+  void setFromBranch(String openingStr, String closingStr) {
+    state = (
+      opening: _parseTimeOfDay(openingStr),
+      closing: _parseTimeOfDay(closingStr),
+    );
   }
 
   void clear() {

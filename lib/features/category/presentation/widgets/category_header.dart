@@ -13,15 +13,14 @@ import '../../domain/entities/category.dart';
 
 class CategoryHeader extends ConsumerWidget {
   final Category category;
-  final VoidCallback? onSearchTap;
 
-  const CategoryHeader({super.key, required this.category, this.onSearchTap});
+  const CategoryHeader({super.key, required this.category});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.fromLTRB(
-        AppSizes.lg,
+        AppSizes.sm,
         MediaQuery.of(context).padding.top + AppSizes.lg,
         AppSizes.lg,
         AppSizes.lg,
@@ -39,7 +38,7 @@ class CategoryHeader extends ConsumerWidget {
               children: [
                 Text(
                   category.name,
-                  style: AppTextStyles.h3.copyWith(color: AppColors.white),
+                  style: AppTextStyles.h4.copyWith(color: AppColors.white),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -58,35 +57,20 @@ class CategoryHeader extends ConsumerWidget {
             ),
           ),
           SizedBox(width: AppSizes.md),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Cart icon with badge
-              AnimatedCartIcon(
-                iconSize: AppSizes.iconSize,
-                padding: EdgeInsets.all(AppSizes.sm),
-                onTap: () async {
-                  await AuthGuardHelper.requireAuthOrShowDialog(
-                    context: context,
-                    ref: ref,
-                    onAuthenticated: () {
-                      context.go(RouteName.cart);
-                    },
-                  );
+          AnimatedCartIcon(
+            iconSize: AppSizes.iconSize,
+            padding: EdgeInsets.all(AppSizes.sm),
+            onTap: () async {
+              await AuthGuardHelper.requireAuthOrShowDialog(
+                context: context,
+                ref: ref,
+                onAuthenticated: () {
+                  context.go(RouteName.cart);
                 },
-              ),
-              SizedBox(width: AppSizes.xs),
-              // Search icon
-              IconButton(
-                onPressed: onSearchTap,
-                icon: Icon(
-                  Icons.search,
-                  color: AppColors.white,
-                  size: AppSizes.iconSize,
-                ),
-              ),
-            ],
+              );
+            },
           ),
+          
         ],
       ),
     );

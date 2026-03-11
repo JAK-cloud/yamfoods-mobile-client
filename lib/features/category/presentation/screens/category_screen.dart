@@ -72,9 +72,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                 children: [
                   CategoryHeader(
                     category: widget.category,
-                    onSearchTap: () {
-                      // TODO: Implement search functionality
-                    },
+                    
                   ),
                   SubcategoryChipsList(
                     branchId: branchId,

@@ -9,6 +9,7 @@ sealed class Orderr with _$Orderr {
   //we do Orderr as double rr because dartz package have class called Order to avoid bug we do this
   const factory Orderr({
     required int id,
+    required String orderReference,
     int? userId, //this field is not needed but it does not affect
     required String userPhone,
     required int branchId,

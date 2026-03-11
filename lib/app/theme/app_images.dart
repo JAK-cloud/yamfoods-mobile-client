@@ -21,6 +21,7 @@ class AppImages {
   static const String paymentMpesa = 'assets/payment/mpesa.png';
 
   // icons
+  static const String appIconTest = 'assets/icons/app_icontest.png';
   static const String appIcon = 'assets/icons/app_icon.png';
   static const String orderSuccessIcon = 'assets/icons/order_success_icon.png';
 

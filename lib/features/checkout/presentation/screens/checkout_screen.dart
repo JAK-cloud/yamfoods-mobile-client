@@ -78,6 +78,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   // when user returns (Chapa: didPopNext, Telebirr: app resumed) we show the
   // verification dialog. _pendingPaymentMethod non-null means we're waiting.
   int? _pendingOrderId;
+  String? _pendingOrderReference; // For query-order API (backend expects orderReference)
   String? _pendingChapaTxnRef; // Chapa only; Telebirr doesn't have/need txnRef
   PaymentMethod? _pendingPaymentMethod;
 
@@ -137,9 +138,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   /// so the dialog actually appears. Uses root navigator context for the overlay.
   void _showPaymentVerificationDialog() {
     final orderId = _pendingOrderId!;
+    final orderReference = _pendingOrderReference!;
     final method = _pendingPaymentMethod!;
     final txnRef = _pendingChapaTxnRef;
     _pendingOrderId = null;
+    _pendingOrderReference = null;
     _pendingChapaTxnRef = null;
     _pendingPaymentMethod = null;
     if (!mounted) return;
@@ -152,6 +155,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
           dialogContext,
           request: QueryOrderRequest(
             method: method,
+            orderReference: orderReference,
             orderId: orderId,
             txnRef: txnRef,
           ),
@@ -257,6 +261,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
           final params = chapaPaymentParams(next.orderRequestData);
           if (params != null) {
             _pendingOrderId = next.response.order.id;
+            _pendingOrderReference = next.response.order.orderReference;
             _pendingChapaTxnRef = params.txRef;
             _pendingPaymentMethod = PaymentMethod.chapa;
             ref.read(chapaPaymentServiceProvider).startPayment(context, params);
@@ -271,6 +276,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
         } else if (next.method == PaymentMethod.telebirr) {
           if (next.response.receiveCode != null) {
             _pendingOrderId = next.response.order.id;
+            _pendingOrderReference = next.response.order.orderReference;
             _pendingPaymentMethod = PaymentMethod.telebirr;
             ref
                 .read(telebirrPaymentServiceProvider)
@@ -322,10 +328,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
                           .value;
                       final maxDaysAhead =
                           appConfig?.maxOrderSchedulingDays ?? 7;
+                      final workingHours = ref.watch(currentBranchWorkingHoursProvider);
                       return ScheduleSection(
                         branchId: widget.branchId,
-                        workingHourStart: const TimeOfDay(hour: 9, minute: 0),
-                        workingHourEnd: const TimeOfDay(hour: 22, minute: 0),
+                        workingHourStart: workingHours?.opening ?? const TimeOfDay(hour: 9, minute: 0),
+                        workingHourEnd: workingHours?.closing ?? const TimeOfDay(hour: 22, minute: 0),
                         maxDaysAhead: maxDaysAhead,
                       );
                     },

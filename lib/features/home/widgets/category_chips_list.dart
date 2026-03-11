@@ -20,7 +20,7 @@ class CategoryChipsList extends ConsumerWidget {
     final categoriesAsync = ref.watch(categoriesProvider(branchId));
 
     return SizedBox(
-      height: 100,
+      height: 105,
       child: categoriesAsync.when(
         data: (categories) {
           if (categories.isEmpty) {
@@ -29,7 +29,6 @@ class CategoryChipsList extends ConsumerWidget {
 
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.sm),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               return CategoryChip(category: categories[index]);

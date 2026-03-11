@@ -51,7 +51,7 @@ class ProductSliverGrid extends ConsumerWidget {
                     AppSizes.sm,
                     AppSizes.sm,
                     AppSizes.sm,
-                    AppSizes.md,
+                    0,
                   ),
                   child: Text(
                     kProductGridSectionTitle,
