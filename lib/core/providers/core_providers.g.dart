@@ -176,7 +176,7 @@ final class SecureStorageProvider
   }
 }
 
-String _$secureStorageHash() => r'a4f75721472cf77465bf47f759c90de5ca30856e';
+String _$secureStorageHash() => r'a70d5f167d4b293c5b54092032c08616e597c79f';
 
 /// SharedPreferences provider (async, singleton)
 ///

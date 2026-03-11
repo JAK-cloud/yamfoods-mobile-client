@@ -5,6 +5,7 @@ import 'order_location_mapper.dart';
 extension OrderMapper on OrderModel {
   Orderr toDomain() => Orderr(
     id: id,
+    orderReference: orderReference,
     userId: userId,
     userPhone: userPhone,
     branchId: branchId,

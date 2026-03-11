@@ -6,7 +6,6 @@ import '../../../../core/constants/gebeta_map_config.dart';
 import '../../../../core/errors/error_handler.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../shared/entities/address_location.dart';
-import '../models/reverse_geocoding_model.dart';
 import '../models/route_model.dart';
 import 'map_api_service.dart';
 import 'map_data_source.dart';

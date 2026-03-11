@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
 import '../../../../../app/theme/app_text_styles.dart';
 import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/enums/payment_status.dart';
-import '../../../../../core/services/snackbar_service.dart';
 import '../../../../../features/order/domain/entities/order_detail.dart';
 import 'payment_row.dart';
 
 /// Section displaying payment information with complete price breakdown.
-class OrderPaymentSection extends ConsumerWidget {
+class OrderPaymentSection extends StatelessWidget {
   final OrderDetail orderDetail;
 
   const OrderPaymentSection({super.key, required this.orderDetail});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final order = orderDetail.order;
     final payment = orderDetail.payment;
-    final snackbar = ref.read(snackbarServiceProvider);
 
     return Container(
       padding: EdgeInsets.all(AppSizes.lg),
@@ -185,7 +182,6 @@ class OrderPaymentSection extends ConsumerWidget {
                       ),
                     if (payment.chapaTxnRef != null)
                       _buildCopyableInfoItem(
-                        snackbar: snackbar,
                         icon: Icons.link,
                         label: 'Chapa Ref',
                         value: payment.chapaTxnRef!,
@@ -218,16 +214,12 @@ class OrderPaymentSection extends ConsumerWidget {
   }
 
   Widget _buildCopyableInfoItem({
-    required SnackbarService snackbar,
     required IconData icon,
     required String label,
     required String value,
   }) {
     return InkWell(
-      onTap: () async {
-        await Clipboard.setData(ClipboardData(text: value));
-        snackbar.showSuccess('Chapa Ref copied to clipboard');
-      },
+      onTap: () => Clipboard.setData(ClipboardData(text: value)),
       borderRadius: BorderRadius.circular(AppSizes.radiusSm),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),

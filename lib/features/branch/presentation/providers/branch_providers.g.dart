@@ -514,6 +514,71 @@ abstract class _$CurrentBranchDistance extends $Notifier<double?> {
   }
 }
 
+/// Current selected branch working hours (opening and closing).
+/// - `null` when no branch selected; otherwise holds opening/closing (or null if parsing failed).
+
+@ProviderFor(CurrentBranchWorkingHours)
+const currentBranchWorkingHoursProvider = CurrentBranchWorkingHoursProvider._();
+
+/// Current selected branch working hours (opening and closing).
+/// - `null` when no branch selected; otherwise holds opening/closing (or null if parsing failed).
+final class CurrentBranchWorkingHoursProvider
+    extends $NotifierProvider<CurrentBranchWorkingHours, BranchWorkingHours?> {
+  /// Current selected branch working hours (opening and closing).
+  /// - `null` when no branch selected; otherwise holds opening/closing (or null if parsing failed).
+  const CurrentBranchWorkingHoursProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentBranchWorkingHoursProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentBranchWorkingHoursHash();
+
+  @$internal
+  @override
+  CurrentBranchWorkingHours create() => CurrentBranchWorkingHours();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BranchWorkingHours? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BranchWorkingHours?>(value),
+    );
+  }
+}
+
+String _$currentBranchWorkingHoursHash() =>
+    r'224dc6484ac7e5ff36910e7515cde54426f00d8a';
+
+/// Current selected branch working hours (opening and closing).
+/// - `null` when no branch selected; otherwise holds opening/closing (or null if parsing failed).
+
+abstract class _$CurrentBranchWorkingHours
+    extends $Notifier<BranchWorkingHours?> {
+  BranchWorkingHours? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<BranchWorkingHours?, BranchWorkingHours?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<BranchWorkingHours?, BranchWorkingHours?>,
+              BranchWorkingHours?,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
 @ProviderFor(userPositionForBranch)
 const userPositionForBranchProvider = UserPositionForBranchProvider._();
 

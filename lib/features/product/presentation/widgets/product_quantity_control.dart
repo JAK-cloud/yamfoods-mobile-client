@@ -109,7 +109,7 @@ class ProductQuantityControl extends ConsumerWidget {
                       .read(cartProvider(branchId).notifier)
                       .increaseQuantity(cart.id);
                 },
-          isDisabled: isInteractionDisabled || cart.quantity >= maxQuantity,
+          isDisabled: isUpdating || cart.quantity >= maxQuantity,
           buttonSize: buttonSize,
           iconSize: iconSize,
           iconColor: effectiveIconColor,

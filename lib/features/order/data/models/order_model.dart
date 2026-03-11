@@ -14,6 +14,7 @@ sealed class OrderModel with _$OrderModel {
 
   const factory OrderModel({
     required int id,
+    required String orderReference,
     int? userId,
     required String userPhone,
     required int branchId,

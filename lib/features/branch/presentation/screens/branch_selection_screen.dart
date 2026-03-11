@@ -314,15 +314,22 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
         text: 'CONTINUE >>>',
         textColor: AppColors.white,
         onPressed: () {
-          // First clear the branch id and distance if they exist
+          // First clear the branch id, distance, and working hours if they exist
           ref.read(currentBranchProvider.notifier).clear();
           ref.read(currentBranchDistanceProvider.notifier).clear();
+          ref.read(currentBranchWorkingHoursProvider.notifier).clear();
 
           // Store the selected branch ID and check if successful
           final branchSuccess = ref
               .read(currentBranchProvider.notifier)
               .set(branch.id);
           if (!branchSuccess) return;
+
+          // Store the selected branch opening and closing hours
+          ref.read(currentBranchWorkingHoursProvider.notifier).setFromBranch(
+                branch.openingHour,
+                branch.closingHour,
+              );
 
           // We must set actual distance to navigate (GPS required)
           if (userPosition == null) return;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../../app/theme/app_colors.dart';
 import '../../../../../app/theme/app_sizes.dart';
@@ -61,6 +62,9 @@ class OrderInfoSection extends StatelessWidget {
             ],
           ),
           SizedBox(height: AppSizes.lg),
+          // Order Reference (copyable)
+          _buildCopyableOrderReference(orderReference: order.orderReference),
+          SizedBox(height: AppSizes.sm),
           // Order Type
           _buildInfoRow(
             icon: type.icon,
@@ -170,6 +174,49 @@ class OrderInfoSection extends StatelessWidget {
     );
   }
 
+  Widget _buildCopyableOrderReference({required String orderReference}) {
+    return InkWell(
+      onTap: () => Clipboard.setData(ClipboardData(text: orderReference)),
+      borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+      child: Row(
+        children: [
+          Icon(Icons.tag_outlined, size: 20, color: AppColors.txtSecondary),
+          SizedBox(width: AppSizes.sm),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Ref',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.txtSecondary,
+                  ),
+                ),
+                const SizedBox(width: 2),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      orderReference,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.txtPrimary,
+                      ),
+                    ),
+                  ),
+                    SizedBox(width: AppSizes.sm),
+                    Icon(Icons.copy, size: 16, color: AppColors.primary),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildInfoRow({
     required IconData icon,
     required String label,
@@ -227,10 +274,11 @@ class OrderInfoSection extends StatelessWidget {
 
   /// Generates a fabricated order ID to avoid exposing the actual database ID.
   ///
-  /// Format: #YAM{actualId}-{createdAtSeconds}
+  /// Format: #YAM{actualId}-{first 5 chars of orderReference}
   String _getFabricatedOrderId() {
     final actualId = orderDetail.order.id;
-    final createdAtSeconds = orderDetail.order.createdAt.second;
-    return '#YAM$actualId-$createdAtSeconds';
+    final ref = orderDetail.order.orderReference;
+    final suffix = ref.length >= 5 ? ref.substring(0, 5) : ref;
+    return '#YAM$actualId$suffix';
   }
 }
