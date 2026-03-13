@@ -50,23 +50,33 @@ class OrderAddressSection extends StatelessWidget {
           SizedBox(height: AppSizes.lg),
           InfoRow(
             label: 'Address',
-            value: address.address ?? 'N/A',
+            value: address.address,
             icon: Icons.location_on,
           ),
-          if (address.building != null && address.building!.isNotEmpty) ...[
+          if (address.label != null && address.label!.isNotEmpty) ...[
             SizedBox(height: AppSizes.sm),
             InfoRow(
-              label: 'Building',
-              value: address.building!,
-              icon: Icons.business,
+              label: 'Label',
+              value: address.label!,
+              icon: Icons.bookmark_outline,
             ),
           ],
-          SizedBox(height: AppSizes.sm),
-          InfoRow(
-            label: 'House No.',
-            value: address.houseNo ?? 'N/A',
-            icon: Icons.home,
-          ),
+          if (address.receiverName != null && address.receiverName!.isNotEmpty) ...[
+            SizedBox(height: AppSizes.sm),
+            InfoRow(
+              label: 'Receiver',
+              value: address.receiverName!,
+              icon: Icons.person_outline,
+            ),
+          ],
+          if (address.receiverPhone != null && address.receiverPhone!.isNotEmpty) ...[
+            SizedBox(height: AppSizes.sm),
+            InfoRow(
+              label: 'Phone',
+              value: address.receiverPhone!,
+              icon: Icons.phone_outlined,
+            ),
+          ],
         ],
       ),
     );

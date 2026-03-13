@@ -14,9 +14,10 @@ sealed class OrderAddressModel with _$OrderAddressModel {
   const factory OrderAddressModel({
     required int id,
     required int orderId,
-    String? address,
-    String? building,
-    String? houseNo,
+    required String address,
+    String? receiverPhone,
+    String? receiverName,
+    String? label,
     @JsonKey(fromJson: parseDoubleNullable) double? lat,
     @JsonKey(fromJson: parseDoubleNullable) double? lng,
     required DateTime createdAt,

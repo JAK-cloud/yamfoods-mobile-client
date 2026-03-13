@@ -31,151 +31,153 @@ class AppUpdateBottomSheet extends StatelessWidget {
 
     return PopScope(
       canPop: !isBlocking,
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(AppSizes.lg),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: isBlocking
-              ? BorderRadius.zero
-              : const BorderRadius.only(
-                  topLeft: Radius.circular(AppSizes.radiusLg),
-                  topRight: Radius.circular(AppSizes.radiusLg),
+      child: SafeArea(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(AppSizes.lg),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: isBlocking
+                ? BorderRadius.zero
+                : const BorderRadius.only(
+                    topLeft: Radius.circular(AppSizes.radiusLg),
+                    topRight: Radius.circular(AppSizes.radiusLg),
+                  ),
+          ),
+          child: Column(
+            mainAxisSize: isBlocking ? MainAxisSize.max : MainAxisSize.min,
+            mainAxisAlignment: isBlocking
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.start,
+            children: [
+              if (!isBlocking) ...[
+                Container(
+                  width: 44,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
                 ),
-        ),
-        child: Column(
-          mainAxisSize: isBlocking ? MainAxisSize.max : MainAxisSize.min,
-          mainAxisAlignment: isBlocking
-              ? MainAxisAlignment.center
-              : MainAxisAlignment.start,
-          children: [
-            if (!isBlocking) ...[
-              Container(
-                width: 44,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: AppColors.grey.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(999),
-                ),
+                SizedBox(height: AppSizes.lg),
+              ],
+              Icon(
+                isBlocking
+                    ? Icons.system_update_alt
+                    : Icons.new_releases_outlined,
+                size: isBlocking ? 56 : 44,
+                color: isBlocking ? AppColors.error : AppColors.primary,
               ),
-              SizedBox(height: AppSizes.lg),
+              SizedBox(height: AppSizes.md),
+              Text(
+                title,
+                style: AppTextStyles.h4.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.txtPrimary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppSizes.xs),
+              Text(
+                subtitle,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.txtSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppSizes.xxl),
+              if (!isBlocking)
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          side: BorderSide(color: AppColors.grey),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppSizes.radius),
+                          ),
+                        ),
+                        child: Text(
+                          'Skip',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.txtPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: AppSizes.sm),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _handleUpdate(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppSizes.radius),
+                          ),
+                        ),
+                        child: Text(
+                          'Update',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => _handleUpdate(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppSizes.radius),
+                          ),
+                        ),
+                        child: Text(
+                          'Update',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: AppSizes.sm),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () => SystemNavigator.pop(),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 14),
+                          side: BorderSide(color: AppColors.error),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppSizes.radius),
+                          ),
+                        ),
+                        child: Text(
+                          'Exit',
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
-            Icon(
-              isBlocking
-                  ? Icons.system_update_alt
-                  : Icons.new_releases_outlined,
-              size: isBlocking ? 56 : 44,
-              color: isBlocking ? AppColors.error : AppColors.primary,
-            ),
-            SizedBox(height: AppSizes.md),
-            Text(
-              title,
-              style: AppTextStyles.h4.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.txtPrimary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: AppSizes.xs),
-            Text(
-              subtitle,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.txtSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: AppSizes.xxl),
-            if (!isBlocking)
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        side: BorderSide(color: AppColors.grey),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSizes.radius),
-                        ),
-                      ),
-                      child: Text(
-                        'Skip',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.txtPrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: AppSizes.sm),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => _handleUpdate(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSizes.radius),
-                        ),
-                      ),
-                      child: Text(
-                        'Update',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            else
-              Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => _handleUpdate(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSizes.radius),
-                        ),
-                      ),
-                      child: Text(
-                        'Update',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: AppSizes.sm),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () => SystemNavigator.pop(),
-                      style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        side: BorderSide(color: AppColors.error),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSizes.radius),
-                        ),
-                      ),
-                      child: Text(
-                        'Exit',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.error,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-          ],
+          ),
         ),
       ),
     );

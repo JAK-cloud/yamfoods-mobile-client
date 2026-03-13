@@ -197,7 +197,7 @@ class _PromoCodeSectionState extends ConsumerState<PromoCodeSection> {
                   SizedBox(width: AppSizes.xs),
                   Expanded(
                     child: Text(
-                      '${checkoutState.promoCode} = ${checkoutState.promoCodeDiscount!.toStringAsFixed(2)} ${AppConstants.currency} discount',
+                      'Discount = ${checkoutState.promoCodeDiscount!.toStringAsFixed(2)} ${AppConstants.currency}',
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,

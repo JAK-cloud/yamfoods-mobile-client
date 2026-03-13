@@ -75,7 +75,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     // Navigate based on first time check
     if (isFirstTime) {
-      context.go(RouteName.splash);
+      context.go(RouteName.onboarding);
     } else {
       context.go(RouteName.branches);
     }
@@ -105,9 +105,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           children: [
             const Spacer(),
             Image.asset(
-              AppImages.appIconTest,
-              height: 300,
-              width: 300,
+              AppImages.appIcon,
+              height: 240,
+              width: 240,
               fit: BoxFit.contain,
             ),
             const Spacer(),
