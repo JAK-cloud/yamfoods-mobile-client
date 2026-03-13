@@ -110,189 +110,191 @@ class _FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppSizes.radiusLg),
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Handle bar
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: AppSizes.md),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: AppColors.grey.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(2),
-            ),
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppSizes.radiusLg),
           ),
-
-          // Header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Filter Products',
-                  style: TextStyle(
-                  color: AppColors.txtPrimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                ),
-                TextButton(
-                  onPressed: _clearFilters,
-                  child: Text(
-                    'Clear All',
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-              ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: AppSizes.md),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.grey.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-
-          const Divider(),
-
-          // Filter content
-          Flexible(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSizes.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Price Range
-                  _buildSectionTitle('Price Range'),
-                  const SizedBox(height: AppSizes.sm),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InputTextfield(
-                          controller: _minPriceController,
-                          hintText: 'Min Price',
-                          icon: Icons.attach_money_rounded,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,2}'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: AppSizes.md),
-                      Expanded(
-                        child: InputTextfield(
-                          controller: _maxPriceController,
-                          hintText: 'Max Price',
-                          icon: Icons.attach_money_rounded,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                              RegExp(r'^\d+\.?\d{0,2}'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Filter Products',
+                    style: TextStyle(
+                    color: AppColors.txtPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
-
-                  const SizedBox(height: AppSizes.xl),
-
-                  // Category
-                  _buildSectionTitle('Category'),
-                  const SizedBox(height: AppSizes.sm),
-                  _CategoryDropdown(
-                    branchId: widget.branchId,
-                    selectedCategoryId: _selectedCategoryId,
-                    onCategorySelected: (categoryId) {
-                      setState(() {
-                        _selectedCategoryId = categoryId;
-                        _selectedSubcategoryId =
-                            null; // Clear subcategory when category changes
-                      });
-                    },
                   ),
-
-                  const SizedBox(height: AppSizes.xl),
-
-                  // Subcategory (only if category is selected)
-                  if (_selectedCategoryId != null) ...[
-                    _buildSectionTitle('Subcategory'),
-                    const SizedBox(height: AppSizes.sm),
-                    _SubcategoryDropdown(
-                      branchId: widget.branchId,
-                      categoryId: _selectedCategoryId!,
-                      selectedSubcategoryId: _selectedSubcategoryId,
-                      onSubcategorySelected: (subcategoryId) {
-                        setState(() {
-                          _selectedSubcategoryId = subcategoryId;
-                        });
-                      },
+                  TextButton(
+                    onPressed: _clearFilters,
+                    child: Text(
+                      'Clear All',
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.primary,
+                      ),
                     ),
-                    const SizedBox(height: AppSizes.xl),
-                  ],
-
-                  // Ingredients
-                  _buildSectionTitle('Ingredients'),
-                  const SizedBox(height: AppSizes.sm),
-                  InputTextfield(
-                    controller: _ingredientsController,
-                    hintText:
-                        'Enter ingredients separated by commas (e.g., cheese, tomato)',
-                    icon: Icons.restaurant_menu_rounded,
-                    maxLines: 2,
                   ),
-
-                  const SizedBox(height: AppSizes.xl),
-
-                  // Discount
-                  _buildSectionTitle('Discount'),
-                  const SizedBox(height: AppSizes.sm),
-                  SwitchListTile(
-                    title: const Text('Show only discounted products'),
-                    value: _hasDiscount ?? false,
-                    onChanged: (value) {
-                      setState(() {
-                        _hasDiscount = value;
-                      });
-                    },
-                    activeThumbColor: AppColors.primary,
-                  ),
-
-                  const SizedBox(height: AppSizes.xl),
                 ],
               ),
             ),
-          ),
-
-          // Apply button
-          Container(
-            padding: const EdgeInsets.all(AppSizes.lg),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.grey.withValues(alpha: 0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, -2),
+      
+            const Divider(),
+      
+            // Filter content
+            Flexible(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(AppSizes.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Price Range
+                    _buildSectionTitle('Price Range'),
+                    const SizedBox(height: AppSizes.sm),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InputTextfield(
+                            controller: _minPriceController,
+                            hintText: 'Min Price',
+                            icon: Icons.attach_money_rounded,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,2}'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSizes.md),
+                        Expanded(
+                          child: InputTextfield(
+                            controller: _maxPriceController,
+                            hintText: 'Max Price',
+                            icon: Icons.attach_money_rounded,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,2}'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+      
+                    const SizedBox(height: AppSizes.xl),
+      
+                    // Category
+                    _buildSectionTitle('Category'),
+                    const SizedBox(height: AppSizes.sm),
+                    _CategoryDropdown(
+                      branchId: widget.branchId,
+                      selectedCategoryId: _selectedCategoryId,
+                      onCategorySelected: (categoryId) {
+                        setState(() {
+                          _selectedCategoryId = categoryId;
+                          _selectedSubcategoryId =
+                              null; // Clear subcategory when category changes
+                        });
+                      },
+                    ),
+      
+                    const SizedBox(height: AppSizes.xl),
+      
+                    // Subcategory (only if category is selected)
+                    if (_selectedCategoryId != null) ...[
+                      _buildSectionTitle('Subcategory'),
+                      const SizedBox(height: AppSizes.sm),
+                      _SubcategoryDropdown(
+                        branchId: widget.branchId,
+                        categoryId: _selectedCategoryId!,
+                        selectedSubcategoryId: _selectedSubcategoryId,
+                        onSubcategorySelected: (subcategoryId) {
+                          setState(() {
+                            _selectedSubcategoryId = subcategoryId;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: AppSizes.xl),
+                    ],
+      
+                    // Ingredients
+                    _buildSectionTitle('Ingredients'),
+                    const SizedBox(height: AppSizes.sm),
+                    InputTextfield(
+                      controller: _ingredientsController,
+                      hintText:
+                          'Enter ingredients separated by commas (e.g., cheese, tomato)',
+                      icon: Icons.restaurant_menu_rounded,
+                      maxLines: 2,
+                    ),
+      
+                    const SizedBox(height: AppSizes.xl),
+      
+                    // Discount
+                    _buildSectionTitle('Discount'),
+                    const SizedBox(height: AppSizes.sm),
+                    SwitchListTile(
+                      title: const Text('Show only discounted products'),
+                      value: _hasDiscount ?? false,
+                      onChanged: (value) {
+                        setState(() {
+                          _hasDiscount = value;
+                        });
+                      },
+                      activeThumbColor: AppColors.primary,
+                    ),
+      
+                    const SizedBox(height: AppSizes.xl),
+                  ],
                 ),
-              ],
+              ),
             ),
-            child: CustomButton(
-              text: 'Apply Filters',
-              onPressed: _applyFilters,
+      
+            // Apply button
+            Container(
+              padding: const EdgeInsets.all(AppSizes.lg),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.grey.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
+              ),
+              child: CustomButton(
+                text: 'Apply Filters',
+                onPressed: _applyFilters,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

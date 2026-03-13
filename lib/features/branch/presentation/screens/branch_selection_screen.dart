@@ -102,7 +102,7 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                           backend: config.appVersion,
                           current: appInfo,
                         );
-
+        
                         if (branches.isEmpty) {
                           return EmptyState(
                             icon: Icons.store_outlined,
@@ -111,7 +111,7 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                                 'There are no branches available at the moment.',
                           );
                         }
-
+        
                         final selectedBranch = branches[_selectedIndex];
                         return _buildContent(
                           branches,

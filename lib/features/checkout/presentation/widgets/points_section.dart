@@ -166,7 +166,7 @@ class _PointsSectionState extends ConsumerState<PointsSection> {
                       SizedBox(width: AppSizes.xs),
                       Expanded(
                         child: Text(
-                          '${checkoutState.pointUsed} points = ${checkoutState.pointDiscount!.toStringAsFixed(2)} ${AppConstants.currency} discount',
+                          'Discount = ${checkoutState.pointDiscount!.toStringAsFixed(2)} ${AppConstants.currency}',
                           style: AppTextStyles.bodySmall.copyWith(
                             color: AppColors.primary,
                             fontWeight: FontWeight.w600,

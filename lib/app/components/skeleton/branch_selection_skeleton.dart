@@ -27,8 +27,8 @@ class BranchSelectionSkeleton extends StatelessWidget {
             colors: [
               AppColors.primary,
               AppColors.primary.withValues(alpha: 0.95),
-              AppColors.primary.withValues(alpha: 0.85),
-              AppColors.secondary,
+              AppColors.primary.withValues(alpha: 0.9),
+              AppColors.primary.withValues(alpha: 0.8),
             ],
           ),
         ),
