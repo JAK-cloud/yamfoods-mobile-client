@@ -169,7 +169,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   OrderRequestData _buildOrderRequestData() {
     final checkoutState = ref.read(checkoutProvider(widget.branchId));
     final summary = ref.read(checkoutSummaryProvider(widget.branchId));
-    final distanceKm = ref.read(currentBranchDistanceProvider);
+    final distanceKm =
+        ref.read(checkoutDeliveryDistanceKmProvider(widget.branchId));
 
     return OrderRequestData(
       branchId: checkoutState.branchId,

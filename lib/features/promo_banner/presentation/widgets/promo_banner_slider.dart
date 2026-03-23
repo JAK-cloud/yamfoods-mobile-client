@@ -75,36 +75,33 @@ class _PromoBannerSliderState extends ConsumerState<PromoBannerSlider> {
         return Column(
           children: [
             // Carousel slider
-            SizedBox(
-              height: AppSizes.bannerHeight,
-              child: CarouselSlider.builder(
-                carouselController: _carouselController,
-                itemCount: banners.length,
-                itemBuilder: (context, index, realIndex) {
-                  return PromoBannerItem(
-                    key: ValueKey('banner_${banners[index].id}'),
-                    banner: banners[index],
-                  );
+            CarouselSlider.builder(
+              carouselController: _carouselController,
+              itemCount: banners.length,
+              itemBuilder: (context, index, realIndex) {
+                return PromoBannerItem(
+                  key: ValueKey('banner_${banners[index].id}'),
+                  banner: banners[index],
+                );
+              },
+              options: CarouselOptions(
+                height: 110,
+                viewportFraction:
+                    0.99, // Minimize gap while showing small preview of adjacent banners
+                enlargeCenterPage: true, // Enable scale animation
+                enlargeStrategy:
+                    CenterPageEnlargeStrategy.scale, // Smooth scale animation
+                autoPlay: !_isAutoPlayPaused && banners.length > 1,
+                autoPlayInterval: const Duration(seconds: 4),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                autoPlayCurve: Curves.easeInOut,
+                scrollDirection: Axis.horizontal,
+                onPageChanged: (index, reason) {
+                  _onPageChanged(index, reason);
                 },
-                options: CarouselOptions(
-                  height: AppSizes.bannerHeight,
-                  viewportFraction:
-                      0.85, // Minimize gap while showing small preview of adjacent banners
-                  enlargeCenterPage: true, // Enable scale animation
-                  enlargeStrategy:
-                      CenterPageEnlargeStrategy.scale, // Smooth scale animation
-                  autoPlay: !_isAutoPlayPaused && banners.length > 1,
-                  autoPlayInterval: const Duration(seconds: 4),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.easeInOut,
-                  scrollDirection: Axis.horizontal,
-                  onPageChanged: (index, reason) {
-                    _onPageChanged(index, reason);
-                  },
-                  enableInfiniteScroll: banners.length > 1,
-                  pauseAutoPlayOnTouch: true,
-                  pauseAutoPlayOnManualNavigate: true,
-                ),
+                enableInfiniteScroll: banners.length > 1,
+                pauseAutoPlayOnTouch: true,
+                pauseAutoPlayOnManualNavigate: true,
               ),
             ),
             SizedBox(height: AppSizes.md),

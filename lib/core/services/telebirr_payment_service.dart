@@ -18,8 +18,10 @@ part 'telebirr_payment_service.g.dart';
 @riverpod
 class TelebirrPaymentService extends _$TelebirrPaymentService {
   // Telebirr merchant credentials
-  static const String _appId = '1514631168281605';
-  static const String _shortCode = '747582';
+  // static const String _appId = '1514631168281605';
+  // static const String _shortCode = '747582';
+   static const String _appId = '1592731747020806';
+  static const String _shortCode = '516084';
 
   @override
   TelebirrPaymentService build() => TelebirrPaymentService();
