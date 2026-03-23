@@ -6,6 +6,7 @@ import '../../../app_configuration/presentation/providers/app_configuration_prov
 import '../../../achievement/presentation/providers/achievement_providers.dart';
 import '../../models/checkout_validator.dart';
 import 'checkout_notifier.dart';
+import 'checkout_summary_provider.dart';
 
 part 'checkout_validation_provider.g.dart';
 
@@ -67,6 +68,7 @@ part 'checkout_validation_provider.g.dart';
 @riverpod
 CheckoutValidation checkoutValidation(Ref ref, int branchId) {
   final checkoutState = ref.watch(checkoutProvider(branchId));
+  final summary = ref.watch(checkoutSummaryProvider(branchId));
 
   final errors = <String>[];
 
@@ -74,6 +76,13 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
   if (checkoutState.orderType.toOrderType() == OrderType.delivery &&
       checkoutState.selectedAddress == null) {
     errors.add('Please select a delivery address');
+  }
+
+  // Delivery price validation:
+  // If order is delivery but we compute a 0 delivery fee, block checkout.
+  if (checkoutState.orderType.toOrderType() == OrderType.delivery &&
+      summary.deliveryFee <= 0.0) {
+    errors.add('Delivery fee is not available');
   }
 
   // Table number validation (dining)
@@ -127,10 +136,12 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
       checkoutState.orderType.toOrderType() == OrderType.dining
       ? (() {
           final table = checkoutState.tableNumber?.trim() ?? '';
-          if (table.isEmpty)
+          if (table.isEmpty) {
             return 'Table number is required for dining orders';
-          if (table.length > 20)
+          }
+          if (table.length > 20) {
             return 'Table number must be at most 20 characters';
+          }
           return null;
         }())
       : null;

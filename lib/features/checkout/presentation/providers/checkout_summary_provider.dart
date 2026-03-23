@@ -8,8 +8,44 @@ import '../../../cart/presentation/providers/cart_notifier.dart';
 import '../../../cart/presentation/providers/cart_summary_provider.dart';
 import '../../models/checkout_summary.dart';
 import 'checkout_notifier.dart';
+import '../../../../core/utils/distance_calculator.dart';
 
 part 'checkout_summary_provider.g.dart';
+
+@riverpod
+double checkoutDeliveryDistanceKm(Ref ref, int branchId) {
+  final checkoutState = ref.watch(checkoutProvider(branchId));
+
+  if (checkoutState.orderType.toOrderType() != OrderType.delivery) {
+    return 0.0;
+  }
+
+  final selectedAddress = checkoutState.selectedAddress;
+  if (selectedAddress == null) {
+    return 0.0;
+  }
+
+  final addressLat = double.tryParse(selectedAddress.lat);
+  final addressLng = double.tryParse(selectedAddress.lng);
+  if (addressLat == null || addressLng == null) {
+    return 0.0;
+  }
+
+  final branchesAsync = ref.watch(branchesProvider);
+  return branchesAsync.maybeWhen(
+    data: (branches) {
+      final matches = branches.where((b) => b.id == branchId);
+      if (matches.isEmpty) return 0.0;
+      final branch = matches.first;
+
+      return DistanceCalculator.distanceInKm(
+        (lat: addressLat, lng: addressLng),
+        branch.location,
+      );
+    },
+    orElse: () => 0.0,
+  );
+}
 
 /// Provider that calculates checkout summary from checkout state and cart.
 ///
@@ -41,7 +77,7 @@ CheckoutSummary checkoutSummary(Ref ref, int branchId) {
 
   // Delivery fee: deliveryStartFee + (deliveryFeePerKm * distanceKm)
   final appConfig = ref.watch(appConfigurationProvider).value;
-  final distanceKm = ref.watch(currentBranchDistanceProvider) ?? 0.0;
+  final distanceKm = ref.watch(checkoutDeliveryDistanceKmProvider(branchId));
   final startFee = appConfig?.deliveryStartFee ?? 0.0;
   final perKm = appConfig?.deliveryFeePerKm ?? 0.0;
   final finalDeliveryFee =

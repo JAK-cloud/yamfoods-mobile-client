@@ -7,14 +7,14 @@ extension PromoBannerModelMapper on PromoBannerModel {
     return PromoBanner(
       id: id,
       imageUrl: imageUrl,
-      title: title,
-      subtitle: subtitle,
-      status: status,
-      startDate: startDate,
-      endDate: endDate,
+      // title: title,
+      // subtitle: subtitle,
+      // status: status,
+      // startDate: startDate,
+      // endDate: endDate,
       productId: productId,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
+      // createdAt: createdAt,
+      // updatedAt: updatedAt,
     );
   }
 }

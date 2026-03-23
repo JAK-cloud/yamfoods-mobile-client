@@ -8,13 +8,13 @@ sealed class PromoBanner with _$PromoBanner {
   const factory PromoBanner({
     required int id,
     required String imageUrl,
-    required String title,
-    String? subtitle,
-    required String status,
-    required DateTime startDate,
-    required DateTime endDate,
+    // required String title,
+    // String? subtitle,
+    // required String status,
+    // required DateTime startDate,
+    // required DateTime endDate,
     int? productId,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    // required DateTime createdAt,
+    // required DateTime updatedAt,
   }) = _PromoBanner;
 }

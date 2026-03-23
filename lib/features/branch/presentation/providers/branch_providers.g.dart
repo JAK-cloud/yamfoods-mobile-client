@@ -265,7 +265,7 @@ final class BranchesProvider
         argument: null,
         retry: null,
         name: r'branchesProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -285,7 +285,7 @@ final class BranchesProvider
   }
 }
 
-String _$branchesHash() => r'ac725c320b28264ec6a6b9cdb5d116540a69fbbf';
+String _$branchesHash() => r'29e2445e997807c92597ae93a8123a0fea085b3a';
 
 /// Current selected branch ID provider
 ///

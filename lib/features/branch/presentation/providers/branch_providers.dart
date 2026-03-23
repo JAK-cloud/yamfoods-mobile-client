@@ -60,7 +60,7 @@ GetAllBranchesUsecase getAllBranchesUsecase(Ref ref) {
 /// Branches list provider
 ///
 /// Fetches all branches from the API.
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<Branch>> branches(Ref ref) async {
   final usecase = ref.watch(getAllBranchesUsecaseProvider);
   final result = await usecase();

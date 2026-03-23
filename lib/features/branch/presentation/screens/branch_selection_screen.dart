@@ -102,7 +102,7 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                           backend: config.appVersion,
                           current: appInfo,
                         );
-        
+
                         if (branches.isEmpty) {
                           return EmptyState(
                             icon: Icons.store_outlined,
@@ -111,7 +111,7 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
                                 'There are no branches available at the moment.',
                           );
                         }
-        
+
                         final selectedBranch = branches[_selectedIndex];
                         return _buildContent(
                           branches,
@@ -326,23 +326,17 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
           if (!branchSuccess) return;
 
           // Store the selected branch opening and closing hours
-          ref.read(currentBranchWorkingHoursProvider.notifier).setFromBranch(
-                branch.openingHour,
-                branch.closingHour,
-              );
+          ref
+              .read(currentBranchWorkingHoursProvider.notifier)
+              .setFromBranch(branch.openingHour, branch.closingHour);
 
-          // We must set actual distance to navigate (GPS required)
-          if (userPosition == null) return;
-
-          final distanceKm = DistanceCalculator.distanceInKm(
-            userPosition,
-            branch.location,
-          );
-          final distanceSuccess = ref
-              .read(currentBranchDistanceProvider.notifier)
-              .set(distanceKm);
-          if (!distanceSuccess || !mounted) return;
-
+          if (userPosition != null) {
+            final distanceKm = DistanceCalculator.distanceInKm(
+              userPosition,
+              branch.location,
+            );
+            ref.read(currentBranchDistanceProvider.notifier).set(distanceKm);
+          }
           // IMPORTANT: Use `go()` (not `push()`) when entering the tab shell routes (Home/Cart/Order/Profile).
           // `push()` can create an inconsistent stack across nested navigators and later cause navigation/layout issues.
           context.go(RouteName.home);
