@@ -10,9 +10,8 @@ part of 'chapa_payment_service.dart';
 // ignore_for_file: type=lint, type=warning
 /// Service for handling Chapa payment integration (native checkout only).
 ///
-/// **Configuration:**
-/// - Uses [ChapaPaymentService.publicKey] (set from env in production).
-/// - Currency: ETB only for native checkout (per Chapa docs).
+/// **Configuration:** set `CHAPA_PUBLIC_KEY` in `.env` (see `.env.example`).
+/// Currency: ETB only for native checkout (per Chapa docs).
 ///
 /// **Payment Flow:**
 /// 1. Call [startPayment] with [BuildContext] and [ChapaPaymentParams]
@@ -27,9 +26,8 @@ const chapaPaymentServiceProvider = ChapaPaymentServiceProvider._();
 
 /// Service for handling Chapa payment integration (native checkout only).
 ///
-/// **Configuration:**
-/// - Uses [ChapaPaymentService.publicKey] (set from env in production).
-/// - Currency: ETB only for native checkout (per Chapa docs).
+/// **Configuration:** set `CHAPA_PUBLIC_KEY` in `.env` (see `.env.example`).
+/// Currency: ETB only for native checkout (per Chapa docs).
 ///
 /// **Payment Flow:**
 /// 1. Call [startPayment] with [BuildContext] and [ChapaPaymentParams]
@@ -42,9 +40,8 @@ final class ChapaPaymentServiceProvider
     extends $NotifierProvider<ChapaPaymentService, ChapaPaymentService> {
   /// Service for handling Chapa payment integration (native checkout only).
   ///
-  /// **Configuration:**
-  /// - Uses [ChapaPaymentService.publicKey] (set from env in production).
-  /// - Currency: ETB only for native checkout (per Chapa docs).
+  /// **Configuration:** set `CHAPA_PUBLIC_KEY` in `.env` (see `.env.example`).
+  /// Currency: ETB only for native checkout (per Chapa docs).
   ///
   /// **Payment Flow:**
   /// 1. Call [startPayment] with [BuildContext] and [ChapaPaymentParams]
@@ -81,13 +78,12 @@ final class ChapaPaymentServiceProvider
 }
 
 String _$chapaPaymentServiceHash() =>
-    r'c6b0ac9477dd7756adc5a07cf27be7def213c4ad';
+    r'c63b22d0db20c573e8eacd8d57ed1382f15a5c6f';
 
 /// Service for handling Chapa payment integration (native checkout only).
 ///
-/// **Configuration:**
-/// - Uses [ChapaPaymentService.publicKey] (set from env in production).
-/// - Currency: ETB only for native checkout (per Chapa docs).
+/// **Configuration:** set `CHAPA_PUBLIC_KEY` in `.env` (see `.env.example`).
+/// Currency: ETB only for native checkout (per Chapa docs).
 ///
 /// **Payment Flow:**
 /// 1. Call [startPayment] with [BuildContext] and [ChapaPaymentParams]

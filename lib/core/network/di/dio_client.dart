@@ -7,6 +7,7 @@ import '../interceptors/auth_interceptor.dart';
 import '../interceptors/logging_interceptor.dart';
 import '../interceptors/retry_interceptor.dart';
 import '../../../features/auth/presentation/providers/auth_providers.dart';
+import '../../../features/auth/presentation/providers/auth_user_state.dart';
 
 part 'dio_client.g.dart';
 
@@ -131,6 +132,14 @@ Future<Dio> dioClient(Ref ref) async {
   );
   final tokenValidator = ref.watch(tokenValidatorProvider);
 
+  Future<void> invalidateAuthSession() async {
+    final local = await ref.read(authLocalDataSourceProvider.future);
+    await local.clearTokens();
+    await local.clearUser();
+    await ref.read(authUserStateProvider.notifier).clearUser();
+    ref.invalidate(isAuthenticatedProvider);
+  }
+
   // Create a new Dio instance with the same configuration as baseDio
   // We need to clone it to add the auth interceptor without modifying the base
   final dio = Dio(
@@ -152,6 +161,7 @@ Future<Dio> dioClient(Ref ref) async {
       localDataSource: authLocalDataSource,
       tokenValidator: tokenValidator,
       logger: logger,
+      onAuthSessionInvalidated: invalidateAuthSession,
     ),
     RetryInterceptor(
       dio: dio,

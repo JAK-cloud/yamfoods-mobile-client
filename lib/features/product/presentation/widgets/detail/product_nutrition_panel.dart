@@ -22,7 +22,7 @@ class ProductNutritionPanel extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
       child: Row(
         children: [
           // Fire/energy icon

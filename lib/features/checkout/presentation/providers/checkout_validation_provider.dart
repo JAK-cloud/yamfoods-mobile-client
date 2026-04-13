@@ -118,6 +118,10 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
   }
 
   // Schedule validation
+  if (checkoutState.orderType.toOrderType() == OrderType.pickup &&
+      checkoutState.scheduledAt == null) {
+    errors.add('Please select a pickup schedule');
+  }
   if (checkoutState.scheduledAt != null) {
     if (checkoutState.scheduledAt!.isBefore(DateTime.now())) {
       errors.add('Scheduled time must be in the future');
@@ -173,11 +177,17 @@ CheckoutValidation checkoutValidation(Ref ref, int branchId) {
       }
       return null;
     }(),
-    scheduleError:
-        checkoutState.scheduledAt != null &&
-            checkoutState.scheduledAt!.isBefore(DateTime.now())
-        ? 'Scheduled time must be in the future'
-        : null,
+    scheduleError: () {
+      if (checkoutState.orderType.toOrderType() == OrderType.pickup &&
+          checkoutState.scheduledAt == null) {
+        return 'Please select a pickup schedule';
+      }
+      if (checkoutState.scheduledAt != null &&
+          checkoutState.scheduledAt!.isBefore(DateTime.now())) {
+        return 'Scheduled time must be in the future';
+      }
+      return null;
+    }(),
     paymentError:
         (method == null ||
             method.isEmpty ||

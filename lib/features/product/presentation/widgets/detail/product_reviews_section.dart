@@ -55,7 +55,7 @@ class _ProductReviewsSectionState extends ConsumerState<ProductReviewsSection> {
           children: [
             // Section Title with count
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -112,7 +112,7 @@ class _ProductReviewsSectionState extends ConsumerState<ProductReviewsSection> {
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
               itemCount: displayedReviews.length,
               itemBuilder: (context, index) {
                 final review = displayedReviews[index];

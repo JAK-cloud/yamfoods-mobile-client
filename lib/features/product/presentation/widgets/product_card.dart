@@ -158,6 +158,9 @@ class ProductCard extends ConsumerWidget {
                   ? ProductQuantityControl(
                       cart: cartItem,
                       branchId: product.branchId,
+                      iconColor: AppColors.accentOrange,
+                      textColor: AppColors.accentOrange,
+                      buttonBackgroundColor: AppColors.primary,
                     )
                   : _buildAddButton(context, ref),
             ),
@@ -195,7 +198,7 @@ class ProductCard extends ConsumerWidget {
       return Row(
         children: [
           Text(
-            '\$${product.discountedPriceValue.toStringAsFixed(2)}',
+            'Br${product.discountedPriceValue.toStringAsFixed(2)}',
             style: AppTextStyles.h6.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w700,
@@ -203,7 +206,7 @@ class ProductCard extends ConsumerWidget {
           ),
           SizedBox(width: 4),
           Text(
-            '\$${product.originalPriceValue.toStringAsFixed(2)}',
+            'Br${product.originalPriceValue.toStringAsFixed(2)}',
             style: AppTextStyles.caption.copyWith(
               color: AppColors.txtSecondary,
               decoration: TextDecoration.lineThrough,
@@ -213,7 +216,7 @@ class ProductCard extends ConsumerWidget {
       );
     }
     return Text(
-      '\$${product.price}',
+      'Br${product.price}',
       style: AppTextStyles.h6.copyWith(
         color: AppColors.primary,
         fontWeight: FontWeight.w700,
@@ -228,32 +231,32 @@ class ProductCard extends ConsumerWidget {
       onTap: hasActiveCartOperation
           ? null
           : () async {
-        final canAdd = ref.read(canAddToCartProvider(product.branchId));
-        if (canAdd) {
-          // Check authentication before adding to cart
-          await AuthGuardHelper.requireAuthOrShowDialog(
-            context: context,
-            ref: ref,
-            onAuthenticated: () {
-              // User is authenticated - proceed with adding to cart
-              ref
-                  .read(cartProvider(product.branchId).notifier)
-                  .addToCart(
-                    CartRequestData(productId: product.id, quantity: 1),
-                    productForOptimistic: product,
-                  );
+              final canAdd = ref.read(canAddToCartProvider(product.branchId));
+              if (canAdd) {
+                // Check authentication before adding to cart
+                await AuthGuardHelper.requireAuthOrShowDialog(
+                  context: context,
+                  ref: ref,
+                  onAuthenticated: () {
+                    // User is authenticated - proceed with adding to cart
+                    ref
+                        .read(cartProvider(product.branchId).notifier)
+                        .addToCart(
+                          CartRequestData(productId: product.id, quantity: 1),
+                          productForOptimistic: product,
+                        );
+                  },
+                );
+              } else {
+                final appConfig = ref.read(appConfigurationProvider).value;
+                final maxCartItems = appConfig?.maxCartItems ?? 5;
+                InfoSnackBar.show(
+                  context,
+                  message:
+                      'Cart limit reached. You can only add $maxCartItems items. Remove items to add more.',
+                );
+              }
             },
-          );
-        } else {
-          final appConfig = ref.read(appConfigurationProvider).value;
-          final maxCartItems = appConfig?.maxCartItems ?? 5;
-          InfoSnackBar.show(
-            context,
-            message:
-                'Cart limit reached. You can only add $maxCartItems items. Remove items to add more.',
-          );
-        }
-      },
       child: Container(
         width: 40,
         height: 40,
@@ -268,7 +271,11 @@ class ProductCard extends ConsumerWidget {
             ),
           ],
         ),
-        child: Icon(Icons.add, color: AppColors.white, size: 22),
+        child: Icon(
+          Icons.add_shopping_cart_outlined,
+          color: AppColors.accentOrange,
+          size: 22,
+        ),
       ),
     );
   }

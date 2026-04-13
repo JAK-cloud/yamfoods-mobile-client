@@ -20,7 +20,7 @@ class ProductInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -146,7 +146,7 @@ class ProductInfoSection extends StatelessWidget {
             children: [
               // Discounted Price
               Text(
-                '\$${product.discountedPriceValue.toStringAsFixed(2)}',
+                'Br${product.discountedPriceValue.toStringAsFixed(2)}',
                 style: AppTextStyles.h4,
               ),
 
@@ -154,7 +154,7 @@ class ProductInfoSection extends StatelessWidget {
 
               // Original Price
               Text(
-                '\$${product.originalPriceValue.toStringAsFixed(2)}',
+                'Br${product.originalPriceValue.toStringAsFixed(2)}',
                 style: AppTextStyles.bodyLarge.copyWith(
                   color: AppColors.grey,
                   decoration: TextDecoration.lineThrough,
@@ -212,7 +212,7 @@ class ProductInfoSection extends StatelessWidget {
 
           // Savings text
           Text(
-            'You save \$${saved.toStringAsFixed(2)}',
+            'You save Br${saved.toStringAsFixed(2)}',
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.success,
               fontWeight: FontWeight.w500,
@@ -224,7 +224,7 @@ class ProductInfoSection extends StatelessWidget {
 
     // Regular Price (no discount)
     return Text(
-      '\$${product.price}',
+      'Br${product.price}',
       style: AppTextStyles.h1.copyWith(
         color: AppColors.primary,
         fontWeight: FontWeight.w800,

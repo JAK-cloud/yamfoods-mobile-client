@@ -81,7 +81,7 @@ class SpecialOfferForYouSection extends ConsumerWidget {
         );
       },
       loading: () => const HorizontalProductSectionSkeleton(),
-      error: (_, __) => const HorizontalProductSectionSkeleton(),
+      error: (_, _) => const HorizontalProductSectionSkeleton(),
     );
   }
 }

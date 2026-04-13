@@ -75,7 +75,7 @@ final class TelebirrPaymentServiceProvider
 }
 
 String _$telebirrPaymentServiceHash() =>
-    r'b263dcea65c98c8393371e9e62151532baa33cdd';
+    r'b6fa9d75bc4b624584fd23a23020b836c1e01d96';
 
 /// Service for handling Telebirr payment integration.
 ///

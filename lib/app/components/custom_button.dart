@@ -44,24 +44,27 @@ class CustomButton extends StatelessWidget {
           disabledBackgroundColor: (color ?? AppColors.primary).withValues(
             alpha: 0.6,
           ),
-          foregroundColor: textColor ?? AppColors.white,
+          foregroundColor: textColor ?? AppColors.accentOrange,
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSizes.radiusLg),
           ),
         ),
         child: isLoading
-            ? Row(
+            ? isSocial ? null : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SpinKitThreeBounce(color: Colors.white, size: 20.0),
+                  const SpinKitThreeBounce(
+                    color: AppColors.accentOrange,
+                    size: 20.0,
+                  ),
                   if (loadingText != null) ...[
                     const SizedBox(width: AppSizes.sm),
                     Text(
                       loadingText!,
                       style: AppTextStyles.buttonLarge.copyWith(
-                        color: textColor ?? AppColors.white,
+                        color: textColor ?? AppColors.accentOrange,
                       ),
                     ),
                   ],
@@ -75,7 +78,11 @@ class CustomButton extends StatelessWidget {
                     Image.asset(AppImages.googleLogo, width: 24, height: 24),
                     const SizedBox(width: AppSizes.sm),
                   ] else if (icon != null) ...[
-                    Icon(icon, color: textColor ?? AppColors.white, size: 20),
+                    Icon(
+                      icon,
+                      color: textColor ?? AppColors.accentOrange,
+                      size: 20,
+                    ),
                     const SizedBox(width: AppSizes.sm),
                   ],
                   Text(
@@ -83,7 +90,7 @@ class CustomButton extends StatelessWidget {
                     style: AppTextStyles.buttonLarge.copyWith(
                       color: isSocial
                           ? AppColors.txtPrimary
-                          : (textColor ?? AppColors.white),
+                          : (textColor ?? AppColors.accentOrange),
                     ),
                   ),
                 ],

@@ -1,6 +1,8 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/theme/app_colors.dart';
+
 class InfoSnackBar {
   static void show(
     BuildContext context, {
@@ -9,11 +11,12 @@ class InfoSnackBar {
   }) {
     Flushbar(
       message: message,
+      messageColor: Colors.blue,
       duration: duration,
-      backgroundColor: Colors.blue.withValues(alpha: 0.9),
+      backgroundColor: AppColors.background,
       margin: const EdgeInsets.all(12),
       borderRadius: BorderRadius.circular(8),
-      icon: const Icon(Icons.info_outline, color: Colors.white),
+      icon: const Icon(Icons.info_outline, color: Colors.blue),
       flushbarPosition: FlushbarPosition.TOP,
     ).show(context);
   }

@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/components/error_widget.dart';
+import '../../../../app/routes/route_names.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/services/snackbar_service.dart';
+import '../../../auth/presentation/providers/auth_user_state.dart';
+import '../../../auth/presentation/providers/events/auth_state.dart';
 import '../providers/profile_events.dart';
 import '../providers/profile_providers.dart';
 import '../widgets/profile_content.dart';
 import '../widgets/profile_header.dart';
+import '../widgets/logout_button.dart';
+import '../../../../app/theme/app_sizes.dart';
 
 /// Profile screen with fixed header and scrollable content.
 class ProfileScreen extends ConsumerWidget {
@@ -17,6 +23,15 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profileState = ref.watch(userProfileProvider);
+
+     // Navigate to login when auth state becomes Unauthenticated
+    ref.listen<AuthEvent?>(authEventsProvider, (prev, next) {
+      if (next is Unauthenticated) {
+        //invalidate isAuthenticatedProvider
+        ref.invalidate(isAuthenticatedProvider);
+        context.go(RouteName.branches);
+      }
+    });
 
     // Listen for profile events
     ref.listen<ProfileUiEvent?>(profileUiEventsProvider, (prev, next) {
@@ -32,26 +47,36 @@ class ProfileScreen extends ConsumerWidget {
       ref.read(profileUiEventsProvider.notifier).clear();
     });
 
-    return Scaffold(
-     backgroundColor: AppColors.background,
-      body: profileState.when(
-        data: (user) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Fixed header
-            ProfileHeader(user: user),
-            // Scrollable content
-            Expanded(child: ProfileContent(user: user)),
-          ],
-        ),
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => ErrorWidgett(
-          icon: Icons.error_outline,
-          title: 'Error loading profile',
-          failure: error is Failure
-              ? error
-              : Failure.unexpected(message: error.toString()),
-          onRetry: () => ref.refresh(userProfileProvider.future),
+    return RefreshIndicator(
+      onRefresh: () => ref.refresh(userProfileProvider.future),
+      
+      child: Scaffold(
+       backgroundColor: AppColors.background,
+        body: profileState.when(
+          data: (user) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Fixed header
+              ProfileHeader(user: user),
+              // Scrollable content
+              Expanded(child: ProfileContent(user: user)),
+            ],
+          ),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Column(
+            children: [
+              ErrorWidgett(
+                icon: Icons.error_outline,
+                title: 'Error loading profile',
+                failure: error is Failure
+                    ? error
+                    : Failure.unexpected(message: error.toString()),
+                onRetry: () => ref.refresh(userProfileProvider.future),
+              ),
+               SizedBox(height: AppSizes.lg),
+              LogoutButton(),
+            ],
+          ),
         ),
       ),
     );

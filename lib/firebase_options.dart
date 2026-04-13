@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAh6o6aqPvsjYArIXFVVgQgj8ElXKEhTSU',
-    appId: '1:772377488112:android:1878a67b4551e77d9d7035',
+    appId: '1:772377488112:android:7543ca6d755a41c89d7035',
     messagingSenderId: '772377488112',
     projectId: 'yam-foods',
     storageBucket: 'yam-foods.firebasestorage.app',
@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD9mKRfjFyHR1uOdmoc8h71Xnn8vyAgCFc',
-    appId: '1:772377488112:ios:e3e8c6628246fd069d7035',
+    appId: '1:772377488112:ios:c49c440d47b28c969d7035',
     messagingSenderId: '772377488112',
     projectId: 'yam-foods',
     storageBucket: 'yam-foods.firebasestorage.app',
     androidClientId: '772377488112-1dv4tiate9u7kb8817q3n4ume6ca29bt.apps.googleusercontent.com',
-    iosClientId: '772377488112-62s6tau2ms95j5e9bmdcol7mr7h7oi1q.apps.googleusercontent.com',
-    iosBundleId: 'com.example.yamfoodsCustomerApp',
+    iosClientId: '772377488112-dglkfe7s8250166fhc113547935vqo3n.apps.googleusercontent.com',
+    iosBundleId: 'com.noodobakers.customer',
   );
 
 }

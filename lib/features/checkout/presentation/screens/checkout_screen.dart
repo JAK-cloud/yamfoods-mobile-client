@@ -78,7 +78,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   // when user returns (Chapa: didPopNext, Telebirr: app resumed) we show the
   // verification dialog. _pendingPaymentMethod non-null means we're waiting.
   int? _pendingOrderId;
-  String? _pendingOrderReference; // For query-order API (backend expects orderReference)
+  String?
+  _pendingOrderReference; // For query-order API (backend expects orderReference)
   String? _pendingChapaTxnRef; // Chapa only; Telebirr doesn't have/need txnRef
   PaymentMethod? _pendingPaymentMethod;
 
@@ -169,8 +170,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
   OrderRequestData _buildOrderRequestData() {
     final checkoutState = ref.read(checkoutProvider(widget.branchId));
     final summary = ref.read(checkoutSummaryProvider(widget.branchId));
-    final distanceKm =
-        ref.read(checkoutDeliveryDistanceKmProvider(widget.branchId));
+    final distanceKm = ref.read(
+      checkoutDeliveryDistanceKmProvider(widget.branchId),
+    );
 
     return OrderRequestData(
       branchId: checkoutState.branchId,
@@ -248,6 +250,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
 
   @override
   Widget build(BuildContext context) {
+    final checkoutState = ref.watch(checkoutProvider(widget.branchId));
     // Listen to order events (payment is already handled inside order notifier)
     ref.listen<OrderUiEvent?>(orderUiEventsProvider, (previous, next) {
       if (next == null) return;
@@ -321,7 +324,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
                   PromoCodeSection(branchId: widget.branchId),
                   // Points Section
                   PointsSection(branchId: widget.branchId),
-                  // Schedule Order Section
+                  // Schedule Order Section, only visible if order type is pickup
+                  if (checkoutState.orderType.toOrderType() == OrderType.pickup)
                   Consumer(
                     builder: (context, ref, child) {
                       final appConfig = ref
@@ -329,11 +333,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen>
                           .value;
                       final maxDaysAhead =
                           appConfig?.maxOrderSchedulingDays ?? 7;
-                      final workingHours = ref.watch(currentBranchWorkingHoursProvider);
+                      final workingHours = ref.watch(
+                        currentBranchWorkingHoursProvider,
+                      );
                       return ScheduleSection(
                         branchId: widget.branchId,
-                        workingHourStart: workingHours?.opening ?? const TimeOfDay(hour: 9, minute: 0),
-                        workingHourEnd: workingHours?.closing ?? const TimeOfDay(hour: 22, minute: 0),
+                        workingHourStart:
+                            workingHours?.opening ??
+                            const TimeOfDay(hour: 9, minute: 0),
+                        workingHourEnd:
+                            workingHours?.closing ??
+                            const TimeOfDay(hour: 22, minute: 0),
                         maxDaysAhead: maxDaysAhead,
                       );
                     },

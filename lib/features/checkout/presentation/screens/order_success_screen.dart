@@ -33,8 +33,10 @@ class OrderSuccessScreen extends StatefulWidget {
 
 class _OrderSuccessScreenState extends State<OrderSuccessScreen> {
   static const int _frameTimeMs = 1000 ~/ 24;
+  static const Duration _confettiMaxDuration = Duration(seconds: 10);
 
   Timer? _confettiTimer;
+  Timer? _confettiStopTimer;
   ConfettiController? _controller1;
   ConfettiController? _controller2;
 
@@ -84,13 +86,22 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen> {
         }
       },
     );
+
+    _confettiStopTimer = Timer(_confettiMaxDuration, _stopConfettiAnimation);
+  }
+
+  void _stopConfettiAnimation() {
+    _confettiTimer?.cancel();
+    _confettiTimer = null;
+    _confettiStopTimer?.cancel();
+    _confettiStopTimer = null;
+    _controller1?.kill();
+    _controller2?.kill();
   }
 
   @override
   void dispose() {
-    _confettiTimer?.cancel();
-    _controller1?.kill();
-    _controller2?.kill();
+    _stopConfettiAnimation();
     super.dispose();
   }
 

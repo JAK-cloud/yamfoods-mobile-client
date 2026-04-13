@@ -26,7 +26,7 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

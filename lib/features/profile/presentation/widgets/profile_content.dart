@@ -53,6 +53,8 @@ class ProfileContent extends StatelessWidget {
                     onTap: () =>
                         context.push(RouteName.updateProfile, extra: user),
                   ),
+                  //we should hide this for user who is authenticated with google because we don't have a password for them
+                  if (user.provider != 'google')
                   MenuItem(
                     icon: Icons.lock_outline_rounded,
                     title: 'Change Password',

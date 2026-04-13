@@ -98,7 +98,7 @@ class _ProductReviewFormSectionState
             children: [
               // Section Title
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -127,7 +127,7 @@ class _ProductReviewFormSectionState
 
               // Form Content
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+                padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
                 child: Container(
                   padding: const EdgeInsets.all(AppSizes.lg),
                   decoration: BoxDecoration(

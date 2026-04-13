@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:chapasdk/chapasdk.dart';
 
@@ -52,6 +53,41 @@ class ChapaPaymentParams {
   final Color buttonColor;
 }
 
+/// Converts backend phone variants to local mobile form Chapa expects
+/// (`09xxxxxxxx` or `07xxxxxxxx`).
+///
+/// Handles: `+2519…` / `+2517…`, `09…` / `07…`, and `9…` / `7…` (9 digits).
+String _normalizeEthiopianMobileForChapa(String raw) {
+  final trimmed = raw.trim();
+  if (trimmed.isEmpty) return trimmed;
+
+  final digits = trimmed.replaceAll(RegExp(r'\D'), '');
+  if (digits.isEmpty) return trimmed;
+
+  if (digits.startsWith('251')) {
+    final rest = digits.substring(3);
+    if (rest.startsWith('0')) {
+      if (rest.length >= 10) return rest.substring(0, 10);
+      return rest;
+    }
+    if (rest.length == 9 &&
+        (rest.startsWith('9') || rest.startsWith('7'))) {
+      return '0$rest';
+    }
+  }
+
+  if (digits.length == 10 && digits.startsWith('0')) {
+    return digits;
+  }
+
+  if (digits.length == 9 &&
+      (digits.startsWith('9') || digits.startsWith('7'))) {
+    return '0$digits';
+  }
+
+  return trimmed;
+}
+
 /// Service for handling Chapa payment integration (native checkout only).
 ///
 /// **Configuration:**
@@ -69,7 +105,7 @@ class ChapaPaymentParams {
 class ChapaPaymentService extends _$ChapaPaymentService {
   /// Chapa public key. Use test key for testing, live key for production.
   /// Prefer loading from env (e.g. dotenv.env['CHAPA_PUBLIC_KEY']) in app init.
-  static const String publicKey = 'CHAPUBK_TEST-oc7tXMkNnUb5we9mpWic2qhNujetUUZL';
+  static final String publicKey = dotenv.env['CHAPA_PUBLIC_KEY']!;
 
   static const String _currency = 'ETB';
 
@@ -106,7 +142,7 @@ class ChapaPaymentService extends _$ChapaPaymentService {
         currency: _currency,
         amount: params.amount,
         email: params.email,
-        phone: '0900123456',
+        phone: _normalizeEthiopianMobileForChapa(params.phone),
         firstName: params.firstName,
         lastName: params.lastName,
         txRef: params.txRef,
