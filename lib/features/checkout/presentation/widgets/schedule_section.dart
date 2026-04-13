@@ -218,7 +218,7 @@ class ScheduleSection extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with toggle
+          // Header
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -241,6 +241,15 @@ class ScheduleSection extends ConsumerWidget {
                             color: AppColors.txtPrimary,
                           ),
                         ),
+                        SizedBox(width: AppSizes.xs),
+                        //required indicator
+                        Text(
+                          '*',
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 2),
@@ -254,57 +263,41 @@ class ScheduleSection extends ConsumerWidget {
                   ],
                 ),
               ),
-              Switch(
-                value: isScheduled,
-                onChanged: (value) {
-                  if (value) {
-                    // Enable scheduling - open date/time picker
-                    _selectDateTime(context, ref);
-                  } else {
-                    // Disable scheduling - clear scheduled time
-                    ref
-                        .read(checkoutProvider(branchId).notifier)
-                        .setScheduledAt(null);
-                  }
-                },
-                activeThumbColor: AppColors.primary,
-              ),
             ],
           ),
-          // Show selected date/time if scheduled
-          if (isScheduled && checkoutState.scheduledAt != null) ...[
-            SizedBox(height: AppSizes.sm),
-            InkWell(
-              onTap: () => _selectDateTime(context, ref),
-              borderRadius: BorderRadius.circular(AppSizes.radius / 2),
-              child: Container(
-                padding: EdgeInsets.all(AppSizes.sm),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(AppSizes.radius / 2),
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.2),
-                    width: 1,
-                  ),
+          SizedBox(height: AppSizes.sm),
+          InkWell(
+            onTap: () => _selectDateTime(context, ref),
+            borderRadius: BorderRadius.circular(AppSizes.radius / 2),
+            child: Container(
+              padding: EdgeInsets.all(AppSizes.sm),
+              decoration: BoxDecoration(
+                color: AppColors.background,
+                borderRadius: BorderRadius.circular(AppSizes.radius / 2),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.2),
+                  width: 1,
                 ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_today,
-                      size: 18,
-                      color: AppColors.primary,
-                    ),
-                    SizedBox(width: AppSizes.xs),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Scheduled for',
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.txtSecondary,
-                            ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    isScheduled ? Icons.calendar_today : Icons.event_available,
+                    size: 18,
+                    color: AppColors.primary,
+                  ),
+                  SizedBox(width: AppSizes.xs),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          isScheduled ? 'Scheduled for' : 'Select pickup date and time',
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.txtSecondary,
                           ),
+                        ),
+                        if (isScheduled && checkoutState.scheduledAt != null) ...[
                           SizedBox(height: 2),
                           Text(
                             _formatDateTime(checkoutState.scheduledAt!),
@@ -314,18 +307,20 @@ class ScheduleSection extends ConsumerWidget {
                             ),
                           ),
                         ],
-                      ),
+                      ],
                     ),
-                    Icon(
-                      Icons.edit_outlined,
-                      size: 18,
+                  ),
+                  Text(
+                    isScheduled ? 'Change' : 'Choose',
+                    style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ],
       ),
     );

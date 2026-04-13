@@ -23,6 +23,5 @@ Future<void> main() async {
     debugPrint('Note: .env file not found. Using default configuration.');
   }
 
-  runApp( ProviderScope(
-      child: YamFoodsApp()));
+  runApp(ProviderScope(child: YamFoodsApp()));
 }

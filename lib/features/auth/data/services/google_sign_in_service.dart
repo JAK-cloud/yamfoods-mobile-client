@@ -20,12 +20,15 @@ class GoogleSignInService {
       final googleUser = await _googleSignIn.authenticate();
 
       final String? googleIdToken = googleUser.authentication.idToken;
+      print('googleIdToken QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ: $googleIdToken');
       
 
       final credential = GoogleAuthProvider.credential(idToken: googleIdToken);
+      print('credential QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ: $credential');
 
       final UserCredential userCredential = await _firebaseAuth
           .signInWithCredential(credential);
+      print('userCredential QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ: $userCredential');
 
       final User? user = userCredential.user;
       if (user == null) return null;
@@ -34,11 +37,14 @@ class GoogleSignInService {
      
       return firebaseIdToken;
     } on GoogleSignInException catch (e) {
+
       if (e.code == GoogleSignInExceptionCode.canceled) {
+        print('e.code QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ: $e.code');
         return null;
       }
       rethrow;
     } catch (e) {
+      print('e QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ: $e');
       rethrow;
     }
   }

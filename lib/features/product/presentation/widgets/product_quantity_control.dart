@@ -25,6 +25,7 @@ class ProductQuantityControl extends ConsumerWidget {
   final QuantityControlSize size;
   final Color? iconColor;
   final Color? textColor;
+  final Color? buttonBackgroundColor;
 
   const ProductQuantityControl({
     super.key,
@@ -33,6 +34,7 @@ class ProductQuantityControl extends ConsumerWidget {
     this.size = QuantityControlSize.compact,
     this.iconColor,
     this.textColor,
+    this.buttonBackgroundColor,
   });
 
   @override
@@ -60,15 +62,18 @@ class ProductQuantityControl extends ConsumerWidget {
         // Decrease button
         _QuantityButton(
           icon: Icons.remove,
-          onTap: isInteractionDisabled || cart.quantity <= 1
+          onTap: isInteractionDisabled
               ? null
+              : cart.quantity <= 1
+              ? () => ref.read(cartProvider(branchId).notifier).deleteCartItem(cart.id)
               : () => ref
                     .read(cartProvider(branchId).notifier)
                     .decreaseQuantity(cart.id),
-          isDisabled: isUpdating || cart.quantity <= 1,
+          isDisabled: isUpdating,
           buttonSize: buttonSize,
           iconSize: iconSize,
           iconColor: effectiveIconColor,
+          buttonBackgroundColor: buttonBackgroundColor,
         ),
 
         // Quantity display
@@ -113,6 +118,7 @@ class ProductQuantityControl extends ConsumerWidget {
           buttonSize: buttonSize,
           iconSize: iconSize,
           iconColor: effectiveIconColor,
+          buttonBackgroundColor: buttonBackgroundColor,
         ),
       ],
     );
@@ -136,6 +142,7 @@ class _QuantityButton extends StatelessWidget {
   final double buttonSize;
   final double iconSize;
   final Color iconColor;
+  final Color? buttonBackgroundColor;
 
   const _QuantityButton({
     required this.icon,
@@ -144,6 +151,7 @@ class _QuantityButton extends StatelessWidget {
     required this.buttonSize,
     required this.iconSize,
     required this.iconColor,
+    this.buttonBackgroundColor,
   });
 
   @override
@@ -155,13 +163,13 @@ class _QuantityButton extends StatelessWidget {
         height: buttonSize,
         decoration: BoxDecoration(
           color: isDisabled
-              ? AppColors.grey.withValues(alpha: 0.1)
-              : iconColor.withValues(alpha: 0.1),
+              ? AppColors.primary.withValues(alpha: 0.9)
+              : (buttonBackgroundColor ?? iconColor.withValues(alpha: 0.1)),
           shape: BoxShape.circle,
           border: Border.all(
             color: isDisabled
                 ? AppColors.grey.withValues(alpha: 0.2)
-                : iconColor.withValues(alpha: 0.3),
+                : (buttonBackgroundColor ?? iconColor.withValues(alpha: 0.3)),
             width: 1,
           ),
         ),

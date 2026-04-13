@@ -1,5 +1,7 @@
 //import 'dart:developer' as developer;
 
+import 'dart:developer' as developer;
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/constants/gebeta_map_config.dart';
@@ -39,10 +41,10 @@ class MapDataSourceImpl implements MapDataSource {
       );
 
       // DEBUG: Print full polyline without truncation
-      // developer.log(
-      //   'Route direction polyline (${response.direction.length} points): ${response.direction}',
-      //   name: 'MapDataSource',
-      // );
+      developer.log(
+        'Route direction polyline (${response.direction.length} points): ${response.direction}',
+        name: 'MapDataSource',
+      );
 
       return Right(response);
     } catch (e) {

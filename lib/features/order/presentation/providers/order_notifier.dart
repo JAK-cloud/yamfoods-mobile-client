@@ -31,7 +31,9 @@ Future<void> createOrder(
       final orderResult = await useCase.call(data);
 
       orderResult.fold(
-        (failure) => eventsNotifier.emit(OrderFailure(failure)),
+        (failure){
+         return eventsNotifier.emit(OrderFailure(failure));
+        },
         (createOrderResponse) => eventsNotifier.emit(OrderCreated(response: createOrderResponse, orderRequestData: data, method: data.method.toPaymentMethod(), message: 'Order created successfully')),
       );
     } finally {

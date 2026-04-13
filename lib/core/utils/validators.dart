@@ -11,19 +11,21 @@ class Validators {
     return phoneRegex.hasMatch(phone.trim());
   }
 
-  static bool isValidEthiopianPhone(String phone) {
+  
+   static bool isValidEthiopianPhone(String phone) {
     // Accepts:
-    // 9xxxxxxxx (9 digits, starts with 9)
-    // 09xxxxxxxx (10 digits, starts with 09)
-    final phoneRegex = RegExp(r'^(09\d{8}|9\d{8})$');
+    // 9xxxxxxxx / 7xxxxxxxx (9 digits, starts with 9 or 7)
+    // 09xxxxxxxx / 07xxxxxxxx (10 digits, starts with 09 or 07)
+    final phoneRegex = RegExp(r'^0?[79]\d{8}$');
     return phoneRegex.hasMatch(phone.trim());
   }
 
+  
   static String formatEthiopianPhone(String phone) {
     String p = phone.trim();
     if (p.startsWith('0')) {
       return '251${p.substring(1)}';
-    } else if (p.startsWith('9')) {
+    } else if (p.startsWith('9') || p.startsWith('7')) {
       return '251$p';
     }
     return p;

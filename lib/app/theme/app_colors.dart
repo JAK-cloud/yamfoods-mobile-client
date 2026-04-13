@@ -37,5 +37,5 @@ class AppColors {
   static const cardBackgroundCircle = Color(0xFFFFFFFF); // white with alpha
 
 
-  static const Color orangeTest = Color(0xFFffaa00);
+  static const Color accentOrange = Color(0xFFffaa00);
 }

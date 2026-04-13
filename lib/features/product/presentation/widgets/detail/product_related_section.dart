@@ -45,7 +45,7 @@ class ProductRelatedSection extends ConsumerWidget {
       children: [
         // Section Title
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
           child: Row(
             children: [
               // Vertical accent bar (wall) - matches title height
@@ -73,7 +73,7 @@ class ProductRelatedSection extends ConsumerWidget {
           height: 260, // Fixed height for product cards
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.xl),
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
             itemCount: relatedProducts.length,
             itemBuilder: (context, index) {
               return Container(

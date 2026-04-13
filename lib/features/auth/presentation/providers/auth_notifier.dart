@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'auth_providers.dart';
@@ -165,21 +166,21 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<void> logout() async {
     state = true;
-    try {
+   
+    // Optimistic: clear local state immediately so UI reacts instantly.
+    ref.read(authUserStateProvider.notifier).clearUser();
+    ref.read(authEventsProvider.notifier).emit(Unauthenticated());
+    
+    state = false;
+     try {
       final logoutUsecase = await ref.read(logoutUsecaseProvider.future);
       final result = await logoutUsecase();
       result.fold(
-        (failure) => ref
-            .read(authEventsProvider.notifier)
-            .emit(AuthenticationFailure(failure: failure)),
-        (_) async {
-          // Clear persistent state and emit event
-          await ref.read(authUserStateProvider.notifier).clearUser();
-          ref.read(authEventsProvider.notifier).emit(Unauthenticated());
-        },
+        (failure) => debugPrint('Backend logout failed: $failure'),
+        (_) => debugPrint('Backend logout succeeded'),
       );
-    } finally {
-      state = false;
+    } catch (e) {
+      debugPrint('Backend logout error: $e');
     }
   }
 

@@ -21,6 +21,7 @@ class AuthInterceptor extends Interceptor {
   final AuthLocalDataSource _localDataSource;
   final TokenValidator _tokenValidator;
   final Logger _logger;
+  final Future<void> Function() _onAuthSessionInvalidated;
 
   bool _isRefreshing = false;
   Completer<void>? _refreshCompleter;
@@ -33,10 +34,12 @@ class AuthInterceptor extends Interceptor {
     required AuthLocalDataSource localDataSource,
     required TokenValidator tokenValidator,
     required Logger logger,
+    required Future<void> Function() onAuthSessionInvalidated,
   }) : _authRepository = authRepository,
        _localDataSource = localDataSource,
        _tokenValidator = tokenValidator,
-       _logger = logger;
+       _logger = logger,
+       _onAuthSessionInvalidated = onAuthSessionInvalidated;
 
   @override
   void onRequest(
@@ -49,38 +52,53 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
-    final accessToken = await _localDataSource.getAccessToken();
+    try {
+      final accessToken = await _localDataSource.getAccessToken();
 
-    if (accessToken == null) {
-      // Protected endpoint + no access token => user is not authenticated.
-      // Don't hit the backend (would just 401 and create noise).
-      // We cancel the request and only log (no token refresh, no retries).
-      _logger.d(
-        'Skipping request to ${options.path} - not authenticated (no access token)',
+      if (accessToken == null) {
+        // Protected endpoint + no access token => user is not authenticated.
+        // Don't hit the backend (would just 401 and create noise).
+        // We cancel the request and only log (no token refresh, no retries).
+        _logger.d(
+          'Skipping request to ${options.path} - not authenticated (no access token)',
+        );
+        handler.reject(
+          DioException(
+            requestOptions: options,
+            type: DioExceptionType.cancel,
+            error: 'Not authenticated',
+          ),
+        );
+        return;
+      }
+
+      // Proactive token refresh if expired or about to expire
+      if (_tokenValidator.isTokenExpired(accessToken)) {
+        _logger.d('Proactive token refresh for ${options.path}');
+        await _refreshTokenIfNeeded();
+        final updatedToken = await _localDataSource.getAccessToken();
+        if (updatedToken != null) {
+          options.headers['Authorization'] = 'Bearer $updatedToken';
+        }
+      } else {
+        options.headers['Authorization'] = 'Bearer $accessToken';
+      }
+
+      handler.next(options);
+    } catch (e, stackTrace) {
+      _logger.e(
+        'Auth onRequest failed for ${options.path}: $e',
+        error: e,
+        stackTrace: stackTrace,
       );
       handler.reject(
         DioException(
           requestOptions: options,
-          type: DioExceptionType.cancel,
-          error: 'Not authenticated',
+          type: DioExceptionType.unknown,
+          error: e,
         ),
       );
-      return;
     }
-
-    // Proactive token refresh if expired or about to expire
-    if (_tokenValidator.isTokenExpired(accessToken)) {
-      _logger.d('Proactive token refresh for ${options.path}');
-      await _refreshTokenIfNeeded();
-      final updatedToken = await _localDataSource.getAccessToken();
-      if (updatedToken != null) {
-        options.headers['Authorization'] = 'Bearer $updatedToken';
-      }
-    } else {
-      options.headers['Authorization'] = 'Bearer $accessToken';
-    }
-
-    handler.next(options);
   }
 
   @override
@@ -203,11 +221,6 @@ class AuthInterceptor extends Interceptor {
             _refreshCompleter!.completeError(failure);
           }
 
-          // Clear tokens on auth failure
-          if (failure is AuthFailure) {
-            await _localDataSource.clearTokens();
-          }
-
           throw failure;
         },
         (newTokens) async {
@@ -224,6 +237,18 @@ class AuthInterceptor extends Interceptor {
 
       if (!_refreshCompleter!.isCompleted) {
         _refreshCompleter!.completeError(e);
+      }
+
+      if (e is AuthFailure) {
+        try {
+          await _onAuthSessionInvalidated();
+        } catch (clearError, stackTrace) {
+          _logger.e(
+            'Session invalidation failed: $clearError',
+            error: clearError,
+            stackTrace: stackTrace,
+          );
+        }
       }
 
       rethrow;

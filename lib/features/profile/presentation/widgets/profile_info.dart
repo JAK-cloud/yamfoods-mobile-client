@@ -114,38 +114,38 @@ class ProfileInfo extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  if (verified) ...[
-                    const SizedBox(width: AppSizes.xs),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.success.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.verified_rounded,
-                            size: 12,
-                            color: AppColors.success,
-                          ),
-                          const SizedBox(width: 2),
-                          Text(
-                            'Verified',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.success,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  // if (verified) ...[
+                  //   const SizedBox(width: AppSizes.xs),
+                  //   Container(
+                  //     padding: const EdgeInsets.symmetric(
+                  //       horizontal: 6,
+                  //       vertical: 2,
+                  //     ),
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.success.withValues(alpha: 0.1),
+                  //       borderRadius: BorderRadius.circular(4),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         Icon(
+                  //           Icons.verified_rounded,
+                  //           size: 12,
+                  //           color: AppColors.success,
+                  //         ),
+                  //         const SizedBox(width: 2),
+                  //         Text(
+                  //           'Verified',
+                  //           style: TextStyle(
+                  //             fontSize: 10,
+                  //             fontWeight: FontWeight.w500,
+                  //             color: AppColors.success,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ],
                 ],
               ),
             ],

@@ -33,7 +33,7 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
         'branchId': data.branchId,
         'deliveryAddressId': data.deliveryAddressId,
         'orderType': data.orderType,
-        if (data.scheduledAt != null)
+        if (data.orderType.toOrderType() == OrderType.pickup && data.scheduledAt != null)
           'scheduledAt': data.scheduledAt!
               .toIso8601String()
               .replaceAll('T', ' ')

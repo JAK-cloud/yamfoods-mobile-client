@@ -6,6 +6,8 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/services/snackbar_service.dart';
 import '../../../order/presentation/providers/order_loading_providers.dart';
 import '../providers/checkout_summary_provider.dart';
 import '../providers/checkout_validation_provider.dart';
@@ -36,6 +38,7 @@ class CheckoutSummaryCard extends ConsumerWidget {
     final summary = ref.watch(checkoutSummaryProvider(branchId));
     final validation = ref.watch(checkoutValidationProvider(branchId));
     final isLoading = ref.watch(orderCreationLoadingProvider);
+    final snackbar = ref.read(snackbarServiceProvider);
 
     return SafeArea(
       child: Container(
@@ -151,9 +154,35 @@ class CheckoutSummaryCard extends ConsumerWidget {
               CustomButton(
                 text: 'Proceed to Payment',
                 isLoading: isLoading,
-                onPressed:
-                    (summary.totalAmount > 0 && validation.isValid && !isLoading)
-                    ? onPlaceOrder
+                onPressed: !isLoading
+                    ? () {
+                        if (summary.totalAmount <= 0) {
+                          snackbar.showError(
+                            const Failure.validation(
+                              message: 'Your cart total must be greater than zero',
+                            ),
+                          );
+                          return;
+                        }
+
+                        if (!validation.isValid) {
+                          final message =
+                              validation.generalError ??
+                              validation.scheduleError ??
+                              validation.addressError ??
+                              validation.tableNumberError ??
+                              validation.paymentError ??
+                              validation.promoCodeError ??
+                              validation.pointsError ??
+                              'Please complete all required checkout fields';
+                          snackbar.showError(
+                            Failure.validation(message: message),
+                          );
+                          return;
+                        }
+
+                        onPlaceOrder?.call();
+                      }
                     : null,
                 height: AppSizes.btnHeight,
               ),

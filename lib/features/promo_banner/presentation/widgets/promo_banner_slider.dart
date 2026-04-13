@@ -87,7 +87,7 @@ class _PromoBannerSliderState extends ConsumerState<PromoBannerSlider> {
               options: CarouselOptions(
                 height: 110,
                 viewportFraction:
-                    0.99, // Minimize gap while showing small preview of adjacent banners
+                    0.94, // Minimize gap while showing small preview of adjacent banners
                 enlargeCenterPage: true, // Enable scale animation
                 enlargeStrategy:
                     CenterPageEnlargeStrategy.scale, // Smooth scale animation

@@ -283,7 +283,7 @@ class _MotivationCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(AppSizes.sm),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.background,
               borderRadius: BorderRadius.circular(AppSizes.radius / 2),
               border: Border.all(
                 color: AppColors.primary.withValues(alpha: 0.2),

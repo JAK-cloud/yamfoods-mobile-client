@@ -1,4 +1,3 @@
-
 import '../../domain/entities/auth_token.dart';
 import '../../domain/entities/user.dart';
 

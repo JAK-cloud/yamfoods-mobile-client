@@ -41,7 +41,7 @@ class CartSummaryCard extends ConsumerWidget {
         padding: EdgeInsets.only(
           top: AppSizes.xs,
           left: AppSizes.sm,
-          right: AppSizes.sm,
+          right: AppSizes.xs,
         ),
         margin: EdgeInsets.all(AppSizes.sm),
         decoration: BoxDecoration(
@@ -78,14 +78,41 @@ class CartSummaryCard extends ConsumerWidget {
               thickness: 1,
               color: AppColors.grey.withValues(alpha: 0.5),
             ),
-            _PriceRow(label: 'Total', value: summary.total, isTotal: true),
-            SizedBox(height: AppSizes.sm),
-
-            // Place Order button
-            CustomButton(
-              text: 'Place Order',
-              onPressed: summary.total > 0 ? onPlaceOrder : null,
-              height: AppSizes.btnHeight,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Total',
+                      style: AppTextStyles.labelLarge.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      '${summary.total.toStringAsFixed(2)} ${AppConstants.currency}',
+                      style: AppTextStyles.h6.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                const SizedBox(width: AppSizes.xs),
+                SizedBox(
+                  width: 190,
+                  child: CustomButton(
+                    text: 'Place Order',
+                    onPressed: summary.total > 0 ? onPlaceOrder : null,
+                    height: AppSizes.btnHeight,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

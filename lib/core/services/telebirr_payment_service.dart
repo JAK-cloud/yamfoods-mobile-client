@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:telebirr_inapp_sdk/telebirr_inapp_sdk.dart';
 import '../../features/payment/domain/entities/payment_result.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part 'telebirr_payment_service.g.dart';
 
@@ -20,8 +21,8 @@ class TelebirrPaymentService extends _$TelebirrPaymentService {
   // Telebirr merchant credentials
   // static const String _appId = '1514631168281605';
   // static const String _shortCode = '747582';
-   static const String _appId = '1592731747020806';
-  static const String _shortCode = '516084';
+  static final String _appId = dotenv.env['TELEBIRR_APP_ID']!;
+  static final String _shortCode = dotenv.env['TELEBIRR_SHORT_CODE']!;
 
   @override
   TelebirrPaymentService build() => TelebirrPaymentService();

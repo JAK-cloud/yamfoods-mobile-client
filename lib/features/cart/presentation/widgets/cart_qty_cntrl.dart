@@ -55,7 +55,7 @@ class CartQuantityControlCard extends ConsumerWidget {
             '${cart.quantity}',
             style: AppTextStyles.h6.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+              color: AppColors.accentOrange,
             ),
             textAlign: TextAlign.center,
           ),
@@ -104,13 +104,13 @@ class _QuantityButton extends StatelessWidget {
         height: 32,
         decoration: BoxDecoration(
           color: isDisabled
-              ? AppColors.grey.withValues(alpha: 0.1)
-              : AppColors.primary.withValues(alpha: 0.1),
+              ? AppColors.primary.withValues(alpha: 0.9)
+              : AppColors.primary,
           shape: BoxShape.circle,
           border: Border.all(
             color: isDisabled
-                ? AppColors.grey.withValues(alpha: 0.2)
-                : AppColors.primary.withValues(alpha: 0.3),
+                ? AppColors.primary.withValues(alpha: 0.2)
+                : AppColors.primary,
             width: 1,
           ),
         ),
@@ -119,7 +119,7 @@ class _QuantityButton extends StatelessWidget {
           size: 18,
           color: isDisabled
               ? AppColors.grey.withValues(alpha: 0.5)
-              : AppColors.primary,
+              : AppColors.accentOrange,
         ),
       ),
     );
