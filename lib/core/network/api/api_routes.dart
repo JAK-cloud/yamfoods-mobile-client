@@ -121,6 +121,8 @@ class ApiRoutes {
   static const String _appConfigurationBase = '/app-configuration';
   static const String getAppConfiguration = _appConfigurationBase;
   static const String getOrderTypes = '$_appConfigurationBase/order-types';
+  static const String getDeliveryZones =
+      '$_appConfigurationBase/delivery-zones';
 
   // Info endpoints
   static const String _infoBase = '/info';

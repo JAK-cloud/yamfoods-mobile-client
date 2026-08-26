@@ -7,6 +7,7 @@ import '../../domain/repositories/app_configuration_repository.dart';
 import '../datasources/app_configuration_remote_data_source.dart';
 import '../mappers/app_configuration_mapper.dart';
 import '../mappers/order_type_config_mapper.dart';
+import '../models/delivery_zone_model.dart';
 
 class AppConfigurationRepositoryImpl implements AppConfigurationRepository {
   final AppConfigurationRemoteDataSource _remoteDataSource;
@@ -31,5 +32,10 @@ class AppConfigurationRepositoryImpl implements AppConfigurationRepository {
       final orderTypes = models.map((m) => m.toDomain()).toList();
       return Right(orderTypes);
     });
+  }
+
+  @override
+  Future<Either<Failure, List<DeliveryZoneModel>>> getDeliveryZones() async {
+    return await _remoteDataSource.getDeliveryZones();
   }
 }

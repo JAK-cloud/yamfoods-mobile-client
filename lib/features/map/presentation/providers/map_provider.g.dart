@@ -286,59 +286,6 @@ final class GetReverseGeocodingUsecaseProvider
 String _$getReverseGeocodingUsecaseHash() =>
     r'92f2cf7203cef6fe3ec691bee3003a6733015889';
 
-/// Get delivery zones usecase provider
-
-@ProviderFor(getDeliveryZonesUsecase)
-const getDeliveryZonesUsecaseProvider = GetDeliveryZonesUsecaseProvider._();
-
-/// Get delivery zones usecase provider
-
-final class GetDeliveryZonesUsecaseProvider
-    extends
-        $FunctionalProvider<
-          GetDeliveryZonesUsecase,
-          GetDeliveryZonesUsecase,
-          GetDeliveryZonesUsecase
-        >
-    with $Provider<GetDeliveryZonesUsecase> {
-  /// Get delivery zones usecase provider
-  const GetDeliveryZonesUsecaseProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'getDeliveryZonesUsecaseProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$getDeliveryZonesUsecaseHash();
-
-  @$internal
-  @override
-  $ProviderElement<GetDeliveryZonesUsecase> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  GetDeliveryZonesUsecase create(Ref ref) {
-    return getDeliveryZonesUsecase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetDeliveryZonesUsecase value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<GetDeliveryZonesUsecase>(value),
-    );
-  }
-}
-
-String _$getDeliveryZonesUsecaseHash() =>
-    r'8c379aa5c0ac4b7ff2f434295856e0f2b4830d99';
-
 /// Search address usecase provider
 
 @ProviderFor(searchAddressUsecase)
@@ -572,52 +519,6 @@ final class ReverseGeocodeFamily extends $Family
   @override
   String toString() => r'reverseGeocodeProvider';
 }
-
-/// Fetches delivery zone polygons for map rendering and geofencing.
-
-@ProviderFor(deliveryZones)
-const deliveryZonesProvider = DeliveryZonesProvider._();
-
-/// Fetches delivery zone polygons for map rendering and geofencing.
-
-final class DeliveryZonesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<DeliveryZoneModel>>,
-          List<DeliveryZoneModel>,
-          FutureOr<List<DeliveryZoneModel>>
-        >
-    with
-        $FutureModifier<List<DeliveryZoneModel>>,
-        $FutureProvider<List<DeliveryZoneModel>> {
-  /// Fetches delivery zone polygons for map rendering and geofencing.
-  const DeliveryZonesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'deliveryZonesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$deliveryZonesHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<List<DeliveryZoneModel>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<DeliveryZoneModel>> create(Ref ref) {
-    return deliveryZones(ref);
-  }
-}
-
-String _$deliveryZonesHash() => r'c2f29b827ac4c4ca68fd3a5502de5327fe0405d0';
 
 /// Forward geocoding / place autocomplete for address search.
 

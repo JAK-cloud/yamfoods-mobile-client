@@ -1,4 +1,4 @@
-import '../../features/map/data/models/delivery_zone_model.dart';
+import '../../features/app_configuration/data/models/delivery_zone_model.dart';
 
 /// Point-in-polygon checks for delivery zones.
 ///

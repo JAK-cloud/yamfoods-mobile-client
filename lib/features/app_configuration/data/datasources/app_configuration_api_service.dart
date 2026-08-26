@@ -4,6 +4,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../../../core/network/api/api_routes.dart';
 import '../../../../core/network/models/api_response.dart';
 import '../models/app_configuration_model.dart';
+import '../models/delivery_zone_model.dart';
 import '../models/order_type_config_model.dart';
 
 part 'app_configuration_api_service.g.dart';
@@ -18,4 +19,7 @@ abstract class AppConfigurationApiService {
 
   @GET(ApiRoutes.getOrderTypes)
   Future<ApiResponse<List<OrderTypeConfigModel>>> getOrderTypes();
+
+  @GET(ApiRoutes.getDeliveryZones)
+  Future<ApiResponse<List<DeliveryZoneModel>>> getDeliveryZones();
 }

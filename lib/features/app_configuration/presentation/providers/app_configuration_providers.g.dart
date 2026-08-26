@@ -255,6 +255,54 @@ final class GetOrderTypesUsecaseProvider
 String _$getOrderTypesUsecaseHash() =>
     r'f28e25db97f82097216ecbd31f50b0e5c9e2ff12';
 
+@ProviderFor(getDeliveryZonesUsecase)
+const getDeliveryZonesUsecaseProvider = GetDeliveryZonesUsecaseProvider._();
+
+final class GetDeliveryZonesUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetDeliveryZonesUsecase,
+          GetDeliveryZonesUsecase,
+          GetDeliveryZonesUsecase
+        >
+    with $Provider<GetDeliveryZonesUsecase> {
+  const GetDeliveryZonesUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getDeliveryZonesUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getDeliveryZonesUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetDeliveryZonesUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetDeliveryZonesUsecase create(Ref ref) {
+    return getDeliveryZonesUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetDeliveryZonesUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetDeliveryZonesUsecase>(value),
+    );
+  }
+}
+
+String _$getDeliveryZonesUsecaseHash() =>
+    r'01cc3ef3f81e78ce978ae65bb922c8b27219e85b';
+
 @ProviderFor(appConfiguration)
 const appConfigurationProvider = AppConfigurationProvider._();
 
@@ -334,3 +382,44 @@ final class OrderTypesProvider
 }
 
 String _$orderTypesHash() => r'da38f567eed03c0c0cb856d417d3e9158611271a';
+
+@ProviderFor(deliveryZones)
+const deliveryZonesProvider = DeliveryZonesProvider._();
+
+final class DeliveryZonesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<DeliveryZoneModel>>,
+          List<DeliveryZoneModel>,
+          FutureOr<List<DeliveryZoneModel>>
+        >
+    with
+        $FutureModifier<List<DeliveryZoneModel>>,
+        $FutureProvider<List<DeliveryZoneModel>> {
+  const DeliveryZonesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'deliveryZonesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$deliveryZonesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<DeliveryZoneModel>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<DeliveryZoneModel>> create(Ref ref) {
+    return deliveryZones(ref);
+  }
+}
+
+String _$deliveryZonesHash() => r'c2f29b827ac4c4ca68fd3a5502de5327fe0405d0';

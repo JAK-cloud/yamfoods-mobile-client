@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
-import '../../../map/data/models/delivery_zone_model.dart';
+import '../../../app_configuration/data/models/delivery_zone_model.dart';
 import '../../../map/presentation/providers/map_provider.dart';
 
 class DeliveryZoneMap extends ConsumerStatefulWidget {
