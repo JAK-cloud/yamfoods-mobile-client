@@ -13,7 +13,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_sizes.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../app/theme/app_texts.dart';
-import '../../../../core/permissions/location/location_gps_guard_perscreen.dart';
+import '../../../../core/permissions/location/location_gps_optional_guard_perscreen.dart';
 import '../../../../core/services/app_info_service.dart';
 import '../../../../core/utils/distance_calculator.dart';
 import '../../../../responsive.dart';
@@ -56,7 +56,7 @@ class _BranchSelectionScreenState extends ConsumerState<BranchSelectionScreen> {
         : null;
 
     // Wrap with GPS guard - ensures GPS is enabled before showing branch selection
-    return LocationGpsGuardPerscreen(
+    return LocationGpsOptionalGuardPerscreen(
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
