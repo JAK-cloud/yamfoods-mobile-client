@@ -7,11 +7,9 @@ import '../../data/datasources/map_data_source_impl.dart';
 import '../../data/repositories/map_repository_impl.dart';
 import '../../domain/entities/route.dart';
 import '../../domain/repositories/map_repository.dart';
-import '../../domain/usecases/get_delivery_zones_usecase.dart';
 import '../../domain/usecases/get_reverse_geocoding_usecase.dart';
 import '../../domain/usecases/get_route_usecase.dart';
 import '../../domain/usecases/search_address_usecase.dart';
-import '../../data/models/delivery_zone_model.dart';
 import '../../data/models/forward_geocoding_model.dart';
 import '../../../../shared/entities/address_location.dart';
 
@@ -71,13 +69,6 @@ GetReverseGeocodingUsecase getReverseGeocodingUsecase(Ref ref) {
   return GetReverseGeocodingUsecase(repository);
 }
 
-/// Get delivery zones usecase provider
-@riverpod
-GetDeliveryZonesUsecase getDeliveryZonesUsecase(Ref ref) {
-  final repository = ref.watch(mapRepositoryProvider);
-  return GetDeliveryZonesUsecase(repository);
-}
-
 /// Search address usecase provider
 @riverpod
 SearchAddressUsecase searchAddressUsecase(Ref ref) {
@@ -116,15 +107,6 @@ Future<String> reverseGeocode(
   final result = await usecase(latitude, longitude);
 
   return result.fold((failure) => throw failure, (address) => address);
-}
-
-/// Fetches delivery zone polygons for map rendering and geofencing.
-@riverpod
-Future<List<DeliveryZoneModel>> deliveryZones(Ref ref) async {
-  final usecase = ref.watch(getDeliveryZonesUsecaseProvider);
-  final result = await usecase();
-
-  return result.fold((failure) => throw failure, (zones) => zones);
 }
 
 /// Forward geocoding / place autocomplete for address search.

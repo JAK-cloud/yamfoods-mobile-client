@@ -897,20 +897,35 @@ String _$recordDauHash() => r'6dbf2f94761c6de3c4a3c28ffac932be9721b2ac';
 
 /// Fires POST /info/dau when the user is authenticated.
 ///
-/// Initialized once in [YamFoodsApp]. Backend deduplicates repeated calls.
+/// Initialized once in [App].
+/// Backend deduplicates repeated calls.
+/// Wait until auth is resolved;
+/// if there's no logged-in user, do nothing;
+/// otherwise fire the DAU request in the background
+/// without blocking the app.
 
 @ProviderFor(dauRecorder)
 const dauRecorderProvider = DauRecorderProvider._();
 
 /// Fires POST /info/dau when the user is authenticated.
 ///
-/// Initialized once in [YamFoodsApp]. Backend deduplicates repeated calls.
+/// Initialized once in [App].
+/// Backend deduplicates repeated calls.
+/// Wait until auth is resolved;
+/// if there's no logged-in user, do nothing;
+/// otherwise fire the DAU request in the background
+/// without blocking the app.
 
 final class DauRecorderProvider extends $FunctionalProvider<void, void, void>
     with $Provider<void> {
   /// Fires POST /info/dau when the user is authenticated.
   ///
-  /// Initialized once in [YamFoodsApp]. Backend deduplicates repeated calls.
+  /// Initialized once in [App].
+  /// Backend deduplicates repeated calls.
+  /// Wait until auth is resolved;
+  /// if there's no logged-in user, do nothing;
+  /// otherwise fire the DAU request in the background
+  /// without blocking the app.
   const DauRecorderProvider._()
     : super(
         from: null,

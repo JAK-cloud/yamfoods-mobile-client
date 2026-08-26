@@ -5,6 +5,7 @@ import '../../../../core/errors/failure.dart';
 import 'app_configuration_api_service.dart';
 import 'app_configuration_remote_data_source.dart';
 import '../models/app_configuration_model.dart';
+import '../models/delivery_zone_model.dart';
 import '../models/order_type_config_model.dart';
 
 class AppConfigurationRemoteDataSourceImpl
@@ -27,6 +28,16 @@ class AppConfigurationRemoteDataSourceImpl
   Future<Either<Failure, List<OrderTypeConfigModel>>> getOrderTypes() async {
     try {
       final response = await _apiService.getOrderTypes();
+      return Right(response.data);
+    } catch (e) {
+      return Left(ErrorHandler.handleException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DeliveryZoneModel>>> getDeliveryZones() async {
+    try {
+      final response = await _apiService.getDeliveryZones();
       return Right(response.data);
     } catch (e) {
       return Left(ErrorHandler.handleException(e));

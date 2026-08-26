@@ -1,4 +1,4 @@
-import 'package:yamfoods_customer_app/features/map/data/models/delivery_zone_model.dart';
+import '../models/delivery_zone_model.dart';
 
 const List<DeliveryZoneModel> deliveryZones = [
   DeliveryZoneModel(

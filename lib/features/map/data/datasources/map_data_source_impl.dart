@@ -3,7 +3,6 @@
 import 'dart:developer' as developer;
 
 import 'package:dartz/dartz.dart';
-import 'package:yamfoods_customer_app/features/map/data/models/delivery_zone_model.dart';
 import 'package:yamfoods_customer_app/features/map/data/models/forward_geocoding_model.dart';
 
 import '../../../../core/constants/gebeta_map_config.dart';
@@ -13,7 +12,6 @@ import '../../../../shared/entities/address_location.dart';
 import '../models/route_model.dart';
 import 'map_api_service.dart';
 import 'map_data_source.dart';
-import 'mock_delivery_zone.dart';
 
 /// Handles map API calls and error transformation.
 ///
@@ -84,19 +82,9 @@ class MapDataSourceImpl implements MapDataSource {
   }
 
   @override
-  Future<Either<Failure, List<DeliveryZoneModel>>> getDeliveryZones() async{
-    try {
-      // Mock data
-      await Future.delayed(const Duration(milliseconds: 500));
-
-        return Right(deliveryZones);
-    } catch (e) {
-      return Left(ErrorHandler.handleException(e));
-    }
-  }
-
-  @override
-  Future<Either<Failure, ForwardGeocodingResponse>> searchAddress({required String query}) async {
+  Future<Either<Failure, ForwardGeocodingResponse>> searchAddress({
+    required String query,
+  }) async {
     try {
       final response = await _apiService.searchAddress(
         query: query,

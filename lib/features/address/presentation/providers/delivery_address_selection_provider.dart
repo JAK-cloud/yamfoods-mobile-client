@@ -2,7 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/utils/delivery_geofencing_service.dart';
-import '../../../map/data/models/delivery_zone_model.dart';
+import '../../../app_configuration/data/models/delivery_zone_model.dart';
+import '../../../app_configuration/presentation/providers/app_configuration_providers.dart';
 import '../../../map/presentation/providers/map_provider.dart';
 import '../../domain/entities/address.dart';
 import '../../domain/entities/delivery_address_payload.dart';
